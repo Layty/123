@@ -1,0 +1,116 @@
+﻿<Page x:Class="三相智慧能源网关调试软件.View.Management.AppPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
+
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AppPage">
+    <materialDesign:Card>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!--搜索 -->
+                <Grid Grid.Row="0" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="200" Margin="5" HorizontalContentAlignment="Left"
+                                 VerticalContentAlignment='Center'>
+                            12
+                        </TextBox>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                            <materialDesign:PackIcon Kind="Search" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+
+                    <ListBox x:Name="ListBox">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="FontSize" Value="30" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <ContentPresenter />
+                                            <ControlTemplate.Triggers>
+                                                <EventTrigger RoutedEvent="MouseEnter">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                                                             To="40" Duration="0:0:1" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <EventTrigger RoutedEvent="MouseLeave">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                                                             BeginTime="0:0:0.5" Duration="0:0:0.2" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground"
+                                                            Value="{DynamicResource PrimaryHueLightBrush}" />
+
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Foreground"
+
+                                                            Value="Transparent" />
+
+                                                </Trigger>
+                                               
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+
+                        </ListBox.ItemContainerStyle>
+                        <ListBoxItem>IEC62056-HDLC</ListBoxItem>
+                        <ListBoxItem>IEC62056-TCP</ListBoxItem>
+                        <ListBoxItem>IEC104</ListBoxItem>
+                        <ListBoxItem>泰昂数据采集</ListBoxItem>
+                        <ListBoxItem>南网规约</ListBoxItem>
+                    </ListBox>
+                </Grid>
+                <UniformGrid Grid.Row="2" Columns="3" Margin="5">
+                    <Button Margin="5">
+                        <materialDesign:PackIcon Kind="Add" />
+                    </Button>
+                    <Button Margin="5">
+                        <materialDesign:PackIcon Kind="Minus" />
+                    </Button>
+                    <Button Margin="5">
+                        <materialDesign:PackIcon Kind="Refresh" />
+                    </Button>
+                </UniformGrid>
+            </Grid>
+
+            <TextBlock Grid.Column="1">
+                <InlineUIContainer>
+                    <TextBlock Text="{Binding SelectedItem, ElementName=ListBox}" />
+                </InlineUIContainer>
+                <InlineUIContainer>
+                    <Grid Height="100" Width="100" />
+                </InlineUIContainer>
+            </TextBlock>
+
+
+        </Grid>
+    </materialDesign:Card>
+
+</Page>

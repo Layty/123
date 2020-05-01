@@ -1,0 +1,152 @@
+﻿<Page x:Class="三相智慧能源网关调试软件.View.BaseMeter.UpGradeBaseMeterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
+      mc:Ignorable="d"
+      d:DesignHeight="650" d:DesignWidth="800"
+      Title="UpGradeBaseMeterPage">
+    <materialDesign:Card>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+             
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Margin="5" Header="基本通讯"
+                      IsEnabled="{Binding ElementName=CheckBoxIsUseCom ,Path=IsChecked ,Converter={converters:InverseBooleanConverter}}">
+                <StackPanel>
+                    <Button Content ="自信一点" Click="ButtonOneKeyStart_OnClick" x:Name="ButtonOneKeyStart" Margin="5" ></Button>
+                    <Button Content ="深藏功与名" Click="ButtonOneKeyLeave_OnClick" x:Name="ButtonOneKeyLeave" Margin="5"></Button>
+                    <UniformGrid Columns="2">
+                        <Button Name="ButtonInit" Content="初始化" Command="{Binding InitCommand}"
+                                DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
+                                Margin="5" />
+                        <Button Content="结束" Name="ButtonDisConnect" Command="{Binding  DisconnectCommand}"
+                                DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
+                                Margin="5" />
+                    </UniformGrid>
+                    <UniformGrid Columns="2">
+                        <TextBox x:Name="TextBoxSoftVersion" Margin="5" />
+                        <Button x:Name="ButtonGetSoftVersion" Click="ButtonGetSoftVersion_OnClick" Margin="5">读软件版本</Button>
+                    </UniformGrid>
+                    <UniformGrid Columns="2">
+                        <TextBox x:Name="TextBoxFactory"  Margin="5" />
+                        <Button x:Name="ButtonReadFactory" Click="ButtonReadFactory_OnClick" Content="读工厂状态" Margin="5" />
+                    </UniformGrid>
+                    <StackPanel>
+                        <Button x:Name="ButtonEnterFactory" Click="ButtonEnterFactory_OnClick" Content="进入工厂模式"
+                                Margin="5" />
+                        <Button x:Name="ButtonQuitFactory" Click="ButtonQuitFactory_OnClick" Content="退出工厂模式"
+                                Margin="5" />
+                        <Button x:Name="ButtonEnterUpgradeMode" Click="ButtonEnterUpgradeMode_OnClick"
+                                Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Alert"
+                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                <TextBlock Text="进入升级模式" />
+                            </StackPanel>
+
+                        </Button>
+                        <Button x:Name="ButtonClearAllData" Click="ButtonClearAllData_OnClick" Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Alert"
+                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                <TextBlock Text="总清" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ButtonSetCapturePeriod" Click="ButtonSetCapturePeriod_OnClick" Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Alert"
+                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                <TextBlock Text="设捕获周期60s清空电量曲线" />
+                            </StackPanel>
+                        </Button>
+                        <!--<Button x:Name="ButtonGetCaptureObjects" Click="ButtonGetCaptureObjects_OnClick" Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Alert"
+                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                    <TextBlock Text="GetCaptureObjects" />
+                                </StackPanel>
+                            </Button>-->
+                    </StackPanel>
+
+
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                      DataContext="{Binding Source={StaticResource Locator},Path=UpGradeBaseMeterViewModel}">
+                <GroupBox.Header>
+                    <StackPanel>
+                        <TextBlock> YModem升级</TextBlock>
+                    </StackPanel>
+                </GroupBox.Header>
+
+                <StackPanel>
+                 
+                    <CheckBox Content="升级串口使能" x:Name="CheckBoxIsUseCom"  IsChecked="{Binding IsInitUpGradeSerialPort}"
+                              VerticalAlignment="Center" />
+                    <StackPanel IsEnabled="{Binding ElementName=CheckBoxIsUseCom,Path=IsChecked}">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Row="0" x:Name="TextBoxSendFile" Margin="4"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     materialDesign:HintAssist.Hint="当前选择文件"
+                                     Text="{Binding FileName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }" />
+                            <Button Grid.Column="1" x:Name="ButtonOpenFile" Margin="4"
+                                    Command="{Binding SelectFileCommand}"
+                                    ToolTip="浏览">
+                                <materialDesign:PackIcon Kind="FileFind" />
+                            </Button>
+
+                        </Grid>
+
+                        <ProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" Value="{Binding CurrentCount}"
+                                     Height="20"
+                                     Name="ProgressBar" />
+                        <!--<hc:WaveProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0"
+                                        Value="{Binding CurrentCount}"
+
+                                        Name="ProgressBar" />-->
+                        <TextBlock Text="{Binding ElementName=ProgressBar,Path=Value}" Margin="5" />
+                        <TextBlock Text="{Binding ElementName=ProgressBar,Path=Maximum}" Margin="5" />
+                        <TextBlock Text="{Binding PacketNo,UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                        <TextBlock Text="{Binding FileIndex,UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonStartSendFile" Margin="5" ToolTip="发送"
+                                    IsEnabled="{Binding YModem.IsStart, Converter={ converters:InverseBooleanConverter} }"
+                                    Command="{Binding StartCommand}">
+                                <materialDesign:PackIcon Kind="FileSend" />
+                            </Button>
+                            <Button x:Name="ButtonStopSendFile" Margin="5" ToolTip="停止"
+                                    IsEnabled="{Binding YModem.IsStart}"
+                                    Command="{Binding StopCommand}">
+                                <materialDesign:PackIcon Kind="StopCircle" />
+                            </Button>
+
+                        </StackPanel>
+
+                    </StackPanel>
+                   
+                </StackPanel>
+
+            </GroupBox>
+          
+        </Grid>
+
+
+    </materialDesign:Card>
+
+</Page>

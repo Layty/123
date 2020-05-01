@@ -1,0 +1,11 @@
+{"doc":
+[
+{"type_dev":1,"name_dev":"温湿度","add_reg":0,"cnt_reg":2,"code_data":2133,"boute":4800,"chk_bit":"n","addr_dev":1,"delay":300,"opt":0},
+{"type_dev":2,"name_dev":"水浸","add_reg":2,"cnt_reg":1,"code_data":1100,"boute":4800,"chk_bit":"n","addr_dev":2,"delay":300,"opt":0},
+{"type_dev":3,"name_dev":"烟感","add_reg":3,"cnt_reg":1,"code_data":1101,"boute":4800,"chk_bit":"n","addr_dev":3,"delay":200,"opt":0},
+{"type_dev":11,"name_dev":"单路遥信采集器","add_reg":3,"cnt_reg":1,"code_data":1102,"boute":4800,"chk_bit":"n","addr_dev":4,"delay":200,"opt":0}
+]
+};
+
+
+

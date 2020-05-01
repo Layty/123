@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="三相智慧能源网关调试软件.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AccessConnectionStr" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\UserInfo.mdb;</Value>
+    </Setting>
+    <Setting Name="CurrentUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Admin</Value>
+    </Setting>
+    <Setting Name="CurrentPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PasswordSave" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GatewayIpAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.100</Value>
+    </Setting>
+    <Setting Name="CmdStr1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{"cmd_type":13, "data":"0"}</Value>
+    </Setting>
+    <Setting Name="InstantDataRefreshInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="SerialPortViewModelConfigFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Config\SerialPortViewModelConfig.json</Value>
+    </Setting>
+    <Setting Name="BaseMeterUpGradeFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PrimarySkin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF3F51B5</Value>
+    </Setting>
+    <Setting Name="GatewayPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1234</Value>
+    </Setting>
+    <Setting Name="GatewayConnectTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1500</Value>
+    </Setting>
+    <Setting Name="IsDarkTheme" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AccentSkin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF3F51B5</Value>
+    </Setting>
+    <Setting Name="TftpServerDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\TFTPServerFiles</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

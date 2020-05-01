@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A885422F-B044-41AE-9139-1C384FC2367D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>三相智慧能源网关调试软件</RootNamespace>
+    <AssemblyName>三相智慧能源网关调试软件</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Fonts\3.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\CommonServiceLocator.2.0.5\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="ENet, Version=1.3.6.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ENet.1.3.6.3\lib\ENet.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="HandyControl, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\HandyControl.2.4.0\lib\net47\HandyControl.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.3.1244, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignColors.1.2.3\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.0.1244, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignThemes.3.1.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Tftp.Net, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Tftp.Net.1.1.0.0\lib\Tftp.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commom\CEncorder.cs" />
+    <Compile Include="Commom\Common.cs" />
+    <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\BytesParseToIntConverter.cs" />
+    <Compile Include="Converters\FactoryConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\SerialPortAvaildConvert.cs" />
+    <Compile Include="Converters\StringBuliderConverter.cs" />
+    <Compile Include="Converters\Tftp-g-rConverter.cs" />
+    <Compile Include="Converters\Tftp-p-rConverter.cs" />
+    <Compile Include="DLMS\21EMode\EMode.cs" />
+    <Compile Include="DLMS\21EMode\EModeExecutor.cs" />
+    <Compile Include="DLMS\21EMode\EModeMaker.cs" />
+    <Compile Include="DLMS\21EMode\EModeParser.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSCaptureObject.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSData.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSDataItem.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSUtilityTables.cs" />
+    <Compile Include="DLMS\CosemObjects\IDLMSBase.cs" />
+    <Compile Include="DLMS\CosemObjects\IToPduBytes.cs" />
+    <Compile Include="DLMS\CosemObjects\ProfileGeneric.cs" />
+    <Compile Include="DLMS\CosemObjects\Script.cs" />
+    <Compile Include="DLMS\CosemObjects\ScriptAction.cs" />
+    <Compile Include="DLMS\CosemObjects\ScriptTable.cs" />
+    <Compile Include="DLMS\HDLC\BerType.cs" />
+    <Compile Include="DLMS\HDLC\CosemAttributeDescriptor.cs" />
+    <Compile Include="DLMS\HDLC\CosemMethodDescriptor.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Command.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSClock.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ActionResult.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\AccessRange.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ClockStatus.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\DataAccessResult.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\DataType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ErrorCode.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ObjectType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\Priority.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ReleaseRequestReason.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ReleaseResponseReason.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ServiceClass.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\SortMethod.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\Unit.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Conformance.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46ControlTypes.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46ResponseType.cs" />
+    <Compile Include="DLMS\HDLC\Enums\HdlcControlFrame.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\PduType.cs" />
+    <Compile Include="DLMS\HDLC\HdlcFrameMaker.cs" />
+    <Compile Include="DLMS\HDLC\HdlcFrameParser.cs" />
+    <Compile Include="DLMS\HDLC\Enums\HdlcFrameType.cs" />
+    <Compile Include="DLMS\HDLC\HDLC_LLC.cs" />
+    <Compile Include="DLMS\HDLC\Invoke_Id_And_Prority.cs" />
+    <Compile Include="DLMS\MyDLMSSettings.cs" />
+    <Compile Include="DLMS\NormalDataParse.cs" />
+    <Compile Include="DLMS\HDLC\DataCheck.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46CommandType.cs" />
+    <Compile Include="DLMS\HDLC\Hdlc46Executor.cs" />
+    <Compile Include="DLMS\HDLC\Hdlc46Frame.cs" />
+    <Compile Include="DLMS\HDLC\HdlcInfo.cs" />
+    <Compile Include="DLMS\OBIS\OBISClass.cs" />
+    <Compile Include="DLMS\OBIS\OBISHelper.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ActionRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ActionResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\ActionSpecification.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSObject.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\GetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\GetResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\SetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLayEnums\SetResponseType.cs" />
+    <Compile Include="DLMS\StartProtocolType.cs" />
+    <Compile Include="ENetClientHelper.cs" />
+    <Compile Include="FileTransmit\BinarySend.cs" />
+    <Compile Include="FileTransmit\DataCheck.cs" />
+    <Compile Include="FileTransmit\IFileTransmit.cs" />
+    <Compile Include="FileTransmit\ITransmitUart.cs" />
+    <Compile Include="MyControl\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\Palette.xaml.cs">
+      <DependentUpon>Palette.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\SerialPortControl.xaml.cs">
+      <DependentUpon>SerialPortControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\SkinUserControl.xaml.cs">
+      <DependentUpon>SkinUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TcpClientHelper.cs" />
+    <Compile Include="ViewModel\DlmsViewModel.cs" />
+    <Compile Include="ViewModel\SkinViewModel.cs" />
+    <Compile Include="ViewModel\TaiAngViewModel.cs" />
+    <Compile Include="ViewModel\TftpServerViewModel.cs" />
+    <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
+    <Compile Include="FileTransmit\XModem.cs" />
+    <Compile Include="Model\CommandModel.cs" />
+    <Compile Include="Model\EmptyResponsedException.cs" />
+    <Compile Include="Model\EnergyDataModel.cs" />
+    <Compile Include="Model\UserLoginModel.cs" />
+    <Compile Include="Model\GateWayLoginModel.cs" />
+    <Compile Include="Model\MenuModel.cs" />
+    <Compile Include="Model\InstantDataModel.cs" />
+    <Compile Include="Model\MyLogModel.cs" />
+    <Compile Include="Model\MySerialPortConfigCaretaker.cs" />
+    <Compile Include="Model\MySerialEventArgs.cs" />
+    <Compile Include="Model\MySerialEventHandler.cs" />
+    <Compile Include="Model\MySerialPort.cs" />
+    <Compile Include="Model\SenderModel.cs" />
+    <Compile Include="Model\SerialPortConfig.cs" />
+    <Compile Include="ValidateModelBase.cs" />
+    <Compile Include="ViewModel\CommandViewModel.cs" />
+    <Compile Include="ViewModel\EnergyDataViewModel.cs" />
+    <Compile Include="ViewModel\SerialPortViewModel.cs" />
+    <Compile Include="ViewModel\UserLoginViewModel.cs" />
+    <Compile Include="ViewModel\LogViewModel.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="View\BaseMeter\HDLCFrameParameterPage.xaml.cs">
+      <DependentUpon>HDLCFrameParameterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseMeter\SerialPortPage.xaml.cs">
+      <DependentUpon>SerialPortPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\InstantDataLiveChartPage.xaml.cs">
+      <DependentUpon>InstantDataLiveChartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IntelligentEquipment\TaiAngPage.xaml.cs">
+      <DependentUpon>TaiAngPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MessageBoxWindow.xaml.cs">
+      <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PasswordBoxHelper.cs" />
+    <Compile Include="ViewModel\InstantDataViewModel.cs" />
+    <Compile Include="View\Management\GateWayAppPage.xaml.cs">
+      <DependentUpon>GateWayAppPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\CommandPage.xaml.cs">
+      <DependentUpon>CommandPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\DataPage.xaml.cs">
+      <DependentUpon>DataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\GateWayLoginPage.xaml.cs">
+      <DependentUpon>GateWayLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\GlobalParameterPage.xaml.cs">
+      <DependentUpon>GlobalParameterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerCenter\TelnetPage.xaml.cs">
+      <DependentUpon>TelnetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerCenter\TftpServerPage.xaml.cs">
+      <DependentUpon>TftpServerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerCenter\TftpServerControl.xaml.cs">
+      <DependentUpon>TftpServerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BaseMeter\UpGradeBaseMeterPage.xaml.cs">
+      <DependentUpon>UpGradeBaseMeterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerCenter\VirtualServerPage.xaml.cs">
+      <DependentUpon>VirtualServerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserLoginPage.xaml.cs">
+      <DependentUpon>UserLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Management\LogPage.xaml.cs">
+      <DependentUpon>LogPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PasswordBoxBehavior.cs" />
+    <Compile Include="View\Management\RealTimeDataPage.xaml.cs">
+      <DependentUpon>RealTimeDataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FileTransmit\YModem.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="MyControl\MessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\Palette.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyControl\SerialPortControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionary\MyDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyControl\SkinUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BaseMeter\HDLCFrameParameterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BaseMeter\SerialPortPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\GateWayAppPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\CommandPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\DataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\GateWayLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\GlobalParameterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\InstantDataLiveChartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\IntelligentEquipment\TaiAngPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ServerCenter\TelnetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerCenter\TftpServerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerCenter\TftpServerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BaseMeter\UpGradeBaseMeterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerCenter\VirtualServerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserLoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Management\LogPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\RealTimeDataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Fonts\iconfont.ttf" />
+    <None Include="Config\SerialPortConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Resource Include="Fonts\3.ico" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="GatewayAppPara\AppPara.cfg" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ENetX64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ENetX86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Resource Include="FileTransmit\AboutYModem.txt" />
+    <Content Include="UserInfo.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DLMS\ApplicationLayEnums\Action\" />
+    <Folder Include="DLMS\HDLC\IEC21E\" />
+    <Folder Include="TFTPServerFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">
+      <Project>{c38416fb-c04a-41c3-b226-fe5456088ac3}</Project>
+      <Name>Gurux.DLMS.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
+</Project>

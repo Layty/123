@@ -1,0 +1,57 @@
+{
+	"1": {
+		"ChannelNum": 1,
+		"PortName": "COM2",
+		"BaudRate": 9600,
+		"StopBits": "One",
+		"Parity": "None",
+		"DataBits": 8,
+		"DelayTimeOut": 2,
+		"IsOwnThisSerialPort": true,
+		"IsAutoDataReceived": true
+	},
+	"2": {
+		"ChannelNum": 2,
+		"PortName": "COM2",
+		"BaudRate": 38400,
+		"StopBits": "One",
+		"Parity": "None",
+		"DataBits": 8,
+		"DelayTimeOut": 2,
+		"IsOwnThisSerialPort": true,
+		"IsAutoDataReceived": true
+	},
+	"3": {
+		"ChannelNum": 3,
+		"PortName": "COM8",
+		"BaudRate": 38400,
+		"StopBits": "One",
+		"Parity": "None",
+		"DataBits": 8,
+		"DelayTimeOut": 2,
+		"IsOwnThisSerialPort": true,
+		"IsAutoDataReceived": true
+	},
+	"4": {
+		"ChannelNum": 4,
+		"PortName": "COM11",
+		"BaudRate": 4800,
+		"StopBits": "One",
+		"Parity": "Even",
+		"DataBits": 8,
+		"DelayTimeOut": 2,
+		"IsOwnThisSerialPort": true,
+		"IsAutoDataReceived": true
+	},
+	"5": {
+		"ChannelNum": 5,
+		"PortName": "COM1",
+		"BaudRate": 115200,
+		"StopBits": "One",
+		"Parity": "None",
+		"DataBits": 8,
+		"DelayTimeOut": 2,
+		"IsOwnThisSerialPort": true,
+		"IsAutoDataReceived": true
+	}
+}

@@ -1,0 +1,15 @@
+{"_PrimaryKeys":["U_Id"],
+"_ReturnName":"U_Id",
+"_TableName":"Upgrade_info",
+"FilePath":"C:\Users\Administrator\Desktop\updata\updata\app_update.tar",
+"FileSize":"4833280",
+"HasNewVer":"1",
+"IP":"192.168.1.155",
+"Md5":"8774df701b56d87f8331da768a0a9b09",
+"NeedGWLog":"0",
+"NeedGwDoc":"0",
+"Port":"9000",
+"U_Id":"0",
+"UpgradeType":"0",
+"Url":"http://192.168.1.155:9001/app_update.tar","Version":"Ver0.0.3"
+}
