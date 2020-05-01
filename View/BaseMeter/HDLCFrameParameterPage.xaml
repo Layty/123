@@ -21,8 +21,7 @@
             <TextBox Text="{Binding Hdlc46Frame.Password}"></TextBox>
             <TextBlock Text="{Binding Hdlc46Frame.LastCommand}"></TextBlock>
               <CheckBox x:Name="CheckBox21EMode" IsChecked="{Binding Source={StaticResource Locator},Path=DlmsViewModel.IsUse21E}" Content="Use21EMode"></CheckBox>
-            <Button></Button>
-            <CheckBox></CheckBox>
+           
         </StackPanel>
     </Grid>
 </Page>
