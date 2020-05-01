@@ -493,6 +493,12 @@
     <Folder Include="DLMS\HDLC\IEC21E\" />
     <Folder Include="TFTPServerFiles\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">
+      <Project>{5eec3df7-b62b-4795-a2d4-b6237e1ad49a}</Project>
+      <Name>Gurux.DLMS.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
