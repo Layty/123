@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Gurux.DLMS</RootNamespace>
+    <AssemblyName>Gurux.DLMS</AssemblyName>
+    <Company>Gurux Ltd</Company>
+    <Authors>Gurux Ltd</Authors>
+    <Copyright>Copyright (c) 1998-2020 Gurux Ltd. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://www.gurux.fi</PackageProjectUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <Description>Gurux DLMS library for C#</Description>
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">0.0.1-local</Version>
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <TargetFrameworks>net46;net40;net45;net35;netstandard2.0;netcoreapp3.1;netcoreapp2.0;netcoreapp2.1;</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/gurux/gurux.dlms.net</RepositoryUrl>
+    <PackageTags>DLMS AMR, AMI IOT</PackageTags>
+    <PackageId>Gurux.DLMS</PackageId>
+    <PackageIcon>Gurux.DLMS.png</PackageIcon>
+    <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
+    <ApplicationIcon>Gurux.DLMS.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Gurux.DLMS.Net.Android\**" />
+    <Compile Remove="UWP\**" />
+    <EmbeddedResource Remove="Gurux.DLMS.Net.Android\**" />
+    <EmbeddedResource Remove="UWP\**" />
+    <None Remove="Gurux.DLMS.Net.Android\**" />
+    <None Remove="UWP\**" />
+  </ItemGroup>
+
+ <ItemGroup>
+	<Reference Condition="'$(TargetFramework)' == 'net46'" Include="System.Windows.Forms" />
+	<Reference Condition="'$(TargetFramework)' == 'net45'" Include="System.Windows.Forms" />
+	<Reference Condition="'$(TargetFramework)' == 'net40'" Include="System.Windows.Forms" />
+	<Reference Condition="'$(TargetFramework)' == 'net35'" Include="System.Windows.Forms" />
+   </ItemGroup>
+<ItemGroup>
+	<Reference Condition="'$(TargetFramework)' == 'net46'" Include="System.Drawing.Design" />
+	<Reference Condition="'$(TargetFramework)' == 'net45'" Include="System.Drawing.Design" />
+	<Reference Condition="'$(TargetFramework)' == 'net40'" Include="System.Drawing.Design" />
+	<Reference Condition="'$(TargetFramework)' == 'net35'" Include="System.Drawing.Design" />
+   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ManufacturerSettings\GXXmlEditor.cs" />
+    <Compile Update="ManufacturerSettings\GXXmlEditor.Designer.cs">
+      <DependentUpon>GXXmlEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Strings\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resw</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Strings\Resources.resw">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Gurux.DLMS.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
