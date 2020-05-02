@@ -9,12 +9,10 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
     {
         private readonly MySerialPort _port;
 
-        private readonly MySerialPort _backupPort = new MySerialPort();
-
         private readonly EModeMaker _eModeFrameMaker;
 
         private readonly int _requestBaud;
-
+        private readonly MySerialPortConfigCaretaker _caretaker = new MySerialPortConfigCaretaker();
         public EModeExecutor(MySerialPort mySerialPort, string addr)
         {
             _port = mySerialPort;
@@ -24,70 +22,59 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
         public Task<bool> Execute()
         {
-            return Task.Run(delegate
+            return Task.Run( async delegate
             {
-                if (!_port.IsOpen)
-                {
-                    _port.Open();
-                }
+                BackupPortPara();
                 Init21ESerialPort();
                 byte[] requestFrameBytes = _eModeFrameMaker.GetRequestFrameBytes();
-                _port.SendDataWithLocker(requestFrameBytes);
-                byte[] array = _port.TryToReadReceiveData();
-                if (array.Length == 0)
+                //_port.SendDataWithLocker(requestFrameBytes);
+                //byte[] array = _port.TryToReadReceiveData();
+                byte[] array =await _port.SendAndReceiveReturnDataAsync(requestFrameBytes);
+                if (array.Length == 0|| !EModeParser.CheckServerFrameWisEquals2(array))
                 {
-                    Release21ESerialPort();
+                    LoadBackupPortPara();
                     return false;
                 }
-                if (!EModeParser.CheckServerFrameWisEquals2(array))
-                {
-                    Release21ESerialPort();
-                    return false;
-                }
-                byte[] comfirmFrameBytes = _eModeFrameMaker.GetComfirmFrameBytes();
-                _port.SendDataWithLocker(comfirmFrameBytes);
+
+
+                byte[] confirmFrameBytes = _eModeFrameMaker.GetConfirmFrameBytes();
+                _port.Send(confirmFrameBytes);
                 Thread.Sleep(200);
-                _port.BaudRate = _requestBaud;
+                _port.BaudRate = _requestBaud;//需要修改波特率 ，再去接收
                 array = _port.TryToReadReceiveData();
-                if (!EModeParser.CheckServerFrameZisEqualsClient(array))
+                if (array.Length == 0 || !EModeParser.CheckServerFrameZisEqualsClient(array))
                 {
-                    Release21ESerialPort();
+                    LoadBackupPortPara();
                     return false;
                 }
-                Release21ESerialPort();
+                LoadBackupPortPara();
                 return true;
             });
         }
 
-        private void RollbackSerialPortParams()
+
+
+        private void BackupPortPara()
         {
-            _port.BaudRate = _backupPort.BaudRate;
-            _port.DataBits = _backupPort.DataBits;
-            _port.StopBits = _backupPort.StopBits;
-            _port.Parity = _backupPort.Parity;
+            var memento = _port.CreateMySerialPortConfig;
+            _caretaker.Dictionary["before"] = memento;
+            _port.IsSendFormat16 = false;
+        }
+
+        private void LoadBackupPortPara()
+        {
+            var t = _caretaker.Dictionary["before"];
+            _port.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            _port.IsSendFormat16 = true;
         }
 
         private void Init21ESerialPort()
         {
-            _port.IsSendDataShowString = true;
-            _backupPort.BaudRate = _port.BaudRate;
-            _backupPort.DataBits = _port.DataBits;
-            _backupPort.StopBits = _port.StopBits;
-            _backupPort.Parity = _port.Parity;
             _port.BaudRate = 300;
             _port.DataBits = 7;
             _port.StopBits = StopBits.One;
             _port.Parity = Parity.Even;
         }
 
-        private void Release21ESerialPort()
-        {
-            RollbackSerialPortParams();
-            _port.IsSendDataShowString = false;
-            //_port.DiscardInBuffer();
-            //_port.DiscardOutBuffer();
-            _port.Close();
-            //_port.Dispose();
-        }
     }
 }

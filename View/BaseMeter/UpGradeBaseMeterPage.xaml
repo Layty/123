@@ -9,7 +9,7 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
-      mc:Ignorable="d"
+      mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
       d:DesignHeight="650" d:DesignWidth="800"
       Title="UpGradeBaseMeterPage">
     <materialDesign:Card>
@@ -21,33 +21,31 @@
              
             </Grid.ColumnDefinitions>
 
-            <GroupBox Grid.Column="0" Margin="5" Header="基本通讯"
+            <GroupBox Grid.Column="0" Margin="5" Header="基本通讯" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
                       IsEnabled="{Binding ElementName=CheckBoxIsUseCom ,Path=IsChecked ,Converter={converters:InverseBooleanConverter}}">
                 <StackPanel>
-                    <Button Content ="自信一点" Click="ButtonOneKeyStart_OnClick" x:Name="ButtonOneKeyStart" Margin="5" ></Button>
-                    <Button Content ="深藏功与名" Click="ButtonOneKeyLeave_OnClick" x:Name="ButtonOneKeyLeave" Margin="5"></Button>
+                    <Button Content ="自信一点" Command="{Binding OneKeyStartCommand}" x:Name="ButtonOneKeyStart" Margin="5" ></Button>
+                    <Button Content ="深藏功与名" Command="{Binding OneKeyLeaveCommand}" x:Name="ButtonOneKeyLeave" Margin="5"></Button>
                     <UniformGrid Columns="2">
                         <Button Name="ButtonInit" Content="初始化" Command="{Binding InitCommand}"
-                                DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
                                 Margin="5" />
                         <Button Content="结束" Name="ButtonDisConnect" Command="{Binding  DisconnectCommand}"
-                                DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
                                 Margin="5" />
                     </UniformGrid>
                     <UniformGrid Columns="2">
-                        <TextBox x:Name="TextBoxSoftVersion" Margin="5" />
-                        <Button x:Name="ButtonGetSoftVersion" Click="ButtonGetSoftVersion_OnClick" Margin="5">读软件版本</Button>
+                        <TextBox x:Name="TextBoxSoftVersion" Text="{Binding SoftVersion}" Margin="5" />
+                        <Button x:Name="ButtonGetSoftVersion" Command="{Binding GetSoftVersionCommand}" Margin="5">读软件版本</Button>
                     </UniformGrid>
                     <UniformGrid Columns="2">
-                        <TextBox x:Name="TextBoxFactory"  Margin="5" />
-                        <Button x:Name="ButtonReadFactory" Click="ButtonReadFactory_OnClick" Content="读工厂状态" Margin="5" />
+                        <TextBox x:Name="TextBoxFactory" Text="{Binding FactoryStatus}" Margin="5" />
+                        <Button x:Name="ButtonReadFactory" Command="{Binding ReadFactoryCommand}" Content="读工厂状态" Margin="5" />
                     </UniformGrid>
                     <StackPanel>
-                        <Button x:Name="ButtonEnterFactory" Click="ButtonEnterFactory_OnClick" Content="进入工厂模式"
+                        <Button x:Name="ButtonEnterFactory" Command="{Binding EnterFactorCommand}" Content="进入工厂模式"
                                 Margin="5" />
-                        <Button x:Name="ButtonQuitFactory" Click="ButtonQuitFactory_OnClick" Content="退出工厂模式"
+                        <Button x:Name="ButtonQuitFactory"  Command="{Binding QuitFactorCommand }" Content="退出工厂模式"
                                 Margin="5" />
-                        <Button x:Name="ButtonEnterUpgradeMode" Click="ButtonEnterUpgradeMode_OnClick"
+                        <Button x:Name="ButtonEnterUpgradeMode" Command="{Binding EnterUpgradeModeCommand }"
                                 Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
@@ -56,14 +54,14 @@
                             </StackPanel>
 
                         </Button>
-                        <Button x:Name="ButtonClearAllData" Click="ButtonClearAllData_OnClick" Margin="5">
+                        <Button x:Name="ButtonClearAllData" Command="{Binding ClearAllCommand}" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
                                                          Background="{DynamicResource SecondaryAccentBrush}" />
                                 <TextBlock Text="总清" />
                             </StackPanel>
                         </Button>
-                        <Button x:Name="ButtonSetCapturePeriod" Click="ButtonSetCapturePeriod_OnClick" Margin="5">
+                        <Button x:Name="ButtonSetCapturePeriod" Command="{Binding SetCapturePeriodCommand}" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
                                                          Background="{DynamicResource SecondaryAccentBrush}" />

@@ -14,11 +14,11 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
         public byte[] GetRequestFrameBytes()
         {
-            string s = '/'.ToString() + "?" + eMode.Devicestr + "!\r\n";
+            string s = '/' + "?" + eMode.Devicestr + "!\r\n";
             return Encoding.Default.GetBytes(s);
         }
 
-        public byte[] GetComfirmFrameBytes()
+        public byte[] GetConfirmFrameBytes()
         {
             List<byte> list = new List<byte>
             {

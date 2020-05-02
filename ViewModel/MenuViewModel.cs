@@ -232,6 +232,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             Type type = GetType();
             Assembly assembly = type.Assembly;
             CurrentPage =  assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly) as Page;
+        
         }
     }
 }

@@ -41,19 +41,19 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         protected Task<byte[]> GetAttributeData(byte attrId)
         {
             var msg = DlmsViewModel.HdlcFrameMaker.GetRequest(this, attrId);
-            return SerialPortViewModel.SerialPortModel.SendAndReceiveReturnData(msg);
+            return SerialPortViewModel.SerialPortModel.SendAndReceiveReturnDataAsync(msg);
         }
 
         protected async void SetAttributeData(byte attrId, DLMSDataItem dlmsDataItem)
         {
             var msg = DlmsViewModel.HdlcFrameMaker.SetRequest(this, attrId, dlmsDataItem);
-            await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnData(msg);
+            await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnDataAsync(msg);
         }
 
         protected async void ActionExecute(byte methodIndex, DLMSDataItem dlmsDataItem)
         {
             var msg = DlmsViewModel.HdlcFrameMaker.ActionRequest(this, methodIndex, dlmsDataItem);
-            await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnData(msg);
+            await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnDataAsync(msg);
         }
     }
 }

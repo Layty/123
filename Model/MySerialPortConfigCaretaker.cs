@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -18,23 +19,29 @@ namespace 三相智慧能源网关调试软件.Model
         /// </summary>
         public string SerialPortConfigFilePath { get; set; }
 
-        public SerialPortConfig DefaultConfig { get; set; }
+        public SerialPortConfig DefaultConfig { get; set; }=
+        new SerialPortConfig()
+        {
+            BaudRate = 9600,
+            DataBits = 8,
+            DelayTimeOut = 2,
+            IsAutoDataReceived = false,
+            IsOwnThisSerialPort = false,
+            Parity = "None",
+            PortName = "COM1",
+            StopBits = "One"
+        };
 
+
+        public MySerialPortConfigCaretaker()
+        {
+            SerialPortConfigFilePath = Properties.Settings.Default.SerialPortViewModelConfigFilePath;
+        }
         public MySerialPortConfigCaretaker(string serialPortConfigFilePath)
         {
             SerialPortConfigFilePath = serialPortConfigFilePath;
-            DefaultConfig = new SerialPortConfig()
-            {
-                BaudRate = 9600,
-                DataBits = 8,
-                DelayTimeOut = 2,
-                IsAutoDataReceived = false,
-                IsOwnThisSerialPort = false,
-                Parity = "None",
-                PortName = "COM1",
-                StopBits = "One"
-            };
         }
+
 
         public void AddSerialPortConfigToList(string key, SerialPortConfig config)
         {
@@ -46,8 +53,18 @@ namespace 三相智慧能源网关调试软件.Model
             Dictionary.Remove(key);
         }
 
+        /// <summary>
+        /// 将SerialPortConfig保存至Json文件
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="key"></param>
+        /// <exception cref="SerialPortConfigFilePath">SerialPortConfigFilePath不能为空</exception>
         public void SaveSerialPortConfigDataToJsonFile(SerialPortConfig config,string key="1")
         {
+            if (string.IsNullOrEmpty(SerialPortConfigFilePath))
+            {
+                throw new Exception("SerialPortConfigFilePath不能为空");
+            }
             FileStream stream = new FileStream(SerialPortConfigFilePath, FileMode.Create);
             using (StreamWriter sw = new StreamWriter(stream))
             {
@@ -60,6 +77,11 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
+        /// <summary>
+        /// 从json文件中加载串口参数
+        /// </summary>
+        /// <param name="key">代表要加载的键</param>
+        /// <returns>返回key对应的SerialPortConfig</returns>
         public SerialPortConfig LoadSerialPortParamsByReadSerialPortConfigFile(string key="1")
         {
             SerialPortConfig mySerialPortConfig = new SerialPortConfig();

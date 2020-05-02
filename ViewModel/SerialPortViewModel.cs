@@ -57,8 +57,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {
-                    SerialPortModel.SendBytes = SenderModel.SendText.StringToByte();
-                    SerialPortModel.SendDataTaskMVVM();
+                    SerialPortModel.CurrentSendBytes = SenderModel.SendText.StringToByte();
+                    SerialPortModel.Send();
                 }
             );
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
@@ -76,7 +76,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 串口参数资源集合
 
         public string[] PortNamesCollection => SerialPort.GetPortNames();
-        public int[] BaudRatesCollection => new[] {1200, 2400, 4800, 9600, 19200, 38400};
+        public int[] BaudRatesCollection => new[] {300,1200, 2400, 4800, 9600, 19200, 38400};
         public Array ParityCollection => Enum.GetValues(typeof(Parity));
         public StopBits[] StopBitsCollection => new[] {StopBits.One, StopBits.OnePointFive, StopBits.Two};
         public int[] DataBitsCollection => new[] {6, 7, 8};
@@ -139,8 +139,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void SelectSendText(SenderModel senderModel)
         {
             SenderModel = senderModel;
-            //SerialPortModel.SendBytes = senderModel.SendText.StringToByte();
-            //SerialPortModel.SendDataTaskMVVM();
+            //SerialPortModel.CurrentSendBytes = senderModel.SendText.StringToByte();
+            //SerialPortModel.Send();
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void ClearSendData(SenderModel senderModel)
         {
             SenderModel.SendText = string.Empty;
-            SerialPortModel.SendStringDataForShow = string.Empty;
+            SerialPortModel.CurrentSendBytes =new byte[]{};
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         private void ClearAllText()
         {
-            SerialPortModel.SendStringDataForShow = string.Empty;
+            SerialPortModel.CurrentSendBytes = new byte[]{};
             SerialPortModel.DataReceiveForShow = string.Empty;
             SerialPortModel.SendAndReceiveDataStringBuilderCollections = new StringBuilder();
             SerialPortModel.SendAndReceiveDataCollections = string.Empty;

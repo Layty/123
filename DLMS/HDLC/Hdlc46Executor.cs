@@ -63,37 +63,18 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         }
 
 
-        public bool RepeatWrite(byte[] dataFrameBytes)
-        {
-            _port.SerialPort.Write(dataFrameBytes, 0, dataFrameBytes.Length);
-            byte[] receiveBytes = _port.TryToReadReceiveData();
-            bool flag = receiveBytes.Length != 0;
-            bool result;
-            if (flag)
-            {
-                result = true;
-            }
-            else
-            {
-                _port.SerialPort.Write(dataFrameBytes, 0, dataFrameBytes.Length);
-                receiveBytes = _port.TryToReadReceiveData();
-                result = (receiveBytes.Length != 0);
-            }
-
-            return result;
-        }
 
 
         public Task<byte[]> ExecuteApp(byte[] obisframe)
         {
-            return _port.SendAndReceiveReturnData(obisframe);
+            return _port.SendAndReceiveReturnDataAsync(obisframe);
         }
 
         public Task<bool> ExecuteHdlcSNRMRequest()
         {
             var t = Task.Run(() =>
             {
-                var r = _port.SendAndReceiveReturnData(HdlcFrameMaker.SNRMRequest()).Result;
+                var r = _port.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SNRMRequest()).Result;
                 if (r == null)
                 {
                     return false;
@@ -113,19 +94,19 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public Task ExecuteHdlcDisConnectRequest()
         {
-            return _port.SendAndReceiveReturnData(HdlcFrameMaker.DisconnectRequest());
+            return _port.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
         }
 
         public Task ExecuteHdlcComm(Func<byte[]> func)
         {
-            return _port.SendAndReceiveReturnData(func());
+            return _port.SendAndReceiveReturnDataAsync(func());
         }
 
     
     
         public Task ExecuteHdlcComm(byte[] dataBytes)
         {
-            return _port.SendAndReceiveReturnData(dataBytes);
+            return _port.SendAndReceiveReturnDataAsync(dataBytes);
         }
     }
 }

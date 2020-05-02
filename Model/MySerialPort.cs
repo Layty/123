@@ -178,6 +178,12 @@ namespace 三相智慧能源网关调试软件.Model
 
         #region 串口收发数据参数
 
+        public enum HowToShowType
+        {
+            FormatHexString,
+            FormatAscii
+        }
+
         private bool _isSendFormat16 = true;
 
         /// <summary>
@@ -205,45 +211,30 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
-        private byte[] _sendBytes;
+        private byte[] _currentSendBytes;
 
-        public byte[] SendBytes
+        public byte[] CurrentSendBytes
         {
-            get => _sendBytes;
+            get => _currentSendBytes;
             set
             {
-                _sendBytes = value;
+                _currentSendBytes = value;
                 RaisePropertyChanged();
             }
         }
 
-
-        public string SendStringDataForShow
+        /// <summary>
+        /// 根据当前设置的显示格式，进行存储
+        /// </summary>
+        private string HowToDisPlayData(byte[] dataBytes)
         {
-            get
+            if (IsSendFormat16)
             {
-                if (IsSendFormat16)
-                {
-                    return SendBytes.ByteToString();
-                }
-
-                return Encoding.ASCII.GetString(SendBytes);
+                return dataBytes.ByteToString();
             }
-            set
-            {
-                if (IsSendFormat16)
-                {
-                    SendBytes = value.StringToByte();
-                }
-                else
-                {
-                    SendBytes = Encoding.ASCII.GetBytes(value);
-                }
 
-                RaisePropertyChanged();
-            }
+            return Encoding.ASCII.GetString(dataBytes);
         }
-
 
         private int _sendFrameCount;
 
@@ -294,7 +285,7 @@ namespace 三相智慧能源网关调试软件.Model
 
         public string SendAndReceiveDataCollections
         {
-            get => SendAndReceiveDataStringBuilderCollections.ToString() + Environment.NewLine;
+            get => SendAndReceiveDataStringBuilderCollections.ToString();
             set
             {
                 if (SendAndReceiveDataStringBuilderCollections.Length > _keepMaxSendAndReceiveDataLength)
@@ -302,7 +293,7 @@ namespace 三相智慧能源网关调试软件.Model
                     SendAndReceiveDataStringBuilderCollections.Clear();
                 }
 
-                SendAndReceiveDataStringBuilderCollections.Append(value);
+                SendAndReceiveDataStringBuilderCollections.Append(value + Environment.NewLine);
                 RaisePropertyChanged();
             }
         }
@@ -371,19 +362,14 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
 
-        private byte[] _dataBytes;
+        private byte[] _currentDataBytes;
 
-        public byte[] DataReceiveBytes
+        public byte[] CurrentDataReceiveBytes
         {
-            get => _dataBytes;
+            get => _currentDataBytes;
             set
             {
-                if (IsReceiveFormat16)
-                {
-                }
-
-
-                _dataBytes = value;
+                _currentDataBytes = value;
                 RaisePropertyChanged();
             }
         }
@@ -397,9 +383,8 @@ namespace 三相智慧能源网关调试软件.Model
         /// 创建当前串口实例的参数配置类实例
         /// </summary>
         public SerialPortConfig CreateMySerialPortConfig =>
-            new SerialPortConfig(SerialPort.PortName, SerialPort.BaudRate, SerialPort.StopBits, SerialPort.Parity,
-                SerialPort.DataBits,
-                DelayTimeOut, IsOwnCurrentSerialPort, IsAutoDataReceived);
+            new SerialPortConfig(PortName, BaudRate, StopBits, Parity, DataBits, DelayTimeOut, IsOwnCurrentSerialPort,
+                IsAutoDataReceived);
 
         /// <summary>
         /// 导入串口的配置参数
@@ -409,18 +394,16 @@ namespace 三相智慧能源网关调试软件.Model
         {
             try
             {
-                SerialPort.PortName = serialPortConfig.PortName;
-                SerialPort.BaudRate = serialPortConfig.BaudRate;
-                SerialPort.DataBits = serialPortConfig.DataBits;
+                PortName = serialPortConfig.PortName;
+                BaudRate = serialPortConfig.BaudRate;
+                DataBits = serialPortConfig.DataBits;
                 DelayTimeOut = serialPortConfig.DelayTimeOut;
-                if (TryParseParity(serialPortConfig.Parity, out Parity parity)) SerialPort.Parity = parity;
+                if (TryParseParity(serialPortConfig.Parity, out Parity parity)) Parity = parity;
                 if (Enum.TryParse(serialPortConfig.StopBits, out StopBits stopBits))
                 {
-                    SerialPort.StopBits = stopBits;
+                    StopBits = stopBits;
                 }
 
-                SerialPort.DataBits = serialPortConfig.DataBits;
-                DelayTimeOut = serialPortConfig.DelayTimeOut;
                 IsOwnCurrentSerialPort = serialPortConfig.IsOwnThisSerialPort;
                 IsAutoDataReceived = serialPortConfig.IsAutoDataReceived;
             }
@@ -434,12 +417,9 @@ namespace 三相智慧能源网关调试软件.Model
 
         #endregion
 
-
         private readonly object _objLocker = new object(); //发送锁
         private readonly Stopwatch _stopwatch1 = new Stopwatch();
-        public bool IsNeedToResponse { get; set; } = true;
         public CancellationTokenSource ReceiveTokenSource;
-
 
         public MySerialPort()
         {
@@ -448,12 +428,12 @@ namespace 三相智慧能源网关调试软件.Model
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //ReceiveData();
             byte[] readBuffer = new byte[SerialPort.BytesToRead];
             SerialPort.Read(readBuffer, 0, readBuffer.Length);
             ReceiveFrameCount++;
             ReceiveBytesCount += readBuffer.Length;
-            SendAndReceiveDataCollections = $"{DateTime.Now} <= {(readBuffer.ByteToString())}{Environment.NewLine}";
+            CurrentDataReceiveBytes = readBuffer;
+            SendAndReceiveDataCollections = DateTime.Now + "<=" + HowToDisPlayData(readBuffer);
             if (IsReceiveFormat16)
             {
                 //不做增量
@@ -464,6 +444,8 @@ namespace 三相智慧能源网关调试软件.Model
                 DataReceiveForShow = Encoding.ASCII.GetString(readBuffer);
             }
         }
+
+        #region 串口开启与关闭
 
         /// <summary>
         /// 打开串口
@@ -505,34 +487,81 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
+        #endregion
 
-        public void SendDataTaskMVVM()
+        /// <summary>
+        /// 发送，本实例中的SendByte数据,只管发送不管接收
+        /// </summary>
+        public void Send()
         {
             lock (_objLocker)
             {
                 try
                 {
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
-                    SerialPort.Write(SendBytes, 0, SendBytes.Length); //发送数据 
-                    SendFrameCount++;
-                    SendBytesCount += SendBytes.Length;
+                    if (CurrentSendBytes.Length == 0 || CurrentSendBytes == null)
+                    {
+                        return;
+                    }
+
+                    SerialPort.Write(CurrentSendBytes, 0, CurrentSendBytes.Length); //发送数据 
                     Messenger.Default.Send("", "PlaySendFlashing");
+                    SendFrameCount++; //累加帧数
+                    SendBytesCount += CurrentSendBytes.Length; //累加字节数
                     SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {(SendBytes.ByteToString())}{Environment.NewLine}";
-                    _stopwatch1.Start();
+                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
                 }
                 catch (Exception ex)
                 {
                     ErrMgs = ex.Message;
-                    _stopwatch1?.Reset();
-                    ReceiveTokenSource?.Cancel();
                 }
             }
         }
 
+        public void Send(byte[] sendBytes)
+        {
+            lock (_objLocker)
+            {
+                try
+                {
+                    if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
+                    SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
+                    Messenger.Default.Send("", "PlaySendFlashing");
+                    CurrentSendBytes = sendBytes;
+                    SendFrameCount++; //累加帧数
+                    SendBytesCount += sendBytes.Length; //累加字节数
+                    SendAndReceiveDataCollections =
+                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
+                }
+                catch (Exception ex)
+                {
+                    ErrMgs = ex.Message;
+                }
+            }
+        }
 
-        public override string ToString() =>
-            $"{IsOpen}  {SerialPort.PortName}  {SerialPort.BaudRate}  {SerialPort.Parity}  {SerialPort.DataBits}  {SerialPort.StopBits}";
+        public void Send(string sendString)
+        {
+            lock (_objLocker)
+            {
+                try
+                {
+                    if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
+                    var sendBytes = Encoding.Default.GetBytes(sendString);
+                    SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
+                    Messenger.Default.Send("", "PlaySendFlashing");
+                    SendFrameCount++; //累加帧数
+                    SendBytesCount += sendBytes.Length; //累加字节数
+                    CurrentSendBytes = Encoding.Default.GetBytes(sendString);
+                    SendAndReceiveDataCollections =
+                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
+                }
+                catch (Exception ex)
+                {
+                    ErrMgs = ex.Message;
+                }
+            }
+        }
 
 
         public byte[] ReceiveData()
@@ -552,7 +581,7 @@ namespace 三相智慧能源网关调试软件.Model
                         {
                             //声明一个临时数组存储当前来的串口数据 
                             var receivedBytes = new byte[SerialPort.BytesToRead];
-                            DataReceiveBytes = receivedBytes;
+                            CurrentDataReceiveBytes = receivedBytes;
                             Messenger.Default.Send("", "PlayReceiveFlashing");
                             SerialPort.Read(receivedBytes, 0,
                                 SerialPort.BytesToRead);
@@ -569,6 +598,10 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
 
+        /// <summary>
+        /// 使用定时器去接收串口数据
+        /// </summary>
+        /// <returns></returns>
         public byte[] TryToReadReceiveData()
         {
             byte[] tryToReadReceiveData = { };
@@ -605,7 +638,7 @@ namespace 三相智慧能源网关调试软件.Model
                             SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
                             DataReceiveForShow = tryToReadReceiveData.ByteToString();
                             SendAndReceiveDataCollections =
-                                $"{DateTime.Now} <= {(tryToReadReceiveData.ByteToString())}{Environment.NewLine}";
+                                $"{DateTime.Now} <= {(tryToReadReceiveData.ByteToString())}";
                             OnDataReceived(tryToReadReceiveData, null);
                             break;
                         }
@@ -617,6 +650,10 @@ namespace 三相智慧能源网关调试软件.Model
 
             return tryToReadReceiveData;
         }
+
+        #region 自定义的发送并等待接收，加入超时判定，和可取消操作
+
+        #endregion
 
         private Task<byte[]> ReceiveDataAsync(CancellationToken token)
         {
@@ -643,7 +680,7 @@ namespace 三相智慧能源网关调试软件.Model
                                 SerialPort.Read(receivedBytes, 0, SerialPort.BytesToRead);
                                 DataReceiveForShow = receivedBytes.ByteToString();
                                 SendAndReceiveDataCollections =
-                                    $"{DateTime.Now} <= {(receivedBytes.ByteToString())}{Environment.NewLine}";
+                                    $"{DateTime.Now} <= {(receivedBytes.ByteToString())}";
                                 OnDataReceived(receivedBytes, ResponseTime);
                                 break;
                             }
@@ -666,48 +703,7 @@ namespace 三相智慧能源网关调试软件.Model
             return task;
         }
 
-
-        public async Task<byte[]> SendAndReceiveReturnData(byte[] sendData, bool cycle = false,
-            bool overTimeMonitor = true)
-        {
-            var keep = false;
-            if (IsAutoDataReceived == true)
-            {
-                keep = true;
-                IsAutoDataReceived = false;
-            }
-
-            ReceiveTokenSource = new CancellationTokenSource(DelayTimeOut * 1000);
-            SendDataTask(sendData);
-            var receiveData = await ReceiveDataAsync(ReceiveTokenSource.Token);
-            if (!IsOwnCurrentSerialPort) //是否强制占有当前串口，不是则关闭串口&&同时在不读后续帧的情况下不关闭串口
-            {
-                SerialPort.Close();
-            }
-
-            if (keep == true)
-            {
-                IsAutoDataReceived = true;
-            }
-
-            return receiveData;
-        }
-
-
-        public void SendDataWithLocker(byte[] sendData)
-        {
-            lock (_objLocker)
-            {
-                if (!IsOpen) SerialPort.Open();
-                SerialPort.Write(sendData, 0, sendData.Length);
-                Messenger.Default.Send("", "PlaySendFlashing");
-                SendStringDataForShow = sendData.ByteToString();
-                SendAndReceiveDataCollections =
-                    $"{DateTime.Now} => {(sendData.ByteToString())}{Environment.NewLine}";
-            }
-        }
-
-        public void SendDataTask(byte[] sendData)
+        private void SendDataTaskInternal(byte[] sendData)
         {
             lock (_objLocker)
             {
@@ -717,10 +713,9 @@ namespace 三相智慧能源网关调试软件.Model
                     Messenger.Default.Send("", "PlaySendFlashing");
                     SerialPort.Write(sendData, 0, sendData.Length); //发送数据 
                     _stopwatch1.Start();
-                    SendStringDataForShow = sendData.ByteToString();
+                    CurrentSendBytes = sendData;
                     SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {(sendData.ByteToString())}{Environment.NewLine}";
-                
+                        $"{DateTime.Now} => {HowToDisPlayData(CurrentSendBytes)}";
                 }
                 catch (Exception ex)
                 {
@@ -731,6 +726,38 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
+        public async Task<byte[]> SendAndReceiveReturnDataAsync(byte[] sendData)
+        {
+            //如果发送前属于自动接收串口数据，发送前先置false,等待接收完成后再将其设置为true
+            var keepAutoDataReceived = false;
+            if (IsAutoDataReceived)
+            {
+                keepAutoDataReceived = true;
+                IsAutoDataReceived = false;
+            }
+
+
+            // SendDataTaskInternal(sendData);
+            Send(sendData);
+            var receiveData = await ReceiveDataAsync(new CancellationTokenSource(DelayTimeOut * 1000).Token);
+            if (!IsOwnCurrentSerialPort) //是否强制占有当前串口，不是则关闭串口&&同时在不读后续帧的情况下不关闭串口
+            {
+                SerialPort.Close();
+            }
+
+            if (keepAutoDataReceived)
+            {
+                IsAutoDataReceived = true;
+            }
+
+            return receiveData;
+        }
+
+        #region 发送数据的方法
+
+      
+
+        #endregion
 
         public static bool TryParseParity(string inputParity, out Parity parity) =>
             Enum.TryParse(inputParity, out parity);
@@ -780,5 +807,8 @@ namespace 三相智慧能源网关调试软件.Model
         {
             MySerialPortConfigChanged?.Invoke(source, e);
         }
+
+        public override string ToString() =>
+            $"{IsOpen}  {SerialPort.PortName}  {SerialPort.BaudRate}  {SerialPort.Parity}  {SerialPort.DataBits}  {SerialPort.StopBits}";
     }
 }
