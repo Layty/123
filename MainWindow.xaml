@@ -123,6 +123,7 @@
                                    FontSize="20" />
                         <!-- 窗口操作区-->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        
                             <materialDesign:PopupBox Margin="5" PopupMode="Click">
                                 <ListBox>
                                     <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
@@ -166,8 +167,8 @@
                             </Button>
                             <Button x:Name="ButtonClose" Margin="3" Background="Transparent" BorderBrush="{x:Null}"
                                     Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
-                                <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}" >
-                                    <materialDesign:PackIcon Kind="WindowClose" Height="Auto" Width="Auto"/>
+                                <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}">
+                                    <materialDesign:PackIcon Kind="WindowClose" Height="Auto" Width="Auto" />
                                 </TextBlock>
 
                             </Button>
@@ -641,36 +642,54 @@
                                 Text="{Binding LoginModel.Report}" />
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Name="BlkSend"  Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5"  >
-                                <TextBlock.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="-45"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </TextBlock.RenderTransform>
-                                <materialDesign:PackIcon Kind="Send" >
-                                </materialDesign:PackIcon>
-
-                            </TextBlock>
-                            <TextBlock   x:Name="BlkReceive" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5" >
-                                <TextBlock.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="145"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </TextBlock.RenderTransform>
-                                <materialDesign:PackIcon Kind="Send"></materialDesign:PackIcon>
-                            </TextBlock>
-                        </StackPanel>
+                     
                         <CheckBox IsChecked="False" Margin="3" Click="CheckBoxLogShowUp_OnClick"
                                   x:Name="CheckBoxLogShowUp">
-                            我看到你了
+                            显示报文
                         </CheckBox>
+                        <UniformGrid Rows="2">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <materialDesign:PackIcon Kind="Ethernet"></materialDesign:PackIcon>
+                                <TextBlock Name="BlkNetSend" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                  <materialDesign:PackIcon Kind="Send" />
+
+                                </TextBlock>
+                                <TextBlock x:Name="BlkNetReceive" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                  <materialDesign:PackIcon Kind="Send" />
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="SerialPort"></materialDesign:PackIcon>
+                                <TextBlock Name="BlkSend" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-90" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+
+                                </TextBlock>
+                                <TextBlock x:Name="BlkReceive" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+                                </TextBlock>
+                            </StackPanel>
+                        </UniformGrid>
+
                     </StackPanel>
                     <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">

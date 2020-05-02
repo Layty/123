@@ -25,7 +25,7 @@ namespace 三相智慧能源网关调试软件
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            Logger.Error("TaskError");
+            Logger.Error("TaskError"+ e.Exception);
             e.SetObserved();
         }
 

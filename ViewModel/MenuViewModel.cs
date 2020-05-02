@@ -188,6 +188,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
+
         private MenuModel _menuModel;
 
         public MenuModel MenuModel
@@ -230,7 +231,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             MenuModel = menuModel;
             Type type = GetType();
             Assembly assembly = type.Assembly;
-            CurrentPage = (Page) assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly);
+            CurrentPage =  assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly) as Page;
         }
     }
 }

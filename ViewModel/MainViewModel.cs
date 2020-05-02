@@ -18,14 +18,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public RelayCommand RunDialogCommand => new RelayCommand(ExecuteRunDialog);
-
-        private async void ExecuteRunDialog()
-        {
-            //var view = new MyControl.SkinView(){DataContext = new Skin()};
-            //var result = await DialogHost.Show(view, "RootDialog");
-        }
-
+        
         public MainViewModel()
         {
             if (IsInDesignMode)
