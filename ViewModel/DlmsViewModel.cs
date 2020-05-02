@@ -75,7 +75,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
                 var value = await cosem.GetValue();
-                if (value != null&&value.Length!=0)
+                if (value != null && value.Length != 0)
                 {
                     var data = NormalDataParse.GetDataFactoryContent(value, 3, out bool result);
                     if (result)
@@ -120,28 +120,21 @@ namespace 三相智慧能源网关调试软件.ViewModel
             OneKeyStartCommand = new RelayCommand(async () =>
             {
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "开始搞事情";
-                //ButtonInit_OnClick(sender, e);
                 InitCommand.Execute(null);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
-                //    ButtonReadFactory_OnClick(sender, e);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读软件版本";
-                //   ButtonGetSoftVersion_OnClick(sender, e);
                 GetSoftVersionCommand.Execute(null);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入工厂模式";
-                // ButtonEnterFactory_OnClick(sender, e);
                 EnterFactorCommand.Execute(null);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
-
                 ReadFactoryCommand.Execute(null);
-                //ButtonReadFactory_OnClick(sender, e);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入升级模式";
-                // ButtonEnterUpgradeMode_OnClick(sender, e);
                 EnterUpgradeModeCommand.Execute(null);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "请开始你的表演";
@@ -156,18 +149,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "设置捕获时间60s";
                 SetCapturePeriodCommand.Execute(null);
-                //  ButtonSetCapturePeriod_OnClick(sender, e);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "退出工厂模式";
                 QuitFactorCommand.Execute(null);
-                //  ButtonQuitFactory_OnClick(sender, e);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
-                // ButtonReadFactory_OnClick(sender, e);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "事了拂袖去";
-                //  ButtonDisConnect_OnClick(sender, e);
                 DisconnectCommand.Execute(null);
                 await Task.Delay(500);
                 SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "深藏功与名";
