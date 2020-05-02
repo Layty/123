@@ -100,29 +100,12 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
 
-        private bool _isOpen;
-
         public bool IsOpen
         {
             get => SerialPort.IsOpen;
-            set
-            {
-                _isOpen = value;
-                RaisePropertyChanged();
-            }
+            set => RaisePropertyChanged();
         }
 
-        private int _channelNum = 1;
-
-        public int ChannelNum
-        {
-            get => _channelNum;
-            set
-            {
-                _channelNum = value;
-                RaisePropertyChanged();
-            }
-        }
 
         private int _delayTimeOut = 2;
 
@@ -172,17 +155,24 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
-        private string ResponseTime { get; set; } //响应时间，发送帧后到接收到下一个帧头的时间
+        private string _responseTime;
+
+        /// <summary>
+        /// 响应时间，计算发送帧后到接收到下一个帧头的时间
+        /// </summary>
+        public string ResponseTime
+        {
+            get => _responseTime;
+            set
+            {
+                _responseTime = value;
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
         #region 串口收发数据参数
-
-        public enum HowToShowType
-        {
-            FormatHexString,
-            FormatAscii
-        }
 
         private bool _isSendFormat16 = true;
 
@@ -213,6 +203,9 @@ namespace 三相智慧能源网关调试软件.Model
 
         private byte[] _currentSendBytes;
 
+        /// <summary>
+        /// 当前或最近一条发送数据的字节数组
+        /// </summary>
         public byte[] CurrentSendBytes
         {
             get => _currentSendBytes;
@@ -399,11 +392,7 @@ namespace 三相智慧能源网关调试软件.Model
                 DataBits = serialPortConfig.DataBits;
                 DelayTimeOut = serialPortConfig.DelayTimeOut;
                 if (TryParseParity(serialPortConfig.Parity, out Parity parity)) Parity = parity;
-                if (Enum.TryParse(serialPortConfig.StopBits, out StopBits stopBits))
-                {
-                    StopBits = stopBits;
-                }
-
+                if (TryParseStopBits(serialPortConfig.StopBits, out StopBits stopBits)) StopBits = stopBits;
                 IsOwnCurrentSerialPort = serialPortConfig.IsOwnThisSerialPort;
                 IsAutoDataReceived = serialPortConfig.IsAutoDataReceived;
             }
@@ -508,8 +497,7 @@ namespace 三相智慧能源网关调试软件.Model
                     Messenger.Default.Send("", "PlaySendFlashing");
                     SendFrameCount++; //累加帧数
                     SendBytesCount += CurrentSendBytes.Length; //累加字节数
-                    SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
+                    SendAndReceiveDataCollections = $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
                 }
                 catch (Exception ex)
                 {
@@ -526,12 +514,12 @@ namespace 三相智慧能源网关调试软件.Model
                 {
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
                     SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
+                    _stopwatch1.Restart();
                     Messenger.Default.Send("", "PlaySendFlashing");
                     CurrentSendBytes = sendBytes;
                     SendFrameCount++; //累加帧数
                     SendBytesCount += sendBytes.Length; //累加字节数
-                    SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
+                    SendAndReceiveDataCollections = $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
                 }
                 catch (Exception ex)
                 {
@@ -553,8 +541,7 @@ namespace 三相智慧能源网关调试软件.Model
                     SendFrameCount++; //累加帧数
                     SendBytesCount += sendBytes.Length; //累加字节数
                     CurrentSendBytes = Encoding.Default.GetBytes(sendString);
-                    SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
+                    SendAndReceiveDataCollections = $"{DateTime.Now} => {(HowToDisPlayData(CurrentSendBytes))}";
                 }
                 catch (Exception ex)
                 {
@@ -679,8 +666,7 @@ namespace 三相智慧能源网关调试软件.Model
                                 Messenger.Default.Send("", "PlayReceiveFlashing");
                                 SerialPort.Read(receivedBytes, 0, SerialPort.BytesToRead);
                                 DataReceiveForShow = receivedBytes.ByteToString();
-                                SendAndReceiveDataCollections =
-                                    $"{DateTime.Now} <= {(receivedBytes.ByteToString())}";
+                                SendAndReceiveDataCollections = $"{DateTime.Now} <= {(receivedBytes.ByteToString())}";
                                 OnDataReceived(receivedBytes, ResponseTime);
                                 break;
                             }
@@ -703,28 +689,6 @@ namespace 三相智慧能源网关调试软件.Model
             return task;
         }
 
-        private void SendDataTaskInternal(byte[] sendData)
-        {
-            lock (_objLocker)
-            {
-                try
-                {
-                    if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
-                    Messenger.Default.Send("", "PlaySendFlashing");
-                    SerialPort.Write(sendData, 0, sendData.Length); //发送数据 
-                    _stopwatch1.Start();
-                    CurrentSendBytes = sendData;
-                    SendAndReceiveDataCollections =
-                        $"{DateTime.Now} => {HowToDisPlayData(CurrentSendBytes)}";
-                }
-                catch (Exception ex)
-                {
-                    ErrMgs = ex.Message;
-                    _stopwatch1?.Reset();
-                    ReceiveTokenSource?.Cancel();
-                }
-            }
-        }
 
         public async Task<byte[]> SendAndReceiveReturnDataAsync(byte[] sendData)
         {
@@ -755,27 +719,13 @@ namespace 三相智慧能源网关调试软件.Model
 
         #region 发送数据的方法
 
-      
-
         #endregion
 
         public static bool TryParseParity(string inputParity, out Parity parity) =>
             Enum.TryParse(inputParity, out parity);
 
-        public void StopBitsCheck(string inputStopBits)
-        {
-            try
-            {
-                if (Enum.TryParse(inputStopBits, out StopBits stopBits))
-                {
-                    SerialPort.StopBits = stopBits;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrMgs = ex.Message;
-            }
-        }
+        public static bool TryParseStopBits(string inputStopBits, out StopBits stopBits) =>
+            Enum.TryParse(inputStopBits, out stopBits);
 
 
         //public event MySerialEventHandler SendDate; //发送事件

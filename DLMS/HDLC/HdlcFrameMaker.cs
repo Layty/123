@@ -281,8 +281,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             return getRequest.ToArray();
         }
 
-        public byte[] SetRequest(DLMSObject cosem, byte index, DLMSDataItem dataItem
-        )
+        public byte[] SetRequest(DLMSObject cosem, byte index, DLMSDataItem dataItem)
         {
             List<byte> setRequest = new List<byte>();
             PackagingDestinationAndSourceAddress(setRequest);
@@ -378,7 +377,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
             //        actionRequest.AddRange(cosemMethodDescriptorInner.ToPduBytes());
 
-                    
+
             //        actionRequest.AddRange(dataItem.ToPduBytes());
             //        break;
             //    case ActionRequestType.NextBlock: break;
@@ -392,7 +391,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             actionRequest.Add(Hdlc46Frame.Apdu.InvokeIdAndPriority.InvokeIdAndPriority);
 
 
-            var cosemMethodDescriptor = new CosemMethodDescriptor(cosem, index);//
+            var cosemMethodDescriptor = new CosemMethodDescriptor(cosem, index); //
 
             actionRequest.AddRange(cosemMethodDescriptor.ToPduBytes());
 

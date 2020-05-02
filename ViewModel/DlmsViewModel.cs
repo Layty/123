@@ -15,8 +15,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class DlmsViewModel : ViewModelBase
     {
-        private bool _isUse21E;
+        #region 属性
 
+        private bool _isUse21E;
+        /// <summary>
+        /// 是否使用21E模式开启通信
+        /// </summary>
         public bool IsUse21E
         {
             get { return _isUse21E; }
@@ -27,6 +31,38 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
+        private string _factoryStatus;
+
+        /// <summary>
+        /// 工厂状态字
+        /// </summary>
+        public string FactoryStatus
+        {
+            get { return _factoryStatus; }
+            set
+            {
+                _factoryStatus = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _softVersion;
+
+        /// <summary>
+        /// 软件版本
+        /// </summary>
+        public string SoftVersion
+        {
+            get { return _softVersion; }
+            set
+            {
+                _softVersion = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+     
         public EModeExecutor EModeExecutor { get; set; }
 
         public Hdlc46Executor Hdlc46Executor { get; set; }
@@ -163,29 +199,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
         }
 
-        private RelayCommand _initCommand;
-
-        public RelayCommand InitCommand
-        {
-            get { return _initCommand; }
-            set
-            {
-                _initCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _disconnectCommand;
-
-        public RelayCommand DisconnectCommand
-        {
-            get { return _disconnectCommand; }
-            set
-            {
-                _disconnectCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+       
 
         private async void Init()
         {
@@ -231,92 +245,40 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand _oneKeyStartCommand;
 
-        public RelayCommand OneKeyStartCommand
+        #region Command
+        private RelayCommand _initCommand;
+        /// <summary>
+        /// 初始化命令，根据是否使用21E,或者使用HDLC46进行初始化通信,包含SNRM,AARQ
+        /// </summary>
+        public RelayCommand InitCommand
         {
-            get => _oneKeyStartCommand;
+            get { return _initCommand; }
             set
             {
-                _oneKeyStartCommand = value;
+                _initCommand = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand _oneKeyLeaveCommand;
-
-        public RelayCommand OneKeyLeaveCommand
+        private RelayCommand _disconnectCommand;
+        /// <summary>
+        /// 断开连接命令
+        /// </summary>
+        public RelayCommand DisconnectCommand
         {
-            get => _oneKeyLeaveCommand;
+            get { return _disconnectCommand; }
             set
             {
-                _oneKeyLeaveCommand = value;
+                _disconnectCommand = value;
                 RaisePropertyChanged();
             }
         }
-
-        private RelayCommand _enterUpgradeModeCommand;
-
-        public RelayCommand EnterUpgradeModeCommand
-        {
-            get => _enterUpgradeModeCommand;
-            set
-            {
-                _enterUpgradeModeCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _enterFactoryCommand;
-
-        public RelayCommand EnterFactorCommand
-        {
-            get { return _enterFactoryCommand; }
-            set
-            {
-                _enterFactoryCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _quitFactoryCommand;
-
-        public RelayCommand QuitFactorCommand
-        {
-            get { return _quitFactoryCommand; }
-            set
-            {
-                _quitFactoryCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _factoryStatus;
-
-        public string FactoryStatus
-        {
-            get { return _factoryStatus; }
-            set
-            {
-                _factoryStatus = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _softVersion;
-
-        public string SoftVersion
-        {
-            get { return _softVersion; }
-            set
-            {
-                _softVersion = value;
-                RaisePropertyChanged();
-            }
-        }
-
         private RelayCommand _getSoftVersionCommand;
 
+        /// <summary>
+        /// 读软件版本
+        /// </summary>
         public RelayCommand GetSoftVersionCommand
         {
             get { return _getSoftVersionCommand; }
@@ -329,6 +291,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand _readFactoryCommand;
 
+        /// <summary>
+        /// 读工厂模式
+        /// </summary>
         public RelayCommand ReadFactoryCommand
         {
             get { return _readFactoryCommand; }
@@ -339,8 +304,41 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
+        private RelayCommand _enterFactoryCommand;
+
+        /// <summary>
+        /// 进入工厂模式命令
+        /// </summary>
+        public RelayCommand EnterFactorCommand
+        {
+            get { return _enterFactoryCommand; }
+            set
+            {
+                _enterFactoryCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _quitFactoryCommand;
+
+        /// <summary>
+        /// 退出工厂模式命令
+        /// </summary>
+        public RelayCommand QuitFactorCommand
+        {
+            get { return _quitFactoryCommand; }
+            set
+            {
+                _quitFactoryCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private RelayCommand _setCapturePeriodCommand;
 
+        /// <summary>
+        /// 设置捕获时间
+        /// </summary>
         public RelayCommand SetCapturePeriodCommand
         {
             get { return _setCapturePeriodCommand; }
@@ -354,6 +352,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand _clearAllCommand;
 
+        /// <summary>
+        /// 总清命令
+        /// </summary>
         public RelayCommand ClearAllCommand
         {
             get { return _clearAllCommand; }
@@ -363,5 +364,56 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        private RelayCommand _enterUpgradeModeCommand;
+
+        /// <summary>
+        /// 进入升级模式命令
+        /// </summary>
+        public RelayCommand EnterUpgradeModeCommand
+        {
+            get => _enterUpgradeModeCommand;
+            set
+            {
+                _enterUpgradeModeCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _oneKeyStartCommand;
+
+        /// <summary>
+        /// 自定义的一键执行指令
+        /// </summary>
+        public RelayCommand OneKeyStartCommand
+        {
+            get => _oneKeyStartCommand;
+            set
+            {
+                _oneKeyStartCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _oneKeyLeaveCommand;
+
+        /// <summary>
+        /// 自定义的一键执行指令
+        /// </summary>
+        public RelayCommand OneKeyLeaveCommand
+        {
+            get => _oneKeyLeaveCommand;
+            set
+            {
+                _oneKeyLeaveCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+
+
+   
     }
 }
