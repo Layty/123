@@ -397,6 +397,7 @@ namespace 三相智慧能源网关调试软件.Model
             SendFrameCount = 0;
         }
 
+
         public void ClearReceiveCount()
         {
             ReceiveBytesCount = 0;
@@ -713,6 +714,11 @@ namespace 三相智慧能源网关调试软件.Model
 
             return receiveData;
         }
+
+
+
+
+
 
         #region 发送数据的方法
 
