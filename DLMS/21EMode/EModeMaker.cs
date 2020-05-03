@@ -5,16 +5,16 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 {
     public class EModeMaker
     {
-        private EMode eMode;
+        private readonly EMode _eMode;
 
         public EModeMaker(int requestBaud, string deviceStr)
         {
-            eMode = new EMode(requestBaud, deviceStr);
+            _eMode = new EMode(requestBaud, deviceStr);
         }
 
         public byte[] GetRequestFrameBytes()
         {
-            string s = '/' + "?" + eMode.Devicestr + "!\r\n";
+            string s = '/' + "?" + _eMode.Devicestr + "!\r\n";
             return Encoding.Default.GetBytes(s);
         }
 
@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 6
             };
-            string s = "2" + eMode._baudZ + "2\r\n";
+            string s = "2" + _eMode._baudZ + "2\r\n";
             list.AddRange(Encoding.Default.GetBytes(s));
             return list.ToArray();
         }

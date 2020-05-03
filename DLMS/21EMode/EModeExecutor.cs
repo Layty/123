@@ -59,13 +59,14 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             var memento = _port.CreateMySerialPortConfig;
             _caretaker.Dictionary["before"] = memento;
             _port.IsSendFormat16 = false;
+            _port.IsReceiveFormat16 = false;
         }
 
         private void LoadBackupPortPara()
         {
-            var t = _caretaker.Dictionary["before"];
             _port.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
             _port.IsSendFormat16 = true;
+            _port.IsReceiveFormat16 = true;
         }
 
         private void Init21ESerialPort()

@@ -30,7 +30,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
-               
                 MySerialPortConfigCaretaker =
                     new MySerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = MySerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
@@ -38,18 +37,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SerialPortModel.LoadSerialPortConfig(config);
 
                 ClearSendDataCommand = new RelayCommand<SenderModel>(ClearSendData);
-                ClearReceiveDataCommand = new RelayCommand(ClearReceiveData);
+                ClearReceiveDataCommand = new RelayCommand(()=>{SerialPortModel.ClearDataReceiveBytes();});
                 ClearHistoryDataCommand = new RelayCommand(ClearHistoryText);
                 ClearAllDataCommand = new RelayCommand(ClearAllText);
                 ClearAllCountsCommand = new RelayCommand(() =>
                 {
-                    SerialPortModel.SendFrameCount = 0;
-                    SerialPortModel.SendBytesCount = 0;
-                    SerialPortModel.ReceiveFrameCount = 0;
-                    SerialPortModel.ReceiveBytesCount = 0;
+                    SerialPortModel.ClearSendCount();
+                    SerialPortModel.ClearReceiveCount();
                 });
-                ClearSendCountCommand = new RelayCommand(() => SerialPortModel.SendFrameCount = 0);
-                ClearReceivedCountCommand = new RelayCommand(() => SerialPortModel.ReceiveFrameCount = 0);
+                ClearSendCountCommand = new RelayCommand(() => SerialPortModel.ClearSendCount());
+                ClearReceivedCountCommand = new RelayCommand(() => SerialPortModel.ClearReceiveCount());
             }
 
             SendersCollection = new ObservableCollection<SenderModel>()
@@ -76,7 +73,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 串口参数资源集合
 
         public string[] PortNamesCollection => SerialPort.GetPortNames();
-        public int[] BaudRatesCollection => new[] {300,1200, 2400, 4800, 9600, 19200, 38400};
+        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400};
         public Array ParityCollection => Enum.GetValues(typeof(Parity));
         public StopBits[] StopBitsCollection => new[] {StopBits.One, StopBits.OnePointFive, StopBits.Two};
         public int[] DataBitsCollection => new[] {6, 7, 8};
@@ -152,23 +149,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void ClearSendData(SenderModel senderModel)
         {
             SenderModel.SendText = string.Empty;
-            SerialPortModel.CurrentSendBytes =new byte[]{};
+            SerialPortModel.CurrentSendBytes = new byte[] { };
         }
 
-        /// <summary>
-        /// 清空接收区
-        /// </summary>
-        private void ClearReceiveData()
-        {
-            SerialPortModel.DataReceiveForShow = string.Empty;
-        }
+      
 
         /// <summary>
         /// 清空发送区、接收区和收发历史缓存区
         /// </summary>
         private void ClearHistoryText()
         {
-            SerialPortModel.SendAndReceiveDataStringBuilderCollections = new StringBuilder();
+            SerialPortModel.SendAndReceiveDataStringBuilderCollections.Clear();
             SerialPortModel.SendAndReceiveDataCollections = string.Empty;
         }
 
@@ -177,12 +168,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         private void ClearAllText()
         {
-            SerialPortModel.CurrentSendBytes = new byte[]{};
-            SerialPortModel.DataReceiveForShow = string.Empty;
-            SerialPortModel.SendAndReceiveDataStringBuilderCollections = new StringBuilder();
+            SerialPortModel.ClearDataReceiveBytes();
+            SerialPortModel.ClearReceiveCount();
+            SerialPortModel.ClearSendBuff();
+            SerialPortModel.ClearSendCount();
+            SerialPortModel.SendAndReceiveDataStringBuilderCollections.Clear();
             SerialPortModel.SendAndReceiveDataCollections = string.Empty;
-            SerialPortModel.SendFrameCount = 0;
-            SerialPortModel.ReceiveFrameCount = 0;
         }
     }
 }

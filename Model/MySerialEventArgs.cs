@@ -13,8 +13,6 @@ namespace 三相智慧能源网关调试软件.Model
         public int DelayTime; //串口抄读后最大等待数据响应的时间
         public bool OverTimeMonitor; //用于区分是否为主动读取指令，如果主动读取则关注超时事件
         public string ResponseTime; //抄读后到接收返回数据之间的时间间隔，接收后到发送响应数据之间的时间间隔
-        public int ChannelNum;
         public string ConfigMessage;
-        public bool IsStringData;
     }
 }

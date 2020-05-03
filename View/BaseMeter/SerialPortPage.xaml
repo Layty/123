@@ -8,7 +8,7 @@
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="600"
       Title="SerialPortPage">
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid>
@@ -73,10 +73,12 @@
                         </StackPanel>
                         <CheckBox Content="以占用的方式使用串口" Margin="5 0"
                                   IsChecked="{Binding SerialPortModel.IsOwnCurrentSerialPort}" />
-
+                        <CheckBox  IsChecked="{Binding SerialPortModel.IsSendFormat16}" Margin="5 0">十六进制显示发送数据</CheckBox>
+                        <CheckBox  IsChecked="{Binding SerialPortModel.IsReceiveFormat16}" Margin="5 0">十六进制显示接收数据</CheckBox>
+                       
                         <!--<CheckBox Content="实时监控串口数据" Margin="5 0"
                                   IsChecked="{Binding SerialPortModel.IsAutoDataReceived}" />-->
-                        <!--<Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" Margin="5"></Button>-->
+                        <Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" Margin="5"></Button>
                         <ToggleButton Width="100" Height="100" materialDesign:ShadowAssist.ShadowDepth="Depth5"
                                       VerticalAlignment="Top"
                                       ToolTip="开启或关闭串口"
