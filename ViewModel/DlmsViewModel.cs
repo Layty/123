@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 属性
 
         private bool _isUse21E;
+
         /// <summary>
         /// 是否使用21E模式开启通信
         /// </summary>
@@ -62,12 +64,27 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         #endregion
-     
+
         public EModeExecutor EModeExecutor { get; set; }
 
         public Hdlc46Executor Hdlc46Executor { get; set; }
         public HdlcFrameMaker HdlcFrameMaker { get; set; }
         public SerialPortViewModel SerialPortViewModel { get; set; }
+        private StartProtocolType _startProtocolType = StartProtocolType.DLMS;
+
+        public StartProtocolType StartProtocolType
+        {
+            get => _startProtocolType;
+            set
+            {
+                _startProtocolType = value;
+                RaisePropertyChanged();
+            }
+        }
+
+   
+
+        public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
 
         public DlmsViewModel()
         {
@@ -199,13 +216,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
         }
 
-       
 
         private async void Init()
         {
             try
             {
-                if (IsUse21E)
+                if (StartProtocolType == StartProtocolType.IEC)
                 {
                     if (await EModeExecutor.Execute())
                     {
@@ -223,6 +239,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             TaskContinuationOptions.OnlyOnRanToCompletion);
                     }
                 }
+
                 else
                 {
                     var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
@@ -247,7 +264,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
         #region Command
+
         private RelayCommand _initCommand;
+
         /// <summary>
         /// 初始化命令，根据是否使用21E,或者使用HDLC46进行初始化通信,包含SNRM,AARQ
         /// </summary>
@@ -262,6 +281,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         private RelayCommand _disconnectCommand;
+
         /// <summary>
         /// 断开连接命令
         /// </summary>
@@ -274,6 +294,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private RelayCommand _getSoftVersionCommand;
 
         /// <summary>
@@ -411,9 +432,5 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         #endregion
-
-
-
-   
     }
 }

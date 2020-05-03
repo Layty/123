@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using GalaSoft.MvvmLight;
 using Gurux.DLMS;
@@ -94,7 +95,6 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         public byte ControlField { get; set; }
 
 
-
         public Hdlc46Frame(byte[] destAddr, string password, byte sourceAddr)
         {
             CurrentReceiveSequenceNumber = 0;
@@ -110,9 +110,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             Info = new HDLCInfo();
         }
 
-      
 
-        public string Password { get; set; }
+        [Required] [StringLength(8,MinimumLength = 8)] public string Password { get; set; }
 
 
         public byte[] HexPassword => Encoding.Default.GetBytes(Password);
@@ -144,8 +143,6 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             }
         }
 
-   
-    
 
         internal const byte HDLCFrameStartEnd = 0x7E;
 
@@ -154,11 +151,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         /// <summary>
         /// Size of Server address.
         /// </summary>
-        public byte ServerAddressSize
-        {
-            get;
-            set;
-        }
+        public byte ServerAddressSize { get; set; }
+
         private int _splitBitFlagByte;
 
 
@@ -202,7 +196,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         public ushort MaxReceivePduSize
         {
             get { return _maxReceivePduSize; }
-            set { _maxReceivePduSize = value; RaisePropertyChanged(); }
+            set
+            {
+                _maxReceivePduSize = value;
+                RaisePropertyChanged();
+            }
         }
 
         private byte _invokeId;
@@ -210,7 +208,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         public byte InvokeId
         {
             get { return _invokeId; }
-            set { _invokeId = value; RaisePropertyChanged(); }
+            set
+            {
+                _invokeId = value;
+                RaisePropertyChanged();
+            }
         }
 
 
@@ -225,12 +227,17 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
             NO
         }
+
         private Command _lastCommand;
 
         public Command LastCommand
         {
             get { return _lastCommand; }
-            set { _lastCommand = value; RaisePropertyChanged(); }
+            set
+            {
+                _lastCommand = value;
+                RaisePropertyChanged();
+            }
         }
 
 

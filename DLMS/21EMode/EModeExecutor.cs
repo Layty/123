@@ -52,8 +52,6 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             });
         }
 
-
-
         private void BackupPortPara()
         {
             var memento = _port.CreateMySerialPortConfig;
