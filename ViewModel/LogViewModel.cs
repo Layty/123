@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using ENet;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -23,7 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
-                MyLog = new MyLogModel() { };
+                MyLog = new MyLogModel();
                 Messenger.Default.Register<byte[]>(this, "SendDataEvent", ENetClientHelper_SendData);
                 Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", ENetClientHelper_ReceiveData);
                 Messenger.Default.Register<string>(this, "ENetErrorEvent", (p => { MyLog.CommandLog += p; }));

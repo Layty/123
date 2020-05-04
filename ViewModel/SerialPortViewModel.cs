@@ -19,18 +19,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SerialPortConfigCaretaker =
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = SerialPortConfigCaretaker.DefaultConfig;
-
-                SerialPortMasterModel = new MySerialPortMaster.SerialPortMaster();
-                SerialPortMasterModel.LoadSerialPortConfig(config);
+                SerialPortMasterModel = new SerialPortMaster(config);
             }
             else
             {
                 SerialPortConfigCaretaker =
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = SerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
-                SerialPortMasterModel = new MySerialPortMaster.SerialPortMaster();
-                SerialPortMasterModel.LoadSerialPortConfig(config);
-
+                SerialPortMasterModel = new SerialPortMaster(config);
+                
                 ClearSendDataCommand = new RelayCommand<SenderModel>(ClearSendData);
                 ClearReceiveDataCommand = new RelayCommand(() => { SerialPortMasterModel.ClearDataReceiveBytes(); });
                 ClearHistoryDataCommand = new RelayCommand(ClearHistoryText);
@@ -44,8 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ClearReceivedCountCommand = new RelayCommand(() => SerialPortMasterModel.ClearReceiveCount());
             }
 
-            SendersCollection = new ObservableCollection<SenderModel>()
-                {new SenderModel() {SendText = "1234"}};
+            SendersCollection = new ObservableCollection<SenderModel> {new SenderModel {SendText = "1234"}};
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {

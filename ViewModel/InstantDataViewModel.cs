@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -13,6 +14,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.Model;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -105,20 +107,20 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (IsInDesignMode)
             {
-                InstantDataModels = new ObservableCollection<InstantDataModel>()
+                InstantDataModels = new ObservableCollection<InstantDataModel>
                 {
-                    new InstantDataModel() { DateTime="11",Ia = 1, Ib = 2, Ic = 3}
+                    new InstantDataModel { DateTime="11",Ia = 1, Ib = 2, Ic = 3}
                 };
             }
             else
             {
-                InstantDataModels = new ObservableCollection<InstantDataModel>()
+                InstantDataModels = new ObservableCollection<InstantDataModel>
                 {
-                    new InstantDataModel() {DateTime="11",Ia = 1, Ib = 2, Ic = 3}
+                    new InstantDataModel {DateTime="11",Ia = 1, Ib = 2, Ic = 3}
                 };
-                InstantCommandString = Properties.Settings.Default.CmdStr1;
+                InstantCommandString = Settings.Default.CmdStr1;
                 RequestInstantDataCommand = new RelayCommand<string>(SendMsg);
-                Interval = Properties.Settings.Default.InstantDataRefreshInterval;
+                Interval = Settings.Default.InstantDataRefreshInterval;
                 Timer.Interval = new TimeSpan(0, 0, 0, Interval);
 
                 Timer.Tick += Timer_Tick;
@@ -127,7 +129,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 MaxShowCount = 10;
                 ChartValues = new ChartValues<double>();
                 //实例化一条折线图
-                LineSeries = new LineSeries() {Title = "Ia", Values = ChartValues};
+                LineSeries = new LineSeries {Title = "Ia", Values = ChartValues};
                 SeriesCollection = new SeriesCollection {LineSeries};
                 //SelectCommand = new RelayCommand<int>(Select);
 
@@ -271,7 +273,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        ENetClientHelper eNet = CommonServiceLocator.ServiceLocator.Current.GetInstance<ENetClientHelper>();
+        ENetClientHelper eNet = ServiceLocator.Current.GetInstance<ENetClientHelper>();
 
         public void SendMsg(string commandString)
         {

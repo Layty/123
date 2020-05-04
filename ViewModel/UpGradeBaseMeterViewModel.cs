@@ -2,11 +2,13 @@
 using System.IO;
 using System.IO.Ports;
 using System.Text;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using 三相智慧能源网关调试软件.FileTransmit;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -149,7 +151,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public UpGradeBaseMeterViewModel()
         {
-            SerialPortViewModel = CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+            SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
             TransmitMode = TransmitMode.Send;
             YModemType = YModemType.YModem_1K;
             PacketLen = 1024;
@@ -180,7 +182,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             StopCommand = new RelayCommand(() => { YModem.Stop(); });
 
             SelectFileCommand = new RelayCommand(SelectFile);
-            FileName = Properties.Settings.Default.BaseMeterUpGradeFile;
+            FileName = Settings.Default.BaseMeterUpGradeFile;
         }
 
 
@@ -368,10 +370,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                         return len;
                     }
-                    else
-                    {
-                        return 0;
-                    }
+
+                    return 0;
                 }
             }
             catch (Exception e)
@@ -404,8 +404,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
                 FileName = openFileDialog.FileName;
-                Properties.Settings.Default.BaseMeterUpGradeFile = FileName;
-                Properties.Settings.Default.Save();
+                Settings.Default.BaseMeterUpGradeFile = FileName;
+                Settings.Default.Save();
             }
         }
     }

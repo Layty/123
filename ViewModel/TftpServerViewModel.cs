@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
-using HandyControl.Controls;
 using Tftp.Net;
+using 三相智慧能源网关调试软件.Properties;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -70,7 +71,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public TftpServerViewModel()
         {
-            TftpServerDirectory = Properties.Settings.Default.TftpServerDirectory;
+            TftpServerDirectory = Settings.Default.TftpServerDirectory;
             DirectoryCollection =new ObservableCollection<string>();
             folderBrowserDialog1 = new FolderBrowserDialog {SelectedPath = TftpServerDirectory};
             BrowseCommand = new RelayCommand(BrowseDialog);
@@ -177,7 +178,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         /// <param name="transfer"></param>
         /// <param name="client"></param>
-        private void TftpServer_OnReadRequest(ITftpTransfer transfer, System.Net.EndPoint client)
+        private void TftpServer_OnReadRequest(ITftpTransfer transfer, EndPoint client)
         {
             string path = Path.Combine(TftpServerDirectory, transfer.Filename);
             FileInfo file = new FileInfo(path);
@@ -193,7 +194,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private void TftpServer_OnWriteRequest(ITftpTransfer transfer, System.Net.EndPoint client)
+        private void TftpServer_OnWriteRequest(ITftpTransfer transfer, EndPoint client)
         {
             string file = Path.Combine(_tftpServerDirectory, transfer.Filename);
             bool flag = File.Exists(file);
@@ -226,19 +227,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void StartTransfer(ITftpTransfer transfer, Stream stream)
         {
             transfer.OnProgress += Transfer_OnProgress;
-            transfer.OnError += this.Transfer_OnError;
-            transfer.OnFinished += this.Transfer_OnFinished;
+            transfer.OnError += Transfer_OnError;
+            transfer.OnFinished += Transfer_OnFinished;
             transfer.Start(stream);
         }
 
         private void Transfer_OnFinished(ITftpTransfer transfer)
         {
-            this.OutputTransferStatus(transfer, "Finished");
+            OutputTransferStatus(transfer, "Finished");
         }
 
         private void Transfer_OnError(ITftpTransfer transfer, TftpTransferError error)
         {
-            this.OutputTransferStatus(transfer, "Error: " + error);
+            OutputTransferStatus(transfer, "Error: " + error);
         }
 
         private void Transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)

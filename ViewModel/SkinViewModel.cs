@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
-using Color = System.Windows.Media.Color;
-using ColorConverter = System.Windows.Media.ColorConverter;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -23,7 +22,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             else
             {
                 Swatches = new SwatchesProvider().Swatches;
-                IsDarkTheme = Properties.Settings.Default.IsDarkTheme;
+                IsDarkTheme = Settings.Default.IsDarkTheme;
                 ApplyBase(IsDarkTheme);
                 ApplyBase();
             }
@@ -50,38 +49,38 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void ApplyBase()
         {
             var theme = new PaletteHelper().GetTheme();
-            theme.SetPrimaryColor((Color) ColorConverter.ConvertFromString(Properties.Settings.Default.PrimarySkin));
-            theme.SetSecondaryColor((Color) ColorConverter.ConvertFromString(Properties.Settings.Default.AccentSkin));
+            theme.SetPrimaryColor((Color) ColorConverter.ConvertFromString(Settings.Default.PrimarySkin));
+            theme.SetSecondaryColor((Color) ColorConverter.ConvertFromString(Settings.Default.AccentSkin));
             new PaletteHelper().SetTheme(theme);
         }
 
-        public RelayCommand<bool> ToggleBaseCommand { get; } = new RelayCommand<bool>(o => ApplyBase((bool) o));
+        public RelayCommand<bool> ToggleBaseCommand { get; } = new RelayCommand<bool>(o => ApplyBase(o));
 
         private static void ApplyBase(bool isDark)
         {
             ModifyTheme(theme => theme.SetBaseTheme(isDark ? Theme.Dark : Theme.Light));
-            Properties.Settings.Default.IsDarkTheme = isDark;
-            Properties.Settings.Default.Save();
+            Settings.Default.IsDarkTheme = isDark;
+            Settings.Default.Save();
         }
 
         public RelayCommand<Swatch> ApplyPrimaryCommand { get; } =
-            new RelayCommand<Swatch>(o => ApplyPrimary((Swatch) o));
+            new RelayCommand<Swatch>(o => ApplyPrimary(o));
 
         public RelayCommand<Swatch> ApplyAccentCommand { get; } =
-            new RelayCommand<Swatch>(o => ApplyAccent((Swatch) o));
+            new RelayCommand<Swatch>(o => ApplyAccent(o));
 
         private static void ApplyPrimary(Swatch swatch)
         {
             ModifyTheme(theme => theme.SetPrimaryColor(swatch.ExemplarHue.Color));
-            Properties.Settings.Default.PrimarySkin = swatch.ExemplarHue.Color.ToString();
-            Properties.Settings.Default.Save();
+            Settings.Default.PrimarySkin = swatch.ExemplarHue.Color.ToString();
+            Settings.Default.Save();
         }
 
         private static void ApplyAccent(Swatch swatch)
         {
             ModifyTheme(theme => theme.SetSecondaryColor(swatch.AccentExemplarHue.Color));
-            Properties.Settings.Default.AccentSkin = swatch.ExemplarHue.Color.ToString();
-            Properties.Settings.Default.Save();
+            Settings.Default.AccentSkin = swatch.ExemplarHue.Color.ToString();
+            Settings.Default.Save();
         }
 
         private static void ModifyTheme(Action<ITheme> modificationAction)

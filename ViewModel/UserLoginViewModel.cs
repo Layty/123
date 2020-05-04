@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data.OleDb;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Model;
-using RelayCommand = GalaSoft.MvvmLight.CommandWpf.RelayCommand;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -100,13 +101,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public void ReadUserInfoFromResource()
         {
-            Properties.Settings.Default.Reload();
-            LoginModel.KeepPassword = Properties.Settings.Default.PasswordSave;
+            Settings.Default.Reload();
+            LoginModel.KeepPassword = Settings.Default.PasswordSave;
             if (LoginModel.KeepPassword)
             {
-                LoginModel.UserName = Properties.Settings.Default.CurrentUser;
+                LoginModel.UserName = Settings.Default.CurrentUser;
                 //   LoginModel.Password = Properties.Settings.Default.CurrentPassword;
-                LoginModel.Password = CEncoder.Decode(Properties.Settings.Default.CurrentPassword);
+                LoginModel.Password = CEncoder.Decode(Settings.Default.CurrentPassword);
                 if (LoginModel.UserName == "" || LoginModel.Password == "")
                 {
                     LoginModel.KeepPassword = false;
@@ -122,7 +123,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             if (LoginModel.KeepPassword)
             {
 //                Properties.Settings.Default.CurrentPassword = LoginModel.Password;
-                Properties.Settings.Default.CurrentPassword = CEncoder.Encode(LoginModel.Password);
+                Settings.Default.CurrentPassword = CEncoder.Encode(LoginModel.Password);
             }
 
            //var sw=new SwatchesProvider().Swatches;
@@ -130,13 +131,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
            //new PaletteHelper();
-            Properties.Settings.Default.CurrentUser = LoginModel.UserName;
-            Properties.Settings.Default.PasswordSave = LoginModel.KeepPassword;
+            Settings.Default.CurrentUser = LoginModel.UserName;
+            Settings.Default.PasswordSave = LoginModel.KeepPassword;
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
-        private string ConnectionStr = Properties.Settings.Default.AccessConnectionStr +
+        private string ConnectionStr = Settings.Default.AccessConnectionStr +
                                        "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
 
         public void Login()
@@ -164,7 +165,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             else
             {
                 LoginModel.LoginResult = false;
-                Messenger.Default.Send<string>("用户名或密码错误！！！");
+                Messenger.Default.Send("用户名或密码错误！！！");
                 LoginModel.Report = "用户名或密码错误";
             }
         }

@@ -29,45 +29,75 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 //SimpleIoc.Default.Register<SkinViewModel>();
                 //SimpleIoc.Default.Register<TcpClientHelper>();
+                #region 主程序界面相关
+
+                SimpleIoc.Default.Register<MainViewModel>(); //主窗体
+                SimpleIoc.Default.Register<MenuViewModel>(); //菜单
+                SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
+                SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
+
+                #endregion
+
+                #region 管理芯相关业务
+
+                SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
+                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<InstantDataViewModel>();
+                SimpleIoc.Default.Register<EnergyDataViewModel>();
+                SimpleIoc.Default.Register<CommandViewModel>();
+                SimpleIoc.Default.Register<LogViewModel>();
+                SimpleIoc.Default.Register<TftpServerViewModel>();
+                #endregion
+
+                #region 计量芯相关业务
+
+                SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
+                SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
+                SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
+                #endregion
+
+                #region 智能仪表
+
+                SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
+
+                #endregion
             }
             else
             {
-                //// Create run time view services and models
-                //SimpleIoc.Default.Register<IDataService, DataService>();
+                #region 主程序界面相关
+
+                SimpleIoc.Default.Register<MainViewModel>(); //主窗体
+                SimpleIoc.Default.Register<MenuViewModel>(); //菜单
+                SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
+                SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
+
+                #endregion
+
+                #region 管理芯相关业务
+
+                SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
+                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<InstantDataViewModel>();
+                SimpleIoc.Default.Register<EnergyDataViewModel>();
+                SimpleIoc.Default.Register<CommandViewModel>();
+                SimpleIoc.Default.Register<LogViewModel>();
+                SimpleIoc.Default.Register<TftpServerViewModel>();
+                #endregion
+
+                #region 计量芯相关业务
+
+                SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
+                SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
+                SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
+                #endregion
+
+                #region 智能仪表
+
+                SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
+
+                #endregion
             }
 
-            #region 主程序界面相关
-
-            SimpleIoc.Default.Register<MainViewModel>(); //主窗体
-            SimpleIoc.Default.Register<MenuViewModel>(); //菜单
-            SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
-            SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
-
-            #endregion
-
-            #region 管理芯相关业务
-
-            SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
-            SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
-            SimpleIoc.Default.Register<InstantDataViewModel>();
-            SimpleIoc.Default.Register<EnergyDataViewModel>();
-            SimpleIoc.Default.Register<CommandViewModel>();
-            SimpleIoc.Default.Register<LogViewModel>();
-            SimpleIoc.Default.Register<TftpServerViewModel>();
-            #endregion
-
-            #region 计量芯相关业务
-
-            SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
-            SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
-            SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
-            #endregion
-
-            #region 智能仪表
-
-            SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
-
-            #endregion
         }
         //public INavigationService InitNavigationService()
         //{

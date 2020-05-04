@@ -18,27 +18,27 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel() {Title = "命令", FontSize = "20", IconFont = "\xe7b7",},
-                    new MenuModel() {Title = "系统日志", FontSize = "20", IconFont = "\xe668",},
-                    new MenuModel() {Title = "实时数据", FontSize = "20", IconFont = "\xe6ab",},
-                    new MenuModel() {Title = "全局参数", FontSize = "20", IconFont = "\xe606",},
-                    new MenuModel() {Title = "命令", FontSize = "20", IconFont = "\xe749",},
-                    new MenuModel() {Title = "命令", FontSize = "20", IconFont = "\xe749",}
+                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe7b7"},
+                    new MenuModel {Title = "系统日志", FontSize = "20", IconFont = "\xe668"},
+                    new MenuModel {Title = "实时数据", FontSize = "20", IconFont = "\xe6ab"},
+                    new MenuModel {Title = "全局参数", FontSize = "20", IconFont = "\xe606"},
+                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe749"},
+                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe749"}
                 };
 
-                BaseMeterMenuCollection = new ObservableCollection<MenuModel>()
+                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "基表升级", FontSize = "20", IconFont = "\xe600", Assembly = "UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
                     },
 
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TelnetPage",
                         Foreground = "#00FF00"
-                    },
+                    }
                 };
                 SelectCommand = new RelayCommand<MenuModel>(Select);
             }
@@ -73,77 +73,76 @@ namespace 三相智慧能源网关调试软件.ViewModel
 #else
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "网关应用", FontSize = "20", IconFont = "\xe7b7", Assembly = "Management.AppPage",
                         Foreground = "#FF0000"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "实时数据", FontSize = "20", IconFont = "\xe6ab", Assembly = "Management.RealTimeDataPage",
                         Foreground = "#6666FF"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "LiveChart", FontSize = "20", IconFont = "\xe637",
                         Assembly = "Management.InstantDataLiveChartPage", Foreground = "#0033FF"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "全局参数", FontSize = "20", IconFont = "\xe606", Assembly = "Management.GlobalParameterPage",
                         Foreground = "#00CCFF"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "命令", FontSize = "20", IconFont = "\xe749", Assembly = "Management.CommandPage",
                         Foreground = "#CC6600"
                     },
-                    new MenuModel()
-                        {Title = "系统日志", FontSize = "20", IconFont = "\xe668", Assembly = "Management.LogPage", Foreground = "#00BB00"},
+                    new MenuModel {Title = "系统日志", FontSize = "20", IconFont = "\xe668", Assembly = "Management.LogPage", Foreground = "#00BB00"}
                 };
 
 
-                BaseMeterMenuCollection = new ObservableCollection<MenuModel>()
+                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
                         Foreground = "#FF0000"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
                         Assembly = "BaseMeter.HDLCFrameParameterPage",
                         Foreground = "#FF0000"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "基表配置", FontSize = "20", IconFont = "\xe600",
                         Assembly = "BaseMeter.UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
-                    },
+                    }
                 };
 
-                ServicesMenuCollection = new ObservableCollection<MenuModel>()
+                ServicesMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
                         Foreground = "#FF0000"
                     },
 
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "TFTPServer", FontSize = "20", IconFont = "\xe619",
                         Assembly = "ServerCenter.TftpServerPage",
                         Foreground = "#0000FF"
                     },
-                    new MenuModel()
+                    new MenuModel
                     {
                         Title = "泰昂", FontSize = "20", IconFont = "",
                         Assembly = "IntelligentEquipment.TaiAngPage",
                         Foreground = "#00FF00"
-                    },
+                    }
                 };
 #endif
                 SelectCommand = new RelayCommand<MenuModel>(Select);

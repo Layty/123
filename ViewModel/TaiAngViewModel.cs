@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -34,39 +28,39 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (IsInDesignMode)
             {
-                TaiAngCollection = new ObservableCollection<DLMSTaiAng>()
+                TaiAngCollection = new ObservableCollection<DLMSTaiAng>
                 {
-                    new DLMSTaiAng() {LogicalName = "1.1.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.2.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.3.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.4.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.1.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.2.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.3.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.4.98.0.128.255"}
                 };
             }
             else
             {
-                TaiAngCollection = new ObservableCollection<DLMSTaiAng>()
+                TaiAngCollection = new ObservableCollection<DLMSTaiAng>
                 {
-                    new DLMSTaiAng() {LogicalName = "1.1.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.2.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.3.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.4.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.5.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.6.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.7.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.8.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.9.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.10.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.11.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.12.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.13.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.14.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.15.98.0.128.255"},
-                    new DLMSTaiAng() {LogicalName = "1.16.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.1.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.2.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.3.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.4.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.5.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.6.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.7.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.8.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.9.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.10.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.11.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.12.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.13.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.14.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.15.98.0.128.255"},
+                    new DLMSTaiAng {LogicalName = "1.16.98.0.128.255"}
                 };
-                GetLogicNameDataCommand = new RelayCommand<DLMSTaiAng>(async (t) => await t.GetLogicName());
-                GetMeterAddressData = new RelayCommand<DLMSTaiAng>(async (t) => await t.GetTableId());
-                GetDataLengthData = new RelayCommand<DLMSTaiAng>(async (t) => await t.GetLength());
-                GetBuffData = new RelayCommand<DLMSTaiAng>(async (t) =>
+                GetLogicNameDataCommand = new RelayCommand<DLMSTaiAng>(async t => await t.GetLogicName());
+                GetMeterAddressData = new RelayCommand<DLMSTaiAng>(async t => await t.GetTableId());
+                GetDataLengthData = new RelayCommand<DLMSTaiAng>(async t => await t.GetLength());
+                GetBuffData = new RelayCommand<DLMSTaiAng>(async t =>
                     {
                         t.DataForShow = "";
                         var DataResult = await t.GetBuffer();

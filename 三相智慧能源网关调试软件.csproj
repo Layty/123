@@ -446,7 +446,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="GatewayAppPara\AppPara.cfg" />
+    <None Include="Config\AppPara.cfg" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

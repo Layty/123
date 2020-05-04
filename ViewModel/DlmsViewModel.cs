@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
@@ -88,7 +88,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public DlmsViewModel()
         {
-            SerialPortViewModel = CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+            SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
             EModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortMasterModel, ""); //近红外
             //HdlcFrameMaker = new HdlcFrameMaker(new byte[]
