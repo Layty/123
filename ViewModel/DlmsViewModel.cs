@@ -90,7 +90,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             SerialPortViewModel = CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
-            EModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortModel, ""); //近红外
+            EModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortMasterModel, ""); //近红外
             //HdlcFrameMaker = new HdlcFrameMaker(new byte[]
             //{
             //    0,
@@ -103,7 +103,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 3
             }, "33333333", 1);
             HdlcFrameMaker.Hdlc46Frame.MaxReceivePduSize = 65535;
-            Hdlc46Executor = new Hdlc46Executor(SerialPortViewModel.SerialPortModel, HdlcFrameMaker);
+            Hdlc46Executor = new Hdlc46Executor(SerialPortViewModel.SerialPortMasterModel, HdlcFrameMaker);
 
             InitCommand = new RelayCommand(Init);
             DisconnectCommand = new RelayCommand(() => { Hdlc46Executor.ExecuteHdlcDisConnectRequest(); });
@@ -158,7 +158,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             EnterUpgradeModeCommand = new RelayCommand(async () =>
             {
                 var msg = HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
-                await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnDataAsync(msg);
+                await SerialPortViewModel.SerialPortMasterModel.SendAndReceiveReturnDataAsync(msg);
             });
             SetCapturePeriodCommand = new RelayCommand(() =>
             {
@@ -172,47 +172,47 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "开始搞事情";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始搞事情";
                 InitCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读软件版本";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
                 GetSoftVersionCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入工厂模式";
                 EnterFactorCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入升级模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入升级模式";
                 EnterUpgradeModeCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "请开始你的表演";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "请开始你的表演";
             });
             OneKeyLeaveCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "开始收拾";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始收拾";
                 InitCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读软件版本";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
                 GetSoftVersionCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "设置捕获时间60s";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "设置捕获时间60s";
                 SetCapturePeriodCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "退出工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "退出工厂模式";
                 QuitFactorCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "事了拂袖去";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "事了拂袖去";
                 DisconnectCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "深藏功与名";
+                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "深藏功与名";
             });
         }
 

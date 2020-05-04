@@ -11,7 +11,7 @@ using 三相智慧能源网关调试软件.Commom;
 
 namespace 三相智慧能源网关调试软件.Model
 {
-    public class MySerialPort : ObservableObject
+    public class SerialPortMaster : ObservableObject
     {
         #region 串口基本参数
 
@@ -31,6 +31,12 @@ namespace 三相智慧能源网关调试软件.Model
         private bool _isOwnCurrentSerialPort;
 
         public SerialPort SerialPort { get; set; }
+
+        public void DiscardBuffer()
+        {
+            SerialPort.DiscardInBuffer();
+            SerialPort.DiscardOutBuffer();
+        }
 
         /// <summary>
         /// 串口名
@@ -222,18 +228,8 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
-        /// <summary>
-        /// 根据当前设置的显示格式，进行存储
-        /// </summary>
-        private string HowToDisPlaySendData(byte[] dataBytes)
-        {
-            if (IsSendFormat16)
-            {
-                return dataBytes.ByteToString();
-            }
-
-            return Encoding.ASCII.GetString(dataBytes);
-        }
+       
+  
 
 
         private int _sendFrameCount;
@@ -304,15 +300,7 @@ namespace 三相智慧能源网关调试软件.Model
 
         #region 接收相关数据
 
-        private string HowToDisPlayReceiveData(byte[] dataBytes)
-        {
-            if (IsReceiveFormat16)
-            {
-                return dataBytes.ByteToString();
-            }
-
-            return Encoding.ASCII.GetString(dataBytes);
-        }
+    
 
         private int _receiveFrameCount;
 
@@ -409,7 +397,9 @@ namespace 三相智慧能源网关调试软件.Model
         {
             SendFrameCount++; //累加帧数
             SendBytesCount += sendBytes.Length; //累加字节数
-            CurrentSendData = HowToDisPlaySendData(sendBytes);
+            CurrentSendBytes = sendBytes;
+            //根据当前设置的显示格式，进行存储
+            CurrentSendData = IsSendFormat16 ? sendBytes.ByteToString() : Encoding.ASCII.GetString(sendBytes);
             SendAndReceiveDataCollections = $"{DateTime.Now} => {CurrentSendData}";
         }
 
@@ -418,8 +408,9 @@ namespace 三相智慧能源网关调试软件.Model
             ReceiveFrameCount++;
             ReceiveBytesCount += receiveBytes.Length;
             CurrentReceiveBytes = receiveBytes;
-            DataReceiveForShow = HowToDisPlayReceiveData(receiveBytes);
-            SendAndReceiveDataCollections = DateTime.Now + "<=" + HowToDisPlayReceiveData(receiveBytes);
+            //根据当前设置的显示格式，进行存储
+            DataReceiveForShow = IsReceiveFormat16 ? receiveBytes.ByteToString() : Encoding.ASCII.GetString(receiveBytes);
+            SendAndReceiveDataCollections = $"{DateTime.Now} <= {DataReceiveForShow}";
         }
 
         #endregion
@@ -467,7 +458,7 @@ namespace 三相智慧能源网关调试软件.Model
         private readonly Stopwatch _stopwatch1 = new Stopwatch();
         public CancellationTokenSource ReceiveTokenSource;
 
-        public MySerialPort()
+        public SerialPortMaster()
         {
             SerialPort = new SerialPort();
         }
@@ -756,7 +747,7 @@ namespace 三相智慧能源网关调试软件.Model
             SerialError?.Invoke(this, new MySerialEventArgs {Ex = ex});
         }
 
-        private void OnSerialPortConfigChanged(MySerialPort source, MySerialEventArgs e)
+        private void OnSerialPortConfigChanged(SerialPortMaster source, MySerialEventArgs e)
         {
             MySerialPortConfigChanged?.Invoke(source, e);
         }

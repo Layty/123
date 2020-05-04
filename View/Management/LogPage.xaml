@@ -43,7 +43,7 @@
                                              Style="{StaticResource MaterialDesignTextBox}"
                                              materialDesign:HintAssist.Hint="串口数据收发历史缓存区"
                                              TextChanged="TextBoxBase_OnTextChanged"
-                                             Text="{Binding SerialPortModel.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding SerialPortMasterModel.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                              Grid.ColumnSpan="2"  />
                             </Grid>
 

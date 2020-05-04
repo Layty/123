@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using XMX.FileTransmit;
 using System.Threading;
 
-
-namespace XMX.FileTransmit
+namespace 三相智慧能源网关调试软件.FileTransmit
 {
     public class BinarySend : IFileTransmit, ITransmitUart
     {

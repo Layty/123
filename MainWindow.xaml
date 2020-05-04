@@ -726,7 +726,7 @@
                                     <StackPanel Grid.Row="0">
 
                                         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                 Text="{Binding SerialPortModel.KeepMaxSendAndReceiveDataLength}"
+                                                 Text="{Binding SerialPortMasterModel.KeepMaxSendAndReceiveDataLength}"
                                                  materialDesign:HintAssist.Hint="最大缓存字符数" />
                                         <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
                                                   IsChecked="True" />
@@ -750,7 +750,7 @@
                                                  Style="{StaticResource MaterialDesignTextBox}"
                                                  materialDesign:HintAssist.Hint="数据收发历史缓存区"
                                                  TextChanged="TextBoxBase_OnTextChanged"
-                                                 Text="{Binding SerialPortModel.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 Text="{Binding SerialPortMasterModel.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                  Margin="3" />
                                     </Grid>
                                 </Grid>

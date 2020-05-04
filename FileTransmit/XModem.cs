@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.Collections;
 
-namespace XMX.FileTransmit
+namespace 三相智慧能源网关调试软件.FileTransmit
 {
 
     public enum XModemCheckMode
@@ -148,10 +146,7 @@ namespace XMX.FileTransmit
             TransThread.Start();
             if (xmodemInfo.TransMode == TransmitMode.Receive)
             {
-                if (StartReceive != null)
-                {
-                    StartReceive(xmodemInfo, null);
-                }
+                StartReceive?.Invoke(xmodemInfo, null);
             }
         }
 
@@ -166,10 +161,7 @@ namespace XMX.FileTransmit
                 SendEOT();
             }
 
-            if (EndOfTransmit != null)
-            {
-                EndOfTransmit(xmodemInfo, null);
-            }
+            EndOfTransmit?.Invoke(xmodemInfo, null);
         }
 
         public void Abort()
@@ -177,10 +169,7 @@ namespace XMX.FileTransmit
             IsStart = false;
             SendCAN();
 
-            if (EndOfTransmit != null)
-            {
-                EndOfTransmit(xmodemInfo, null);
-            }
+            EndOfTransmit?.Invoke(xmodemInfo, null);
         }
 
 
@@ -292,10 +281,7 @@ namespace XMX.FileTransmit
         }
         private void SendFrameToUart(byte[] data)
         {
-            if (SendToUartEvent != null)
-            {
-                SendToUartEvent(xmodemInfo, new SendToUartEventArgs(data));
-            }
+            SendToUartEvent?.Invoke(xmodemInfo, new SendToUartEventArgs(data));
         }
 
         private void SendACK()
@@ -383,10 +369,7 @@ namespace XMX.FileTransmit
                         else
                         {
                             // 通知重发或发头一包
-                            if (ReSendPacket != null)
-                            {
-                                ReSendPacket(xmodemInfo, null);
-                            }
+                            ReSendPacket?.Invoke(xmodemInfo, null);
                         }
                         break;
 
@@ -396,10 +379,7 @@ namespace XMX.FileTransmit
                             SendStage = XmodemSendStage.PacketSending;
                             // 通知发头一包CRC
                             xmodemInfo.CheckMode = XModemCheckMode.CRC16;
-                            if (StartSend != null)
-                            {
-                                StartSend(xmodemInfo, null);
-                            }
+                            StartSend?.Invoke(xmodemInfo, null);
                         }
                         break;
 
@@ -407,10 +387,7 @@ namespace XMX.FileTransmit
                         if (SendStage == XmodemSendStage.PacketSending)
                         {
                             // 通知发下一包
-                            if (SendNextPacket != null)
-                            {
-                                SendNextPacket(xmodemInfo, null);
-                            }
+                            SendNextPacket?.Invoke(xmodemInfo, null);
                         }
                         else if (SendStage == XmodemSendStage.WaitReceiveAnswerEndTransmit)
                         {
@@ -419,20 +396,14 @@ namespace XMX.FileTransmit
                             //{
                             //    AbortTransmit(xmodemInfo, null);
                             //}
-                            if (EndOfTransmit != null)
-                            {
-                                EndOfTransmit(xmodemInfo, null);
-                            }
+                            EndOfTransmit?.Invoke(xmodemInfo, null);
                             IsStart = false;
                         }
                         break;
 
                     case XmodemMessageType.CAN:
                         // 通知中止
-                        if (AbortTransmit != null)
-                        {
-                            AbortTransmit(xmodemInfo, null);
-                        }
+                        AbortTransmit?.Invoke(xmodemInfo, null);
                         break;
 
                     default:
@@ -453,10 +424,7 @@ namespace XMX.FileTransmit
                     {
                         IsStart = false;
                         //通知接收超时
-                        if (TransmitTimeOut != null)
-                        {
-                            TransmitTimeOut(xmodemInfo, null);
-                        }
+                        TransmitTimeOut?.Invoke(xmodemInfo, null);
                     }
                 }
             }
@@ -505,34 +473,22 @@ namespace XMX.FileTransmit
                         }
 
                         // 通知发下一包
-                        if (SendNextPacket != null)
-                        {
-                            SendNextPacket(xmodemInfo, null);
-                        }
+                        SendNextPacket?.Invoke(xmodemInfo, null);
                         break;
                     case XmodemMessageType.PACKET_ERROR:
                         SendNAK();
                         // 通知重发
-                        if (ReSendPacket != null)
-                        {
-                            ReSendPacket(xmodemInfo, null);
-                        }
+                        ReSendPacket?.Invoke(xmodemInfo, null);
                         break;
                     case XmodemMessageType.EOT:
                         SendACK();
                         // 通知完成
-                        if (EndOfTransmit != null)
-                        {
-                            EndOfTransmit(xmodemInfo, null);
-                        }
+                        EndOfTransmit?.Invoke(xmodemInfo, null);
                         break;
                     case XmodemMessageType.CAN:
                         SendACK();
                         // 通知中止
-                        if (AbortTransmit != null)
-                        {
-                            AbortTransmit(xmodemInfo, null);
-                        }
+                        AbortTransmit?.Invoke(xmodemInfo, null);
                         break;
                     default:
                         break;
@@ -551,10 +507,7 @@ namespace XMX.FileTransmit
                     {
                         IsStart = false;
                         //通知接收超时
-                        if (TransmitTimeOut != null)
-                        {
-                            TransmitTimeOut(xmodemInfo, null);
-                        }
+                        TransmitTimeOut?.Invoke(xmodemInfo, null);
                     }
 
                 }

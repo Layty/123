@@ -15,6 +15,8 @@ namespace 三相智慧能源网关调试软件.Model
         public int DelayTimeOut { get; set; }
         public bool IsOwnThisSerialPort { get; set; }
         public bool IsAutoDataReceived { get; set; }
+
+
         public SerialPortConfig(string portName, int baudRate, StopBits stopBits, Parity parity, int dataBits,
             int delayTimeOut, bool isOwnThisSerialPort, bool isAutoDataReceived)
         {

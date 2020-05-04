@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件.View.BaseMeter
         //    {
         //        if (DlmsViewModel.IsUse21E)
         //        {
-        //            EModeExecutor eModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortModel, "");
+        //            EModeExecutor eModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortMasterModel, "");
         //            if (await eModeExecutor.Execute())
         //            {
         //                var t = DlmsViewModel.Hdlc46Executor.ExecuteHdlcSNRMRequest();
@@ -148,7 +148,7 @@ namespace 三相智慧能源网关调试软件.View.BaseMeter
         //private async void ButtonEnterUpgradeMode_OnClick(object sender, RoutedEventArgs e)
         //{
         //    var msg = DlmsViewModel.HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
-        //    await SerialPortViewModel.SerialPortModel.SendAndReceiveReturnDataAsync(msg);
+        //    await SerialPortViewModel.SerialPortMasterModel.SendAndReceiveReturnDataAsync(msg);
         //}
 
         //private void ButtonClearAllData_OnClick(object sender, RoutedEventArgs e)
@@ -173,51 +173,51 @@ namespace 三相智慧能源网关调试软件.View.BaseMeter
 
         //private async void ButtonOneKeyStart_OnClick(object sender, RoutedEventArgs e)
         //{
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "开始搞事情";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始搞事情";
         //    //ButtonInit_OnClick(sender, e);
         //    DlmsViewModel.InitCommand.Execute(null);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
         //    ButtonReadFactory_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读软件版本";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
         //    ButtonGetSoftVersion_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入工厂模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入工厂模式";
         //    ButtonEnterFactory_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
         //    ButtonReadFactory_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "进入升级模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入升级模式";
         //    ButtonEnterUpgradeMode_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "请开始你的表演";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "请开始你的表演";
         //}
 
         //private async void ButtonOneKeyLeave_OnClick(object sender, RoutedEventArgs e)
         //{
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "开始收拾";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始收拾";
         //    //ButtonInit_OnClick(sender, e);
         //    DlmsViewModel.InitCommand.Execute(null);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读软件版本";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
         //    ButtonGetSoftVersion_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "设置捕获时间60s";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "设置捕获时间60s";
         //    ButtonSetCapturePeriod_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "退出工厂模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "退出工厂模式";
         //    ButtonQuitFactory_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "读工厂模式";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
         //    ButtonReadFactory_OnClick(sender, e);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "事了拂袖去";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "事了拂袖去";
         //  //  ButtonDisConnect_OnClick(sender, e);
         //    DlmsViewModel.DisconnectCommand.Execute(null);
         //    await Task.Delay(500);
-        //    SerialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = "深藏功与名";
+        //    SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "深藏功与名";
         //}
     }
 }

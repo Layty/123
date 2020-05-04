@@ -20,36 +20,36 @@
 
                         <ComboBox x:Name="CmbPortName"
                                   ItemsSource="{Binding PortNamesCollection}"
-                                  SelectedValue="{Binding SerialPortModel.PortName,UpdateSourceTrigger=PropertyChanged  ,Mode=TwoWay}"
+                                  SelectedValue="{Binding SerialPortMasterModel.PortName,UpdateSourceTrigger=PropertyChanged  ,Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="串口号" />
 
 
                         <ComboBox Name="CmbBaudRate"
                                   ItemsSource="{Binding BaudRatesCollection}"
-                                  SelectedValue="{Binding  Path= SerialPortModel.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                                  SelectedValue="{Binding  Path= SerialPortMasterModel.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="波特率" />
                         <ComboBox Name="CmbParity"
                                   ItemsSource="{Binding ParityCollection}"
-                                  SelectedValue="{Binding  Path=SerialPortModel.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                                  SelectedValue="{Binding  Path=SerialPortMasterModel.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="校验位" />
                         <ComboBox Name="CmbDataBits"
                                   ItemsSource="{Binding DataBitsCollection}"
-                                  SelectedValue="{Binding SerialPortModel.DataBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                                  SelectedValue="{Binding SerialPortMasterModel.DataBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="数据位" />
                         <ComboBox Name="CmbStopBits" HorizontalContentAlignment="Left"
                                   ItemsSource="{Binding StopBitsCollection}"
-                                  SelectedValue="{Binding SerialPortModel.StopBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                                  SelectedValue="{Binding SerialPortMasterModel.StopBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="停止位" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"
-                                       Text="{Binding SerialPortModel.DelayTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
+                                       Text="{Binding SerialPortMasterModel.DelayTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
                             <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                      Value="{Binding SerialPortModel.DelayTimeOut ,Mode=TwoWay}"
+                                                      Value="{Binding SerialPortMasterModel.DelayTimeOut ,Mode=TwoWay}"
                                                       Min="2" Max="10">
                                 <materialDesign:RatingBar.ValueItemTemplate>
                                     <DataTemplate DataType="system:Byte">
@@ -72,9 +72,9 @@
 
                         </StackPanel>
                         <CheckBox Content="以占用的方式使用串口" Margin="5 0"
-                                  IsChecked="{Binding SerialPortModel.IsOwnCurrentSerialPort}" />
-                        <CheckBox  IsChecked="{Binding SerialPortModel.IsSendFormat16}" Margin="5 0">十六进制显示发送数据</CheckBox>
-                        <CheckBox  IsChecked="{Binding SerialPortModel.IsReceiveFormat16}" Margin="5 0">十六进制显示接收数据</CheckBox>
+                                  IsChecked="{Binding SerialPortMasterModel.IsOwnCurrentSerialPort}" />
+                        <CheckBox  IsChecked="{Binding SerialPortMasterModel.IsSendFormat16}" Margin="5 0">十六进制显示发送数据</CheckBox>
+                        <CheckBox  IsChecked="{Binding SerialPortMasterModel.IsReceiveFormat16}" Margin="5 0">十六进制显示接收数据</CheckBox>
                        
                         <!--<CheckBox Content="实时监控串口数据" Margin="5 0"
                                   IsChecked="{Binding SerialPortModel.IsAutoDataReceived}" />-->
@@ -86,7 +86,7 @@
                                       Style="{StaticResource MaterialDesignActionToggleButton}"
                                       x:Name="BtnOpenSerialPort"
                                       Click="BtnOpenSerialPort_OnClick"
-                                      IsChecked="{Binding SerialPortModel.IsOpen}">
+                                      IsChecked="{Binding SerialPortMasterModel.IsOpen}">
                             <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
 
                         </ToggleButton>

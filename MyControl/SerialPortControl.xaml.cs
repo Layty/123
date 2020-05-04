@@ -21,13 +21,13 @@ namespace 三相智慧能源网关调试软件.MyControl
         {
             try
             {
-                if (SerialPortViewModel.SerialPortModel.IsOpen)
+                if (SerialPortViewModel.SerialPortMasterModel.IsOpen)
                 {
-                    SerialPortViewModel.SerialPortModel.Close();
+                    SerialPortViewModel.SerialPortMasterModel.Close();
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortModel.Open();
+                    SerialPortViewModel.SerialPortMasterModel.Open();
                     SerialPortViewModel.SaveSerialPortConfigFileCommand.Execute(null);
                 }
             }

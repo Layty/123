@@ -80,20 +80,13 @@
 
                 </StackPanel>
             </GroupBox>
-            <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+            <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid" Header="YModem1K升级"
                       DataContext="{Binding Source={StaticResource Locator},Path=UpGradeBaseMeterViewModel}">
-                <GroupBox.Header>
-                    <StackPanel>
-                        <TextBlock> YModem升级</TextBlock>
-                    </StackPanel>
-                </GroupBox.Header>
-
                 <StackPanel>
-                 
                     <CheckBox Content="升级串口使能" x:Name="CheckBoxIsUseCom"  IsChecked="{Binding IsInitUpGradeSerialPort}"
                               VerticalAlignment="Center" />
+                    <ComboBox ItemsSource="{Binding YModemTypeArray}" SelectedItem="{Binding YModemType}"></ComboBox>
                     <StackPanel IsEnabled="{Binding ElementName=CheckBoxIsUseCom,Path=IsChecked}">
-
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />

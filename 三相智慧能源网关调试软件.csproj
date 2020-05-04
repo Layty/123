@@ -251,7 +251,7 @@
     <Compile Include="Model\MySerialPortConfigCaretaker.cs" />
     <Compile Include="Model\MySerialEventArgs.cs" />
     <Compile Include="Model\MySerialEventHandler.cs" />
-    <Compile Include="Model\MySerialPort.cs" />
+    <Compile Include="Model\SerialPortMaster.cs" />
     <Compile Include="Model\SerialPortConfig.cs" />
     <Compile Include="ValidateModelBase.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
@@ -492,6 +492,7 @@
     <Folder Include="DLMS\ApplicationLayEnums\Action\" />
     <Folder Include="DLMS\HDLC\IEC21E\" />
     <Folder Include="TFTPServerFiles\" />
+    <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">

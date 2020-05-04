@@ -16,29 +16,29 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         public static HdlcFrameMaker HdlcFrameMaker { get; set; }
         public GXDLMSClient Client { get; set; }
 
-        private readonly MySerialPort _port;
+        private readonly SerialPortMaster _portMaster;
 
-        private void InitSerialPortParams(MySerialPort serialPort)
+        private void InitSerialPortParams(SerialPortMaster serialPortMaster)
         {
-            serialPort.DataBits = 8;
-            serialPort.StopBits = StopBits.One;
-            serialPort.Parity = Parity.None;
+            serialPortMaster.DataBits = 8;
+            serialPortMaster.StopBits = StopBits.One;
+            serialPortMaster.Parity = Parity.None;
         }
 
 
-        public Hdlc46Executor(MySerialPort mySerialPort, HdlcFrameMaker hdlc46Frame)
+        public Hdlc46Executor(SerialPortMaster serialPortMaster, HdlcFrameMaker hdlc46Frame)
         {
-            _port = mySerialPort;
-            InitSerialPortParams(_port);
+            _portMaster = serialPortMaster;
+            InitSerialPortParams(_portMaster);
             HdlcFrameMaker = hdlc46Frame;
         }
 
 
-        public Hdlc46Executor(MySerialPort mySerialPort, byte[] desAddr, string password = "33333333",
+        public Hdlc46Executor(SerialPortMaster serialPortMaster, byte[] desAddr, string password = "33333333",
             byte sourceAddr = 1)
         {
-            _port = mySerialPort;
-            InitSerialPortParams(_port);
+            _portMaster = serialPortMaster;
+            InitSerialPortParams(_portMaster);
             HdlcFrameMaker = new HdlcFrameMaker(desAddr, password, sourceAddr);
 
             Client = new GXDLMSClient();
@@ -54,8 +54,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             Client.Settings.Limits.WindowSizeRX = 7;
         }
 
-        public Hdlc46Executor(string fileName, MySerialPort mySerialPort, byte[] desAddr, string password = "33333333",
-            byte sourceAddr = 1) : this(mySerialPort, desAddr, password, sourceAddr)
+        public Hdlc46Executor(string fileName, SerialPortMaster serialPortMaster, byte[] desAddr, string password = "33333333",
+            byte sourceAddr = 1) : this(serialPortMaster, desAddr, password, sourceAddr)
         {
             // string excelFileName = Settings.Default.DLMSMeterConfigExcelFile;
             //  ExcelHelper excelHelper = new ExcelHelper(excelFileName);
@@ -67,14 +67,14 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public Task<byte[]> ExecuteApp(byte[] obisframe)
         {
-            return _port.SendAndReceiveReturnDataAsync(obisframe);
+            return _portMaster.SendAndReceiveReturnDataAsync(obisframe);
         }
 
         public Task<bool> ExecuteHdlcSNRMRequest()
         {
             var t = Task.Run(() =>
             {
-                var r = _port.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SNRMRequest()).Result;
+                var r = _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SNRMRequest()).Result;
                 if (r == null)
                 {
                     return false;
@@ -85,7 +85,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 Client = new GXDLMSClient();
                 Client.ParseUAResponse(buff1);
              
-                _port.SendAndReceiveDataCollections = "ParseUAResponse";
+                _portMaster.SendAndReceiveDataCollections = "ParseUAResponse";
                 return true;
             });
             return t;
@@ -94,19 +94,19 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public Task ExecuteHdlcDisConnectRequest()
         {
-            return _port.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
+            return _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
         }
 
         public Task ExecuteHdlcComm(Func<byte[]> func)
         {
-            return _port.SendAndReceiveReturnDataAsync(func());
+            return _portMaster.SendAndReceiveReturnDataAsync(func());
         }
 
     
     
         public Task ExecuteHdlcComm(byte[] dataBytes)
         {
-            return _port.SendAndReceiveReturnDataAsync(dataBytes);
+            return _portMaster.SendAndReceiveReturnDataAsync(dataBytes);
         }
     }
 }

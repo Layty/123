@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace XMX.FileTransmit
+namespace 三相智慧能源网关调试软件.FileTransmit
 {
     public enum TransmitMode
     {

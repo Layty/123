@@ -7,30 +7,40 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 {
     public class EModeExecutor
     {
-        private readonly MySerialPort _port;
+        private readonly SerialPortMaster _opticalPortMaster;
 
         private readonly EModeMaker _eModeFrameMaker;
 
         private readonly int _requestBaud;
+
         private readonly MySerialPortConfigCaretaker _caretaker = new MySerialPortConfigCaretaker();
-        public EModeExecutor(MySerialPort mySerialPort, string addr)
+
+        public EModeExecutor(SerialPortMaster serialOpticalPortMaster, string addr)
         {
-            _port = mySerialPort;
-            _requestBaud = mySerialPort.BaudRate;
+            _opticalPortMaster = serialOpticalPortMaster;
+            _requestBaud = serialOpticalPortMaster.BaudRate;
             _eModeFrameMaker = new EModeMaker(_requestBaud, addr);
+        }
+
+        private void Init21ESerialPort()
+        {
+            _opticalPortMaster.BaudRate = 300;
+            _opticalPortMaster.DataBits = 7;
+            _opticalPortMaster.StopBits = StopBits.One;
+            _opticalPortMaster.Parity = Parity.Even;
         }
 
         public Task<bool> Execute()
         {
-            return Task.Run( async delegate
+            return Task.Run(async delegate
             {
                 BackupPortPara();
                 Init21ESerialPort();
                 byte[] requestFrameBytes = _eModeFrameMaker.GetRequestFrameBytes();
-                //_port.SendDataWithLocker(requestFrameBytes);
-                //byte[] array = _port.TryToReadReceiveData();
-                byte[] array =await _port.SendAndReceiveReturnDataAsync(requestFrameBytes);
-                if (array.Length == 0|| !EModeParser.CheckServerFrameWisEquals2(array))
+                //_opticalPortMaster.SendDataWithLocker(requestFrameBytes);
+                //byte[] array = _opticalPortMaster.TryToReadReceiveData();
+                byte[] array = await _opticalPortMaster.SendAndReceiveReturnDataAsync(requestFrameBytes);
+                if (array.Length == 0 || !EModeParser.CheckServerFrameWisEquals2(array))
                 {
                     LoadBackupPortPara();
                     return false;
@@ -38,15 +48,16 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
 
                 byte[] confirmFrameBytes = _eModeFrameMaker.GetConfirmFrameBytes();
-                _port.Send(confirmFrameBytes);
+                _opticalPortMaster.Send(confirmFrameBytes);
                 Thread.Sleep(200);
-                _port.BaudRate = _requestBaud;//需要修改波特率 ，再去接收
-                array = _port.TryToReadReceiveData();
+                _opticalPortMaster.BaudRate = _requestBaud; //需要修改波特率 ，再去接收
+                array = _opticalPortMaster.TryToReadReceiveData();
                 if (array.Length == 0 || !EModeParser.CheckServerFrameZisEqualsClient(array))
                 {
                     LoadBackupPortPara();
                     return false;
                 }
+
                 LoadBackupPortPara();
                 return true;
             });
@@ -54,26 +65,17 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
         private void BackupPortPara()
         {
-            var memento = _port.CreateMySerialPortConfig;
+            var memento = _opticalPortMaster.CreateMySerialPortConfig;
             _caretaker.Dictionary["before"] = memento;
-            _port.IsSendFormat16 = false;
-            _port.IsReceiveFormat16 = false;
+            _opticalPortMaster.IsSendFormat16 = false;
+            _opticalPortMaster.IsReceiveFormat16 = false;
         }
 
         private void LoadBackupPortPara()
         {
-            _port.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
-            _port.IsSendFormat16 = true;
-            _port.IsReceiveFormat16 = true;
+            _opticalPortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            _opticalPortMaster.IsSendFormat16 = true;
+            _opticalPortMaster.IsReceiveFormat16 = true;
         }
-
-        private void Init21ESerialPort()
-        {
-            _port.BaudRate = 300;
-            _port.DataBits = 7;
-            _port.StopBits = StopBits.One;
-            _port.Parity = Parity.Even;
-        }
-
     }
 }

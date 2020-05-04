@@ -2,12 +2,11 @@
 using System.IO;
 using System.IO.Ports;
 using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
-using XMX.FileTransmit;
+using 三相智慧能源网关调试软件.FileTransmit;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -29,21 +28,23 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public bool IsInitUpGradeSerialPort
         {
-            get { return _isInitUpGradeSerialPort; }
-            set {
+            get => _isInitUpGradeSerialPort;
+            set
+            {
                 if (value)
                 {
-                    SerialPortViewModel.SerialPortModel.SerialPort.DataReceived += SerialPort_DataReceived;
+                    SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived += SerialPort_DataReceived;
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortModel.SerialPort.DataReceived -= SerialPort_DataReceived;
+                    SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived -= SerialPort_DataReceived;
                 }
-                _isInitUpGradeSerialPort = value
-                ; RaisePropertyChanged(); }
+
+                _isInitUpGradeSerialPort = value;
+                RaisePropertyChanged();
+            }
         }
 
-        
 
         public YModem YModem
         {
@@ -144,35 +145,25 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
+        public Array YModemTypeArray => Enum.GetValues(typeof(YModemType));
 
         public UpGradeBaseMeterViewModel()
         {
-            if (IsInDesignMode)
-            {
-            }
-            else
-            {
-            }
-
             SerialPortViewModel = CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
-
-
             TransmitMode = TransmitMode.Send;
             YModemType = YModemType.YModem_1K;
             PacketLen = 1024;
             YModem = new YModem(TransmitMode, YModemType, 10);
-            UserComCommand=new RelayCommand(()=>
+            UserComCommand = new RelayCommand(() =>
             {
-                SerialPortViewModel.SerialPortModel.SerialPort.DataReceived += SerialPort_DataReceived;
+                SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived += SerialPort_DataReceived;
             });
             ReleaseComCommand = new RelayCommand(() =>
             {
-                SerialPortViewModel.SerialPortModel.SerialPort.DataReceived -= SerialPort_DataReceived;
+                SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived -= SerialPort_DataReceived;
             });
             StartCommand = new RelayCommand(() =>
             {
-               
-              
                 YModem = new YModem(TransmitMode, YModemType, 10);
                 YModem.StartSend += YModem_StartSend;
                 YModem.SendNextPacket += YModem_SendNextPacket;
@@ -223,16 +214,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public RelayCommand UserComCommand
         {
             get { return _useComCommand; }
-            set { _useComCommand = value; RaisePropertyChanged(); }
+            set
+            {
+                _useComCommand = value;
+                RaisePropertyChanged();
+            }
         }
+
         private RelayCommand _releaseComCommand;
 
         public RelayCommand ReleaseComCommand
         {
             get { return _releaseComCommand; }
-            set { _releaseComCommand = value; RaisePropertyChanged(); }
+            set
+            {
+                _releaseComCommand = value;
+                RaisePropertyChanged();
+            }
         }
-
 
 
         private void YModem_ReSendPacket(object sender, EventArgs e)
@@ -242,7 +241,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void YModem_ReceivedPacket(object sender, PacketEventArgs e)
         {
-          
             throw new NotImplementedException();
         }
 
@@ -286,9 +284,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] dBytes = new byte[_serialPortViewModel.SerialPortModel.SerialPort.BytesToRead];
-            _serialPortViewModel.SerialPortModel.SerialPort.Read(dBytes, 0, dBytes.Length);
-            _serialPortViewModel.SerialPortModel.SendAndReceiveDataCollections = Encoding.Default.GetString(dBytes);
+            byte[] dBytes = new byte[_serialPortViewModel.SerialPortMasterModel.SerialPort.BytesToRead];
+            _serialPortViewModel.SerialPortMasterModel.SerialPort.Read(dBytes, 0, dBytes.Length);
+            _serialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections =
+                Encoding.Default.GetString(dBytes);
             Messenger.Default.Send(dBytes, "ReceiveMsgFormBaseMeter");
             YModem.ReceivedFromUart(dBytes);
         }
@@ -330,12 +329,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void YModem_SendToUartEvent(object sender, SendToUartEventArgs e)
         {
-            if (!_serialPortViewModel.SerialPortModel.SerialPort.IsOpen)
+            if (!_serialPortViewModel.SerialPortMasterModel.SerialPort.IsOpen)
             {
-                _serialPortViewModel.SerialPortModel.SerialPort.Open();
+                _serialPortViewModel.SerialPortMasterModel.SerialPort.Open();
             }
 
-            _serialPortViewModel.SerialPortModel.SerialPort.Write(e.Data, 0, e.Data.Length);
+            _serialPortViewModel.SerialPortMasterModel.SerialPort.Write(e.Data, 0, e.Data.Length);
             Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
         }
 

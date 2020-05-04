@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.IO.Ports;
-using System.Text;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
@@ -22,31 +20,28 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     new MySerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = MySerialPortConfigCaretaker.DefaultConfig;
 
-                SerialPortModel = new MySerialPort();
-                SerialPortModel.LoadSerialPortConfig(config);
-
-                SendersCollection = new ObservableCollection<SenderModel>()
-                    {new SenderModel() {SendText = "1234"}};
+                SerialPortMasterModel = new SerialPortMaster();
+                SerialPortMasterModel.LoadSerialPortConfig(config);
             }
             else
             {
                 MySerialPortConfigCaretaker =
                     new MySerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = MySerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
-                SerialPortModel = new MySerialPort();
-                SerialPortModel.LoadSerialPortConfig(config);
+                SerialPortMasterModel = new SerialPortMaster();
+                SerialPortMasterModel.LoadSerialPortConfig(config);
 
                 ClearSendDataCommand = new RelayCommand<SenderModel>(ClearSendData);
-                ClearReceiveDataCommand = new RelayCommand(()=>{SerialPortModel.ClearDataReceiveBytes();});
+                ClearReceiveDataCommand = new RelayCommand(() => { SerialPortMasterModel.ClearDataReceiveBytes(); });
                 ClearHistoryDataCommand = new RelayCommand(ClearHistoryText);
                 ClearAllDataCommand = new RelayCommand(ClearAllText);
                 ClearAllCountsCommand = new RelayCommand(() =>
                 {
-                    SerialPortModel.ClearSendCount();
-                    SerialPortModel.ClearReceiveCount();
+                    SerialPortMasterModel.ClearSendCount();
+                    SerialPortMasterModel.ClearReceiveCount();
                 });
-                ClearSendCountCommand = new RelayCommand(() => SerialPortModel.ClearSendCount());
-                ClearReceivedCountCommand = new RelayCommand(() => SerialPortModel.ClearReceiveCount());
+                ClearSendCountCommand = new RelayCommand(() => SerialPortMasterModel.ClearSendCount());
+                ClearReceivedCountCommand = new RelayCommand(() => SerialPortMasterModel.ClearReceiveCount());
             }
 
             SendersCollection = new ObservableCollection<SenderModel>()
@@ -54,19 +49,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {
-                    SerialPortModel.CurrentSendBytes = SenderModel.SendText.StringToByte();
-                    SerialPortModel.Send();
+                    SerialPortMasterModel.CurrentSendBytes = SenderModel.SendText.StringToByte();
+                    SerialPortMasterModel.Send();
                 }
             );
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
-                MySerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortModel
+                MySerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMasterModel
                     .CreateMySerialPortConfig);
             });
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
         }
 
-        public MySerialPort SerialPortModel { get; set; }
+        public SerialPortMaster SerialPortMasterModel { get; set; }
         private MySerialPortConfigCaretaker MySerialPortConfigCaretaker { get; set; }
 
 
@@ -136,18 +131,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void SelectSendText(SenderModel senderModel)
         {
             SenderModel = senderModel;
-            //SerialPortModel.CurrentSendBytes = senderModel.SendText.StringToByte();
-            //SerialPortModel.Send();
+            //SerialPortMasterModel.CurrentSendBytes = senderModel.SendText.StringToByte();
+            //SerialPortMasterModel.Send();
         }
 
         #endregion
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -156,18 +144,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void ClearSendData(SenderModel senderModel)
         {
             SenderModel.SendText = string.Empty;
-            SerialPortModel.CurrentSendBytes = new byte[] { };
+            SerialPortMasterModel.CurrentSendBytes = new byte[] { };
         }
 
-      
 
         /// <summary>
         /// 清空发送区、接收区和收发历史缓存区
         /// </summary>
         private void ClearHistoryText()
         {
-            SerialPortModel.SendAndReceiveDataStringBuilderCollections.Clear();
-            SerialPortModel.SendAndReceiveDataCollections = string.Empty;
+            SerialPortMasterModel.SendAndReceiveDataStringBuilderCollections.Clear();
+            SerialPortMasterModel.SendAndReceiveDataCollections = string.Empty;
         }
 
         /// <summary>
@@ -175,12 +162,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         private void ClearAllText()
         {
-            SerialPortModel.ClearDataReceiveBytes();
-            SerialPortModel.ClearReceiveCount();
-            SerialPortModel.ClearSendBuff();
-            SerialPortModel.ClearSendCount();
-            SerialPortModel.SendAndReceiveDataStringBuilderCollections.Clear();
-            SerialPortModel.SendAndReceiveDataCollections = string.Empty;
+            SerialPortMasterModel.ClearDataReceiveBytes();
+            SerialPortMasterModel.ClearReceiveCount();
+            SerialPortMasterModel.ClearSendBuff();
+            SerialPortMasterModel.ClearSendCount();
+            SerialPortMasterModel.SendAndReceiveDataStringBuilderCollections.Clear();
+            SerialPortMasterModel.SendAndReceiveDataCollections = string.Empty;
         }
     }
 }
