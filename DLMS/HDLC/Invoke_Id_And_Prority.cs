@@ -43,10 +43,10 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         /// <param name="reserved"></param>
         public Invoke_Id_And_Priority(byte ivoke_id, ServiceClass serviceClass, Priority priority, byte reserved = 0)
         {
-            this.InvokeID = ivoke_id;
+            InvokeID = ivoke_id;
             this.reserved = reserved;
-            this.ServiceClass = serviceClass;
-            this.Priority = priority;
+            ServiceClass = serviceClass;
+            Priority = priority;
             InvokeIdAndPriority = GetInvoke_Id_And_Priority();
         }
 

@@ -12,7 +12,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             MaxInfoTx = 0x05,
             MaxInfoRx = 0x06,
             WindowSizeTx = 0x07,
-            WindowSizeRx = 0x08,
+            WindowSizeRx = 0x08
         }
       
         public HDLCInfo()
@@ -127,7 +127,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             List<byte> info = new List<byte>
             {
                 _formatIdentifier,
-                _groupIdentifier,
+                _groupIdentifier
             };
             //发送最大信息域参数信息
             info.Add((byte) InfoTag.MaxInfoTx);

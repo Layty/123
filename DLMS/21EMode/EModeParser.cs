@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace 三相智慧能源网关调试软件.DLMS._21EMode
@@ -22,7 +21,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 return false;
             }
-            if (((IEnumerable<byte>)receiveBytes).Contains((byte)92))
+            if (receiveBytes.Contains((byte)92))
             {
                 string @string = Encoding.Default.GetString(receiveBytes);
                 string[] array = @string.Split('\\');

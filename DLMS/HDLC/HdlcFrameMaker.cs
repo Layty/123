@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Gurux.DLMS;
-using Gurux.DLMS.Enums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.OBIS;
 using Command = 三相智慧能源网关调试软件.DLMS.HDLC.Enums.Command;
-using DataType = 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums.DataType;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
 {
@@ -38,7 +35,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             PackagingDestinationAndSourceAddress(snrmFrame);
             Hdlc46Frame.LastCommand = Command.Snrm;
             snrmFrame.Add((byte) Command.Snrm);
-            byte[] snrmInfo = new byte[] { };
+            byte[] snrmInfo = { };
             byte hcs = 0;
             if (snrmContainInfoFlag)
             {
@@ -130,7 +127,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 appApduContentList.AddRange(new byte[]
                 {
                     0x8B, //标签([11],IMPLICIT,Context -specific)的编码
-                    7, //标记组件的值域的长度的编码
+                    7 //标记组件的值域的长度的编码
                 });
                 appApduContentList.AddRange(new byte[]
                 {
@@ -168,7 +165,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 0x1F, //31
                 0x04, //contents域的8位元组(4)的长度的编码
                 0, //BITSTRING最后字节未使用的比特数的编码
-                0, 0x7E, 0x1F, //定长 BITSTRING的值的编码
+                0, 0x7E, 0x1F //定长 BITSTRING的值的编码
                 /*  0x04, 0xB0*/ //值为 0x04B0,一个 Unsigned16的编码是它本身的值
             }); //user-information:xDLMS InitiateRequestAPDU   0,  0 = 0x04,0xB0值为 0x04B0,一个 Unsigned16的编码是它本身的值
             appApduContentList.AddRange(BitConverter.GetBytes(Hdlc46Frame.MaxReceivePduSize));

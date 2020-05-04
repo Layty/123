@@ -2,10 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using GalaSoft.MvvmLight;
-using Gurux.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
-using Command = 三相智慧能源网关调试软件.DLMS.HDLC.Enums.Command;
+using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
 {
@@ -250,13 +249,13 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
             public APDU()
             {
-                InvokeIdAndPriority = new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High, 0);
+                InvokeIdAndPriority = new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High);
             }
 
 
             public byte[] ToPduBytes()
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
     }

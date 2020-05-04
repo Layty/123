@@ -248,11 +248,6 @@
     <Compile Include="Model\MenuModel.cs" />
     <Compile Include="Model\InstantDataModel.cs" />
     <Compile Include="Model\MyLogModel.cs" />
-    <Compile Include="Model\MySerialPortConfigCaretaker.cs" />
-    <Compile Include="Model\MySerialEventArgs.cs" />
-    <Compile Include="Model\MySerialEventHandler.cs" />
-    <Compile Include="Model\SerialPortMaster.cs" />
-    <Compile Include="Model\SerialPortConfig.cs" />
     <Compile Include="ValidateModelBase.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
     <Compile Include="ViewModel\EnergyDataViewModel.cs" />
@@ -495,6 +490,10 @@
     <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\曾雄威\C#\SerialPortMaster\MySerialPortMaster.csproj">
+      <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
+      <Name>MySerialPortMaster</Name>
+    </ProjectReference>
     <ProjectReference Include="Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">
       <Project>{5eec3df7-b62b-4795-a2d4-b6237e1ad49a}</Project>
       <Name>Gurux.DLMS.Net</Name>

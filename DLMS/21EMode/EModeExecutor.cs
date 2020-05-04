@@ -1,7 +1,7 @@
 ﻿using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
-using 三相智慧能源网关调试软件.Model;
+using MySerialPortMaster;
 
 namespace 三相智慧能源网关调试软件.DLMS._21EMode
 {
@@ -13,7 +13,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
         private readonly int _requestBaud;
 
-        private readonly MySerialPortConfigCaretaker _caretaker = new MySerialPortConfigCaretaker();
+        private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
 
         public EModeExecutor(SerialPortMaster serialOpticalPortMaster, string addr)
         {

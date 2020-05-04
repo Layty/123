@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO.Ports;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.Model;
+using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
+using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -16,19 +16,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (IsInDesignMode)
             {
-                MySerialPortConfigCaretaker =
-                    new MySerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
-                var config = MySerialPortConfigCaretaker.DefaultConfig;
+                SerialPortConfigCaretaker =
+                    new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
+                var config = SerialPortConfigCaretaker.DefaultConfig;
 
-                SerialPortMasterModel = new SerialPortMaster();
+                SerialPortMasterModel = new MySerialPortMaster.SerialPortMaster();
                 SerialPortMasterModel.LoadSerialPortConfig(config);
             }
             else
             {
-                MySerialPortConfigCaretaker =
-                    new MySerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
-                var config = MySerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
-                SerialPortMasterModel = new SerialPortMaster();
+                SerialPortConfigCaretaker =
+                    new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
+                var config = SerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
+                SerialPortMasterModel = new MySerialPortMaster.SerialPortMaster();
                 SerialPortMasterModel.LoadSerialPortConfig(config);
 
                 ClearSendDataCommand = new RelayCommand<SenderModel>(ClearSendData);
@@ -49,20 +49,20 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.CurrentSendBytes = SenderModel.SendText.StringToByte();
+                    SerialPortMasterModel.CurrentSendBytes = Common.StringToByte(SenderModel.SendText);
                     SerialPortMasterModel.Send();
                 }
             );
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
-                MySerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMasterModel
+                SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMasterModel
                     .CreateMySerialPortConfig);
             });
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
         }
 
         public SerialPortMaster SerialPortMasterModel { get; set; }
-        private MySerialPortConfigCaretaker MySerialPortConfigCaretaker { get; set; }
+        private SerialPortConfigCaretaker SerialPortConfigCaretaker { get; set; }
 
 
         #region 串口参数资源集合

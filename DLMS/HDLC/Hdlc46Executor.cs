@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Data;
 using System.IO.Ports;
 using System.Linq;
-using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using Gurux.DLMS;
 using Gurux.DLMS.Enums;
-using 三相智慧能源网关调试软件.Model;
+using MySerialPortMaster;
 using Task = System.Threading.Tasks.Task;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
