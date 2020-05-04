@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gurux.DLMS.Net", "Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj", "{5EEC3DF7-B62B-4795-A2D4-B6237E1AD49A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialPortMaster", "..\曾雄威\C#\SerialPortMaster\SerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5EEC3DF7-B62B-4795-A2D4-B6237E1AD49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EEC3DF7-B62B-4795-A2D4-B6237E1AD49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EEC3DF7-B62B-4795-A2D4-B6237E1AD49A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
