@@ -58,7 +58,7 @@ namespace 三相智慧能源网关调试软件
         private string _serverIpAddress;
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression(@"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$", ErrorMessage = "参数不符合要求")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
         public string ServerIpAddress
         {
             get => _serverIpAddress;
@@ -137,7 +137,7 @@ namespace 三相智慧能源网关调试软件
         private string _afterIp = "192.168.0.145";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression(@"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$", ErrorMessage = "参数不符合要求")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
         public string AfterIp
         {
             get => _afterIp;
@@ -152,7 +152,7 @@ namespace 三相智慧能源网关调试软件
         private string _afterGateway = "192.168.0.1";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression(@"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$", ErrorMessage = "参数不符合要求")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
         public string AfterGateway
         {
             get { return _afterGateway; }
@@ -166,7 +166,7 @@ namespace 三相智慧能源网关调试软件
         private string _afterHostIp = "172.32.0.3";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression(@"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$", ErrorMessage = "参数不符合要求")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
         public string AfterHostIp
         {
             get => _afterHostIp;

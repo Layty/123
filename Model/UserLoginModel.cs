@@ -55,7 +55,7 @@ namespace 三相智慧能源网关调试软件.Model
         /// </summary>
         public string Report
         {
-            get { return _report; }
+            get => _report;
             set
             {
                 _report = value;

@@ -241,7 +241,6 @@
     <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
     <Compile Include="FileTransmit\XModem.cs" />
     <Compile Include="Model\CommandModel.cs" />
-    <Compile Include="Model\EmptyResponsedException.cs" />
     <Compile Include="Model\EnergyDataModel.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\GateWayLoginModel.cs" />

@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace WPF_DLMS_DateTimeHelper.Views
+namespace 三相智慧能源网关调试软件.View
 {
     /// <summary>
     /// MessageBoxWindow.xaml 的交互逻辑
