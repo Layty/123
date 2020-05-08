@@ -335,7 +335,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 _serialPortViewModel.SerialPortMasterModel.SerialPort.Open();
             }
-            _serialPortViewModel.SerialPortMasterModel.Send(e.Data);
+            _serialPortViewModel.SerialPortMasterModel.Send(e.Data);//使用Send可捕捉发送日志
             //_serialPortViewModel.SerialPortMasterModel.SerialPort.Write(e.Data, 0, e.Data.Length);
           //  Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
         }
