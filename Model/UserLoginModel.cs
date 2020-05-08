@@ -91,7 +91,7 @@ namespace 三相智慧能源网关调试软件.Model
 
         public string SucceedLoginTime
         {
-            get { return _succeedLoginTime; }
+            get => _succeedLoginTime;
             set { _succeedLoginTime = value; RaisePropertyChanged(); }
         }
 
@@ -99,7 +99,7 @@ namespace 三相智慧能源网关调试软件.Model
 
         public byte LoginErrorCounts
         {
-            get { return _loginErrorCounts; }
+            get => _loginErrorCounts;
             set { _loginErrorCounts = value; RaisePropertyChanged(); }
         }
 

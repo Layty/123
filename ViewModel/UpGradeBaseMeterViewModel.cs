@@ -215,7 +215,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public RelayCommand UserComCommand
         {
-            get { return _useComCommand; }
+            get => _useComCommand;
             set
             {
                 _useComCommand = value;
@@ -253,7 +253,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 return;
             }
-
+           
             YModem.StartSend -= YModem_StartSend;
             YModem.SendNextPacket -= YModem_SendNextPacket;
             YModem.SendToUartEvent -= YModem_SendToUartEvent;
@@ -290,7 +290,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             _serialPortViewModel.SerialPortMasterModel.SerialPort.Read(dBytes, 0, dBytes.Length);
             _serialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections =
                 Encoding.Default.GetString(dBytes);
-            Messenger.Default.Send(dBytes, "ReceiveMsgFormBaseMeter");
+          //  Messenger.Default.Send(dBytes, "ReceiveMsgFormBaseMeter");
             YModem.ReceivedFromUart(dBytes);
         }
 
@@ -335,9 +335,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 _serialPortViewModel.SerialPortMasterModel.SerialPort.Open();
             }
-
-            _serialPortViewModel.SerialPortMasterModel.SerialPort.Write(e.Data, 0, e.Data.Length);
-            Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
+            _serialPortViewModel.SerialPortMasterModel.Send(e.Data);
+            //_serialPortViewModel.SerialPortMasterModel.SerialPort.Write(e.Data, 0, e.Data.Length);
+          //  Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
         }
 
         private int _currentCount;
@@ -395,7 +395,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        public void SelectFile()
+        private void SelectFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {

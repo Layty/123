@@ -20,6 +20,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             else
             {
                 LoginModel = new UserLoginModel();
+
+
+
                 ReadUserInfoFromResource();
                
                 LoginCommand = new RelayCommand(Login);
@@ -59,15 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public RelayCommand LoginCommand
         {
-            get
-            {
-                if (_loginCommand == null)
-                {
-                    _loginCommand = new RelayCommand(Login);
-                }
-
-                return _loginCommand;
-            }
+            get => _loginCommand ?? (_loginCommand = new RelayCommand(Login));
             set
             {
                 _loginCommand = value;
@@ -106,7 +101,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             if (LoginModel.KeepPassword)
             {
                 LoginModel.UserName = Settings.Default.CurrentUser;
-                //   LoginModel.Password = Properties.Settings.Default.CurrentPassword;
                 LoginModel.Password = CEncoder.Decode(Settings.Default.CurrentPassword);
                 if (LoginModel.UserName == "" || LoginModel.Password == "")
                 {
@@ -122,18 +116,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (LoginModel.KeepPassword)
             {
-//                Properties.Settings.Default.CurrentPassword = LoginModel.Password;
                 Settings.Default.CurrentPassword = CEncoder.Encode(LoginModel.Password);
             }
-
-           //var sw=new SwatchesProvider().Swatches;
-           //sw.FirstOrDefault(t => t.Name.Equals(""));
-
-
-           //new PaletteHelper();
             Settings.Default.CurrentUser = LoginModel.UserName;
             Settings.Default.PasswordSave = LoginModel.KeepPassword;
-
             Settings.Default.Save();
         }
 

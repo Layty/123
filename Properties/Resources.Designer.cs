@@ -59,14 +59,5 @@ namespace 三相智慧能源网关调试软件.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   查找类似  的本地化字符串。
-        /// </summary>
-        internal static string AccessConnectionStr {
-            get {
-                return ResourceManager.GetString("AccessConnectionStr", resourceCulture);
-            }
-        }
     }
 }

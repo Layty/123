@@ -9,7 +9,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using Tftp.Net;
 using 三相智慧能源网关调试软件.Properties;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {

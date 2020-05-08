@@ -228,8 +228,7 @@ namespace 三相智慧能源网关调试软件
                 {
                     try
                     {
-                        Event @event;
-                        if (host.Service(15000, out @event))
+                        if (host.Service(15000, out var @event))
                         {
                             do
                             {
@@ -237,9 +236,6 @@ namespace 三相智慧能源网关调试软件
                                 {
                                     case EventType.Connect:
                                         peer = @event.Peer;
-                                        //peer.Send(0,
-                                        //    Encoding.Default.GetBytes($"ServerGotOneConnect{peer.GetRemoteAddress()}"),
-                                        //PacketFlags.Reliable);
                                         Messenger.Default.Send($"本地服务端收到{peer.GetRemoteAddress()}连接", "Status");
                                         break;
 
