@@ -45,9 +45,9 @@
                                   materialDesign:HintAssist.Hint="停止位" />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                       Text="{Binding SerialPortMasterModel.DelayTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
+                                       Text="{Binding SerialPortMasterModel.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
                             <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                      Value="{Binding SerialPortMasterModel.DelayTimeOut ,Mode=TwoWay}"
+                                                      Value="{Binding SerialPortMasterModel.ResponseTimeOut ,Mode=TwoWay}"
                                                       Min="2" Max="10">
                                 <materialDesign:RatingBar.ValueItemTemplate>
                                     <DataTemplate DataType="system:Byte">

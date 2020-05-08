@@ -52,16 +52,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             Client.Settings.Limits.WindowSizeRX = 7;
         }
 
-        public Hdlc46Executor(string fileName, SerialPortMaster serialPortMaster, byte[] desAddr, string password = "33333333",
-            byte sourceAddr = 1) : this(serialPortMaster, desAddr, password, sourceAddr)
-        {
-            // string excelFileName = Settings.Default.DLMSMeterConfigExcelFile;
-            //  ExcelHelper excelHelper = new ExcelHelper(excelFileName);
-            //  this.HdlcDataTable = excelHelper.GetExcelDataTable(fileName);
-        }
-
-
-
+ 
 
         public Task<byte[]> ExecuteApp(byte[] obisframe)
         {
@@ -83,7 +74,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 Client = new GXDLMSClient();
                 Client.ParseUAResponse(buff1);
              
-                _portMaster.SendAndReceiveDataCollections = "ParseUAResponse";
+                _portMaster.SerialPortLogger.SendAndReceiveDataCollections = "ParseUAResponse";
                 return true;
             });
             return t;

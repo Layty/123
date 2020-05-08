@@ -30,12 +30,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void ENetClientHelper_ReceiveData(byte[] bytes)
         {
-            MyLog.CommandLog += (DateTime.Now + "<=" + Encoding.Default.GetString(bytes) + Environment.NewLine);
+            MyLog.CommandLog += (DateTime.Now + "<=" + Encoding.Default.GetString(bytes) );
         }
 
         private void ENetClientHelper_SendData(byte[] bytes)
         {
-            MyLog.CommandLog += (DateTime.Now + "=>" + Encoding.Default.GetString(bytes) + Environment.NewLine);
+            MyLog.CommandLog += (DateTime.Now + "=>" + Encoding.Default.GetString(bytes));
         }
 
         private MyLogModel _myLog;

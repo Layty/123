@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
-using Common = 三相智慧能源网关调试软件.Commom.Common;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -27,26 +27,29 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = SerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
                 SerialPortMasterModel = new SerialPortMaster(config);
-                
-                ClearSendDataCommand = new RelayCommand<SenderModel>(ClearSendData);
-                ClearReceiveDataCommand = new RelayCommand(() => { SerialPortMasterModel.ClearDataReceiveBytes(); });
-                ClearHistoryDataCommand = new RelayCommand(ClearHistoryText);
-                ClearAllDataCommand = new RelayCommand(ClearAllText);
+
+                ClearReceiveDataCommand = new RelayCommand(() =>
+                {
+                    SerialPortMasterModel.SerialPortLogger.ClearDataReceiveBytes();
+                });
+                ClearHistoryDataCommand =
+                    new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearHistoryText());
+                ClearAllDataCommand = new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearAllText());
                 ClearAllCountsCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.ClearSendCount();
-                    SerialPortMasterModel.ClearReceiveCount();
+                    SerialPortMasterModel.SerialPortLogger.ClearSendCount();
+                    SerialPortMasterModel.SerialPortLogger.ClearReceiveCount();
                 });
-                ClearSendCountCommand = new RelayCommand(() => SerialPortMasterModel.ClearSendCount());
-                ClearReceivedCountCommand = new RelayCommand(() => SerialPortMasterModel.ClearReceiveCount());
+                ClearSendCountCommand = new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearSendCount());
+                ClearReceivedCountCommand =
+                    new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearReceiveCount());
             }
 
             SendersCollection = new ObservableCollection<SenderModel> {new SenderModel {SendText = "1234"}};
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.CurrentSendBytes = Common.StringToByte(SenderModel.SendText);
-                    SerialPortMasterModel.Send();
+                    SerialPortMasterModel.Send(SenderModel.SendText.StringToByte());
                 }
             );
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
@@ -57,7 +60,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
         }
 
-        public SerialPortMaster SerialPortMasterModel { get; set; }
+        public SerialPortMaster SerialPortMasterModel
+        {
+            get => _serialPortMasterModel;
+            set
+            {
+                _serialPortMasterModel = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private SerialPortMaster _serialPortMasterModel;
         private SerialPortConfigCaretaker SerialPortConfigCaretaker { get; set; }
 
 
@@ -132,38 +145,5 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         #endregion
-
-
-        /// <summary>
-        /// 清空发送区
-        /// </summary>
-        public void ClearSendData(SenderModel senderModel)
-        {
-            SenderModel.SendText = string.Empty;
-            SerialPortMasterModel.CurrentSendBytes = new byte[] { };
-        }
-
-
-        /// <summary>
-        /// 清空发送区、接收区和收发历史缓存区
-        /// </summary>
-        private void ClearHistoryText()
-        {
-            SerialPortMasterModel.SendAndReceiveDataStringBuilderCollections.Clear();
-            SerialPortMasterModel.SendAndReceiveDataCollections = string.Empty;
-        }
-
-        /// <summary>
-        /// 清空发送区、接收区和收发历史缓存区,及次数等
-        /// </summary>
-        private void ClearAllText()
-        {
-            SerialPortMasterModel.ClearDataReceiveBytes();
-            SerialPortMasterModel.ClearReceiveCount();
-            SerialPortMasterModel.ClearSendBuff();
-            SerialPortMasterModel.ClearSendCount();
-            SerialPortMasterModel.SendAndReceiveDataStringBuilderCollections.Clear();
-            SerialPortMasterModel.SendAndReceiveDataCollections = string.Empty;
-        }
     }
 }

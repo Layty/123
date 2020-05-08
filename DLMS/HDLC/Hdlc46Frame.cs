@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using GalaSoft.MvvmLight;
@@ -67,39 +68,48 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         /// <summary>
         /// 1/2/4个字节
         /// </summary>
-        public byte[] DestAddr
+        public byte[] DestAddress
         {
-            get => _destAddrForFrame;
-            set => _destAddrForFrame = value;
+            get => _destAddressForFrame;
+            set
+            {
+                if (value.Length != 1 && value.Length != 2 && value.Length != 4)
+                {
+                    throw new Exception("目的地址字节长度不符合1/2/4字节");
+                }
+
+                DestAddrSize = (byte) value.Length;
+                _destAddressForFrame = value;
+            }
         }
 
         public byte DestAddrSize { get; set; } = 1;
 
-        private byte[] _destAddrForFrame;
+        private byte[] _destAddressForFrame;
 
         public ushort LogicAddr
         {
             get => _upperAddrForFrame;
-            set { _upperAddrForFrame = (ushort) ((value << 1) + 1); }
+            set => _upperAddrForFrame = (ushort) ((value << 1) + 1);
         }
 
 
-        public byte SourceAddr
+        public byte SourceAddress
         {
-            get => _sourceAddrForFrame;
-            set { _sourceAddrForFrame = (byte) ((value << 1) + 1); }
+            get => _sourceAddress;
+            set => _sourceAddress = (byte) ((value << 1) + 1);
         }
 
 
         public byte ControlField { get; set; }
 
 
-        public Hdlc46Frame(byte[] destAddr, string password, byte sourceAddr)
+        public Hdlc46Frame(byte[] destAddress, string password, byte sourceAddress)
         {
             CurrentReceiveSequenceNumber = 0;
             CurrentSendSequenceNumber = 0;
-            DestAddr = destAddr;
-            SourceAddr = sourceAddr;
+            DestAddress = destAddress;
+            SourceAddress = sourceAddress;
             LlcHeadFrameBytes = HdlcLlc.LLCSendBytes;
             PasswordLvl1 = PasswordLvl.LLS;
             Password = password;
@@ -110,7 +120,9 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         }
 
 
-        [Required] [StringLength(8,MinimumLength = 8)] public string Password { get; set; }
+        [Required]
+        [StringLength(8, MinimumLength = 8)]
+        public string Password { get; set; }
 
 
         public byte[] HexPassword => Encoding.Default.GetBytes(Password);
@@ -143,7 +155,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         }
 
 
-        internal const byte HDLCFrameStartEnd = 0x7E;
+        internal const byte HdlcFrameStartEnd = 0x7E;
 
         public const byte FrameType = 160;
 
@@ -168,7 +180,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public ushort PhysicalAddr;
 
-        private byte _sourceAddrForFrame;
+        private byte _sourceAddress;
 
 
         public byte[] Hcs = new byte[2];
@@ -190,11 +202,12 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         private int _currentSendSequenceNumber;
 
-        private ushort _maxReceivePduSize;
+
+        private ushort _maxReceivePduSize = 65535;
 
         public ushort MaxReceivePduSize
         {
-            get { return _maxReceivePduSize; }
+            get => _maxReceivePduSize;
             set
             {
                 _maxReceivePduSize = value;
@@ -206,7 +219,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public byte InvokeId
         {
-            get { return _invokeId; }
+            get => _invokeId;
             set
             {
                 _invokeId = value;
@@ -220,18 +233,16 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
         public enum PasswordLvl
         {
-            HLS,
-
+            NO,
             LLS,
-
-            NO
+            HLS,
         }
 
         private Command _lastCommand;
 
         public Command LastCommand
         {
-            get { return _lastCommand; }
+            get => _lastCommand;
             set
             {
                 _lastCommand = value;

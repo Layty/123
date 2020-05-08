@@ -288,7 +288,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             byte[] dBytes = new byte[_serialPortViewModel.SerialPortMasterModel.SerialPort.BytesToRead];
             _serialPortViewModel.SerialPortMasterModel.SerialPort.Read(dBytes, 0, dBytes.Length);
-            _serialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections =
+            _serialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections =
                 Encoding.Default.GetString(dBytes);
             Messenger.Default.Send(dBytes, "ReceiveMsgFormBaseMeter");
             YModem.ReceivedFromUart(dBytes);

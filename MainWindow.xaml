@@ -123,7 +123,7 @@
                                    FontSize="20" />
                         <!-- 窗口操作区-->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        
+
                             <materialDesign:PopupBox Margin="5" PopupMode="Click">
                                 <ListBox>
                                     <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
@@ -605,11 +605,15 @@
 
 
                 <!-- 导航区 -->
+
                 <materialDesign:Card Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
                     <Frame x:Name="Frame"
                            NavigationUIVisibility="Hidden"
                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                            Content="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
+
+
                 </materialDesign:Card>
 
 
@@ -642,47 +646,49 @@
                                 Text="{Binding LoginModel.Report}" />
                         </StackPanel>
 
-                     
+
                         <CheckBox IsChecked="False" Margin="3" Click="CheckBoxLogShowUp_OnClick"
                                   x:Name="CheckBoxLogShowUp">
                             显示报文
                         </CheckBox>
                         <UniformGrid Rows="2">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                <materialDesign:PackIcon Kind="Ethernet"></materialDesign:PackIcon>
-                                <TextBlock Name="BlkNetSend" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                <materialDesign:PackIcon Kind="Ethernet" />
+                                <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
                                     <TextBlock.RenderTransform>
                                         <TransformGroup>
-                                            <RotateTransform Angle="-90" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                  <materialDesign:PackIcon Kind="Send" />
-
-                                </TextBlock>
-                                <TextBlock x:Name="BlkNetReceive" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="90" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                  <materialDesign:PackIcon Kind="Send" />
-                                </TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="SerialPort"></materialDesign:PackIcon>
-                                <TextBlock Name="BlkSend" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="-90" />
+                                            <RotateTransform Angle="-45" />
                                         </TransformGroup>
                                     </TextBlock.RenderTransform>
                                     <materialDesign:PackIcon Kind="Send" />
 
                                 </TextBlock>
-                                <TextBlock x:Name="BlkReceive" Foreground="#EE3B3B" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock x:Name="BlkNetReceive" Foreground="#FFFFFFFF"
+                                           RenderTransformOrigin="0.5,0.5">
                                     <TextBlock.RenderTransform>
                                         <TransformGroup>
-                                            <RotateTransform Angle="90" />
+                                            <RotateTransform Angle="145" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="SerialPort" />
+                                <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="-45" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+
+                                </TextBlock>
+                                <TextBlock x:Name="BlkReceive" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="145" />
                                         </TransformGroup>
                                     </TextBlock.RenderTransform>
                                     <materialDesign:PackIcon Kind="Send" />
@@ -726,7 +732,7 @@
                                     <StackPanel Grid.Row="0">
 
                                         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                 Text="{Binding SerialPortMasterModel.KeepMaxSendAndReceiveDataLength}"
+                                                 Text="{Binding SerialPortMasterModel.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
                                                  materialDesign:HintAssist.Hint="最大缓存字符数" />
                                         <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
                                                   IsChecked="True" />
@@ -750,7 +756,7 @@
                                                  Style="{StaticResource MaterialDesignTextBox}"
                                                  materialDesign:HintAssist.Hint="数据收发历史缓存区"
                                                  TextChanged="TextBoxBase_OnTextChanged"
-                                                 Text="{Binding SerialPortMasterModel.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 Text="{Binding SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                  Margin="3" />
                                     </Grid>
                                 </Grid>

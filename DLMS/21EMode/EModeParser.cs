@@ -40,7 +40,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 return false;
             }
-            if (receiveBytes[0] != 6)
+            if (receiveBytes[0] != EMode.Ack)
             {
                 return false;
             }

@@ -14,7 +14,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 
         public byte[] GetRequestFrameBytes()
         {
-            string s = '/' + "?" + _eMode.Devicestr + "!\r\n";
+            string s = '/' + "?" + _eMode.DeviceAddress + "!\r\n";
             return Encoding.Default.GetBytes(s);
         }
 

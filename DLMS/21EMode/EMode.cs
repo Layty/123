@@ -1,6 +1,5 @@
 ﻿namespace 三相智慧能源网关调试软件.DLMS._21EMode
 {
-
     public class EMode
     {
         internal const char StartChar = '/';
@@ -9,28 +8,28 @@
 
         internal const char EndChar = '!';
 
-        private string _devicestr = "0010";
+       
 
         internal const char CompletCr = '\r';
 
         internal const char CompletLf = '\n';
 
-        internal const byte Ack = 6;
+        internal const byte Ack = 0x06;
 
         public string _baudZ;
 
         internal const char Delimiter = '\\';
 
         private static string _propBaud;
-
-        public string Devicestr
+        private string _deviceAddress ;
+        public string DeviceAddress
         {
-            get { return _devicestr; }
+            get => _deviceAddress;
             set
             {
                 if (value.Length <= 32)
                 {
-                    _devicestr = value;
+                    _deviceAddress = value;
                 }
             }
         }
@@ -177,11 +176,14 @@
             }
         }
 
-        public EMode(int requestBaud, string deviceStr = "")
+        public EMode(int requestBaud, string deviceAddress = "")
         {
-            Devicestr = deviceStr;
+            DeviceAddress = deviceAddress;
+            AckBaudZ = requestBaud;
+        }
+        public EMode(int requestBaud)
+        {
             AckBaudZ = requestBaud;
         }
     }
 }
-	

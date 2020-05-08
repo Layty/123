@@ -9,9 +9,11 @@ namespace 三相智慧能源网关调试软件.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var ss = value as StringBuilder;
-         
-            return ss.ToString();
+            if (value is StringBuilder ss) return ss.ToString();
+            else
+            {
+                return "";
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

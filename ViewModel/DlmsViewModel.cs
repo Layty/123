@@ -25,7 +25,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public bool IsUse21E
         {
-            get { return _isUse21E; }
+            get => _isUse21E;
             set
             {
                 _isUse21E = value;
@@ -40,7 +40,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public string FactoryStatus
         {
-            get { return _factoryStatus; }
+            get => _factoryStatus;
             set
             {
                 _factoryStatus = value;
@@ -55,7 +55,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public string SoftVersion
         {
-            get { return _softVersion; }
+            get => _softVersion;
             set
             {
                 _softVersion = value;
@@ -91,6 +91,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
             EModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortMasterModel, ""); //近红外
+           
             //HdlcFrameMaker = new HdlcFrameMaker(new byte[]
             //{
             //    0,
@@ -102,7 +103,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 3
             }, "33333333", 1);
-            HdlcFrameMaker.Hdlc46Frame.MaxReceivePduSize = 65535;
+            //HdlcFrameMaker.Hdlc46Frame.MaxReceivePduSize = 65535;
             Hdlc46Executor = new Hdlc46Executor(SerialPortViewModel.SerialPortMasterModel, HdlcFrameMaker);
 
             InitCommand = new RelayCommand(Init);
@@ -172,47 +173,47 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始搞事情";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "开始搞事情";
                 InitCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "读软件版本";
                 GetSoftVersionCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "进入工厂模式";
                 EnterFactorCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "进入升级模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "进入升级模式";
                 EnterUpgradeModeCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "请开始你的表演";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "请开始你的表演";
             });
             OneKeyLeaveCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "开始收拾";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "开始收拾";
                 InitCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读软件版本";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "读软件版本";
                 GetSoftVersionCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "设置捕获时间60s";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "设置捕获时间60s";
                 SetCapturePeriodCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "退出工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "退出工厂模式";
                 QuitFactorCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "读工厂模式";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "读工厂模式";
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "事了拂袖去";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "事了拂袖去";
                 DisconnectCommand.Execute(null);
                 await Task.Delay(500);
-                SerialPortViewModel.SerialPortMasterModel.SendAndReceiveDataCollections = "深藏功与名";
+                SerialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections = "深藏功与名";
             });
         }
 
@@ -221,7 +222,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             try
             {
-                if (StartProtocolType == StartProtocolType.IEC)
+                if (StartProtocolType == StartProtocolType.IEC21E)
                 {
                     if (await EModeExecutor.Execute())
                     {
@@ -272,7 +273,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand InitCommand
         {
-            get { return _initCommand; }
+            get => _initCommand;
             set
             {
                 _initCommand = value;
@@ -287,7 +288,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand DisconnectCommand
         {
-            get { return _disconnectCommand; }
+            get => _disconnectCommand;
             set
             {
                 _disconnectCommand = value;
@@ -302,7 +303,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand GetSoftVersionCommand
         {
-            get { return _getSoftVersionCommand; }
+            get => _getSoftVersionCommand;
             set
             {
                 _getSoftVersionCommand = value;
@@ -317,7 +318,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand ReadFactoryCommand
         {
-            get { return _readFactoryCommand; }
+            get => _readFactoryCommand;
             set
             {
                 _readFactoryCommand = value;
@@ -332,7 +333,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand EnterFactorCommand
         {
-            get { return _enterFactoryCommand; }
+            get => _enterFactoryCommand;
             set
             {
                 _enterFactoryCommand = value;
@@ -347,7 +348,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand QuitFactorCommand
         {
-            get { return _quitFactoryCommand; }
+            get => _quitFactoryCommand;
             set
             {
                 _quitFactoryCommand = value;
@@ -362,7 +363,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand SetCapturePeriodCommand
         {
-            get { return _setCapturePeriodCommand; }
+            get => _setCapturePeriodCommand;
             set
             {
                 _setCapturePeriodCommand = value;
@@ -378,7 +379,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public RelayCommand ClearAllCommand
         {
-            get { return _clearAllCommand; }
+            get => _clearAllCommand;
             set
             {
                 _clearAllCommand = value;
