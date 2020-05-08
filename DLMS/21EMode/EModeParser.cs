@@ -5,8 +5,6 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
 {
     public class EModeParser
     {
-        private EMode eMode;
-
         public static bool CheckServerFrameWisEquals2(byte[] receiveBytes)
         {
             if (receiveBytes.Length == 0)

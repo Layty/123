@@ -18,21 +18,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
     {
         #region 属性
 
-        private bool _isUse21E;
-
-        /// <summary>
-        /// 是否使用21E模式开启通信
-        /// </summary>
-        public bool IsUse21E
-        {
-            get => _isUse21E;
-            set
-            {
-                _isUse21E = value;
-                RaisePropertyChanged();
-            }
-        }
-
         private string _factoryStatus;
 
         /// <summary>
@@ -103,7 +88,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 3
             }, "33333333", 1);
-            //HdlcFrameMaker.Hdlc46Frame.MaxReceivePduSize = 65535;
             Hdlc46Executor = new Hdlc46Executor(SerialPortViewModel.SerialPortMasterModel, HdlcFrameMaker);
 
             InitCommand = new RelayCommand(Init);

@@ -254,8 +254,8 @@
     <Compile Include="ViewModel\UserLoginViewModel.cs" />
     <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
-    <Compile Include="View\BaseMeter\DLMSSettingPage.xaml.cs">
-      <DependentUpon>DLMSSettingPage.xaml</DependentUpon>
+    <Compile Include="View\BaseMeter\DLMSSettingsPage.xaml.cs">
+      <DependentUpon>DLMSSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\BaseMeter\SerialPortPage.xaml.cs">
       <DependentUpon>SerialPortPage.xaml</DependentUpon>
@@ -346,7 +346,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BaseMeter\DLMSSettingPage.xaml">
+    <Page Include="View\BaseMeter\DLMSSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

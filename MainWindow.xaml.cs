@@ -22,6 +22,9 @@ namespace 三相智慧能源网关调试软件
     {
         public DispatcherTimer Timer = new DispatcherTimer();
 
+        public readonly ColorAnimation ColorAnimation = new ColorAnimation
+            {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,8 +59,6 @@ namespace 三相智慧能源网关调试软件
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
 
-            //Messenger.Default.Register<byte[]>(this, "SendFileToBaseMeter", ShowBaseMeter);
-            //Messenger.Default.Register<byte[]>(this, "ReceiveMsgFormBaseMeter", ShowReceiveMsg);
             Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
             Messenger.Default.Register<byte[]>(this, "SendDataEvent", PlayNetSendFlashing);
@@ -68,22 +69,7 @@ namespace 三相智慧能源网关调试软件
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                //var ani = new ColorAnimation();
-                //ani.Duration = new TimeSpan(2000);
-
-                //ani.From = Colors.Green;
-                //ani.To = Colors.White;
-
-                var anikey = new ColorAnimationUsingKeyFrames();
-
-                anikey.KeyFrames = new ColorKeyFrameCollection()
-                {
-                    new EasingColorKeyFrame(Colors.Red,KeyTime.FromTimeSpan(new TimeSpan(0))),
-                    new EasingColorKeyFrame(Colors.Red,KeyTime.FromTimeSpan(new TimeSpan(1000))),
-                    new EasingColorKeyFrame(Colors.White,KeyTime.FromTimeSpan(new TimeSpan(2000))),
-                };
-                BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, anikey);
-                // BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ani);
+                BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
 
@@ -91,60 +77,25 @@ namespace 三相智慧能源网关调试软件
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                //var ani = new ColorAnimation();
-                //ani.Duration = new TimeSpan(2000);
-                ////ani.From = (Color) ColorConverter.ConvertFromString("#FFFFFF00");
-                ////    ani.To = (Color) ColorConverter.ConvertFromString("#FFFFFFFF");
-                //ani.From = Colors.Yellow;
-                //ani.To = Colors.White;
-
-
-                //BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ani);
-                var anikey = new ColorAnimationUsingKeyFrames();
-
-                anikey.KeyFrames = new ColorKeyFrameCollection()
-                {
-                    new EasingColorKeyFrame(Colors.Red,KeyTime.FromTimeSpan(new TimeSpan(0))),
-                    new EasingColorKeyFrame(Colors.Red,KeyTime.FromTimeSpan(new TimeSpan(1000))),
-                    new EasingColorKeyFrame(Colors.White,KeyTime.FromTimeSpan(new TimeSpan(2000))),
-                };
-                BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, anikey);
+                BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
 
-    
+
         private void PlayNetSendFlashing(byte[] obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                var ani = new ColorAnimation();
-                ani.Duration = new TimeSpan(2000);
-                ani.From = Colors.Red;
-                ani.To = Colors.White;
-                BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ani);
+                BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
+
         private void PlayNetReceiveFlashing(byte[] obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
-                var ani = new ColorAnimation();
-                ani.Duration = new TimeSpan(2000);
-                ani.From = Colors.Red;
-                ani.To = Colors.White;
-                BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ani);
+                BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
-        }
-        private void ShowReceiveMsg(byte[] obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI((() =>
-            {
-                TextBlockMyLog.Text += $"{DateTime.Now} {(obj.ByteToString())}\r\n";
-            }));
-        }
-        private void ShowBaseMeter(byte[] obj)
-        {
-            TextBlockMyLog.Text += $"{DateTime.Now} 发送 {obj.ByteToString()}\r\n";
         }
 
         private void Timer_Tick(object sender, EventArgs e)

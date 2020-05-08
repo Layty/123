@@ -112,7 +112,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     new MenuModel
                     {
                         Title = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
-                        Assembly = "BaseMeter.DLMSSettingPage",
+                        Assembly = "BaseMeter.DLMSSettingsPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel
