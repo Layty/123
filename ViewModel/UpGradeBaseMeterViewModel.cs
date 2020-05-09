@@ -116,20 +116,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentCount = value;
-                Percentage = (_currentCount / FileSize)*100;
                 RaisePropertyChanged();
             }
         }
-
-
-        public double Percentage
-        {
-            get => _percentage;
-            set { _percentage = value; RaisePropertyChanged(); }
-        }
-
-        private double _percentage;
-
 
 
         public byte[] PacketBuff

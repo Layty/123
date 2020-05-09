@@ -10,14 +10,16 @@
       mc:Ignorable="d"
       d:DesignHeight="500" d:DesignWidth="600"
       Title="SerialPortPage">
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost Identifier="RootDialog1">
+        <!--<materialDesign:DialogHost.DialogContent>
+            <myControl:MessageBox></myControl:MessageBox>
+        </materialDesign:DialogHost.DialogContent>-->
         <Grid>
             <materialDesign:Card>
                 <GroupBox Header="串口参数" Margin="5"
                           DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
                     <StackPanel x:Name="StackPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                 Margin="10">
-
                         <ComboBox x:Name="CmbPortName"
                                   ItemsSource="{Binding PortNamesCollection}"
                                   SelectedValue="{Binding SerialPortMasterModel.PortName,UpdateSourceTrigger=PropertyChanged  ,Mode=TwoWay}"

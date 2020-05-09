@@ -35,8 +35,8 @@ namespace 三相智慧能源网关调试软件.View.BaseMeter
             }
             catch (Exception exception)
             {
-                var view = new MyControl.MessageBox(exception.Message, exception.Source);
-                 await DialogHost.Show(view, "RootDialog");
+                var view = new MyControl.MessageBox() { Message = exception.Message, Title = exception.Source };
+                await DialogHost.Show(view, "RootDialog1");
             }
         }
     }

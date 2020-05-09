@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="350" d:DesignWidth="500">
     <UserControl.RenderTransform>
         <ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="{Binding ElementName=Scale ,Path=ScaleX }" />
     </UserControl.RenderTransform>
-    <Grid Background="AliceBlue">
+    <Grid Background="{DynamicResource PrimaryHueLightBrush}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -23,19 +22,21 @@
                 <Setter Property="Foreground" Value="DarkGray" />
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="Aqua" />
+                        <Setter Property="Background" Value="{DynamicResource PrimaryHueDarkBrush }" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
         </Grid.Resources>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="&#xe629;" FontSize="30" FontFamily="/Fonts/#iconfont" />
-            <TextBlock Text="{Binding Title}" FontSize="30" />
+            <materialDesign:PackIcon Kind="WarningCircle" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    
+                                     ></materialDesign:PackIcon>
+            <TextBlock Text="{Binding Title}" />
         </StackPanel>
 
         <TextBlock Grid.Row="1" Text="{Binding Path=Message}" FontSize="20" Style="{StaticResource MessageStyle}" />
-        <Button Grid.Row="2" FontSize="20" Width="100" Height="30"
+        <Button Grid.Row="2" FontSize="20" Width="100" Height="30" Margin="5"
                 materialDesign:ButtonAssist.CornerRadius="20" x:Name="Button"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
             OK
