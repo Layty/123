@@ -13,7 +13,6 @@
       d:DesignHeight="650" d:DesignWidth="800"
       Title="UpGradeBaseMeterPage">
     <materialDesign:Card>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -105,16 +104,17 @@
                         </Grid>
 
                         <ProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" Value="{Binding CurrentCount}"
-                                     Height="20"
+                                     Height="30"
                                      Name="ProgressBar" />
-                        <!--<hc:WaveProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0"
-                                        Value="{Binding CurrentCount}"
-
-                                        Name="ProgressBar" />-->
+                    
+                        <hc:WaveProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" ShowText="False"
+                                        Value="{Binding CurrentCount}" 
+                                        Name="ProgressBarWave" />
+                        
                         <TextBlock Text="{Binding ElementName=ProgressBar,Path=Value}" Margin="5" />
                         <TextBlock Text="{Binding ElementName=ProgressBar,Path=Maximum}" Margin="5" />
-                        <TextBlock Text="{Binding PacketNo,UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-                        <TextBlock Text="{Binding FileIndex,UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                        <TextBlock Text="{Binding PacketNo,UpdateSourceTrigger=PropertyChanged,StringFormat='包数{0}'}" Margin="5" />
+                        <TextBlock Text="{Binding FileIndex,UpdateSourceTrigger=PropertyChanged,StringFormat='文件索引{0}'}" Margin="5" />
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="ButtonStartSendFile" Margin="5" ToolTip="发送"
                                     IsEnabled="{Binding YModem.IsStart, Converter={ converters:InverseBooleanConverter} }"

@@ -20,10 +20,12 @@
             </LinearGradientBrush>
             <Style  TargetType="Path" BasedOn="{x:Null}"></Style>
             <ResourceDictionary.MergedDictionaries>
+                <!--HandyControl -->
                 <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>-->
-                <ResourceDictionary Source="ResourceDictionary/MyDictionary.xaml" />
                
+                <ResourceDictionary Source="ResourceDictionary/MyDictionary.xaml" />
+                <!--MaterialDesignThemes-->
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.light.xaml" />
                 <ResourceDictionary
