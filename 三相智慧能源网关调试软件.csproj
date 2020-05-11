@@ -224,6 +224,9 @@
     <Compile Include="MyControl\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\NetLogger.xaml.cs">
+      <DependentUpon>NetLogger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
@@ -247,7 +250,7 @@
     <Compile Include="Model\GateWayLoginModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
     <Compile Include="Model\InstantDataModel.cs" />
-    <Compile Include="Model\MyLogModel.cs" />
+    <Compile Include="Model\MyNetLogModel.cs" />
     <Compile Include="ValidateModelBase.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
     <Compile Include="ViewModel\EnergyDataViewModel.cs" />
@@ -286,6 +289,9 @@
     </Compile>
     <Compile Include="View\Management\GlobalParameterPage.xaml.cs">
       <DependentUpon>GlobalParameterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\SerialPortLogger.xaml.cs">
+      <DependentUpon>SerialPortLogger.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ServerCenter\TelnetPage.xaml.cs">
       <DependentUpon>TelnetPage.xaml</DependentUpon>
@@ -328,6 +334,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MyControl\MessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\NetLogger.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -386,6 +396,10 @@
     <Page Include="View\MessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyControl\SerialPortLogger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ServerCenter\TelnetPage.xaml">
       <SubType>Designer</SubType>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,7 +9,6 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.View.Management;
 
 namespace 三相智慧能源网关调试软件
@@ -24,7 +22,8 @@ namespace 三相智慧能源网关调试软件
 
         public readonly ColorAnimation ColorAnimation = new ColorAnimation
             {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
-
+        public UserLoginPage UserLoginPage = new UserLoginPage();
+        public GateWayLoginPage GateWayLoginPage = new GateWayLoginPage();
         public MainWindow()
         {
             InitializeComponent();
@@ -108,16 +107,15 @@ namespace 三相智慧能源网关调试软件
             if (ExpandMenu.IsEnabled)
             {
                 ExpandMenu.IsChecked = true;
-                Frame.Navigate(GateWayLoginPage);
+                Frame.Navigate(new GateWayLoginPage());
             }
         }
 
-        public UserLoginPage UserLoginPage = new UserLoginPage();
-        public GateWayLoginPage GateWayLoginPage = new GateWayLoginPage();
+      
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(UserLoginPage);
+            Frame.Navigate(new UserLoginPage());
         }
 
 
@@ -160,33 +158,20 @@ namespace 三相智慧能源网关调试软件
 
         private void ButtonGateWayLogin_OnClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(GateWayLoginPage);
+            Frame.Navigate(new GateWayLoginPage());
         }
 
         private void ButtonUserLogin_OnClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(UserLoginPage);
+            Frame.Navigate(new UserLoginPage());
         }
 
-        private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (CheckBoxScrollToEnd.IsChecked == true)
-            {
-                TextBoxReceive.ScrollToEnd();
-            }
-        }
+     
 
 
         private void CheckBoxLogShowUp_OnClick(object sender, RoutedEventArgs e)
         {
-            if (CheckBoxLogShowUp.IsChecked == true)
-            {
-                GridLog.Width = 250;
-            }
-            else
-            {
-                GridLog.Width = 0;
-            }
+            GridLog.Width = CheckBoxLogShowUp.IsChecked == true ? 250 : 0;
         }
     }
 }

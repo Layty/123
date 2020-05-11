@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.SerialPortLogger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <GroupBox Header="串口报文"
+              DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Text="{Binding SerialPortMasterModel.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
+                         materialDesign:HintAssist.Hint="最大缓存字符数" />
+                <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
+                          IsChecked="True" />
+                <Button Name="ButtonClearData"
+                        Command="{Binding ClearAllDataCommand}"
+                        Margin="5"
+                        materialDesign:RippleAssist.Feedback="#DD000000">
+                    清空缓存(_C)
+                </Button>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <TextBox Name="TextBoxReceive"
+                         BorderThickness="2"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         SpellCheck.IsEnabled="True"
+                         Style="{StaticResource MaterialDesignTextBox}"
+                         materialDesign:HintAssist.Hint="数据收发历史缓存区"
+                         TextChanged="TextBoxBase_OnTextChanged"
+                         Text="{Binding SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                         Margin="3" />
+                <x:Code>
+                    <![CDATA[
+                         private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+                            {
+                                if (CheckBoxScrollToEnd.IsChecked == true)
+                                {
+                                    TextBoxReceive.ScrollToEnd();
+                                }
+                            }
+                        ]]>
+                </x:Code>
+
+            </Grid>
+        </Grid>
+    </GroupBox>
+
+</UserControl>

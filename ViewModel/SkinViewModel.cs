@@ -54,7 +54,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             new PaletteHelper().SetTheme(theme);
         }
 
-        public RelayCommand<bool> ToggleBaseCommand { get; } = new RelayCommand<bool>(o => ApplyBase(o));
+        public RelayCommand<bool> ToggleBaseCommand { get; } = new RelayCommand<bool>(ApplyBase);
 
         private static void ApplyBase(bool isDark)
         {
@@ -64,10 +64,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         public RelayCommand<Swatch> ApplyPrimaryCommand { get; } =
-            new RelayCommand<Swatch>(o => ApplyPrimary(o));
+            new RelayCommand<Swatch>(ApplyPrimary);
 
         public RelayCommand<Swatch> ApplyAccentCommand { get; } =
-            new RelayCommand<Swatch>(o => ApplyAccent(o));
+            new RelayCommand<Swatch>(ApplyAccent);
 
         private static void ApplyPrimary(Swatch swatch)
         {

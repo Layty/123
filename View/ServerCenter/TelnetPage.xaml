@@ -6,15 +6,11 @@
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
-      d:DesignHeight="600" d:DesignWidth="1000"
+      d:DesignHeight="450" d:DesignWidth="600"
       DataContext="{Binding Source={StaticResource Locator} ,Path=TcpClientHelper}"
       Title="TelnetPage">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
         <materialDesign:Card>
             <Grid>
                 <Grid.RowDefinitions>
@@ -141,18 +137,18 @@
                             </StackPanel>
 
                         </Button>
-
+                        <TextBox x:Name="TextBoxMsg" Text="root" />
+                        <Button Command="{Binding SendMsgCommand}" Content="自定义发送"
+                                CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
-                    <!--<TextBox x:Name="TextBoxMsg" Text="root" />-->
-                    <!--<Button Command="{Binding SendMsgCommand}" Content="自定义发送"
-                                CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" />-->
+              
 
 
                 </Grid>
 
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Card Grid.Column="1">
+        <!--<materialDesign:Card Grid.Column="1">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -173,6 +169,6 @@
                 </ScrollViewer>
             </Grid>
 
-        </materialDesign:Card>
+        </materialDesign:Card>-->
     </Grid>
 </Page>

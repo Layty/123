@@ -25,7 +25,7 @@
                     <ScrollViewer >
                         <UniformGrid Rows="2">
                             <Grid>
-                                <TextBlock Style="{x:Null}" x:Name="TextBlockMyLog" Text="{Binding  MyLog.CommandLog ,Mode=OneWay}" TextWrapping="Wrap" >
+                                <TextBlock Style="{x:Null}" x:Name="TextBlockMyLog" Text="{Binding  MyNetLog.Log ,Mode=OneWay}" TextWrapping="Wrap" >
                                     <TextBlock.DataContext>
                                         <Binding Source="{StaticResource Locator}" Path="Log"></Binding>
                                     </TextBlock.DataContext>

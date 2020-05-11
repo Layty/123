@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.Model;
 
@@ -12,42 +13,47 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (IsInDesignMode)
             {
-                MyLog = new MyLogModel {CommandLog = ("1231222222222222222222222222222222222222223")};
+                MyNetLog = new MyNetLogModel {Log = "1231222222222222222222222222222222222222223"};
             }
             else
             {
-                MyLog = new MyLogModel();
-                Messenger.Default.Register<byte[]>(this, "SendDataEvent", ENetClientHelper_SendData);
-                Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", ENetClientHelper_ReceiveData);
-                Messenger.Default.Register<string>(this, "ENetErrorEvent", (p => { MyLog.CommandLog += p; }));
+                MyNetLog = new MyNetLogModel();
+                ClearBufferCommand = new RelayCommand(() => { MyNetLog.ClearBuffer(); });
+                Messenger.Default.Register<byte[]>(this, "SendDataEvent",
+                    sendData => { MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData); });
+                Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent",
+                    receiveData => { MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData); });
+                Messenger.Default.Register<string>(this, "ENetErrorEvent",
+                    errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
                 Messenger.Default.Register<string>(this, "Status",
-                    (
-                        p => { MyLog.CommandLog += DateTime.Now + p + Environment.NewLine; }
-                    ));
+                    status => { MyNetLog.Log = DateTime.Now +"Status" + status + Environment.NewLine; }
+                );
             }
         }
 
 
-        private void ENetClientHelper_ReceiveData(byte[] bytes)
-        {
-            MyLog.CommandLog += (DateTime.Now + "<=" + Encoding.Default.GetString(bytes) );
-        }
+        private MyNetLogModel _myNetLog;
 
-        private void ENetClientHelper_SendData(byte[] bytes)
+        public MyNetLogModel MyNetLog
         {
-            MyLog.CommandLog += (DateTime.Now + "=>" + Encoding.Default.GetString(bytes));
-        }
-
-        private MyLogModel _myLog;
-
-        public MyLogModel MyLog
-        {
-            get => _myLog;
+            get => _myNetLog;
             set
             {
-                _myLog = value;
+                _myNetLog = value;
                 RaisePropertyChanged();
             }
         }
+
+        public RelayCommand ClearBufferCommand
+        {
+            get => _clearBufferCommand;
+            set
+            {
+                _clearBufferCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _clearBufferCommand;
     }
 }
