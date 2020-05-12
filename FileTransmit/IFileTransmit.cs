@@ -10,10 +10,8 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
     public delegate void PacketEventHandler(object sender, PacketEventArgs e);
 
-    interface IFileTransmit:ITransmitUart
+   public interface IFileTransmit : ITransmitUart
     {
-
-
         event EventHandler StartSend;
         event EventHandler StartReceive;
         event EventHandler SendNextPacket;
@@ -24,59 +22,41 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         event PacketEventHandler ReceivedPacket;
 
-
         void SendPacket(PacketEventArgs packet);
         void Start();
         void Stop();
         void Abort();
 
+        bool IsStart { get; }
     }
 
     public class PacketEventArgs : EventArgs
     {
-        private readonly int _PacketNo;
-        private readonly int _PacketLen;
-        private readonly byte[] _Packet;
+        public int PacketNo { get; }
 
+        public int PacketLen { get; }
+
+        public byte[] Packet { get; }
 
         public PacketEventArgs(int packetNo, byte[] packet)
             : this(packetNo, packet, packet.Length)
         {
-
         }
 
         public PacketEventArgs(int packetNo, byte[] packet, int packetLen)
         {
-            _PacketNo = packetNo;
-
+            PacketNo = packetNo;
 
             if (packet != null)
             {
                 if (packet.Length <= packetLen)
                 {
-                    _PacketLen = packetLen;
+                    PacketLen = packetLen;
                 }
 
-                _Packet = new byte[_PacketLen];
-                Array.Copy(packet, 0, _Packet, 0, _PacketLen);
+                Packet = new byte[PacketLen];
+                Array.Copy(packet, 0, Packet, 0, PacketLen);
             }
-
-        }
-
-        public int PacketNo
-        {
-            get { return _PacketNo; }
-        }
-
-        public int PacketLen
-        {
-            get { return _PacketLen; }
-        }
-
-        public byte[] Packet
-        {
-            get { return _Packet; }
         }
     }
-
 }

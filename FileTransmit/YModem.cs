@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 
 namespace 三相智慧能源网关调试软件.FileTransmit
 {
@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     /// <summary>
     /// YModem接收到的消息类型
     /// </summary>
-    enum YmodemMessageType : int
+    enum YModemMessageType
     {
         KEY_C,
         ACK,
@@ -35,39 +35,29 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     /// <summary>
     /// YModem接收到的消息内容
     /// </summary>
-    internal class YmodemMessage
+    internal class YModemMessage
     {
-        private YmodemMessageType _MessageType;
-        private object _Value;
-
-
-        public YmodemMessage(YmodemMessageType type)
+        public YModemMessage(YModemMessageType type)
             : this(type, null)
         {
         }
 
-        public YmodemMessage(YmodemMessageType type, object value)
+        public YModemMessage(YModemMessageType type, object value)
         {
-            _MessageType = type;
-            _Value = value;
+            MessageType = type;
+            Value = value;
         }
 
 
-        public YmodemMessageType MessageType
-        {
-            get { return _MessageType; }
-        }
+        public YModemMessageType MessageType { get; }
 
-        public object Value
-        {
-            get { return _Value; }
-        }
+        public object Value { get; }
     }
 
     /// <summary>
-    /// Xmodem发送步骤
+    /// YModem发送步骤
     /// </summary>
-    internal enum YmodemSendStage : int
+    internal enum YModemSendStage
     {
         WaitReceiveRequestFileInfo, //等待接收端请求文件头
         WaitReceiveRequestFirstPacket,
@@ -77,9 +67,9 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     }
 
     /// <summary>
-    /// Xmodem接收步骤
+    /// YModem接收步骤
     /// </summary>
-    internal enum YmodemReceiveStage : int
+    internal enum YModemReceiveStage
     {
         WaitForFileInfo,
         WaitForFirstPacket,
@@ -103,73 +93,87 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         public YModemType Type { get; set; }
 
         public TransmitMode TransMode { get; set; }
-
-        //public YModemCheckMode CheckMode
-        //{
-        //    get { return _CheckMode; }
-        //    set { _CheckMode = value; }
-        //}
     }
 
-    public class YModem : ObservableObject,IFileTransmit, ITransmitUart 
+    public class YModem : IFileTransmit, ITransmitUart, INotifyPropertyChanged
     {
         /// <summary>
+        /// 数据块起始字符
         /// SOH也是ASCII码的一个控制字符的名称（Start of Heading），取值为十六进制的0x01，
         /// 通常表示成。也常作为分隔符用在字符通讯报文中，例如FIX协议（金融信息交换协议）中字段之间就是用SOH做分隔符
         /// </summary>
-        private readonly byte SOH = 0x01;//数据块起始字符
-
-        private readonly byte STX = 0x02;//1028字节开始
-
-        private readonly byte EOT = 0x04; //文件传输结束
-
-        private readonly byte ACK = 0x06;//确认应答
-
-        private readonly byte NAK = 0x15;//出现错误
-        private readonly byte CAN = 0x18;//取消传输
-        private readonly byte KEY_C = 0x43; //大写字母C
+        private readonly byte SOH = 0x01;
+        /// <summary>
+        /// 1024字节开始
+        /// </summary>
+        private readonly byte STX = 0x02;
+        /// <summary>
+        /// 文件传输结束
+        /// </summary>
+        private readonly byte EOT = 0x04;
+        /// <summary>
+        /// 确认应答
+        /// </summary>
+        private readonly byte ACK = 0x06;
+        /// <summary>
+        /// 出现错误
+        /// </summary>
+        private readonly byte NAK = 0x15;
+        /// <summary>
+        /// 取消传输
+        /// </summary>
+        private readonly byte CAN = 0x18;
+        /// <summary>
+        /// 大写字母C
+        /// </summary>
+        private readonly byte KEY_C = 0x43; 
 
         private int RetryMax;
 
-        YModemInfo ymodemInfo = new YModemInfo();
+        YModemInfo yModemInfo = new YModemInfo();
 
         public bool IsStart
         {
             get => _isStart;
-            set { _isStart = value;RaisePropertyChanged(); }
+            private set
+            {
+                _isStart = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsStart"));
+            }
         }
+
         private bool _isStart;
 
 
         private int reTryCount;
         private ManualResetEvent waitReceiveEvent = new ManualResetEvent(false);
-        private YmodemReceiveStage ReceiveStage;
-        private YmodemSendStage SendStage;
-        private Queue<YmodemMessage> msgQueue = new Queue<YmodemMessage>();
+        private YModemReceiveStage ReceiveStage;
+        private YModemSendStage SendStage;
+        private Queue<YModemMessage> msgQueue = new Queue<YModemMessage>();
 
-        public YModem(TransmitMode transType, YModemType ymodemType, int reTryCount)
+        public YModem(TransmitMode transType, YModemType yModemType, int reTryCount)
         {
             RetryMax = reTryCount;
-            ymodemInfo.Type = ymodemType;
-            ymodemInfo.TransMode = transType;
+            yModemInfo.Type = yModemType;
+            yModemInfo.TransMode = transType;
         }
 
         public void Start()
         {
             IsStart = true;
             reTryCount = 0;
-            ReceiveStage = YmodemReceiveStage.WaitForFileInfo;
-            SendStage = YmodemSendStage.WaitReceiveRequestFileInfo;
+            ReceiveStage = YModemReceiveStage.WaitForFileInfo;
+            SendStage = YModemSendStage.WaitReceiveRequestFileInfo;
             Task.Run(TransThreadHandler);
-            if (ymodemInfo.TransMode == TransmitMode.Receive)
+            if (yModemInfo.TransMode == TransmitMode.Receive)
             {
-                StartReceive?.Invoke(ymodemInfo, null);
+                StartReceive?.Invoke(yModemInfo, null);
             }
         }
 
         public void Stop()
         {
-            if (ymodemInfo.TransMode == TransmitMode.Receive)
+            if (yModemInfo.TransMode == TransmitMode.Receive)
             {
                 Abort();
             }
@@ -184,7 +188,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             IsStart = false;
             SendCAN();
 
-            EndOfTransmit?.Invoke(ymodemInfo, null);
+            EndOfTransmit?.Invoke(yModemInfo, null);
         }
 
 
@@ -194,7 +198,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         /// <param name="data"></param>
         private void ParseReceivedMessage(byte[] data)
         {
-            YmodemMessage receivedMessage;
+            YModemMessage receivedMessage;
 
             if (data == null)
             {
@@ -204,7 +208,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             {
                 if (data[0] == STX || data[0] == SOH) //等于SOH
                 {
-                    receivedMessage = new YmodemMessage(YmodemMessageType.PACKET_ERROR);
+                    receivedMessage = new YModemMessage(YModemMessageType.PACKET_ERROR);
                     int packetLen = 0;
                     if (data[0] == STX)
                     {
@@ -224,19 +228,18 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                             packetNo = data[1];
                         }
 
-                        int frameCheckCode = 0;
                         int calCheckCode = -1;
                         byte[] packet = new byte[packetLen];
 
                         Array.Copy(data, 3, packet, 0, packetLen);
 
-                        frameCheckCode = (data[3 + packetLen] << 8) + data[3 + packetLen + 1];
+                        var frameCheckCode = (data[3 + packetLen] << 8) + data[3 + packetLen + 1];
                         calCheckCode = Convert.ToUInt16(DataCheck.GetCRC(CRCType.CRC16_XMODEM, packet) & 0xFFFF);
 
 
                         if (frameCheckCode == calCheckCode)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.PACKET,
+                            receivedMessage = new YModemMessage(YModemMessageType.PACKET,
                                 new PacketEventArgs(packetNo, packet));
                         }
                     }
@@ -249,23 +252,23 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
                         if (b == EOT)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.EOT);
+                            receivedMessage = new YModemMessage(YModemMessageType.EOT);
                         }
                         else if (b == CAN)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.CAN);
+                            receivedMessage = new YModemMessage(YModemMessageType.CAN);
                         }
                         else if (b == NAK)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.NAK);
+                            receivedMessage = new YModemMessage(YModemMessageType.NAK);
                         }
                         else if (b == ACK)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.ACK);
+                            receivedMessage = new YModemMessage(YModemMessageType.ACK);
                         }
                         else if (b == KEY_C)
                         {
-                            receivedMessage = new YmodemMessage(YmodemMessageType.KEY_C);
+                            receivedMessage = new YModemMessage(YModemMessageType.KEY_C);
                         }
                         else
                         {
@@ -292,7 +295,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         private void SendFrameToUart(byte[] data)
         {
-            SendToUartEvent?.Invoke(ymodemInfo, new SendToUartEventArgs(data));
+            SendToUartEvent?.Invoke(yModemInfo, new SendToUartEventArgs(data));
         }
 
 
@@ -325,42 +328,42 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         private void SendEOT()
         {
             SendFrameToUart(EOT);
-            SendStage = YmodemSendStage.WaitReceiveAnswerEndTransmit;
+            SendStage = YModemSendStage.WaitReceiveAnswerEndTransmit;
         }
 
 
         private void SendNoFilesToSend()
         {
-            //int packetLen = ymodemInfo.Type == YModemType.YModem ? 128 : 1024;
+            //int packetLen = yModemInfo.Type == YModemType.FileTransProtocol ? 128 : 1024;
             byte[] endPacket = new byte[3 + 128 + 2];
             endPacket[0] = 0x01;
             endPacket[1] = 0x00;
             endPacket[2] = 0xFF;
             SendFrameToUart(endPacket);
 
-            EndOfTransmit?.Invoke(ymodemInfo, null);
+            EndOfTransmit?.Invoke(yModemInfo, null);
 
             IsStart = false;
         }
 
-        void TransThreadHandler()
+        private void TransThreadHandler()
         {
             while (IsStart)
             {
-                if (ymodemInfo.TransMode == TransmitMode.Send)
+                if (yModemInfo.TransMode == TransmitMode.Send)
                 {
                     SendHandler();
                 }
-                else if (ymodemInfo.TransMode == TransmitMode.Receive)
+                else if (yModemInfo.TransMode == TransmitMode.Receive)
                 {
                     ReceiveHandler();
                 }
             }
         }
 
-        void SendHandler()
+        private void SendHandler()
         {
-            YmodemMessage msg;
+            YModemMessage msg;
             if (msgQueue.Count > 0)
             {
                 msg = msgQueue.Dequeue();
@@ -369,56 +372,56 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                     reTryCount = 0;
                     switch (msg.MessageType)
                     {
-                        case YmodemMessageType.NAK:
-                            if (SendStage == YmodemSendStage.WaitReceiveAnswerEndTransmit)
+                        case YModemMessageType.NAK:
+                            if (SendStage == YModemSendStage.WaitReceiveAnswerEndTransmit)
                             {
                                 SendEOT();
                             }
                             else
                             {
                                 // 通知重发
-                                ReSendPacket?.Invoke(ymodemInfo, null);
+                                ReSendPacket?.Invoke(yModemInfo, null);
                             }
 
                             break;
-                        case YmodemMessageType.KEY_C:
-                            if (SendStage == YmodemSendStage.WaitReceiveRequestFileInfo)
+                        case YModemMessageType.KEY_C:
+                            if (SendStage == YModemSendStage.WaitReceiveRequestFileInfo)
                             {
                                 // 通知发头一包CRC
-                                StartSend?.Invoke(ymodemInfo, null);
+                                StartSend?.Invoke(yModemInfo, null);
                             }
-                            else if (SendStage == YmodemSendStage.WaitReceiveRequestFirstPacket) //等待第一包
+                            else if (SendStage == YModemSendStage.WaitReceiveRequestFirstPacket) //等待第一包
                             {
-                                SendStage = YmodemSendStage.PacketSending;
+                                SendStage = YModemSendStage.PacketSending;
                                 // 通知发下一包
-                                SendNextPacket?.Invoke(ymodemInfo, null);
+                                SendNextPacket?.Invoke(yModemInfo, null);
                             }
-                            else if (SendStage == YmodemSendStage.WaitReceiveNextFileReq) //接收方请求下一个文件
+                            else if (SendStage == YModemSendStage.WaitReceiveNextFileReq) //接收方请求下一个文件
                             {
                                 SendNoFilesToSend();
                             }
 
 
                             break;
-                        case YmodemMessageType.ACK:
-                            if (SendStage == YmodemSendStage.WaitReceiveRequestFileInfo)
+                        case YModemMessageType.ACK:
+                            if (SendStage == YModemSendStage.WaitReceiveRequestFileInfo)
                             {
-                                SendStage = YmodemSendStage.WaitReceiveRequestFirstPacket; //等待接收方请求第一包数据
+                                SendStage = YModemSendStage.WaitReceiveRequestFirstPacket; //等待接收方请求第一包数据
                             }
-                            else if (SendStage == YmodemSendStage.PacketSending)
+                            else if (SendStage == YModemSendStage.PacketSending)
                             {
                                 // 通知发下一包
-                                SendNextPacket?.Invoke(ymodemInfo, null);
+                                SendNextPacket?.Invoke(yModemInfo, null);
                             }
-                            else if (SendStage == YmodemSendStage.WaitReceiveAnswerEndTransmit)
+                            else if (SendStage == YModemSendStage.WaitReceiveAnswerEndTransmit)
                             {
-                                SendStage = YmodemSendStage.WaitReceiveNextFileReq; //等待接收方请求下一个文件
+                                SendStage = YModemSendStage.WaitReceiveNextFileReq; //等待接收方请求下一个文件
                             }
 
                             break;
-                        case YmodemMessageType.CAN:
+                        case YModemMessageType.CAN:
                             // 通知中止
-                            AbortTransmit?.Invoke(ymodemInfo, null);
+                            AbortTransmit?.Invoke(yModemInfo, null);
 
                             break;
                         default:
@@ -440,40 +443,40 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                     {
                         IsStart = false;
                         //通知接收超时
-                        TransmitTimeOut?.Invoke(ymodemInfo, null);
+                        TransmitTimeOut?.Invoke(yModemInfo, null);
                     }
                 }
             }
         }
 
-        void ReceiveHandler()
+        private void ReceiveHandler()
         {
-            if (ReceiveStage == YmodemReceiveStage.WaitForFileInfo ||
-                ReceiveStage == YmodemReceiveStage.WaitForFirstPacket)
+            if (ReceiveStage == YModemReceiveStage.WaitForFileInfo ||
+                ReceiveStage == YModemReceiveStage.WaitForFirstPacket)
             {
                 SendKEYC();
             }
 
             if (msgQueue.Count > 0)
             {
-                YmodemMessage msg = msgQueue.Dequeue();
+                YModemMessage msg = msgQueue.Dequeue();
                 if (msg != null)
                 {
                     reTryCount = 0;
 
                     switch (msg.MessageType)
                     {
-                        case YmodemMessageType.PACKET:
+                        case YModemMessageType.PACKET:
 
                             PacketEventArgs e = msg.Value as PacketEventArgs;
-                            if (ReceiveStage == YmodemReceiveStage.WaitForFileInfo)
+                            if (ReceiveStage == YModemReceiveStage.WaitForFileInfo)
                             {
                                 if (e.PacketNo == 0)
                                 {
-                                    ReceiveStage = YmodemReceiveStage.WaitForFirstPacket;
+                                    ReceiveStage = YModemReceiveStage.WaitForFirstPacket;
                                     SendACK();
 
-                                    ReceivedPacket?.Invoke(ymodemInfo, new PacketEventArgs(e.PacketNo, e.Packet));
+                                    ReceivedPacket?.Invoke(yModemInfo, new PacketEventArgs(e.PacketNo, e.Packet));
                                 }
 
                                 //else
@@ -482,40 +485,40 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                                 //}
                             }
 
-                            else if (ReceiveStage == YmodemReceiveStage.WaitForFirstPacket ||
-                                     ReceiveStage == YmodemReceiveStage.PacketReceiving)
+                            else if (ReceiveStage == YModemReceiveStage.WaitForFirstPacket ||
+                                     ReceiveStage == YModemReceiveStage.PacketReceiving)
                             {
-                                if (ReceiveStage == YmodemReceiveStage.WaitForFirstPacket)
+                                if (ReceiveStage == YModemReceiveStage.WaitForFirstPacket)
                                 {
-                                    ReceiveStage = YmodemReceiveStage.PacketReceiving;
+                                    ReceiveStage = YModemReceiveStage.PacketReceiving;
                                 }
 
                                 SendACK();
 
-                                ReceivedPacket?.Invoke(ymodemInfo, new PacketEventArgs(e.PacketNo, e.Packet));
+                                ReceivedPacket?.Invoke(yModemInfo, new PacketEventArgs(e.PacketNo, e.Packet));
 
                                 // 通知发下一包
-                                SendNextPacket?.Invoke(ymodemInfo, null);
+                                SendNextPacket?.Invoke(yModemInfo, null);
                             }
 
 
                             break;
-                        case YmodemMessageType.PACKET_ERROR:
+                        case YModemMessageType.PACKET_ERROR:
                             SendNAK();
                             // 通知重发
-                            ReSendPacket?.Invoke(ymodemInfo, null);
+                            ReSendPacket?.Invoke(yModemInfo, null);
 
                             break;
-                        case YmodemMessageType.EOT:
+                        case YModemMessageType.EOT:
                             SendACK();
                             // 通知完成
-                            EndOfTransmit?.Invoke(ymodemInfo, null);
+                            EndOfTransmit?.Invoke(yModemInfo, null);
 
                             break;
-                        case YmodemMessageType.CAN:
+                        case YModemMessageType.CAN:
                             SendACK();
                             // 通知中止
-                            AbortTransmit?.Invoke(ymodemInfo, null);
+                            AbortTransmit?.Invoke(yModemInfo, null);
 
                             break;
                         default:
@@ -536,7 +539,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                     {
                         IsStart = false;
                         //通知接收超时
-                        TransmitTimeOut?.Invoke(ymodemInfo, null);
+                        TransmitTimeOut?.Invoke(yModemInfo, null);
                     }
                 }
             }
@@ -563,25 +566,14 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         public void SendPacket(PacketEventArgs packet)
         {
-            int packetLen = 0;
-            int checkLen = 0;
-            byte[] data;
+            int checkLen = 2;
 
-            checkLen = 2;
+            var packetLen = yModemInfo.Type == YModemType.YModem_1K ? 1024 : 128;
 
-            if (ymodemInfo.Type == YModemType.YModem_1K)
-            {
-                packetLen = 1024;
-            }
-            else
-            {
-                packetLen = 128;
-            }
-
-            data = new byte[3 + packetLen + checkLen];
+            var data = new byte[3 + packetLen + checkLen];
 
             data[0] = SOH;
-            if (ymodemInfo.Type == YModemType.YModem_1K)
+            if (yModemInfo.Type == YModemType.YModem_1K)
             {
                 data[0] = STX;
             }
@@ -605,11 +597,14 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         public event SendToUartEventHandler SendToUartEvent;
 
+
         public void ReceivedFromUart(byte[] data)
         {
             ParseReceivedMessage(data);
         }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -22,8 +22,8 @@ namespace 三相智慧能源网关调试软件
 
         public readonly ColorAnimation ColorAnimation = new ColorAnimation
             {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
-        public UserLoginPage UserLoginPage = new UserLoginPage();
-        public GateWayLoginPage GateWayLoginPage = new GateWayLoginPage();
+        //public UserLoginPage UserLoginPage = new UserLoginPage();
+        //public GateWayLoginPage GateWayLoginPage = new GateWayLoginPage();
         public MainWindow()
         {
             InitializeComponent();
@@ -55,8 +55,8 @@ namespace 三相智慧能源网关调试软件
                     ButtonMaximize.Visibility = Visibility.Visible;
                 }));
             //避免最大化时覆盖任务栏
-            this.MaxWidth = SystemParameters.WorkArea.Width;
-            this.MaxHeight = SystemParameters.WorkArea.Height;
+            MaxWidth = SystemParameters.WorkArea.Width;
+            MaxHeight = SystemParameters.WorkArea.Height;
 
             Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
@@ -171,6 +171,17 @@ namespace 三相智慧能源网关调试软件
 
         private void CheckBoxLogShowUp_OnClick(object sender, RoutedEventArgs e)
         {
+            //if (CheckBoxLogShowUp.IsChecked == true)
+            //{
+            //    CardLog.Visibility = Visibility.Visible;
+            //    CardLog.Width = 250;
+            //}
+            //else
+            //{
+            //    CardLog.Visibility = Visibility.Collapsed;
+            //    CardLog.Width = 0;
+            //}
+
             GridLog.Width = CheckBoxLogShowUp.IsChecked == true ? 250 : 0;
         }
     }

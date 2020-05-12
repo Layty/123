@@ -4,7 +4,7 @@ using System.Text;
 namespace 三相智慧能源网关调试软件.FileTransmit
 {
 
-    public enum CRCType : int
+    public enum CRCType
     {
         CRC16_IBM = 0,
         CRC16_MAXIM,
@@ -72,7 +72,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             return param;
         }
 
-        static public UInt32 GetCRC(CRCType type, byte[] data)
+        public static uint GetCRC(CRCType type, byte[] data)
         {
             CRCInfo param;
 
@@ -88,11 +88,11 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             return 0;
         }
 
-        static public UInt16 GetCRC16(CRCInfo param, byte[] data)
+        public static ushort GetCRC16(CRCInfo param, byte[] data)
         {
-            UInt16 crc = (UInt16)param.Init;
-            UInt16 Poly = 0;
-            UInt16 XorOut = (UInt16)param.XorOut;
+            ushort crc = (ushort)param.Init;
+            ushort Poly = 0;
+            ushort XorOut = (ushort)param.XorOut;
 
             if (param.RefIn)
             {
@@ -107,7 +107,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             }
             else
             {
-                Poly = (UInt16)param.Poly;
+                Poly = (ushort)param.Poly;
             }
 
             foreach (byte b in data)
@@ -155,11 +155,11 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             return Convert.ToUInt16(crc ^ XorOut);
         }
 
-        static public UInt32 GetCRC32(CRCInfo param, byte[] data)
+        public static uint GetCRC32(CRCInfo param, byte[] data)
         {
-            UInt32 crc = (UInt32)param.Init;
-            UInt32 Poly = 0;
-            UInt32 XorOut = (UInt32)param.XorOut;
+            uint crc = param.Init;
+            uint Poly = 0;
+            uint XorOut = param.XorOut;
 
             if (param.RefIn)
             {
@@ -174,19 +174,19 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             }
             else
             {
-                Poly = (UInt32)param.Poly;
+                Poly = param.Poly;
             }
 
             foreach (byte b in data)
             {
-                UInt32 bValue;
+                uint bValue;
                 if (param.RefOut)
                 {
                     bValue = Convert.ToUInt32(b);
                 }
                 else
                 {
-                    bValue = Convert.ToUInt32((UInt32)b << 24);
+                    bValue = Convert.ToUInt32((uint)b << 24);
                 }
 
                 crc = Convert.ToUInt32(crc ^ bValue);
@@ -223,9 +223,9 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         }
 
 
-        static public UInt32 GetCheckSum(byte[] data)
+        public static uint GetCheckSum(byte[] data)
         {
-            UInt32 sum = 0;
+            uint sum = 0;
 
             foreach (byte b in data)
             {
@@ -235,7 +235,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             return sum;
         }
 
-        static public byte GetXor(byte[] data)
+        public static byte GetXor(byte[] data)
         {
             byte xor = 0;
 
@@ -251,82 +251,44 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
     public class CRCInfo
     {
-        private UInt32 _Poly;
-        private UInt32 _Init;
-        private UInt32 _XorOut;
-        private bool _RefIn;
-        private bool _RefOut;
-
         public CRCInfo()
             : this(0, 0, false, false, 0)
         {
 
         }
-        public CRCInfo(UInt32 poly, UInt32 init, bool refIn, bool refOut, UInt32 xorOut)
+        public CRCInfo(uint poly, uint init, bool refIn, bool refOut, UInt32 xorOut)
         {
-            _Poly = poly;
-            _Init = init;
-            _RefIn = refIn;
-            _RefOut = refOut;
-            _XorOut = xorOut;
+            Poly = poly;
+            Init = init;
+            RefIn = refIn;
+            RefOut = refOut;
+            XorOut = xorOut;
         }
 
         /// <summary>
         /// 多项式
         /// </summary>
-        public UInt32 Poly
-        {
-            get
-            {
-                return _Poly;
-            }
-            set
-            {
-                _Poly = value;
-            }
-        }
+        public uint Poly { get; set; }
 
         /// <summary>
         /// 初始值
         /// </summary>
-        public UInt32 Init
-        {
-            get
-            {
-                return _Init;
-            }
-            set
-            {
-                _Init = value;
-            }
-        }
+        public uint Init { get; set; }
 
         /// <summary>
         /// 输出CRC异或值
         /// </summary>
-        public UInt32 XorOut
-        {
-            get { return _XorOut; }
-            set { _XorOut = value; }
-        }
+        public uint XorOut { get; set; }
 
         /// <summary>
         /// 输入多项式反序
         /// </summary>
-        public bool RefIn
-        {
-            get { return _RefIn; }
-            set { _RefIn = value; }
-        }
+        public bool RefIn { get; set; }
 
         /// <summary>
         /// 输出数据反序
         /// </summary>
-        public bool RefOut
-        {
-            get { return _RefOut; }
-            set { _RefOut = value; }
-        }
+        public bool RefOut { get; set; }
 
 
         public override string ToString()

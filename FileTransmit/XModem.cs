@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace 三相智慧能源网关调试软件.FileTransmit
 {
@@ -20,7 +21,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     /// <summary>
     /// XModem接收到的消息类型
     /// </summary>
-    enum XmodemMessageType : int
+    enum XModemMessageType : int
     {
         KEY_C,
         ACK,
@@ -34,30 +35,30 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     /// <summary>
     /// XModem接收到的消息内容
     /// </summary>
-    internal class XmodemMessage
+    internal class XModemMessage
     {
-        public XmodemMessage(XmodemMessageType type)
+        public XModemMessage(XModemMessageType type)
             : this(type, null)
         {
 
         }
 
-        public XmodemMessage(XmodemMessageType type, object value)
+        public XModemMessage(XModemMessageType type, object value)
         {
             MessageType = type;
             Value = value;
         }
 
 
-        public XmodemMessageType MessageType { get; }
+        public XModemMessageType MessageType { get; }
 
         public object Value { get; }
     }
 
     /// <summary>
-    /// Xmodem发送步骤
+    /// XModem发送步骤
     /// </summary>
-    internal enum XmodemSendStage : int
+    internal enum XModemSendStage
     {
         WaitReceiveRequest,   //等待接收端请求
         PacketSending,
@@ -65,9 +66,9 @@ namespace 三相智慧能源网关调试软件.FileTransmit
     }
 
     /// <summary>
-    /// Xmodem接收步骤
+    /// XModem接收步骤
     /// </summary>
-    internal enum XmodemReceiveStage : int
+    internal enum XModemReceiveStage
     {
         WaitForFirstPacket,
         PacketReceiving,
@@ -98,35 +99,54 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
     public class XModem : IFileTransmit, ITransmitUart
     {
+        /// <summary>
+        /// 数据块起始字符
+        /// SOH也是ASCII码的一个控制字符的名称（Start of Heading），取值为十六进制的0x01，
+        /// 通常表示成。也常作为分隔符用在字符通讯报文中，例如FIX协议（金融信息交换协议）中字段之间就是用SOH做分隔符
+        /// </summary>
         private readonly byte SOH = 0x01;
-        private readonly byte EOT = 0x04;
-        private readonly byte ACK = 0x06;
-        private readonly byte NAK = 0x15;
-        private readonly byte CAN = 0x18;
-
+        /// <summary>
+        /// 1024字节开始
+        /// </summary>
         private readonly byte STX = 0x02;
-        private readonly byte KEY_C = 0x43; //'C';
+        /// <summary>
+        /// 文件传输结束
+        /// </summary>
+        private readonly byte EOT = 0x04;
+        /// <summary>
+        /// 确认应答
+        /// </summary>
+        private readonly byte ACK = 0x06;
+        /// <summary>
+        /// 出现错误
+        /// </summary>
+        private readonly byte NAK = 0x15;
+        /// <summary>
+        /// 取消传输
+        /// </summary>
+        private readonly byte CAN = 0x18;
+        /// <summary>
+        /// 大写字母C
+        /// </summary>
+        private readonly byte KEY_C = 0x43;
 
         private int RetryMax = 6;
         XModemInfo xmodemInfo = new XModemInfo();
 
-
-        private Thread TransThread;
-        private bool IsStart = false;
+        public bool IsStart { get; private set; }
         private int reTryCount;
         private ManualResetEvent waitReceiveEvent = new ManualResetEvent(false);
 
+        private XModemReceiveStage ReceiveStage;
+        private XModemSendStage SendStage;
+        private Queue<XModemMessage> msgQueue = new Queue<XModemMessage>();
 
-        private XmodemReceiveStage ReceiveStage;
-        private XmodemSendStage SendStage;
-        private Queue<XmodemMessage> msgQueue = new Queue<XmodemMessage>();
-
-        public XModem(TransmitMode transType, XModemType xmodemType, int reTryCount)
+        public XModem(TransmitMode transType, XModemType xModemType, int reTryCount)
         {
             RetryMax = reTryCount;
 
             xmodemInfo.CheckMode = XModemCheckMode.CheckSum;
-            xmodemInfo.Type = xmodemType;
+            xmodemInfo.Type = xModemType;
             xmodemInfo.TransMode = transType;
         }
 
@@ -135,15 +155,11 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             IsStart = true;
             reTryCount = 0;
 
-
-            ReceiveStage = XmodemReceiveStage.WaitForFirstPacket;
-            SendStage = XmodemSendStage.WaitReceiveRequest;
+            ReceiveStage = XModemReceiveStage.WaitForFirstPacket;
+            SendStage = XModemSendStage.WaitReceiveRequest;
             msgQueue.Clear();
 
-            TransThread = new Thread(new ThreadStart(TransThreadHandler));
-            TransThread.IsBackground = true;
-            TransThread.Name = "XmodemTransThread";
-            TransThread.Start();
+            Task.Run(TransThreadHandler);
             if (xmodemInfo.TransMode == TransmitMode.Receive)
             {
                 StartReceive?.Invoke(xmodemInfo, null);
@@ -179,17 +195,17 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         /// <param name="data"></param>
         private void ParseReceivedMessage(byte[] data)
         {
-            XmodemMessage ReceivedMessage = null;
+            XModemMessage receivedMessage;
 
             if (data == null)
             {
-                ReceivedMessage = null;
+                receivedMessage = null;
             }
             else
             {
                 if (data[0] == STX || data[0] == SOH)
                 {
-                    ReceivedMessage = new XmodemMessage(XmodemMessageType.PACKET_ERROR);
+                    receivedMessage = new XModemMessage(XModemMessageType.PACKET_ERROR);
                     int packetLen = 0;
                     if (data[0] == STX)
                     {
@@ -209,11 +225,12 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                             packetNo = data[1];
                         }
 
-                        int frameCheckCode = 0;
-                        int calCheckCode = -1;
                         byte[] packet = new byte[packetLen];
 
                         Array.Copy(data, 3, packet, 0, packetLen);
+
+                        int frameCheckCode;
+                        var calCheckCode = -1;
                         if (xmodemInfo.CheckMode == XModemCheckMode.CheckSum)
                         {
                             frameCheckCode = data[3 + packetLen];
@@ -227,41 +244,41 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
                         if (frameCheckCode == calCheckCode)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.PACKET, new PacketEventArgs(packetNo, packet));
+                            receivedMessage = new XModemMessage(XModemMessageType.PACKET, new PacketEventArgs(packetNo, packet));
                         }
 
                     }
-                    msgQueue.Enqueue(ReceivedMessage);
+                    msgQueue.Enqueue(receivedMessage);
                 }
                 else
                 {
                     foreach (byte b in data)
                     {
-                        ReceivedMessage = null;
+                        receivedMessage = null;
                         if (b == EOT)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.EOT);
+                            receivedMessage = new XModemMessage(XModemMessageType.EOT);
                         }
                         else if (b == CAN)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.CAN);
+                            receivedMessage = new XModemMessage(XModemMessageType.CAN);
                         }
                         else if (b == NAK)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.NAK);
+                            receivedMessage = new XModemMessage(XModemMessageType.NAK);
                         }
                         else if (b == ACK)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.ACK);
+                            receivedMessage = new XModemMessage(XModemMessageType.ACK);
                         }
                         else if (b == KEY_C)
                         {
-                            ReceivedMessage = new XmodemMessage(XmodemMessageType.KEY_C);
+                            receivedMessage = new XModemMessage(XModemMessageType.KEY_C);
                         }
 
-                        if (ReceivedMessage != null)
+                        if (receivedMessage != null)
                         {
-                            msgQueue.Enqueue(ReceivedMessage);
+                            msgQueue.Enqueue(receivedMessage);
                         }
                     }
                 }
@@ -313,7 +330,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         private void SendEOT()
         {
             SendFrameToUart(EOT);
-            SendStage = XmodemSendStage.WaitReceiveAnswerEndTransmit;
+            SendStage = XModemSendStage.WaitReceiveAnswerEndTransmit;
         }
 
 
@@ -336,7 +353,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         void SendHandler()
         {
-            XmodemMessage msg = null;
+            XModemMessage msg = null;
             lock (msgQueue)
             {
                 if (msgQueue.Count > 0)
@@ -351,18 +368,15 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
                 switch (msg.MessageType)
                 {
-                    case XmodemMessageType.NAK:
-                        if (SendStage == XmodemSendStage.WaitReceiveRequest)
+                    case XModemMessageType.NAK:
+                        if (SendStage == XModemSendStage.WaitReceiveRequest)
                         {
-                            SendStage = XmodemSendStage.PacketSending;
+                            SendStage = XModemSendStage.PacketSending;
 
                             xmodemInfo.CheckMode = XModemCheckMode.CheckSum;
-                            if (StartSend != null)
-                            {
-                                StartSend(xmodemInfo, null);
-                            }
+                            StartSend?.Invoke(xmodemInfo, null);
                         }
-                        else if (SendStage == XmodemSendStage.WaitReceiveAnswerEndTransmit)
+                        else if (SendStage == XModemSendStage.WaitReceiveAnswerEndTransmit)
                         {
                             SendEOT();
                         }
@@ -373,23 +387,23 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                         }
                         break;
 
-                    case XmodemMessageType.KEY_C:
-                        if (SendStage == XmodemSendStage.WaitReceiveRequest)
+                    case XModemMessageType.KEY_C:
+                        if (SendStage == XModemSendStage.WaitReceiveRequest)
                         {
-                            SendStage = XmodemSendStage.PacketSending;
+                            SendStage = XModemSendStage.PacketSending;
                             // 通知发头一包CRC
                             xmodemInfo.CheckMode = XModemCheckMode.CRC16;
                             StartSend?.Invoke(xmodemInfo, null);
                         }
                         break;
 
-                    case XmodemMessageType.ACK:
-                        if (SendStage == XmodemSendStage.PacketSending)
+                    case XModemMessageType.ACK:
+                        if (SendStage == XModemSendStage.PacketSending)
                         {
                             // 通知发下一包
                             SendNextPacket?.Invoke(xmodemInfo, null);
                         }
-                        else if (SendStage == XmodemSendStage.WaitReceiveAnswerEndTransmit)
+                        else if (SendStage == XModemSendStage.WaitReceiveAnswerEndTransmit)
                         {
                             // 通知中止
                             //if (AbortTransmit != null)
@@ -401,7 +415,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                         }
                         break;
 
-                    case XmodemMessageType.CAN:
+                    case XModemMessageType.CAN:
                         // 通知中止
                         AbortTransmit?.Invoke(xmodemInfo, null);
                         break;
@@ -433,7 +447,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         void ReceiveHandler()
         {
-            if (ReceiveStage == XmodemReceiveStage.WaitForFirstPacket)
+            if (ReceiveStage == XModemReceiveStage.WaitForFirstPacket)
             {
                 if (reTryCount % 2 == 0)
                 {
@@ -448,7 +462,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             }
 
 
-            XmodemMessage msg = null;
+            XModemMessage msg = null;
             lock (msgQueue)
             {
                 if (msgQueue.Count > 0)
@@ -463,8 +477,8 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
                 switch (msg.MessageType)
                 {
-                    case XmodemMessageType.PACKET:
-                        ReceiveStage = XmodemReceiveStage.PacketReceiving;
+                    case XModemMessageType.PACKET:
+                        ReceiveStage = XModemReceiveStage.PacketReceiving;
                         SendACK();
                         if (ReceivedPacket != null)
                         {
@@ -475,17 +489,17 @@ namespace 三相智慧能源网关调试软件.FileTransmit
                         // 通知发下一包
                         SendNextPacket?.Invoke(xmodemInfo, null);
                         break;
-                    case XmodemMessageType.PACKET_ERROR:
+                    case XModemMessageType.PACKET_ERROR:
                         SendNAK();
                         // 通知重发
                         ReSendPacket?.Invoke(xmodemInfo, null);
                         break;
-                    case XmodemMessageType.EOT:
+                    case XModemMessageType.EOT:
                         SendACK();
                         // 通知完成
                         EndOfTransmit?.Invoke(xmodemInfo, null);
                         break;
-                    case XmodemMessageType.CAN:
+                    case XModemMessageType.CAN:
                         SendACK();
                         // 通知中止
                         AbortTransmit?.Invoke(xmodemInfo, null);
@@ -536,29 +550,11 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         public void SendPacket(PacketEventArgs packet)
         {
-            int packetLen = 0;
-            int checkLen = 0;
-            byte[] data;
+            int checkLen = xmodemInfo.CheckMode == XModemCheckMode.CheckSum ? 1 : 2;
 
-            if (xmodemInfo.CheckMode == XModemCheckMode.CheckSum)
-            {
-                checkLen = 1;
-            }
-            else
-            {
-                checkLen = 2;
-            }
+            int packetLen = xmodemInfo.Type == XModemType.XModem_1K ? 1024 : 128;
 
-            if (xmodemInfo.Type == XModemType.XModem_1K)
-            {
-                packetLen = 1024;
-            }
-            else
-            {
-                packetLen = 128;
-            }
-
-            data = new byte[3 + packetLen + checkLen];
+            var data = new byte[3 + packetLen + checkLen];
 
             data[0] = SOH;
             if (xmodemInfo.Type == XModemType.XModem_1K)
@@ -576,7 +572,7 @@ namespace 三相智慧能源网关调试软件.FileTransmit
             }
             else
             {
-                UInt16 crc = Convert.ToUInt16(DataCheck.GetCRC(CRCType.CRC16_XMODEM, packet.Packet) & 0xFFFF);
+                ushort crc = Convert.ToUInt16(DataCheck.GetCRC(CRCType.CRC16_XMODEM, packet.Packet) & 0xFFFF);
                 data[3 + packetLen] = Convert.ToByte(crc >> 8);
                 data[3 + packetLen + 1] = Convert.ToByte(crc & 0xFF);
             }
@@ -593,7 +589,6 @@ namespace 三相智慧能源网关调试软件.FileTransmit
         public void ReceivedFromUart(byte[] data)
         {
             ParseReceivedMessage(data);
-
         }
         #endregion
     }

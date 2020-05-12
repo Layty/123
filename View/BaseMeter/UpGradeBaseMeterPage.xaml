@@ -17,14 +17,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
-             
             </Grid.ColumnDefinitions>
 
             <GroupBox Grid.Column="0" Margin="5" Header="基本通讯" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
                       IsEnabled="{Binding ElementName=CheckBoxIsUseCom ,Path=IsChecked ,Converter={converters:InverseBooleanConverter}}">
                 <StackPanel>
-                    <Button Content ="自信一点" Command="{Binding OneKeyStartCommand}" x:Name="ButtonOneKeyStart" Margin="5" ></Button>
-                    <Button Content ="深藏功与名" Command="{Binding OneKeyLeaveCommand}" x:Name="ButtonOneKeyLeave" Margin="5"></Button>
+                 
                     <UniformGrid Columns="2">
                         <Button Name="ButtonInit" Content="初始化" Command="{Binding InitCommand}"
                                 Margin="5" />
@@ -67,22 +65,17 @@
                                 <TextBlock Text="设捕获周期60s清空电量曲线" />
                             </StackPanel>
                         </Button>
-                        <!--<Button x:Name="ButtonGetCaptureObjects" Click="ButtonGetCaptureObjects_OnClick" Margin="5">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Alert"
-                                                         Background="{DynamicResource SecondaryAccentBrush}" />
-                                    <TextBlock Text="GetCaptureObjects" />
-                                </StackPanel>
-                            </Button>-->
-                    </StackPanel>
 
+                        <Button Content ="自信一点" Command="{Binding OneKeyStartCommand}" x:Name="ButtonOneKeyStart" Margin="5" ></Button>
+                        <Button Content ="深藏功与名" Command="{Binding OneKeyLeaveCommand}" x:Name="ButtonOneKeyLeave" Margin="5"></Button>
+                    </StackPanel>
 
                 </StackPanel>
             </GroupBox>
-            <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid" Header="YModem1K升级"
+            <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid" Header="FileTransmitProtocol"
                       DataContext="{Binding Source={StaticResource Locator},Path=UpGradeBaseMeterViewModel}">
                 <StackPanel>
-                    <CheckBox Content="升级串口使能" x:Name="CheckBoxIsUseCom"  IsChecked="{Binding IsInitUpGradeSerialPort}"
+                    <CheckBox Content="串口使能" x:Name="CheckBoxIsUseCom"  IsChecked="{Binding IsInitUpGradeSerialPort}"
                               VerticalAlignment="Center" />
                     <ComboBox ItemsSource="{Binding YModemTypeArray}" SelectedItem="{Binding YModemType}"></ComboBox>
                     <StackPanel IsEnabled="{Binding ElementName=CheckBoxIsUseCom,Path=IsChecked}">
@@ -100,7 +93,6 @@
                                     ToolTip="浏览">
                                 <materialDesign:PackIcon Kind="FileFind" />
                             </Button>
-
                         </Grid>
 
                         <ProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" Value="{Binding CurrentCount}"
@@ -117,12 +109,12 @@
                         <TextBlock Text="{Binding FileIndex,UpdateSourceTrigger=PropertyChanged,StringFormat='文件索引{0}'}" Margin="5" />
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="ButtonStartSendFile" Margin="5" ToolTip="发送"
-                                    IsEnabled="{Binding YModem.IsStart, Converter={ converters:InverseBooleanConverter} }"
+                                    IsEnabled="{Binding FileTransmitProtocol.IsStart, Converter={ converters:InverseBooleanConverter} }"
                                     Command="{Binding StartCommand}">
                                 <materialDesign:PackIcon Kind="FileSend" />
                             </Button>
                             <Button x:Name="ButtonStopSendFile" Margin="5" ToolTip="停止"
-                                    IsEnabled="{Binding YModem.IsStart}"
+                                    IsEnabled="{Binding FileTransmitProtocol.IsStart}"
                                     Command="{Binding StopCommand}">
                                 <materialDesign:PackIcon Kind="StopCircle" />
                             </Button>

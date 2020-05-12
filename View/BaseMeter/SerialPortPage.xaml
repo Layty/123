@@ -78,8 +78,8 @@
                         <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsSendDataDisplayFormat16,Mode=TwoWay}" Margin="5 0">十六进制显示发送数据</CheckBox>
                         <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsReceiveFormat16,Mode=TwoWay}" Margin="5 0">十六进制显示接收数据</CheckBox>
                        
-                        <!--<CheckBox Content="实时监控串口数据" Margin="5 0"
-                                  IsChecked="{Binding SerialPortModel.IsAutoDataReceived}" />-->
+                        <CheckBox Content="实时监控串口数据" Margin="5 0"
+                                  IsChecked="{Binding SerialPortMasterModel.IsAutoDataReceived}" />
                         <Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" Margin="5"></Button>
                         <ToggleButton Width="100" Height="100" materialDesign:ShadowAssist.ShadowDepth="Depth5"
                                       VerticalAlignment="Top"

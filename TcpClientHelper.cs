@@ -58,7 +58,8 @@ namespace 三相智慧能源网关调试软件
         private string _serverIpAddress;
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string ServerIpAddress
         {
             get => _serverIpAddress;
@@ -99,7 +100,7 @@ namespace 三相智慧能源网关调试软件
         public bool ConnectResult
         {
             get => ClientSocket.Connected;
-            set
+            private set
             {
                 _connectResult = value;
                 RaisePropertyChanged();
@@ -137,7 +138,8 @@ namespace 三相智慧能源网关调试软件
         private string _afterIp = "192.168.0.145";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string AfterIp
         {
             get => _afterIp;
@@ -152,10 +154,11 @@ namespace 三相智慧能源网关调试软件
         private string _afterGateway = "192.168.0.1";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string AfterGateway
         {
-            get { return _afterGateway; }
+            get => _afterGateway;
             set
             {
                 _afterGateway = value;
@@ -166,7 +169,8 @@ namespace 三相智慧能源网关调试软件
         private string _afterHostIp = "172.32.0.3";
 
         [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$", ErrorMessage = "请输入正确的IP地址！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string AfterHostIp
         {
             get => _afterHostIp;
@@ -253,7 +257,8 @@ namespace 三相智慧能源网关调试软件
                     LocalIp = ipa.ToString();
             }
 
-            ConnectOrDisconnectCommand = new RelayCommand(() => {
+            ConnectOrDisconnectCommand = new RelayCommand(() =>
+            {
                 if (ClientSocket.Connected)
                 {
                     Disconnect();
@@ -316,7 +321,8 @@ namespace 三相智慧能源网关调试软件
                     try
                     {
                         ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        Messenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}", "Status");
+                        Messenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
+                            "Status");
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
                         ConnectResult = true;
                         Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "Status");
@@ -368,7 +374,6 @@ namespace 三相智慧能源网关调试软件
                 ClientSocket.Disconnect(false);
                 ConnectResult = false;
             }
-          
         }
 
         /// <summary>
@@ -407,6 +412,7 @@ namespace 三相智慧能源网关调试软件
             {
                 return;
             }
+
             bool flag = inputSendData == null;
             if (flag)
             {

@@ -1,13 +1,13 @@
 using System;
 using System.Threading;
+using Gurux.DLMS.Enums;
+using Task = System.Threading.Tasks.Task;
 
 namespace 三相智慧能源网关调试软件.FileTransmit
 {
     public class BinarySend : IFileTransmit, ITransmitUart
     {
-        private bool IsStart = false;
-        Thread SendThread;
-
+        public bool IsStart { get;private set; }
         private int DelayTime = 10;
         public BinarySend(int delayTime)
         {
@@ -35,48 +35,37 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         public event EventHandler SendNextPacket;
 
-        public event EventHandler ReSendPacket = null;
+        public event EventHandler ReSendPacket;
 
-        public event EventHandler AbortTransmit = null;
+        public event EventHandler AbortTransmit;
 
-        public event EventHandler TransmitTimeOut = null;
+        public event EventHandler TransmitTimeOut;
 
-        public event EventHandler EndOfTransmit = null;
+        public event EventHandler EndOfTransmit;
 
-        public event PacketEventHandler ReceivedPacket = null;
+        public event PacketEventHandler ReceivedPacket;
 
         public void SendPacket(PacketEventArgs packet)
         {
-            if (SendToUartEvent != null)
-            {
-                SendToUartEvent(null, new SendToUartEventArgs(packet.Packet));
-            }
+            SendToUartEvent?.Invoke(null, new SendToUartEventArgs(packet.Packet));
         }
 
         public void Start()
         {
             IsStart = true;
-            SendThread = new Thread(new ThreadStart(SendThreadHandler));
-            SendThread.IsBackground = true;
-            SendThread.Start();
+            Task.Run(SendThreadHandler);
         }
 
         public void Stop()
         {
             IsStart = false;
-            if (EndOfTransmit!=null)
-            {
-                EndOfTransmit(this, null);
-            }
+            EndOfTransmit?.Invoke(this, null);
         }
 
         public void Abort()
         {
             IsStart = false;
-            if (AbortTransmit!=null)
-            {
-                AbortTransmit(this, null);
-            }
+            AbortTransmit?.Invoke(this, null);
         }
 
         #endregion

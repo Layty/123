@@ -8,7 +8,7 @@
         DataContext="{Binding Source={StaticResource Locator }, Path=Main}"
         mc:Ignorable="d" WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Loaded="MainWindow_OnLoaded" ResizeMode="NoResize"
+        Loaded="MainWindow_OnLoaded" ResizeMode="CanMinimize"
         WindowStyle="None" AllowsTransparency="True"
         x:Name="ThisWindow" Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
         Title="三相智慧能源网关调试软件" Height="650" Width="1024">
@@ -67,23 +67,25 @@
         <materialDesign:DialogHost.DialogContent>
             <myControl:SkinView />
         </materialDesign:DialogHost.DialogContent>
-        <Grid>
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
+            <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" ColumnSpan="2">
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>-->
+            <!-- 标题栏-->
+            <Grid Grid.Row="0" >
                 <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
                                           MouseDown="ColorZone_OnMouseDown"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth3"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="8">
                     <Grid>
-                        <!-- 标题栏-->
+                       
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton x:Name="ExpandMenu" Cursor="Hand" HorizontalAlignment="Left"
                                           IsEnabled="{Binding LoginModel.LoginResult}" Margin="5 0"
@@ -123,7 +125,6 @@
                                    FontSize="20" />
                         <!-- 窗口操作区-->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-
                             <materialDesign:PopupBox Margin="5" PopupMode="Click">
                                 <ListBox>
                                     <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
@@ -133,7 +134,6 @@
                                             <TextBlock>主题</TextBlock>
                                         </StackPanel>
                                     </Button>
-
                                 </ListBox>
                             </materialDesign:PopupBox>
                             <ToggleButton x:Name="ToggleButtonTopMost" Margin="3"
@@ -175,19 +175,22 @@
                         </StackPanel>
 
                     </Grid>
-
-
                 </materialDesign:ColorZone>
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0">
+            <Grid Grid.Row="1" ShowGridLines="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <materialDesign:Card>
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                
+
+             
+                <!-- 右侧菜单栏 -->
+                <materialDesign:Card DockPanel.Dock="Left">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
                               Width="250" Margin="-250 0 0 0" RenderTransformOrigin="0.5,0.5">
                             <Grid.RenderTransform>
@@ -602,22 +605,45 @@
                         </Grid>
                     </ScrollViewer>
                 </materialDesign:Card>
+               
+
+                <!--<GridSplitter  Grid.Column="2" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                               ShowsPreview="False"
+                               ></GridSplitter>-->
+
+                <!-- 日志区 -->
+                <Grid   Grid.Column="3" x:Name="GridLog" Width="0" >
+                    <materialDesign:Card  >
+                        <StackPanel >
+                            <Expander Header="串口参数">
+                                <myControl:SerialPortControl />
+                            </Expander>
+                            <Expander Header="串口报文" MaxHeight="500" Width="Auto" Margin="3">
+                                <myControl:SerialPortLogger />
+                            </Expander>
+                            <Expander Header="网络报文" MaxHeight="500" Width="Auto" Margin="3">
+                                <myControl:NetLogger />
+                            </Expander>
 
 
-                <!-- 导航区 -->
+                        </StackPanel>
 
-                <materialDesign:Card Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                    </materialDesign:Card>
+
+                </Grid>
+                <!-- 导航页面区 -->
+                <materialDesign:Card Grid.Column="1"  >
                     <Frame x:Name="Frame"
                            NavigationUIVisibility="Hidden"
                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                            Content="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
                 </materialDesign:Card>
-
-
+             
             </Grid>
 
-
-            <materialDesign:ColorZone Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Mode="PrimaryMid"
+            <!-- 状态栏 -->
+            <materialDesign:ColorZone Grid.Row="2"   Mode="PrimaryMid"
                                       x:Name="ColorZoneStatus">
                 <Grid>
                     <StackPanel Orientation="Horizontal"
@@ -648,7 +674,7 @@
                                   x:Name="CheckBoxLogShowUp">
                             显示报文
                         </CheckBox>
-                        <UniformGrid Rows="2">
+                        <UniformGrid Rows="2" Margin="3">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
                                 <materialDesign:PackIcon Kind="Ethernet" />
                                 <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
@@ -706,30 +732,8 @@
                 </Grid>
 
             </materialDesign:ColorZone>
-
-            <Grid Grid.Column="1" Grid.Row="1" x:Name="GridLog" Width="0">
-                <materialDesign:Card>
-                    <StackPanel>
-                        <Expander Header="串口参数">
-                            <StackPanel>
-                                <myControl:SerialPortControl />
-                            </StackPanel>
-
-                        </Expander>
-                        <Expander Header="串口报文" MaxHeight="500" Width="Auto" Margin="3">
-                           <myControl:SerialPortLogger></myControl:SerialPortLogger>
-                        </Expander>
-                        <Expander Header="网络报文" MaxHeight="500" Width="Auto" Margin="3">
-                          <myControl:NetLogger></myControl:NetLogger>
-                        </Expander>
-
-
-                    </StackPanel>
-
-
-                </materialDesign:Card>
-
-            </Grid>
+           
+          
         </Grid>
     </materialDesign:DialogHost>
 
