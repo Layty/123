@@ -511,7 +511,7 @@
     <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\曾雄威\C#\SerialPortMaster\MySerialPortMaster.csproj">
+    <ProjectReference Include="D:\dimi1989\123\SerialPortMaster\MySerialPortMaster.csproj">
       <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
       <Name>MySerialPortMaster</Name>
     </ProjectReference>
