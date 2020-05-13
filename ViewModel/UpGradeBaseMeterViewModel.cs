@@ -6,7 +6,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.FileTransmit;
 using 三相智慧能源网关调试软件.Properties;
 
@@ -39,13 +38,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         SerialPortViewModel.SerialPortMasterModel.IsAutoDataReceived = true;
                     }
-                    //SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived += SerialPort_DataReceived;
-                    SerialPortViewModel.SerialPortMasterModel.MySerialDataReceived += SerialPortMasterModel_MySerialDataReceived;
+                    SerialPortViewModel.SerialPortMasterModel.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
                 }
                 else
                 {
-                    //SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived -= SerialPort_DataReceived;
-                    SerialPortViewModel.SerialPortMasterModel.MySerialDataReceived -= SerialPortMasterModel_MySerialDataReceived;
+                    SerialPortViewModel.SerialPortMasterModel.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
                 }
 
                 _isInitUpGradeSerialPort = value;
@@ -53,7 +50,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private void SerialPortMasterModel_MySerialDataReceived(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
+        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
         {
             FileTransmitProtocol.ReceivedFromUart(e.DataBytes);
         }
@@ -183,14 +180,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
             UserComCommand = new RelayCommand(() =>
             {
                 //SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived += SerialPort_DataReceived;
-                SerialPortViewModel.SerialPortMasterModel.MySerialDataReceived +=
-                    SerialPortMasterModel_MySerialDataReceived;
+                SerialPortViewModel.SerialPortMasterModel.SerialDataReceived +=
+                    SerialPortMasterModelSerialDataReceived;
             });
             ReleaseComCommand = new RelayCommand(() =>
             {
                 // SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived -= SerialPort_DataReceived;
-                SerialPortViewModel.SerialPortMasterModel.MySerialDataReceived -=
-                    SerialPortMasterModel_MySerialDataReceived;
+                SerialPortViewModel.SerialPortMasterModel.SerialDataReceived -=
+                    SerialPortMasterModelSerialDataReceived;
             });
             StartCommand = new RelayCommand(() =>
             {
@@ -325,16 +322,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            //byte[] dBytes = new byte[_serialPortViewModel.SerialPortMasterModel.SerialPort.BytesToRead];
-            //_serialPortViewModel.SerialPortMasterModel.SerialPort.Read(dBytes, 0, dBytes.Length);
-            //_serialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections =
-            //    Encoding.Default.GetString(dBytes);
-            //_serialPortViewModel.SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections =
-            //    $"{DateTime.Now} <= {dBytes.ByteToString()}{Environment.NewLine}";
-            //FileTransmitProtocol.ReceivedFromUart(dBytes);
-        }
 
         private void YModem_SendNextPacket(object sender, EventArgs e)
         {

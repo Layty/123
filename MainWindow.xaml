@@ -178,7 +178,7 @@
                 </materialDesign:ColorZone>
             </Grid>
 
-            <Grid Grid.Row="1" ShowGridLines="True">
+            <Grid Grid.Row="1" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*"/>

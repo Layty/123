@@ -12,6 +12,9 @@
       mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
       d:DesignHeight="650" d:DesignWidth="800"
       Title="UpGradeBaseMeterPage">
+    <Page.Resources>
+        <converters:FactoryConverter x:Key="FactoryConverter"></converters:FactoryConverter>
+    </Page.Resources>
     <materialDesign:Card>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -34,7 +37,8 @@
                         <Button x:Name="ButtonGetSoftVersion" Command="{Binding GetSoftVersionCommand}" Margin="5">读软件版本</Button>
                     </UniformGrid>
                     <UniformGrid Columns="2">
-                        <TextBox x:Name="TextBoxFactory" Text="{Binding FactoryStatus}" Margin="5" />
+                        <TextBox x:Name="TextBoxFactory" Text="{Binding FactoryStatus}" Background="{Binding ElementName=TextBoxFactory,Path=Text,Converter={StaticResource FactoryConverter}}" Margin="5"  />
+                      
                         <Button x:Name="ButtonReadFactory" Command="{Binding ReadFactoryCommand}" Content="读工厂状态" Margin="5" />
                     </UniformGrid>
                     <StackPanel>

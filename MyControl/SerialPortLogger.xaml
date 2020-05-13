@@ -21,6 +21,7 @@
                          materialDesign:HintAssist.Hint="最大缓存字符数" />
                 <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
                           IsChecked="True" />
+                <CheckBox Name="CheckBoxWriteLogToFile" Content="自动捕获日志并写入文件" IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsEnableWriteLogToFile}"></CheckBox>
                 <Button Name="ButtonClearData"
                         Command="{Binding ClearAllDataCommand}"
                         Margin="5"

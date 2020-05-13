@@ -1,10 +1,19 @@
 ﻿using System.Text;
 using GalaSoft.MvvmLight;
+using NLog;
 
 namespace 三相智慧能源网关调试软件.Model
 {
     public class MyNetLogModel : ObservableObject
     {
+        private Logger _logger = LogManager.GetCurrentClassLogger();
+        public bool IsStartWriteLogToFile
+        {
+            get => _isStartWriteLogToFile;
+            set { _isStartWriteLogToFile = value; RaisePropertyChanged(); }
+        }
+
+        private bool _isStartWriteLogToFile;
         public StringBuilder NetLogStringBuilder = new StringBuilder();
 
         public string Log
@@ -17,7 +26,10 @@ namespace 三相智慧能源网关调试软件.Model
                 {
                     NetLogStringBuilder.Clear();
                 }
-
+                if (IsStartWriteLogToFile)
+                {
+                    _logger.Trace(value);
+                }
                 NetLogStringBuilder.Append(value);
                 RaisePropertyChanged();
             }

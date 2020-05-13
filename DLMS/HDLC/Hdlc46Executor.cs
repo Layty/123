@@ -74,7 +74,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 Client = new GXDLMSClient();
                 Client.ParseUAResponse(buff1);
              
-                _portMaster.SerialPortLogger.SendAndReceiveDataCollections = "ParseUAResponse";
+                _portMaster.SerialPortLogger.AddInfo("ParseUAResponse");
                 return true;
             });
             return t;

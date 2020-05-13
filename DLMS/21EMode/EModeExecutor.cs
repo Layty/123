@@ -49,7 +49,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
                     array = _opticalPortMaster.TryToReadReceiveData();
                     if (array.Length != 0 && EModeParser.CheckServerFrameZisEqualsClient(array))
                     {
-                        _opticalPortMaster.SerialPortLogger.SendAndReceiveDataCollections = "协商成功";
+                        _opticalPortMaster.SerialPortLogger.AddInfo("协商成功");
                         LoadBackupPortPara();
                         return true;
                     }

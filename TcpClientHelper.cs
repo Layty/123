@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using NLog;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件
@@ -362,6 +363,7 @@ namespace 三相智慧能源网关调试软件
                     }
 
                     byte[] receiveBytes = _messageByteServer.Take(receiveDataLen).ToArray();
+                  
                     Messenger.Default.Send(receiveBytes, "ReceiveDataEvent");
                 }
             }
@@ -376,6 +378,8 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
+      
+    
         /// <summary>
         /// 发送数据至服务端，并加上换行符
         /// </summary>
@@ -397,6 +401,7 @@ namespace 三相智慧能源网关调试软件
             {
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
                 ClientSocket.Send(sendBytes);
+               
                 MySendMessage += inputSendData + Environment.NewLine;
                 Messenger.Default.Send(sendBytes, "SendDataEvent");
             }

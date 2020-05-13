@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
+using Color = System.Drawing.Color;
 
 
 namespace 三相智慧能源网关调试软件.Converters
@@ -12,14 +14,19 @@ namespace 三相智慧能源网关调试软件.Converters
         {
             if (value != null)
             {
-                var t=   int.Parse(value.ToString());
-                if (t >= 8192)
+                var t=  int.TryParse(value.ToString(),out int result);
+                if (t)
                 {
-                    return Color.Red;
+                    if (result >= 8192)
+                    {
+                        return new SolidColorBrush(Colors.Red);
+                    }
                 }
+                return new SolidColorBrush(Colors.Blue);
+
             }
-           
-            return Color.Blue;
+
+            return new SolidColorBrush(Colors.Blue);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

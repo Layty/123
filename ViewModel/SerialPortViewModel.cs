@@ -5,6 +5,7 @@ using System.IO.Ports;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
+using NLog;
 using 三相智慧能源网关调试软件.Properties;
 
 

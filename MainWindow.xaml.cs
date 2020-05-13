@@ -6,10 +6,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -22,8 +24,7 @@ namespace 三相智慧能源网关调试软件
 
         public readonly ColorAnimation ColorAnimation = new ColorAnimation
             {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
-        //public UserLoginPage UserLoginPage = new UserLoginPage();
-        //public GateWayLoginPage GateWayLoginPage = new GateWayLoginPage();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -57,11 +58,26 @@ namespace 三相智慧能源网关调试软件
             //避免最大化时覆盖任务栏
             MaxWidth = SystemParameters.WorkArea.Width;
             MaxHeight = SystemParameters.WorkArea.Height;
-
             Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
             Messenger.Default.Register<byte[]>(this, "SendDataEvent", PlayNetSendFlashing);
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
+        }
+
+        private void SerialPortMasterModelSerialDataSend(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            });
+        }
+
+        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            });
         }
 
         private void PlaySendFlashing(string obj)
