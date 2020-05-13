@@ -17,6 +17,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,7 +32,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -511,13 +511,13 @@
     <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:\dimi1989\123\SerialPortMaster\MySerialPortMaster.csproj">
-      <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
-      <Name>MySerialPortMaster</Name>
-    </ProjectReference>
     <ProjectReference Include="Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">
       <Project>{5eec3df7-b62b-4795-a2d4-b6237e1ad49a}</Project>
       <Name>Gurux.DLMS.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="SerialPortMaster\MySerialPortMaster.csproj">
+      <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
+      <Name>MySerialPortMaster</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

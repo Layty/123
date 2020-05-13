@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gurux.DLMS.Net", "Gurux.DLMS.Net-master\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj", "{5EEC3DF7-B62B-4795-A2D4-B6237E1AD49A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "D:\dimi1989\123\SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
