@@ -75,8 +75,7 @@
                         </StackPanel>
                         <CheckBox Content="以占用的方式使用串口" Margin="5 0"
                                   IsChecked="{Binding SerialPortMasterModel.IsOwnCurrentSerialPort}" />
-                        <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsSendDataDisplayFormat16,Mode=TwoWay}" Margin="5 0">十六进制显示发送数据</CheckBox>
-                        <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsReceiveFormat16,Mode=TwoWay}" Margin="5 0">十六进制显示接收数据</CheckBox>
+                       
                        
                         <CheckBox Content="实时监控串口数据" Margin="5 0"
                                   IsChecked="{Binding SerialPortMasterModel.IsAutoDataReceived}" />
