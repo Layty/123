@@ -1,0 +1,12 @@
+{
+  "1": {
+    "PortName": "COM4",
+    "BaudRate": 9600,
+    "Parity": "None",
+    "DataBits": 8,
+    "StopBits": "One",
+    "DelayTimeOut": 2,
+    "IsOwnThisSerialPort": true,
+    "IsAutoDataReceived": false
+  }
+}

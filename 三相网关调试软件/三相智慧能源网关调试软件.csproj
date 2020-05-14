@@ -316,9 +316,6 @@
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\Management\LogPage.xaml.cs">
-      <DependentUpon>LogPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\PasswordBoxBehavior.cs" />
     <Compile Include="View\Management\RealTimeDataPage.xaml.cs">
       <DependentUpon>RealTimeDataPage.xaml</DependentUpon>
@@ -431,10 +428,6 @@
     <Page Include="View\UserLoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Management\LogPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Management\RealTimeDataPage.xaml">
       <SubType>Designer</SubType>
