@@ -40,7 +40,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public int MaxShowCount
         {
-            get { return _maxShowCount; }
+            get => _maxShowCount;
             set
             {
                 _maxShowCount = value;
@@ -53,7 +53,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public ObservableCollection<double> DataSelect
         {
-            get { return _field; }
+            get => _field;
             set
             {
                 _field = value;
@@ -66,7 +66,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public SeriesCollection SeriesCollection
         {
-            get { return _seriesCollection; }
+            get => _seriesCollection;
             set
             {
                 _seriesCollection = value;

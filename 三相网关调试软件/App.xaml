@@ -20,9 +20,7 @@
             </LinearGradientBrush>
             <Style  TargetType="Path" BasedOn="{x:Null}"></Style>
             <ResourceDictionary.MergedDictionaries>
-                <!--HandyControl -->
-                <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>-->
+            
                
                 <ResourceDictionary Source="ResourceDictionary/MyDictionary.xaml" />
                 <!--MaterialDesignThemes-->
@@ -34,7 +32,10 @@
                     Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/materialdesigncolor.indigo.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/materialdesigncolor.indigo.xaml" />
-            
+                
+                <!--HandyControl --><!--
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
 

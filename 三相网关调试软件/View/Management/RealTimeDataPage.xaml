@@ -60,14 +60,18 @@
                     </Grid>
 
                 </GroupBox>
+                <GroupBox Grid.Row="2" DataContext="{Binding Source={StaticResource Locator},Path=IICInstanDataViewModel}" Height="200">
+                    <DataGrid 
+                        ItemsSource="{Binding IICInstantDatas,UpdateSourceTrigger=PropertyChanged}"
+                    ></DataGrid>
+                </GroupBox>
 
-
-                <GroupBox Header="电量" Margin="5" Style="{StaticResource MaterialDesignCardGroupBox}" Grid.Row="2"
+                <!--<GroupBox Header="电量" Margin="5" Style="{StaticResource MaterialDesignCardGroupBox}" Grid.Row="2"
                           DataContext="{Binding Source={StaticResource Locator},Path=EnergyData}">
                     <DataGrid x:Name="DataGridEnergy"  
                               ItemsSource="{Binding EnergyDataCollection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               CanUserAddRows="False" />
-                </GroupBox>
+                </GroupBox>-->
 
             </Grid>
 

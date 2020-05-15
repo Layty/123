@@ -140,6 +140,8 @@
                         <TextBox x:Name="TextBoxMsg" Text="root" />
                         <Button Command="{Binding SendMsgCommand}" Content="自定义发送"
                                 CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" />
+                        
+                       
                     </StackPanel>
               
 

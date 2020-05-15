@@ -96,6 +96,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
 
                 #endregion
+                SimpleIoc.Default.Register<IICInstanDataViewModel>(); //泰昂设备
             }
 
         }
@@ -142,6 +143,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public UpGradeBaseMeterViewModel UpGradeBaseMeterViewModel =>
             ServiceLocator.Current.GetInstance<UpGradeBaseMeterViewModel>();
+
+        #endregion
+
+        #region IIC
+        public IICInstanDataViewModel IICInstanDataViewModel =>
+            ServiceLocator.Current.GetInstance<IICInstanDataViewModel>();
+
 
         #endregion
         public static void Cleanup()

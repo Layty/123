@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.BaseMeter"
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
 
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
@@ -28,6 +29,7 @@
             <ComboBox ItemsSource="{Binding StartProtocolArray}" SelectedItem="{Binding StartProtocolType}"
                       materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True"
                       />
+          
         </StackPanel>
     </Grid>
 </Page>

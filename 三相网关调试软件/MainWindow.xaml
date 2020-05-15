@@ -717,8 +717,9 @@
                                     <materialDesign:PackIcon Kind="Send" />
                                 </TextBlock>
                             </StackPanel>
+                           
                         </UniformGrid>
-
+                        
                     </StackPanel>
                     <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">
