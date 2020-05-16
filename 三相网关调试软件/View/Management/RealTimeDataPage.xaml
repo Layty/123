@@ -11,69 +11,95 @@
 
     <Grid>
         <Border BorderThickness="3" Padding="10" >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="5" Grid.Row="1" Header="瞬时量"
+            <ScrollViewer>
+                <StackPanel>
+                    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="5" Grid.Row="1" Header="瞬时量"
                           DataContext="{Binding Source={StaticResource Locator},Path=InstantData}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="DataGridInstant"   
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <DataGrid x:Name="DataGridInstant"   
                                   ItemsSource="{Binding InstantDataModels,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                   CanUserAddRows="False"  />
-                        <StackPanel Orientation="Horizontal" Grid.Row="1">
-                    
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
 
-                            <Button x:Name="ButtonRefresh" HorizontalAlignment="Right" Margin="5"
+
+                                <Button x:Name="ButtonRefresh" HorizontalAlignment="Right" Margin="5"
                                     Command="{Binding RequestInstantDataCommand}"
                                     CommandParameter="{Binding InstantCommandString}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Refresh" />
-                                    <TextBlock>刷新</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button x:Name="ButtonClear" Command="{Binding ClearCommand}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="DeleteEmpty" />
-                                    <TextBlock>清空</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <CheckBox x:Name="CheckBoxAutoRefreshData" Margin="5" HorizontalAlignment="Center"
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Refresh" />
+                                        <TextBlock>刷新</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="ButtonClear" Command="{Binding ClearCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="DeleteEmpty" />
+                                        <TextBlock>清空</TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <CheckBox x:Name="CheckBoxAutoRefreshData" Margin="5" HorizontalAlignment="Center"
                                       IsChecked="{Binding IsAutoRefreshData}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Interval ,StringFormat='\{\0\}秒自动刷新' }"
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Interval ,StringFormat='\{\0\}秒自动刷新' }"
                                                HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                    <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
                                                               Value="{Binding Interval,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                                               Min="1" Max="10" />
-                                </StackPanel>
-                            </CheckBox>
-                        </StackPanel>
+                                    </StackPanel>
+                                </CheckBox>
+                            </StackPanel>
 
-                    </Grid>
+                        </Grid>
 
-                </GroupBox>
-                <GroupBox Grid.Row="2" DataContext="{Binding Source={StaticResource Locator},Path=IICInstanDataViewModel}" Height="200">
-                    <DataGrid 
-                        ItemsSource="{Binding IICInstantDatas,UpdateSourceTrigger=PropertyChanged}"
+                    </GroupBox>
+                    <GroupBox Header="IIC瞬时量" Grid.Row="2" DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                        ItemsSource="{Binding InstantDataCollection,UpdateSourceTrigger=PropertyChanged}"
                     ></DataGrid>
-                </GroupBox>
-
-                <!--<GroupBox Header="电量" Margin="5" Style="{StaticResource MaterialDesignCardGroupBox}" Grid.Row="2"
+                    </GroupBox>
+                    <GroupBox Header="IIC当前电量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding CurrentEnergyDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC上一月电量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding Last1EnergyDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC上二月电量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding Last2EnergyDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC当前最大需量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding CurrentDemandDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC上一月最大需量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding Last1DemandDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC上二月最大需量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding Last2DemandDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <!--<GroupBox Header="电量" Margin="5" Style="{StaticResource MaterialDesignCardGroupBox}" Grid.Row="2"
                           DataContext="{Binding Source={StaticResource Locator},Path=EnergyData}">
                     <DataGrid x:Name="DataGridEnergy"  
                               ItemsSource="{Binding EnergyDataCollection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               CanUserAddRows="False" />
                 </GroupBox>-->
 
-            </Grid>
+                </StackPanel>
+            </ScrollViewer>
+          
 
         </Border>
     </Grid>

@@ -221,6 +221,9 @@
     <Compile Include="FileTransmit\DataCheck.cs" />
     <Compile Include="FileTransmit\IFileTransmit.cs" />
     <Compile Include="FileTransmit\ITransmitUart.cs" />
+    <Compile Include="Model\IIC\IicAbstractEnergyData.cs" />
+    <Compile Include="Model\IIC\IicCommonDataConvertor.cs" />
+    <Compile Include="Model\IIC\IicDemandData.cs" />
     <Compile Include="Model\IIC\IICInstantData.cs" />
     <Compile Include="MyControl\GifImage.xaml.cs">
       <DependentUpon>GifImage.xaml</DependentUpon>
@@ -245,7 +248,7 @@
     </Compile>
     <Compile Include="TcpClientHelper.cs" />
     <Compile Include="ViewModel\DlmsViewModel.cs" />
-    <Compile Include="ViewModel\IICInstanDataViewModel.cs" />
+    <Compile Include="ViewModel\IICDataViewModel.cs" />
     <Compile Include="ViewModel\SenderModel.cs" />
     <Compile Include="ViewModel\SkinViewModel.cs" />
     <Compile Include="ViewModel\TaiAngViewModel.cs" />
