@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -106,6 +107,78 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private ObservableCollection<IicLast2DemandData> _last2DemandDataCollection;
 
 
+        public ObservableCollection<IicHarmonicData> UaHarmonicDataCollection
+        {
+            get => _UaHarmonicDataCollection;
+            set
+            {
+                _UaHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _UaHarmonicDataCollection;
+
+        public ObservableCollection<IicHarmonicData> UbHarmonicDataCollection
+        {
+            get => _UbHarmonicDataCollection;
+            set
+            {
+                _UbHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _UbHarmonicDataCollection;
+
+        public ObservableCollection<IicHarmonicData> UcHarmonicDataCollection
+        {
+            get => _UcHarmonicDataCollection;
+            set
+            {
+                _UcHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _UcHarmonicDataCollection;
+
+        public ObservableCollection<IicHarmonicData> IaHarmonicDataCollection
+        {
+            get => _IaHarmonicDataCollection;
+            set
+            {
+                _IaHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _IaHarmonicDataCollection;
+
+        public ObservableCollection<IicHarmonicData> IbHarmonicDataCollection
+        {
+            get => _IbHarmonicDataCollection;
+            set
+            {
+                _IbHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _IbHarmonicDataCollection;
+
+        public ObservableCollection<IicHarmonicData> IcHarmonicDataCollection
+        {
+            get => _IcHarmonicDataCollection;
+            set
+            {
+                _IcHarmonicDataCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicHarmonicData> _IcHarmonicDataCollection;
+
         public IicDataViewModel()
         {
             InstantDataCollection = new ObservableCollection<IicInstantData>();
@@ -115,6 +188,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
             CurrentDemandDataCollection = new ObservableCollection<IicCurrentDemandData>();
             Last1DemandDataCollection = new ObservableCollection<IicLast1DemandData>();
             Last2DemandDataCollection = new ObservableCollection<IicLast2DemandData>();
+            UaHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            UbHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            UcHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            IaHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            IbHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            IcHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+
 
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", HandlerData);
         }
@@ -212,6 +292,33 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                     {
                                         Last2DemandDataCollection.Add(last2DemandData);
+                                    });
+                                }
+                            }
+                            else if (bytes[1] == 0x30)
+                            {
+                                IicHarmonicData iicHarmonicDataUa = new IicHarmonicData();
+                                IicHarmonicData iicHarmonicDataUb = new IicHarmonicData();
+                                IicHarmonicData iicHarmonicDataUc = new IicHarmonicData();
+                                IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
+                                IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
+                                IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
+                                var resultUa = iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
+                                var resultUb = iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
+                                var resultUc = iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
+                                var resultIa = iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
+                                var resultIb = iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
+                                var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
+                                if (resultUa && resultUb && resultUc && resultIa && resultIb && resultIc)
+                                {
+                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                    {
+                                        UaHarmonicDataCollection.Add(iicHarmonicDataUa);
+                                        UbHarmonicDataCollection.Add(iicHarmonicDataUb);
+                                        UcHarmonicDataCollection.Add(iicHarmonicDataUc);
+                                        IaHarmonicDataCollection.Add(iicHarmonicDataIa);
+                                        IbHarmonicDataCollection.Add(iicHarmonicDataIb); 
+                                        IcHarmonicDataCollection.Add(iicHarmonicDataIc);
                                     });
                                 }
                             }

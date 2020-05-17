@@ -90,6 +90,41 @@
                             ItemsSource="{Binding Last2DemandDataCollection,UpdateSourceTrigger=PropertyChanged}"
                         ></DataGrid>
                     </GroupBox>
+                    <GroupBox Header="IIC A相电压谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding UaHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC B相电压谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding UbHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC C相电压谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding UcHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC A相电流谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding IaHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC B相电流谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding IbHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="IIC C相电流谐波含量"  DataContext="{Binding Source={StaticResource Locator},Path=IicDataViewModel}" Height="200">
+                        <DataGrid 
+                            ItemsSource="{Binding IcHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}"
+                        ></DataGrid>
+                    </GroupBox>
+
+
+
+
+
                     <!--<GroupBox Header="电量" Margin="5" Style="{StaticResource MaterialDesignCardGroupBox}" Grid.Row="2"
                           DataContext="{Binding Source={StaticResource Locator},Path=EnergyData}">
                     <DataGrid x:Name="DataGridEnergy"  
