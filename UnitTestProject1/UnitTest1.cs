@@ -27,10 +27,10 @@ namespace UnitTestProject1
 
             vData.ParseData(bb[1]);
 
-            IicCurrentDemandData currentDemand = new IicCurrentDemandData();
-            var stringDemamd =
+            IicDemandData currentDemand = new IicDemandData();
+            var stringDemand =
                 " 80 20 00 00 01 5A 26 51 2B 6C 00 00 00 00 00 00 00 00 00 00 00 42 26 50 17 18 00 00 01 5A 26 51 2B 6C 00 00 00 46 26 8F F2 48 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 05 26 8F F1 94 00 00 00 00 00 00 00 00 00 00 00 01 26 8F 71 24 00 00 00 05 26 51 2B 6C 00 00 00 05 26 8F F1 94 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 CD 1F";
-            currentDemand.ParseData(stringDemamd.StringToByte());
+            currentDemand.ParseData(stringDemand.StringToByte());
 
 
             var stringHarmonic =

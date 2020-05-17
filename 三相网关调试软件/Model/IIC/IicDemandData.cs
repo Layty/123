@@ -89,19 +89,4 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             return false;
         }
     }
-
-    public class IicCurrentDemandData : IicDemandData
-    {
-        public byte[] StartFrame = new byte[] {0x80, 0x20};
-    }
-
-    public class IicLast1DemandData : IicDemandData
-    {
-        public byte[] StartFrame = new byte[] {0x80, 0x21};
-    }
-
-    public class IicLast2DemandData : IicDemandData
-    {
-        public byte[] StartFrame = new byte[] {0x80, 0x22};
-    }
 }

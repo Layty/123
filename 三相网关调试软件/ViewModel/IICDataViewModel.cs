@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
@@ -69,7 +70,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private ObservableCollection<IicEnergyData> _last2EnergyDataCollection;
 
 
-        public ObservableCollection<IicCurrentDemandData> CurrentDemandDataCollection
+        public ObservableCollection<IicDemandData> CurrentDemandDataCollection
         {
             get => _currentDemandDataCollection;
             set
@@ -79,10 +80,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicCurrentDemandData> _currentDemandDataCollection;
+        private ObservableCollection<IicDemandData> _currentDemandDataCollection;
 
 
-        public ObservableCollection<IicLast1DemandData> Last1DemandDataCollection
+        public ObservableCollection<IicDemandData> Last1DemandDataCollection
         {
             get => _last1DemandDataCollection;
             set
@@ -92,9 +93,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicLast1DemandData> _last1DemandDataCollection;
+        private ObservableCollection<IicDemandData> _last1DemandDataCollection;
 
-        public ObservableCollection<IicLast2DemandData> Last2DemandDataCollection
+        public ObservableCollection<IicDemandData> Last2DemandDataCollection
         {
             get => _last2DemandDataCollection;
             set
@@ -104,7 +105,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicLast2DemandData> _last2DemandDataCollection;
+        private ObservableCollection<IicDemandData> _last2DemandDataCollection;
 
 
         public ObservableCollection<IicHarmonicData> UaHarmonicDataCollection
@@ -185,9 +186,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             CurrentEnergyDataCollection = new ObservableCollection<IicEnergyData>();
             Last1EnergyDataCollection = new ObservableCollection<IicEnergyData>();
             Last2EnergyDataCollection = new ObservableCollection<IicEnergyData>();
-            CurrentDemandDataCollection = new ObservableCollection<IicCurrentDemandData>();
-            Last1DemandDataCollection = new ObservableCollection<IicLast1DemandData>();
-            Last2DemandDataCollection = new ObservableCollection<IicLast2DemandData>();
+            CurrentDemandDataCollection = new ObservableCollection<IicDemandData>();
+            Last1DemandDataCollection = new ObservableCollection<IicDemandData>();
+            Last2DemandDataCollection = new ObservableCollection<IicDemandData>();
             UaHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
             UbHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
             UcHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
@@ -209,119 +210,106 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 if (bbb.Length != 0)
                 {
                     var bytes = bbb.StringToByte();
-                    if (bytes[0] == 0x80)
+                    var dataType = BitConverter.ToUInt16(bytes.Take(2).Reverse().ToArray(), 0);
+                    if (dataType == (ushort) IicDataType.IicInstantData)
                     {
-                        bool result;
-                        if (bytes[1] == 0x01)
+                        IicInstantData data = new IicInstantData();
+                        if (data.ParseData(bbb))
                         {
-                            IicInstantData data = new IicInstantData();
-                            result = data.ParseData(bbb);
-                            if (result)
-                            {
-                                DispatcherHelper.CheckBeginInvokeOnUI(() => { InstantDataCollection.Add(data); });
-                            }
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { InstantDataCollection.Add(data); });
                         }
-                        else
+                    }
+                    else if (dataType == (ushort) IicDataType.IicCurrentEnergyData)
+                    {
+                        IicEnergyData iicCurrentEnergyData = new IicEnergyData();
+                        if (iicCurrentEnergyData.ParseData(bytes))
                         {
-                            if (bytes[1] == 0x10)
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicEnergyData iicCurrentEnergyData = new IicEnergyData();
-                                result = iicCurrentEnergyData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        CurrentEnergyDataCollection.Add(iicCurrentEnergyData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x11)
+                                CurrentEnergyDataCollection.Add(iicCurrentEnergyData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicLast1EnergyData)
+                    {
+                        IicEnergyData iicLast1EnergyData = new IicEnergyData();
+                        if (iicLast1EnergyData.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicEnergyData iicLast1EnergyData = new IicEnergyData();
-                                result = iicLast1EnergyData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        Last1EnergyDataCollection.Add(iicLast1EnergyData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x12)
+                                Last1EnergyDataCollection.Add(iicLast1EnergyData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicLast2EnergyData)
+                    {
+                        IicEnergyData iicLast2EnergyData = new IicEnergyData();
+                        if (iicLast2EnergyData.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicEnergyData iicLast2EnergyData = new IicEnergyData();
-                                result = iicLast2EnergyData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        Last2EnergyDataCollection.Add(iicLast2EnergyData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x20)
+                                Last2EnergyDataCollection.Add(iicLast2EnergyData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicCurrentDemandData)
+                    {
+                        IicDemandData iicCurrentDemandData = new IicDemandData();
+                        if (iicCurrentDemandData.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicCurrentDemandData iicCurrentDemandData = new IicCurrentDemandData();
-                                result = iicCurrentDemandData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        CurrentDemandDataCollection.Add(iicCurrentDemandData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x21)
+                                CurrentDemandDataCollection.Add(iicCurrentDemandData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicLast1DemandData)
+                    {
+                        IicDemandData last1DemandData = new IicDemandData();
+                        if (last1DemandData.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicLast1DemandData last1DemandData = new IicLast1DemandData();
-                                result = last1DemandData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        Last1DemandDataCollection.Add(last1DemandData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x22)
+                                Last1DemandDataCollection.Add(last1DemandData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicLast2DemandData)
+                    {
+                        IicDemandData last2DemandData = new IicDemandData();
+                        if (last2DemandData.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicLast2DemandData last2DemandData = new IicLast2DemandData();
-                                result = last2DemandData.ParseData(bytes);
-                                if (result)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        Last2DemandDataCollection.Add(last2DemandData);
-                                    });
-                                }
-                            }
-                            else if (bytes[1] == 0x30)
+                                Last2DemandDataCollection.Add(last2DemandData);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicHarmonicData)
+                    {
+                        IicHarmonicData iicHarmonicDataUa = new IicHarmonicData();
+                        IicHarmonicData iicHarmonicDataUb = new IicHarmonicData();
+                        IicHarmonicData iicHarmonicDataUc = new IicHarmonicData();
+                        IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
+                        IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
+                        IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
+                        var resultUa = iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
+                        var resultUb = iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
+                        var resultUc = iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
+                        var resultIa = iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
+                        var resultIb = iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
+                        var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
+                        if (resultUa && resultUb && resultUc && resultIa && resultIb && resultIc)
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                IicHarmonicData iicHarmonicDataUa = new IicHarmonicData();
-                                IicHarmonicData iicHarmonicDataUb = new IicHarmonicData();
-                                IicHarmonicData iicHarmonicDataUc = new IicHarmonicData();
-                                IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
-                                IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
-                                IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
-                                var resultUa = iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
-                                var resultUb = iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
-                                var resultUc = iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
-                                var resultIa = iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
-                                var resultIb = iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
-                                var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
-                                if (resultUa && resultUb && resultUc && resultIa && resultIb && resultIc)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        UaHarmonicDataCollection.Add(iicHarmonicDataUa);
-                                        UbHarmonicDataCollection.Add(iicHarmonicDataUb);
-                                        UcHarmonicDataCollection.Add(iicHarmonicDataUc);
-                                        IaHarmonicDataCollection.Add(iicHarmonicDataIa);
-                                        IbHarmonicDataCollection.Add(iicHarmonicDataIb); 
-                                        IcHarmonicDataCollection.Add(iicHarmonicDataIc);
-                                    });
-                                }
-                            }
+                                UaHarmonicDataCollection.Add(iicHarmonicDataUa);
+                                UbHarmonicDataCollection.Add(iicHarmonicDataUb);
+                                UcHarmonicDataCollection.Add(iicHarmonicDataUc);
+                                IaHarmonicDataCollection.Add(iicHarmonicDataIa);
+                                IbHarmonicDataCollection.Add(iicHarmonicDataIb);
+                                IcHarmonicDataCollection.Add(iicHarmonicDataIc);
+                            });
                         }
                     }
                 }

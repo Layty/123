@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace 三相智慧能源网关调试软件.Model.IIC
 {
@@ -28,33 +29,43 @@ namespace 三相智慧能源网关调试软件.Model.IIC
 
         public bool ParseData(byte[] inputBytes)
         {
-            if (inputBytes.Length == 0)
+            try
             {
-                return false;
+                if (inputBytes.Length == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    Harmonic1 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(0), ("%", 2), 2);
+                    Harmonic2 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(2), ("%", 2), 2);
+                    Harmonic3 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(4), ("%", 2), 2);
+                    Harmonic4 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(6), ("%", 2), 2);
+                    Harmonic5 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(8), ("%", 2), 2);
+                    Harmonic6 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(10), ("%", 2), 2);
+                    Harmonic7 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(12), ("%", 2), 2);
+                    Harmonic8 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(14), ("%", 2), 2);
+                    Harmonic9 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(16), ("%", 2), 2);
+                    Harmonic10 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(18), ("%", 2), 2);
+                    Harmonic11 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(20), ("%", 2), 2);
+                    Harmonic12 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(22), ("%", 2), 2);
+                    Harmonic13 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(24), ("%", 2), 2);
+                    Harmonic14 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(26), ("%", 2), 2);
+                    Harmonic15 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(28), ("%", 2), 2);
+                    Harmonic16 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(30), ("%", 2), 2);
+                    Harmonic17 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(32), ("%", 2), 2);
+                    Harmonic18 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(34), ("%", 2), 2);
+                    Harmonic19 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(36), ("%", 2), 2);
+                    Harmonic20 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(38), ("%", 2), 2);
+                    Harmonic21 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(40), ("%", 2), 2);
+                    return true;
+                }
             }
-
-            Harmonic1 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(0), ("%", 2), 2);
-            Harmonic2 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(2), ("%", 2), 2);
-            Harmonic3 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(4), ("%", 2), 2);
-            Harmonic4 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(6), ("%", 2), 2);
-            Harmonic5 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(8), ("%", 2), 2);
-            Harmonic6 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(10), ("%", 2), 2);
-            Harmonic7 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(12), ("%", 2), 2);
-            Harmonic8 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(14), ("%", 2), 2);
-            Harmonic9 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(16), ("%", 2), 2);
-            Harmonic10 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(18), ("%", 2), 2);
-            Harmonic11 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(20), ("%", 2), 2);
-            Harmonic12 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(22), ("%", 2), 2);
-            Harmonic13 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(24), ("%", 2), 2);
-            Harmonic14 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(26), ("%", 2), 2);
-            Harmonic15 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(28), ("%", 2), 2);
-            Harmonic16 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(30), ("%", 2), 2);
-            Harmonic17 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(32), ("%", 2), 2);
-            Harmonic18 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(34), ("%", 2), 2);
-            Harmonic19 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(36), ("%", 2), 2);
-            Harmonic20 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(38), ("%", 2), 2);
-            Harmonic21 = IicCommonDataConvertor.ValueConvertor(inputBytes.Skip(40), ("%", 2), 2);
-            return true;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

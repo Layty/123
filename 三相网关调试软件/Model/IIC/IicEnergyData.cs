@@ -45,7 +45,6 @@ namespace 三相智慧能源网关调试软件.Model.IIC
                     return false;
                 }
 
-                if (inputBytes[0] == 0x80)
                 {
                     var data = inputBytes.Skip(2).ToArray();
                     PosActT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(0), ("kw", 3));

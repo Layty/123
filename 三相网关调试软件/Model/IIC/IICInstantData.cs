@@ -143,10 +143,11 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return false;
                 // throw;
             }
 
-            return false;
+         
         }
     }
 }
