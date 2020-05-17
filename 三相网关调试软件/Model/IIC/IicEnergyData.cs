@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace 三相智慧能源网关调试软件.Model.IIC
 {
-    public abstract class IicAbstractEnergyData
+    public  class IicEnergyData
     {
         public string PosActT0 { get; set; }
         public string PosActT1 { get; set; }
@@ -95,27 +94,7 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             return false;
         }
 
-        public string ValueConvertor(IEnumerable<byte> dataBytes, (string Unit, int Scalar) unitAndScalar,
-            int length = 4, bool isUnsigned = true)
-        {
-            return "";
-        }
-    }
-
-
-    public class IicCurrentEnergyData : IicAbstractEnergyData
-    {
-        public byte[] StartFrame = new byte[2] { 0x80, 0x10 };
-    }
-
-    public class IicLast1EnergyData : IicAbstractEnergyData
-    {
-        public byte[] StartFrame = new byte[2] { 0x80, 0x11 };
-    }
-
-    public class IicLast2EnergyData : IicAbstractEnergyData
-    {
-        public byte[] StartFrame = new byte[2] { 0x80, 0x12 };
+      
     }
 
 }

@@ -30,7 +30,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private ObservableCollection<IicInstantData> _instantDataCollection;
 
 
-        public ObservableCollection<IicCurrentEnergyData> CurrentEnergyDataCollection
+        public ObservableCollection<IicEnergyData> CurrentEnergyDataCollection
         {
             get => _currentEnergyDataCollection;
             set
@@ -40,10 +40,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicCurrentEnergyData> _currentEnergyDataCollection;
+        private ObservableCollection<IicEnergyData> _currentEnergyDataCollection;
 
 
-        public ObservableCollection<IicLast1EnergyData> Last1EnergyDataCollection
+        public ObservableCollection<IicEnergyData> Last1EnergyDataCollection
         {
             get => _last1EnergyDataCollection;
             set
@@ -53,10 +53,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicLast1EnergyData> _last1EnergyDataCollection;
+        private ObservableCollection<IicEnergyData> _last1EnergyDataCollection;
 
 
-        public ObservableCollection<IicLast2EnergyData> Last2EnergyDataCollection
+        public ObservableCollection<IicEnergyData> Last2EnergyDataCollection
         {
             get => _last2EnergyDataCollection;
             set
@@ -66,7 +66,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private ObservableCollection<IicLast2EnergyData> _last2EnergyDataCollection;
+        private ObservableCollection<IicEnergyData> _last2EnergyDataCollection;
 
 
         public ObservableCollection<IicCurrentDemandData> CurrentDemandDataCollection
@@ -109,82 +109,82 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public ObservableCollection<IicHarmonicData> UaHarmonicDataCollection
         {
-            get => _UaHarmonicDataCollection;
+            get => _uaHarmonicDataCollection;
             set
             {
-                _UaHarmonicDataCollection = value;
+                _uaHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _UaHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _uaHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> UbHarmonicDataCollection
         {
-            get => _UbHarmonicDataCollection;
+            get => _ubHarmonicDataCollection;
             set
             {
-                _UbHarmonicDataCollection = value;
+                _ubHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _UbHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _ubHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> UcHarmonicDataCollection
         {
-            get => _UcHarmonicDataCollection;
+            get => _ucHarmonicDataCollection;
             set
             {
-                _UcHarmonicDataCollection = value;
+                _ucHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _UcHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _ucHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IaHarmonicDataCollection
         {
-            get => _IaHarmonicDataCollection;
+            get => _iaHarmonicDataCollection;
             set
             {
-                _IaHarmonicDataCollection = value;
+                _iaHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _IaHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _iaHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IbHarmonicDataCollection
         {
-            get => _IbHarmonicDataCollection;
+            get => _ibHarmonicDataCollection;
             set
             {
-                _IbHarmonicDataCollection = value;
+                _ibHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _IbHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _ibHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IcHarmonicDataCollection
         {
-            get => _IcHarmonicDataCollection;
+            get => _icHarmonicDataCollection;
             set
             {
-                _IcHarmonicDataCollection = value;
+                _icHarmonicDataCollection = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<IicHarmonicData> _IcHarmonicDataCollection;
+        private ObservableCollection<IicHarmonicData> _icHarmonicDataCollection;
 
         public IicDataViewModel()
         {
             InstantDataCollection = new ObservableCollection<IicInstantData>();
-            CurrentEnergyDataCollection = new ObservableCollection<IicCurrentEnergyData>();
-            Last1EnergyDataCollection = new ObservableCollection<IicLast1EnergyData>();
-            Last2EnergyDataCollection = new ObservableCollection<IicLast2EnergyData>();
+            CurrentEnergyDataCollection = new ObservableCollection<IicEnergyData>();
+            Last1EnergyDataCollection = new ObservableCollection<IicEnergyData>();
+            Last2EnergyDataCollection = new ObservableCollection<IicEnergyData>();
             CurrentDemandDataCollection = new ObservableCollection<IicCurrentDemandData>();
             Last1DemandDataCollection = new ObservableCollection<IicLast1DemandData>();
             Last2DemandDataCollection = new ObservableCollection<IicLast2DemandData>();
@@ -225,7 +225,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         {
                             if (bytes[1] == 0x10)
                             {
-                                IicCurrentEnergyData iicCurrentEnergyData = new IicCurrentEnergyData();
+                                IicEnergyData iicCurrentEnergyData = new IicEnergyData();
                                 result = iicCurrentEnergyData.ParseData(bytes);
                                 if (result)
                                 {
@@ -237,7 +237,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             }
                             else if (bytes[1] == 0x11)
                             {
-                                IicLast1EnergyData iicLast1EnergyData = new IicLast1EnergyData();
+                                IicEnergyData iicLast1EnergyData = new IicEnergyData();
                                 result = iicLast1EnergyData.ParseData(bytes);
                                 if (result)
                                 {
@@ -249,7 +249,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             }
                             else if (bytes[1] == 0x12)
                             {
-                                IicLast2EnergyData iicLast2EnergyData = new IicLast2EnergyData();
+                                IicEnergyData iicLast2EnergyData = new IicEnergyData();
                                 result = iicLast2EnergyData.ParseData(bytes);
                                 if (result)
                                 {
