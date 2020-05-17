@@ -87,7 +87,7 @@
                                       Style="{StaticResource MaterialDesignActionToggleButton}"
                                       x:Name="BtnOpenSerialPort"
                                       Click="BtnOpenSerialPort_OnClick"
-                                      IsChecked="{Binding SerialPortMasterModel.IsOpen}">
+                                      IsChecked="{Binding SerialPortMasterModel.IsOpen,Mode=OneWay}">
                             <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
 
                         </ToggleButton>

@@ -29,9 +29,9 @@ namespace 三相智慧能源网关调试软件.FileTransmit
 
         #region IFileTransmit 成员
 
-        public event EventHandler StartSend = null;
+        public event EventHandler StartSend;
 
-        public event EventHandler StartReceive = null;
+        public event EventHandler StartReceive;
 
         public event EventHandler SendNextPacket;
 

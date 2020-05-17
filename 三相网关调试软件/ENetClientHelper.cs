@@ -95,7 +95,7 @@ namespace 三相智慧能源网关调试软件
             ServerIpAddress = Settings.Default.GatewayIpAddress;
             ServerPortNum = Settings.Default.GatewayPort;
             IpEndPoint = new IPEndPoint(IPAddress.Parse(ServerIpAddress), ServerPortNum);
-            Task.Run(ENetClientHelper.Server);//开启本地服务端
+            Task.Run(Server);//开启本地服务端
         }
 
         private void SaveGateWayInfo()

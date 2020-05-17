@@ -2,6 +2,7 @@
 using System.Text;
 using GalaSoft.MvvmLight;
 using NLog;
+
 namespace MySerialPortMaster
 {
     /*
@@ -193,13 +194,17 @@ namespace MySerialPortMaster
             SendAndReceiveDataCollections = info;
         }
 
-        private Logger Logger = LogManager.GetCurrentClassLogger();
+        public Logger Logger = LogManager.GetCurrentClassLogger();
 
 
         public bool IsEnableWriteLogToFile
         {
             get => _isEnableWriteLogToFile;
-            set { _isEnableWriteLogToFile = value; RaisePropertyChanged(); }
+            set
+            {
+                _isEnableWriteLogToFile = value;
+                RaisePropertyChanged();
+            }
         }
 
         private bool _isEnableWriteLogToFile;
@@ -209,11 +214,10 @@ namespace MySerialPortMaster
         public string SendAndReceiveDataCollections
         {
             get => SendAndReceiveDataStringBuilderCollections.ToString();
-           private set
+            private set
             {
                 if (SendAndReceiveDataStringBuilderCollections.Length > _keepMaxSendAndReceiveDataLength)
                 {
-
                     SendAndReceiveDataStringBuilderCollections.Clear();
                 }
 
@@ -221,7 +225,7 @@ namespace MySerialPortMaster
                 {
                     Logger.Trace(value);
                 }
-               
+
                 SendAndReceiveDataStringBuilderCollections.Append(value);
                 RaisePropertyChanged();
             }

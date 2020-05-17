@@ -10,38 +10,26 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             int length = 4, bool isUnsigned = true)
         {
             dynamic result = 0;
-            if (length == 4)
+            switch (length)
             {
-                if (isUnsigned)
-                {
+                case 4 when isUnsigned:
                     result = BitConverter.ToUInt32(dataBytes.Take(length).Reverse().ToArray(), 0);
-                }
-                else
-                {
+                    break;
+                case 4:
                     result = BitConverter.ToInt32(dataBytes.Take(length).Reverse().ToArray(), 0);
-                }
-            }
-            else if (length == 2)
-            {
-                if (isUnsigned)
-                {
+                    break;
+                case 2 when isUnsigned:
                     result = BitConverter.ToUInt16(dataBytes.Take(length).Reverse().ToArray(), 0);
-                }
-                else
-                {
+                    break;
+                case 2:
                     result = BitConverter.ToInt16(dataBytes.Take(length).Reverse().ToArray(), 0);
-                }
-            }
-            else if (length == 1)
-            {
-                if (isUnsigned)
-                {
+                    break;
+                case 1 when isUnsigned:
                     result = Convert.ToByte(dataBytes.Take(length).ToArray()[0]);
-                }
-                else
-                {
+                    break;
+                case 1:
                     result = Convert.ToSByte(dataBytes.Take(length).ToArray()[0]);
-                }
+                    break;
             }
 
             string resultString = HandlerUnitScalar(result, unitAndScalar);

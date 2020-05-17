@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
@@ -7,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using NLog;
 
 namespace MySerialPortMaster
 {
@@ -15,7 +15,7 @@ namespace MySerialPortMaster
         #region 串口基本参数
 
         /// <summary>
-        /// 指示是否一致占用当前串口号的方式使用串口
+        /// 指示是否以占用当前串口号的方式使用串口
         /// </summary>
         public bool IsOwnCurrentSerialPort { get; set; }
 
@@ -24,7 +24,6 @@ namespace MySerialPortMaster
         /// 串口名
         /// 如果上一次的串口号已打开，设置该值后会先关闭先前的串口，然后默认执行打开当前的串口号
         /// </summary>
-        [Required]
         public string PortName
         {
             get => SerialPort.PortName;
@@ -92,7 +91,7 @@ namespace MySerialPortMaster
         public bool IsOpen
         {
             get => SerialPort.IsOpen;
-            set
+            private set
             {
                 _isOpen = value;
                 RaisePropertyChanged();
@@ -131,19 +130,6 @@ namespace MySerialPortMaster
                 }
 
                 _isAutoDataReceived = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
-        private string _errMgs;
-
-        public string ErrMgs
-        {
-            get => _errMgs;
-            set
-            {
-                _errMgs = value;
                 RaisePropertyChanged();
             }
         }
@@ -196,10 +182,7 @@ namespace MySerialPortMaster
             catch (Exception ex)
             {
                 OnSerialError(ex);
-                // ErrMgs = ex.Message;
             }
-
-            OnSerialPortConfigChanged(this, new SerialPortEventArgs {ConfigMessage = "加载串口参数成功"});
         }
 
         #endregion
@@ -230,7 +213,6 @@ namespace MySerialPortMaster
             byte[] readBuffer = new byte[SerialPort.BytesToRead];
             SerialPort.Read(readBuffer, 0, readBuffer.Length);
             OnDataReceived(readBuffer, null);
-            SerialPortLogger.HandlerReceiveData(readBuffer);
         }
 
         #region 串口开启与关闭
@@ -247,7 +229,7 @@ namespace MySerialPortMaster
             }
             catch (Exception ex)
             {
-                ErrMgs = ex.Message;
+                OnSerialError(ex);
                 IsOpen = false;
                 throw;
             }
@@ -270,7 +252,7 @@ namespace MySerialPortMaster
             }
             catch (Exception ex)
             {
-                ErrMgs = ex.Message;
+              OnSerialError(ex);
                 IsOpen = false;
             }
         }
@@ -286,13 +268,11 @@ namespace MySerialPortMaster
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
                     _stopwatch1.Restart();
                     SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
-                   // Messenger.Default.Send("", "PlaySendFlashing");
                     OnDataSend(sendBytes);
-                    SerialPortLogger.HandlerSendData(sendBytes);
                 }
                 catch (Exception ex)
                 {
-                    ErrMgs = ex.Message;
+                    OnSerialError(ex);
                 }
             }
         }
@@ -306,13 +286,11 @@ namespace MySerialPortMaster
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
                     var sendBytes = Encoding.Default.GetBytes(sendString);
                     SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
-                   // Messenger.Default.Send("", "PlaySendFlashing");
                     OnDataSend(sendBytes);
-                    SerialPortLogger.HandlerSendData(sendBytes);
                 }
                 catch (Exception ex)
                 {
-                    ErrMgs = ex.Message;
+                    OnSerialError(ex);
                 }
             }
         }
@@ -354,9 +332,9 @@ namespace MySerialPortMaster
                         {
                             //声明一个临时数组存储当前来的串口数据 
                             tryToReadReceiveData = new byte[SerialPort.BytesToRead];
-                           
+
                             SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
-                            SerialPortLogger.HandlerReceiveData(tryToReadReceiveData);
+
                             OnDataReceived(tryToReadReceiveData, null);
                             break;
                         }
@@ -395,7 +373,6 @@ namespace MySerialPortMaster
                                 //声明一个临时数组存储当前来的串口数据 
                                 receivedBytes = new byte[SerialPort.BytesToRead];
                                 SerialPort.Read(receivedBytes, 0, SerialPort.BytesToRead);
-                                SerialPortLogger.HandlerReceiveData(receivedBytes);
                                 OnDataReceived(receivedBytes, ResponseTime);
                                 break;
                             }
@@ -445,28 +422,40 @@ namespace MySerialPortMaster
         }
 
 
-   
-
         public static bool TryParseParity(string inputParity, out Parity parity) =>
             Enum.TryParse(inputParity, out parity);
 
         public static bool TryParseStopBits(string inputStopBits, out StopBits stopBits) =>
             Enum.TryParse(inputStopBits, out stopBits);
 
+        /// <summary>
+        /// 串口发送事件
+        /// </summary>
+        public event SerialPortMasterEventHandler SerialDataSend;
 
-        public event SerialPortMasterEventHandler SerialDataSend; //发送事件
+        /// <summary>
+        /// 串口接收事件
+        /// </summary>
         public event SerialPortMasterEventHandler SerialDataReceived;
-        public event SerialPortMasterEventHandler SerialDataReceivedTimeOut; //接收超时事件
-        public event SerialPortMasterEventHandler SerialError; //调用串口报错事件        
-        public event SerialPortMasterEventHandler MySerialPortConfigChanged;
+
+        /// <summary>
+        /// 接收超时事件
+        /// </summary>
+        public event SerialPortMasterEventHandler SerialDataReceivedTimeOut;
+
+        /// <summary>
+        /// 串口异常事件 
+        /// </summary>
+        public event SerialPortMasterEventHandler SerialError;
 
 
         private void OnDataSend(byte[] sendBytes)
         {
             Messenger.Default.Send("", "PlaySendFlashing");
-            SerialDataSend?.Invoke(this,new SerialPortEventArgs(){DataBytes = sendBytes});
-
+            SerialDataSend?.Invoke(this, new SerialPortEventArgs() {DataBytes = sendBytes});
+            SerialPortLogger.HandlerSendData(sendBytes);
         }
+
         private void OnDataReceivedTimeOut(int delayTimeOut)
         {
             SerialDataReceivedTimeOut?.Invoke(this, new SerialPortEventArgs {DelayTime = delayTimeOut});
@@ -479,17 +468,16 @@ namespace MySerialPortMaster
             SerialDataReceived?.Invoke(this,
                 new SerialPortEventArgs
                     {DataBytes = receivedBytes, ResponseTime = responseTime});
+            SerialPortLogger.HandlerReceiveData(receivedBytes);
         }
 
         private void OnSerialError(Exception ex)
         {
+            SerialPortLogger.ErrMgs = ex.Message;
+            SerialPortLogger.Logger.Error(ex.Message);
             SerialError?.Invoke(this, new SerialPortEventArgs {Ex = ex});
         }
 
-        private void OnSerialPortConfigChanged(SerialPortMaster source, SerialPortEventArgs e)
-        {
-            MySerialPortConfigChanged?.Invoke(source, e);
-        }
 
         public void DiscardBuffer()
         {
