@@ -114,12 +114,12 @@ namespace 三相智慧能源网关调试软件.Model.IIC
                     Pfb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(92), ("", 4), isUnsigned: false);
                     Pfc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(96), ("", 4), isUnsigned: false);
 
-                    AngleUa = IicCommonDataConvertor.ValueConvertor(bytes.Skip(100), ("", 3));
-                    AngleUb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(104), ("", 3));
-                    AngleUc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(108), ("", 3));
-                    AngleIa = IicCommonDataConvertor.ValueConvertor(bytes.Skip(112), ("", 3));
-                    AngleIb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(116), ("", 3));
-                    AngleIc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(120), ("", 3));
+                    AngleUa = IicCommonDataConvertor.ValueConvertor(bytes.Skip(100), ("", 4));
+                    AngleUb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(104), ("", 4));
+                    AngleUc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(108), ("", 4));
+                    AngleIa = IicCommonDataConvertor.ValueConvertor(bytes.Skip(112), ("", 4));
+                    AngleIb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(116), ("", 4));
+                    AngleIc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(120), ("", 4));
 
                     PosActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(124), ("W", 3));
                     RevActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(128), ("W", 3));

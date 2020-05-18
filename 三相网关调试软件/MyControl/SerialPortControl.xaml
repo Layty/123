@@ -7,31 +7,25 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="400"
+             DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}"
+             >
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid>
-            <materialDesign:Card>
-                <GroupBox Header="串口参数" 
-                          DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
-                    <StackPanel x:Name="StackPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <materialDesign:Card Margin="3">
+                <StackPanel x:Name="StackPanel" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 >
-
                         <ComboBox x:Name="CmbPortName"
                                   ItemsSource="{Binding PortNamesCollection}"
                                   SelectedValue="{Binding SerialPortMasterModel.PortName,UpdateSourceTrigger=PropertyChanged  ,Mode=TwoWay}"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="串口号" />
-
-
                         <ComboBox Name="CmbBaudRate"
                                   ItemsSource="{Binding BaudRatesCollection}"
                                   SelectedValue="{Binding  Path= SerialPortMasterModel.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="波特率" />
                         <ComboBox Name="CmbParity"
                                   ItemsSource="{Binding ParityCollection}"
                                   SelectedValue="{Binding  Path=SerialPortMasterModel.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="校验位" />
                         <ComboBox Name="CmbDataBits"
                                   ItemsSource="{Binding DataBitsCollection}"
@@ -90,7 +84,7 @@
 
                     </StackPanel>
 
-                </GroupBox>
+              
 
             </materialDesign:Card>
 
