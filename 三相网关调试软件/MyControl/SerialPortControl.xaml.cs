@@ -34,7 +34,7 @@ namespace 三相智慧能源网关调试软件.MyControl
             catch (Exception exception)
             {
                 var view = new MessageBox(exception.Message, exception.Source);
-                await DialogHost.Show(view, "RootDialog1");
+                await DialogHost.Show(view, "RootDialog");
             }
         }
     }
