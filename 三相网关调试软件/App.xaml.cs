@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Threading;
+using Lierda.WPFHelper;
 using NLog;
 
 namespace 三相智慧能源网关调试软件
@@ -13,9 +14,10 @@ namespace 三相智慧能源网关调试软件
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
-
+        LierdaCracker cracker = new LierdaCracker();
         protected override void OnStartup(StartupEventArgs e)
         {
+            cracker.Cracker();
             DispatcherHelper.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;

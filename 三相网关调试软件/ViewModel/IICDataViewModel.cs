@@ -180,6 +180,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private ObservableCollection<IicHarmonicData> _icHarmonicDataCollection;
 
+
+        private IicInstantData instantData = new IicInstantData();
+
+        IicEnergyData iicCurrentEnergyData = new IicEnergyData();
+        IicEnergyData iicLast1EnergyData = new IicEnergyData();
+        IicEnergyData iicLast2EnergyData = new IicEnergyData();
+
+        IicDemandData iicCurrentDemandData = new IicDemandData();
+        IicDemandData last1DemandData = new IicDemandData();
+        IicDemandData last2DemandData = new IicDemandData();
+
+        IicHarmonicData iicHarmonicDataUa = new IicHarmonicData();
+        IicHarmonicData iicHarmonicDataUb = new IicHarmonicData();
+        IicHarmonicData iicHarmonicDataUc = new IicHarmonicData();
+        IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
+        IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
+        IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
+
         public IicDataViewModel()
         {
             InstantDataCollection = new ObservableCollection<IicInstantData>();
@@ -213,15 +231,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     var dataType = BitConverter.ToUInt16(bytes.Take(2).Reverse().ToArray(), 0);
                     if (dataType == (ushort) IicDataType.IicInstantData)
                     {
-                        IicInstantData data = new IicInstantData();
-                        if (data.ParseData(bbb))
+                        instantData = new IicInstantData();
+                        if (instantData.ParseData(bbb))
                         {
-                            DispatcherHelper.CheckBeginInvokeOnUI(() => { InstantDataCollection.Add(data); });
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                InstantDataCollection.Add(instantData);
+                            });
                         }
                     }
                     else if (dataType == (ushort) IicDataType.IicCurrentEnergyData)
                     {
-                        IicEnergyData iicCurrentEnergyData = new IicEnergyData();
+                        iicCurrentEnergyData = new IicEnergyData();
                         if (iicCurrentEnergyData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -232,7 +253,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicLast1EnergyData)
                     {
-                        IicEnergyData iicLast1EnergyData = new IicEnergyData();
+                        iicLast1EnergyData = new IicEnergyData();
                         if (iicLast1EnergyData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -243,7 +264,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicLast2EnergyData)
                     {
-                        IicEnergyData iicLast2EnergyData = new IicEnergyData();
+                        iicLast2EnergyData = new IicEnergyData();
                         if (iicLast2EnergyData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -254,7 +275,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicCurrentDemandData)
                     {
-                        IicDemandData iicCurrentDemandData = new IicDemandData();
+                        iicCurrentDemandData = new IicDemandData();
                         if (iicCurrentDemandData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -265,7 +286,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicLast1DemandData)
                     {
-                        IicDemandData last1DemandData = new IicDemandData();
+                        last1DemandData = new IicDemandData();
                         if (last1DemandData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -276,7 +297,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicLast2DemandData)
                     {
-                        IicDemandData last2DemandData = new IicDemandData();
+                        last2DemandData = new IicDemandData();
                         if (last2DemandData.ParseData(bytes))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -287,12 +308,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     }
                     else if (dataType == (ushort) IicDataType.IicHarmonicData)
                     {
-                        IicHarmonicData iicHarmonicDataUa = new IicHarmonicData();
-                        IicHarmonicData iicHarmonicDataUb = new IicHarmonicData();
-                        IicHarmonicData iicHarmonicDataUc = new IicHarmonicData();
-                        IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
-                        IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
-                        IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
+                        iicHarmonicDataUa = new IicHarmonicData();
+                        iicHarmonicDataUb = new IicHarmonicData();
+                        iicHarmonicDataUc = new IicHarmonicData();
+                        iicHarmonicDataIa = new IicHarmonicData();
+                        iicHarmonicDataIb = new IicHarmonicData();
+                        iicHarmonicDataIc = new IicHarmonicData();
                         var resultUa = iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
                         var resultUb = iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
                         var resultUc = iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
