@@ -131,7 +131,17 @@ namespace 三相智慧能源网关调试软件
                 RaisePropertyChanged();
             }
         }
+        private RelayCommand _sendMsgControlCCommand;
 
+        public RelayCommand SendMsgControlCCommand
+        {
+            get => _sendMsgControlCCommand;
+            set
+            {
+                _sendMsgControlCCommand = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
 
         #region 网关参数配置业务
@@ -270,7 +280,10 @@ namespace 三相智慧能源网关调试软件
                 }
             });
             SendMsgCommand = new RelayCommand<string>(SendDataToServerWithNewLine);
-
+            SendMsgControlCCommand=new RelayCommand(() =>
+            {
+                SendDataToServer(new byte[]{0x03});
+            });
             TryToLoginCommand = new RelayCommand((async () =>
             {
                 SendDataToServerWithNewLine("root");

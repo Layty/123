@@ -140,6 +140,7 @@
                         <Button x:Name="ButtonTail" Content="查看IIC通讯日志"
                                 Command="{Binding SendMsgCommand}" CommandParameter="tail -f /opt/bin/base_meter.log"
                                 ></Button>
+                        <Button x:Name="ButtonExitTail" Content="Control+C" Command="{Binding SendMsgControlCCommand}"  ></Button>
                         <TextBox x:Name="TextBoxMsg" Text="root" />
                         <Button Command="{Binding SendMsgCommand}" Content="自定义发送"
                                 CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" />
