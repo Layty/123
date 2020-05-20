@@ -7,9 +7,9 @@ using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class LogViewModel : ViewModelBase
+    public class NetLogViewModel : ViewModelBase
     {
-        public LogViewModel()
+        public NetLogViewModel()
         {
             MyNetLog = new MyNetLogModel();
             ClearBufferCommand = new RelayCommand(() => { MyNetLog.ClearBuffer(); });

@@ -189,7 +189,7 @@ namespace MySerialPortMaster
 
         private readonly object _objLocker = new object(); //发送锁
         private readonly Stopwatch _stopwatch1 = new Stopwatch();
-        public CancellationTokenSource ReceiveTokenSource;
+        public CancellationTokenSource ReceiveTokenSource { get; set; }
 
         private SerialPort SerialPort { get; set; }
 
@@ -197,7 +197,8 @@ namespace MySerialPortMaster
 
         public SerialPortMaster()
         {
-            SerialPort = new SerialPort();
+            
+               SerialPort = new SerialPort();
             IsAutoDataReceived = true;
         }
 
@@ -407,7 +408,8 @@ namespace MySerialPortMaster
             }
 
             Send(sendData);
-            var receiveData = await ReceiveDataAsync(new CancellationTokenSource(ResponseTimeOut * 1000).Token);
+            ReceiveTokenSource=new CancellationTokenSource(ResponseTimeOut * 1000);
+            var receiveData = await ReceiveDataAsync(ReceiveTokenSource.Token);
             if (!IsOwnCurrentSerialPort) //是否强制占有当前串口，不是则关闭串口&&同时在不读后续帧的情况下不关闭串口
             {
                 SerialPort.Close();

@@ -28,9 +28,12 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <TargetCulture>zh-CN</TargetCulture>
+    <PublisherName>曾雄威</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,6 +45,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>ConcurrencyRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,15 +59,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>三相智慧能源网关调试软件.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Fonts\3.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
@@ -104,7 +116,7 @@
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -261,28 +273,20 @@
     <Compile Include="ViewModel\TftpServerViewModel.cs" />
     <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
     <Compile Include="FileTransmit\XModem.cs" />
-    <Compile Include="Model\CommandModel.cs" />
-    <Compile Include="Model\EnergyDataModel.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\GateWayLoginModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
-    <Compile Include="Model\InstantDataModel.cs" />
     <Compile Include="Model\MyNetLogModel.cs" />
     <Compile Include="ValidateModelBase.cs" />
-    <Compile Include="ViewModel\CommandViewModel.cs" />
-    <Compile Include="ViewModel\EnergyDataViewModel.cs" />
     <Compile Include="ViewModel\SerialPortViewModel.cs" />
     <Compile Include="ViewModel\UserLoginViewModel.cs" />
-    <Compile Include="ViewModel\LogViewModel.cs" />
+    <Compile Include="ViewModel\NetLogViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="View\BaseMeter\DLMSSettingsPage.xaml.cs">
       <DependentUpon>DLMSSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\BaseMeter\SerialPortPage.xaml.cs">
       <DependentUpon>SerialPortPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Management\InstantDataLiveChartPage.xaml.cs">
-      <DependentUpon>InstantDataLiveChartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IntelligentEquipment\TaiAngPage.xaml.cs">
       <DependentUpon>TaiAngPage.xaml</DependentUpon>
@@ -291,15 +295,8 @@
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PasswordBoxHelper.cs" />
-    <Compile Include="ViewModel\InstantDataViewModel.cs" />
     <Compile Include="View\Management\GateWayAppPage.xaml.cs">
       <DependentUpon>GateWayAppPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Management\CommandPage.xaml.cs">
-      <DependentUpon>CommandPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Management\DataPage.xaml.cs">
-      <DependentUpon>DataPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Management\GateWayLoginPage.xaml.cs">
       <DependentUpon>GateWayLoginPage.xaml</DependentUpon>
@@ -331,8 +328,8 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\PasswordBoxBehavior.cs" />
-    <Compile Include="View\Management\RealTimeDataPage.xaml.cs">
-      <DependentUpon>RealTimeDataPage.xaml</DependentUpon>
+    <Compile Include="View\ServerCenter\IicDataPage.xaml.cs">
+      <DependentUpon>IicDataPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileTransmit\YModem.cs" />
     <Page Include="MainWindow.xaml">
@@ -391,23 +388,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Management\CommandPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Management\DataPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Management\GateWayLoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Management\GlobalParameterPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Management\InstantDataLiveChartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -447,7 +432,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Management\RealTimeDataPage.xaml">
+    <Page Include="View\ServerCenter\IicDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -483,6 +468,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -507,6 +493,11 @@
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 和 x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

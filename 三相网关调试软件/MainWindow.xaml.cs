@@ -61,22 +61,6 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
-        private void SerialPortMasterModelSerialDataSend(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
-        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
         private void PlaySendFlashing(string obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -124,7 +108,6 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-      
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -179,23 +162,9 @@ namespace 三相智慧能源网关调试软件
             Frame.Navigate(new UserLoginPage());
         }
 
-     
-
-
-        private void CheckBoxLogShowUp_OnClick(object sender, RoutedEventArgs e)
+        private void ToggleButtonLog_OnClick(object sender, RoutedEventArgs e)
         {
-            //if (CheckBoxLogShowUp.IsChecked == true)
-            //{
-            //    CardLog.Visibility = Visibility.Visible;
-            //    CardLog.Width = 250;
-            //}
-            //else
-            //{
-            //    CardLog.Visibility = Visibility.Collapsed;
-            //    CardLog.Width = 0;
-            //}
-
-            GridLog.Width = CheckBoxLogShowUp.IsChecked == true ? 250 : 0;
+            GridLog.Width = ToggleButtonLog.IsChecked == true ? 250 : 0;
         }
     }
 }

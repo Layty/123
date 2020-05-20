@@ -110,6 +110,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
         <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="RenderTransform">
             <Setter.Value>
                 <RotateTransform />
@@ -122,6 +123,7 @@
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
                                              To="360" Duration="0:0:0.5" RepeatBehavior="Forever" />
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Red"  Duration="0:0:0.5" ></ColorAnimation>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger.Actions>
@@ -132,6 +134,7 @@
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
                                              Duration="0:0:0.5" />
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Transparent"  Duration="0:0:0.5" ></ColorAnimation>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger.Actions>
@@ -166,6 +169,8 @@
         </Style.Triggers>
 
     </Style>
+   
+    
     <Style x:Key="MyTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontFamily" Value="宋体" />

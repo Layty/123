@@ -42,10 +42,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
                 SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
-                SimpleIoc.Default.Register<InstantDataViewModel>();
-                SimpleIoc.Default.Register<EnergyDataViewModel>();
-                SimpleIoc.Default.Register<CommandViewModel>();
-                SimpleIoc.Default.Register<LogViewModel>();
+              
+                SimpleIoc.Default.Register<NetLogViewModel>();
                 SimpleIoc.Default.Register<TftpServerViewModel>();
                 #endregion
 
@@ -74,18 +72,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #endregion
 
                 #region 管理芯相关业务
-
                 SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
-                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
-                SimpleIoc.Default.Register<InstantDataViewModel>();
-                SimpleIoc.Default.Register<EnergyDataViewModel>();
-                SimpleIoc.Default.Register<CommandViewModel>();
-                SimpleIoc.Default.Register<LogViewModel>();
-                SimpleIoc.Default.Register<TftpServerViewModel>();
                 #endregion
 
+                #region 服务中心相关业务
+                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<TftpServerViewModel>();
+                SimpleIoc.Default.Register<NetLogViewModel>();
+                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
+                #endregion
                 #region 计量芯相关业务
-
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
                 SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
                 SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
@@ -96,7 +92,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
 
                 #endregion
-                SimpleIoc.Default.Register<IicDataViewModel>(); //泰昂设备
+                
             }
 
         }
@@ -122,10 +118,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
         public TcpClientHelper TcpClientHelper => ServiceLocator.Current.GetInstance<TcpClientHelper>();
-        public InstantDataViewModel InstantData => ServiceLocator.Current.GetInstance<InstantDataViewModel>();
-        public EnergyDataViewModel EnergyData => ServiceLocator.Current.GetInstance<EnergyDataViewModel>();
-        public CommandViewModel Command => ServiceLocator.Current.GetInstance<CommandViewModel>();
-        public LogViewModel Log => ServiceLocator.Current.GetInstance<LogViewModel>();
+       
+        public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
         #endregion
 
@@ -147,6 +141,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #endregion
 
         #region IIC
+        /// <summary>
+        /// IIC数据视图模型
+        /// </summary>
         public IicDataViewModel IicDataViewModel =>
             ServiceLocator.Current.GetInstance<IicDataViewModel>();
 

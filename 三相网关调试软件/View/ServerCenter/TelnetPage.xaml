@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="600"
+      d:DesignHeight="550" d:DesignWidth="600"
       DataContext="{Binding Source={StaticResource Locator} ,Path=TcpClientHelper}"
       Title="TelnetPage">
 
@@ -137,10 +137,10 @@
                             </StackPanel>
 
                         </Button>
-                        <Button x:Name="ButtonTail" Content="查看IIC通讯日志"
+                        <Button x:Name="ButtonTail" Content="查看IIC通讯日志" Margin="3"
                                 Command="{Binding SendMsgCommand}" CommandParameter="tail -f /opt/bin/base_meter.log"
                                 ></Button>
-                        <Button x:Name="ButtonExitTail" Content="Control+C" Command="{Binding SendMsgControlCCommand}"  ></Button>
+                        <Button x:Name="ButtonExitTail" Content="Control+C" Margin="3" Command="{Binding SendMsgControlCCommand}"  ></Button>
                         <TextBox x:Name="TextBoxMsg" Text="root" />
                         <Button Command="{Binding SendMsgCommand}" Content="自定义发送"
                                 CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" />

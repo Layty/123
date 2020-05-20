@@ -22,8 +22,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     new MenuModel {Title = "系统日志", FontSize = "20", IconFont = "\xe668"},
                     new MenuModel {Title = "实时数据", FontSize = "20", IconFont = "\xe6ab"},
                     new MenuModel {Title = "全局参数", FontSize = "20", IconFont = "\xe606"},
-                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe749"},
-                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe749"}
                 };
 
                 BaseMeterMenuCollection = new ObservableCollection<MenuModel>
@@ -72,33 +70,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 };
 #else
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
-                {
-                    new MenuModel
+                {  new MenuModel
                     {
-                        Title = "网关应用", FontSize = "20", IconFont = "\xe7b7", Assembly = "Management.AppPage",
-                        Foreground = "#FF0000"
+                        Title = "泰昂", FontSize = "20", IconFont = "",
+                        Assembly = "IntelligentEquipment.TaiAngPage",
+                        Foreground = "#00FF00"
                     },
-                    new MenuModel
-                    {
-                        Title = "实时数据", FontSize = "20", IconFont = "\xe6ab", Assembly = "Management.RealTimeDataPage",
-                        Foreground = "#6666FF"
-                    },
-                    new MenuModel
-                    {
-                        Title = "LiveChart", FontSize = "20", IconFont = "\xe637",
-                        Assembly = "Management.InstantDataLiveChartPage", Foreground = "#0033FF"
-                    },
-                    new MenuModel
-                    {
-                        Title = "全局参数", FontSize = "20", IconFont = "\xe606", Assembly = "Management.GlobalParameterPage",
-                        Foreground = "#00CCFF"
-                    },
-                    new MenuModel
-                    {
-                        Title = "命令", FontSize = "20", IconFont = "\xe749", Assembly = "Management.CommandPage",
-                        Foreground = "#CC6600"
-                    },
-                    new MenuModel {Title = "系统日志", FontSize = "20", IconFont = "\xe668", Assembly = "Management.LogPage", Foreground = "#00BB00"}
                 };
 
 
@@ -117,7 +94,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        Title = "基表配置", FontSize = "20", IconFont = "\xe600",
+                        Title = "基表升级", FontSize = "20", IconFont = "\xe600",
                         Assembly = "BaseMeter.UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
                     }
@@ -137,12 +114,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         Assembly = "ServerCenter.TftpServerPage",
                         Foreground = "#0000FF"
                     },
-                    new MenuModel
+                    new MenuModel()
                     {
-                        Title = "泰昂", FontSize = "20", IconFont = "",
-                        Assembly = "IntelligentEquipment.TaiAngPage",
-                        Foreground = "#00FF00"
-                    }
+                        Title = "IICDataAnalysis",FontSize = "20",IconFont = "\xe6ab",Assembly = "ServerCenter.IicDataPage",
+                        Foreground = "#6666FF"
+                    },
+                  
                 };
 #endif
                 SelectCommand = new RelayCommand<MenuModel>(Select);
