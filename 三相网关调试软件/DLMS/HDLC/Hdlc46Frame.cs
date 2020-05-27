@@ -1,11 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 using GalaSoft.MvvmLight;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.CosemObjects;
-using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
 {
@@ -92,44 +86,24 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             get => _upperAddrForFrame;
             set => _upperAddrForFrame = (ushort) ((value << 1) + 1);
         }
-
-
         public byte SourceAddress
         {
             get => _sourceAddress;
             set => _sourceAddress = (byte) ((value << 1) + 1);
         }
 
-
         public byte ControlField { get; set; }
-
-
-        public Hdlc46Frame(byte[] destAddress, string password, byte sourceAddress)
+        public Hdlc46Frame(byte destAddress,  byte sourceAddress)
         {
             CurrentReceiveSequenceNumber = 0;
             CurrentSendSequenceNumber = 0;
-            DestAddress = destAddress;
+            var d =(byte) ((destAddress << 1) + 1);
+            DestAddress =new byte[]{ d };  
             SourceAddress = sourceAddress;
             LlcHeadFrameBytes = HdlcLlc.LLCSendBytes;
-            PasswordLvl1 = PasswordLvl.LLS;
-            Password = password;
-
-            Apdu = new APDU();
-
-            Info = new HDLCInfo();
         }
-
-
-        [Required]
-        [StringLength(8, MinimumLength = 8)]
-        public string Password { get; set; }
-
-
-        public byte[] HexPassword => Encoding.Default.GetBytes(Password);
-
-
+        
         public string AuthenticationKey { get; set; }
-
 
         public int CurrentReceiveSequenceNumber
         {
@@ -163,39 +137,17 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         /// Size of Server address.
         /// </summary>
         public byte ServerAddressSize { get; set; }
-
         private int _splitBitFlagByte;
-
-
         private bool _splitBitFlag;
-
-
         public byte HeightBit = 7;
-
-
         private ushort _framelength;
-
-
         private ushort _upperAddrForFrame;
-
         public ushort PhysicalAddr;
-
         private byte _sourceAddress;
-
-
         public byte[] Hcs = new byte[2];
-
-
         public byte[] Fcs = new byte[2];
 
-
-        public HDLCInfo Info { get; set; }
-
-
         public byte[] LlcHeadFrameBytes;
-
-
-        public PasswordLvl PasswordLvl1;
 
 
         private int _currentReceiveSequenceNumber;
@@ -203,71 +155,5 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         private int _currentSendSequenceNumber;
 
 
-        private ushort _maxReceivePduSize = 65535;
-
-        public ushort MaxReceivePduSize
-        {
-            get => _maxReceivePduSize;
-            set
-            {
-                _maxReceivePduSize = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private byte _invokeId;
-
-        public byte InvokeId
-        {
-            get => _invokeId;
-            set
-            {
-                _invokeId = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
-        public APDU Apdu;
-
-
-        public enum PasswordLvl
-        {
-            NO,
-            LLS,
-            HLS,
-        }
-
-        private Command _lastCommand;
-
-        public Command LastCommand
-        {
-            get => _lastCommand;
-            set
-            {
-                _lastCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
-        public class APDU : IToPduBytes
-        {
-            public Command Command { get; set; }
-            public Invoke_Id_And_Priority InvokeIdAndPriority { get; set; }
-            public CosemMethodDescriptor CosemMethodDescriptor { get; set; }
-            public DLMSDataItem DlmsDataItem { get; set; }
-
-            public APDU()
-            {
-                InvokeIdAndPriority = new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High);
-            }
-
-
-            public byte[] ToPduBytes()
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

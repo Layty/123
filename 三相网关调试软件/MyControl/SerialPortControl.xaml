@@ -1,90 +1,85 @@
 ﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.SerialPortControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400"
-             DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}"
-             >
-    <materialDesign:DialogHost Identifier="RootDialog">
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}" Height="300" Width="300">
+    <materialDesign:DialogHost Identifier="SerialPortControl">
         <Grid>
             <materialDesign:Card Margin="3">
-                <StackPanel x:Name="StackPanel" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                >
-                        <ComboBox x:Name="CmbPortName"
-                                  ItemsSource="{Binding PortNamesCollection}"
-                                  SelectedValue="{Binding SerialPortMasterModel.PortName,UpdateSourceTrigger=PropertyChanged  ,Mode=TwoWay}"
-                                  materialDesign:HintAssist.Hint="串口号" />
-                        <ComboBox Name="CmbBaudRate"
-                                  ItemsSource="{Binding BaudRatesCollection}"
-                                  SelectedValue="{Binding  Path= SerialPortMasterModel.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  materialDesign:HintAssist.Hint="波特率" />
-                        <ComboBox Name="CmbParity"
-                                  ItemsSource="{Binding ParityCollection}"
-                                  SelectedValue="{Binding  Path=SerialPortMasterModel.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  materialDesign:HintAssist.Hint="校验位" />
-                        <ComboBox Name="CmbDataBits"
-                                  ItemsSource="{Binding DataBitsCollection}"
-                                  SelectedValue="{Binding SerialPortMasterModel.DataBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  materialDesign:HintAssist.Hint="数据位" />
-                        <ComboBox Name="CmbStopBits" HorizontalContentAlignment="Left"
-                                  ItemsSource="{Binding StopBitsCollection}"
-                                  SelectedValue="{Binding SerialPortMasterModel.StopBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  materialDesign:HintAssist.Hint="停止位" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                       Text="{Binding SerialPortMasterModel.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
-                            <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                      Value="{Binding SerialPortMasterModel.ResponseTimeOut ,Mode=TwoWay}"
-                                                      Min="2" Max="10">
-                                <materialDesign:RatingBar.ValueItemTemplate>
-                                    <DataTemplate DataType="system:Byte">
-                                        <Grid>
-                                            <materialDesign:PackIcon
-                                                Kind="Star"
-                                                Height="24"
-                                                Width="24" />
-                                            <TextBlock
-                                                Text="{Binding}"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                FontSize="8"
-                                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
-                                        </Grid>
+                <StackPanel x:Name="StackPanel">
+                    <ComboBox x:Name="CmbPortName"
+                              ItemsSource="{Binding PortNamesCollection}"
+                              SelectedValue="{Binding SerialPortMaster.PortName,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                              materialDesign:HintAssist.Hint="串口号" />
+                    <ComboBox Name="CmbBaudRate"
+                              ItemsSource="{Binding BaudRatesCollection}"
+                              SelectedValue="{Binding  Path= SerialPortMaster.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                              materialDesign:HintAssist.Hint="波特率" />
+                    <ComboBox Name="CmbParity"
+                              ItemsSource="{Binding ParityCollection}"
+                              SelectedValue="{Binding  Path=SerialPortMaster.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                              materialDesign:HintAssist.Hint="校验位" />
+                    <ComboBox Name="CmbDataBits"
+                              ItemsSource="{Binding DataBitsCollection}"
+                              SelectedValue="{Binding SerialPortMaster.DataBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="数据位" />
+                    <ComboBox Name="CmbStopBits" HorizontalContentAlignment="Left"
+                              ItemsSource="{Binding StopBitsCollection}"
+                              SelectedValue="{Binding SerialPortMaster.StopBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="停止位" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
+                        <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Value="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay}"
+                                                  Min="2" Max="10">
+                            <materialDesign:RatingBar.ValueItemTemplate>
+                                <DataTemplate DataType="system:Byte">
+                                    <Grid>
+                                        <materialDesign:PackIcon
+                                            Kind="Star"
+                                            Height="24"
+                                            Width="24" />
+                                        <TextBlock
+                                            Text="{Binding}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="8"
+                                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                                    </Grid>
 
-                                    </DataTemplate>
-                                </materialDesign:RatingBar.ValueItemTemplate>
-                            </materialDesign:RatingBar>
-
-                        </StackPanel>
-                        <CheckBox Content="以占用的方式使用串口" 
-                                  IsChecked="{Binding SerialPortMasterModel.IsOwnCurrentSerialPort}" />
-
-                        <!--<CheckBox Content="实时监控串口数据" Margin="5 0"
-                                  IsChecked="{Binding SerialPortModel.IsAutoDataReceived}" />-->
-                        <!--<Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" Margin="5"></Button>-->
-                        <ToggleButton Width="50" Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth5"
-                                      VerticalAlignment="Top"
-                                      ToolTip="开启或关闭串口"
-                                      HorizontalAlignment="Center" 
-                                      Style="{StaticResource MaterialDesignActionToggleButton}"
-                                      x:Name="BtnOpenSerialPort"
-                                      Click="BtnOpenSerialPort_OnClick"
-                                      IsChecked="{Binding SerialPortMasterModel.IsOpen,Mode=OneWay}">
-                            <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
-
-                        </ToggleButton>
-
+                                </DataTemplate>
+                            </materialDesign:RatingBar.ValueItemTemplate>
+                        </materialDesign:RatingBar>
 
                     </StackPanel>
+                    <CheckBox Content="以占用的方式使用串口"
+                              IsChecked="{Binding SerialPortMaster.IsOwnCurrentSerialPort}" />
 
-              
+                    <!--<CheckBox Content="实时监控串口数据" Margin="5 0"
+                                  IsChecked="{Binding SerialPortModel.IsAutoDataReceived}" />-->
+                    <!--<Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" Margin="5"></Button>-->
+                    <ToggleButton Width="50" Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                  VerticalAlignment="Top"
+                                  ToolTip="开启或关闭串口"
+                                  HorizontalAlignment="Center"
+                                  Style="{StaticResource MaterialDesignActionToggleButton}"
+                                  x:Name="BtnOpenSerialPort"
+                                  Command="{Binding OpenOrCloseCommand}"
+                                  IsChecked="{Binding SerialPortMaster.IsOpen,Mode=OneWay}">
+                        <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
+
+                    </ToggleButton>
+
+
+                </StackPanel>
+
 
             </materialDesign:Card>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Text;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -19,9 +20,29 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 receiveData => { MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData); });
             Messenger.Default.Register<string>(this, "ENetErrorEvent",
                 errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
+            Messenger.Default.Register<string>(this, "TelNetErrorEvent",
+                errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
             Messenger.Default.Register<string>(this, "Status",
-                status => { MyNetLog.Log = DateTime.Now + "Status" + status + Environment.NewLine; }
-            );
+                status => { MyNetLog.Log = DateTime.Now + "Status" + status + Environment.NewLine; });
+            Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent",
+                (s) =>
+                {
+                    MyNetLog.Log = DateTime.Now + "ReceiveDataEvent" + "收到" + s.Item1.RemoteEndPoint+"数据" + Encoding.Default.GetString(s.Item2) +
+                                   Environment.NewLine;
+                });
+            Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent",
+                (s) =>
+                {
+                    MyNetLog.Log = DateTime.Now + "SendDataEvent" + "向" + s.Item1.RemoteEndPoint + "发送数据" +
+                                   Encoding.Default.GetString(s.Item2) +
+                                   Environment.NewLine;
+                });
+            Messenger.Default.Register<string>(this, "ErrorEvent",
+                (errorString) =>
+                {
+                    MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorString +
+                                   Environment.NewLine;
+                });
         }
 
 

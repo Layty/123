@@ -9,8 +9,8 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
     public class DLMSClock : DLMSObject
     {
-        public override string LogicalName { get; set; } = "0.0.1.0.0.255";
-        public override ObjectType ObjectType { get; set; } = ObjectType.Clock;
+        public  string LogicalName { get; set; } = "0.0.1.0.0.255";
+        public  ObjectType ObjectType { get; set; } = ObjectType.Clock;
         public int TimeZone { get; set; }
         public short Year { get; set; }
         public ClockStatus Status { get; set; }

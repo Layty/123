@@ -2,11 +2,15 @@
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Model.IIC;
+using System.Collections.Generic;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -27,6 +31,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicInstantData> _instantDataCollection;
 
         public ObservableCollection<IicEnergyData> CurrentEnergyDataCollection
@@ -38,7 +43,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicEnergyData> _currentEnergyDataCollection;
+
         public ObservableCollection<IicEnergyData> Last1EnergyDataCollection
         {
             get => _last1EnergyDataCollection;
@@ -48,6 +55,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicEnergyData> _last1EnergyDataCollection;
 
         public ObservableCollection<IicEnergyData> Last2EnergyDataCollection
@@ -59,6 +67,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicEnergyData> _last2EnergyDataCollection;
 
         /// <summary>
@@ -73,6 +82,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicDemandData> _currentDemandDataCollection;
 
         /// <summary>
@@ -87,6 +97,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicDemandData> _last1DemandDataCollection;
 
         /// <summary>
@@ -114,6 +125,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _uaHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> UbHarmonicDataCollection
@@ -125,6 +137,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _ubHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> UcHarmonicDataCollection
@@ -136,6 +149,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _ucHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IaHarmonicDataCollection
@@ -147,6 +161,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _iaHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IbHarmonicDataCollection
@@ -158,6 +173,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _ibHarmonicDataCollection;
 
         public ObservableCollection<IicHarmonicData> IcHarmonicDataCollection
@@ -169,6 +185,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<IicHarmonicData> _icHarmonicDataCollection;
 
         private IicInstantData _instantData = new IicInstantData();
@@ -188,6 +205,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
         IicHarmonicData _iicHarmonicDataIb = new IicHarmonicData();
         IicHarmonicData _iicHarmonicDataIc = new IicHarmonicData();
 
+
+        public RelayCommand ClearCommand
+        {
+            get => _clearCommand;
+            set
+            {
+                _clearCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _clearCommand;
+
         public IicDataViewModel()
         {
             InstantDataCollection = new ObservableCollection<IicInstantData>();
@@ -206,6 +236,22 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", HandlerData);
+            ClearCommand = new RelayCommand(() =>
+            {
+                InstantDataCollection.Clear();
+                CurrentEnergyDataCollection.Clear();
+                Last1EnergyDataCollection.Clear();
+                Last2EnergyDataCollection.Clear();
+                CurrentDemandDataCollection.Clear();
+                Last1DemandDataCollection.Clear();
+                Last2DemandDataCollection.Clear();
+                UaHarmonicDataCollection.Clear();
+                UbHarmonicDataCollection.Clear();
+                UcHarmonicDataCollection.Clear();
+                IaHarmonicDataCollection.Clear();
+                IbHarmonicDataCollection.Clear();
+                IcHarmonicDataCollection.Clear();
+            });
         }
 
         private void HandlerData(byte[] obj)
@@ -219,18 +265,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     var bytes = bbb.StringToByte();
                     var dataType = BitConverter.ToUInt16(bytes.Take(2).Reverse().ToArray(), 0);
-                    if (dataType == (ushort)IicDataType.IicInstantData)
+                    if (dataType == (ushort) IicDataType.IicInstantData)
                     {
                         _instantData = new IicInstantData();
                         if (_instantData.ParseData(bbb))
                         {
-                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                            {
-                                InstantDataCollection.Add(_instantData);
-                            });
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { InstantDataCollection.Add(_instantData); });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicCurrentEnergyData)
+                    else if (dataType == (ushort) IicDataType.IicCurrentEnergyData)
                     {
                         _iicCurrentEnergyData = new IicEnergyData();
                         if (_iicCurrentEnergyData.ParseData(bytes))
@@ -241,7 +284,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicLast1EnergyData)
+                    else if (dataType == (ushort) IicDataType.IicLast1EnergyData)
                     {
                         _iicLast1EnergyData = new IicEnergyData();
                         if (_iicLast1EnergyData.ParseData(bytes))
@@ -252,7 +295,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicLast2EnergyData)
+                    else if (dataType == (ushort) IicDataType.IicLast2EnergyData)
                     {
                         _iicLast2EnergyData = new IicEnergyData();
                         if (_iicLast2EnergyData.ParseData(bytes))
@@ -263,7 +306,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicCurrentDemandData)
+                    else if (dataType == (ushort) IicDataType.IicCurrentDemandData)
                     {
                         _iicCurrentDemandData = new IicDemandData();
                         if (_iicCurrentDemandData.ParseData(bytes))
@@ -274,7 +317,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicLast1DemandData)
+                    else if (dataType == (ushort) IicDataType.IicLast1DemandData)
                     {
                         _last1DemandData = new IicDemandData();
                         if (_last1DemandData.ParseData(bytes))
@@ -285,7 +328,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicLast2DemandData)
+                    else if (dataType == (ushort) IicDataType.IicLast2DemandData)
                     {
                         _last2DemandData = new IicDemandData();
                         if (_last2DemandData.ParseData(bytes))
@@ -296,7 +339,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             });
                         }
                     }
-                    else if (dataType == (ushort)IicDataType.IicHarmonicData)
+                    else if (dataType == (ushort) IicDataType.IicHarmonicData)
                     {
                         _iicHarmonicDataUa = new IicHarmonicData();
                         _iicHarmonicDataUb = new IicHarmonicData();

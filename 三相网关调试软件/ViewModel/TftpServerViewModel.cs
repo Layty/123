@@ -60,14 +60,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private int _field;
-
-        public int MyProperty
-        {
-            get { return _field; }
-            set { _field = value; RaisePropertyChanged(); }
-        }
-
 
         public TftpServerViewModel()
         {
@@ -81,14 +73,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             StartServerCommand = new RelayCommand(() =>
             {
-                GetServerDirectory();
-                TftpServer = new TftpServer();
-        
-                TftpServer?.Start();
-                TftpServer.OnReadRequest += TftpServer_OnReadRequest;
-                TftpServer.OnWriteRequest += TftpServer_OnWriteRequest;
-                TftpServer.OnError += TftpServer_OnError;
-                IsStarted = true;
+                if (GetServerDirectory())
+                {
+                    TftpServer = new TftpServer();
+                    TftpServer?.Start();
+                    TftpServer.OnReadRequest += TftpServer_OnReadRequest;
+                    TftpServer.OnWriteRequest += TftpServer_OnWriteRequest;
+                    TftpServer.OnError += TftpServer_OnError;
+                    IsStarted = true;
+                }
+               
             });
             StopServerCommand = new RelayCommand(() =>
             {
@@ -214,7 +208,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             DispatcherHelper.CheckBeginInvokeOnUI(delegate
             {
-                StatusLog += ("[" + transfer.Filename + "]" + acceptingWriteRequestFrom);
+                StatusLog += $"[{transfer.Filename}] {acceptingWriteRequestFrom}]";
             });
         }
 
@@ -248,11 +242,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-       
-
-        public void GetServerDirectory()
+        public bool GetServerDirectory()
         {
-            if (!string.IsNullOrEmpty(TftpServerDirectory))
+            if (!string.IsNullOrEmpty(TftpServerDirectory)&&Directory.Exists(TftpServerDirectory))
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(TftpServerDirectory);
                 DirectoryCollection.Clear();
@@ -260,7 +252,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     DirectoryCollection.Add(fileName.ToString());
                 }
+
+                return true;
             }
+
+            return false;
         }
     }
 }

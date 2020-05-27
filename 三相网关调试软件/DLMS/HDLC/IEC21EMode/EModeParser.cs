@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 
-namespace 三相智慧能源网关调试软件.DLMS._21EMode
+namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 {
     public class EModeParser
     {
@@ -11,11 +11,16 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 return false;
             }
-            if (receiveBytes[0] != 47)
+            if (receiveBytes[0] != EModeFrame.StartChar)
             {
                 return false;
             }
-            if (receiveBytes[receiveBytes.Length - 1] != 10)
+
+            if (receiveBytes[receiveBytes.Length - 2] != EModeFrame.CompletCr)
+            {
+                return false;
+            }
+            if (receiveBytes[receiveBytes.Length - 1] != EModeFrame.CompletLf)
             {
                 return false;
             }
@@ -23,7 +28,7 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 string @string = Encoding.Default.GetString(receiveBytes);
                 string[] array = @string.Split('\\');
-                EMode.PropMaxBaud = int.Parse(array[0].Substring(array[0].Length - 1, 1));
+                EModeFrame.PropMaxBaud = int.Parse(array[0].Substring(array[0].Length - 1, 1));
                 if (array[1].Substring(0, 1) != "2")
                 {
                     return false;
@@ -38,11 +43,15 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
             {
                 return false;
             }
-            if (receiveBytes[0] != EMode.Ack)
+            if (receiveBytes[0] != EModeFrame.Ack)
             {
                 return false;
             }
-            if (receiveBytes[receiveBytes.Length - 1] != 10)
+            if (receiveBytes[receiveBytes.Length - 2] != EModeFrame.CompletCr)
+            {
+                return false;
+            }
+            if (receiveBytes[receiveBytes.Length - 1] != EModeFrame.CompletLf)
             {
                 return false;
             }

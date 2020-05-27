@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace 三相智慧能源网关调试软件.DLMS.HDLC.Enums
+namespace 三相智慧能源网关调试软件.DLMS
 {
     [Flags]
     public enum Conformance : uint

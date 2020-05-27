@@ -9,7 +9,7 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
-      mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
+      mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=DlmsBaseMeterViewModel}"
       d:DesignHeight="650" d:DesignWidth="800"
       Title="UpGradeBaseMeterPage">
     <Page.Resources>
@@ -22,7 +22,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <GroupBox Grid.Column="0" Margin="5" Header="基本通讯" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}"
+            <GroupBox Grid.Column="0" Margin="5" Header="基本通讯" DataContext="{Binding Source={StaticResource Locator},Path=DlmsBaseMeterViewModel}"
                       IsEnabled="{Binding ElementName=CheckBoxIsUseCom ,Path=IsChecked ,Converter={converters:InverseBooleanConverter}}">
                 <StackPanel>
                  

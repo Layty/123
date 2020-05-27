@@ -3,7 +3,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.Wrapper;
+using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Model.IIC;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace UnitTestProject1
 {
@@ -48,6 +52,30 @@ namespace UnitTestProject1
             var resultIa = iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
             var resultIb = iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
             var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
+        }
+
+        [TestMethod]
+        public void Test47AArq()
+        {
+            NetFrameMaker dFrameMaker=new NetFrameMaker(new byte[]{0x00,0x01},password: "33333333", new byte[] { 0x00, 0x01 });
+            var d = dFrameMaker.AarqRequest();
+           var ByteToString= d.ByteToString();
+        }
+        [TestMethod]
+        public void Test47getRequest()
+        {
+            NetFrameMaker dFrameMaker = new NetFrameMaker(new byte[] { 0x00, 0x01 }, password: "33333333", new byte[] { 0x00, 0x01 });
+            var p = new DLMSTaiAngModel {LogicalName = "1.4.98.0.128.255"};
+            var d = dFrameMaker.GetRequest(p,  4);
+            var ByteToString = d.ByteToString();
+        }
+
+        [TestMethod]
+        public void Test47ReleaseRequest()
+        {
+            NetFrameMaker dFrameMaker = new NetFrameMaker(new byte[] { 0x00, 0x01 }, password: "33333333", new byte[] { 0x00, 0x01 });
+            var d = dFrameMaker.ReleaseRequest();
+            var ByteToString = d.ByteToString();
         }
     }
 }

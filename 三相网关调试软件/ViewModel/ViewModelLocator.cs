@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 //SimpleIoc.Default.Register<ENetClientHelper>();
 
                 //SimpleIoc.Default.Register<SerialPortViewModel>();
-                //SimpleIoc.Default.Register<DlmsViewModel>();
+                //SimpleIoc.Default.Register<DlmsBaseMeterViewModel>();
                 //SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>();
 
                 //SimpleIoc.Default.Register<SkinViewModel>();
@@ -41,7 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #region 管理芯相关业务
 
                 SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
-                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
               
                 SimpleIoc.Default.Register<NetLogViewModel>();
                 SimpleIoc.Default.Register<TftpServerViewModel>();
@@ -50,7 +50,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #region 计量芯相关业务
 
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
-                SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
+                SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //DLMS协议
                 SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
                 #endregion
 
@@ -76,14 +76,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #endregion
 
                 #region 服务中心相关业务
-                SimpleIoc.Default.Register<TcpClientHelper>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
+                SimpleIoc.Default.Register<TcpServerViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TftpServerViewModel>();
                 SimpleIoc.Default.Register<NetLogViewModel>();
                 SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
+
+
                 #endregion
                 #region 计量芯相关业务
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
-                SimpleIoc.Default.Register<DlmsViewModel>(); //DLMS协议
+                SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //DLMS协议
                 SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
                 #endregion
 
@@ -117,16 +120,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 管理芯相关业务
 
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
-        public TcpClientHelper TcpClientHelper => ServiceLocator.Current.GetInstance<TcpClientHelper>();
+        public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
        
         public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
+        public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
         #endregion
 
         #region 计量芯相关业务
 
         public SerialPortViewModel SerialPortViewModel => ServiceLocator.Current.GetInstance<SerialPortViewModel>();
-        public DlmsViewModel DlmsViewModel => ServiceLocator.Current.GetInstance<DlmsViewModel>();
+        public DlmsBaseMeterViewModel DlmsBaseMeterViewModel => ServiceLocator.Current.GetInstance<DlmsBaseMeterViewModel>();
 
         public TaiAngViewModel TaiAngViewModel =>
             ServiceLocator.Current.GetInstance<TaiAngViewModel>();

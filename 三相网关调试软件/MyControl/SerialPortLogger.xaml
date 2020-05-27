@@ -17,13 +17,13 @@
 
             <StackPanel Grid.Row="0">
                 <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Text="{Binding SerialPortMasterModel.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
+                         Text="{Binding SerialPortMaster.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
                          materialDesign:HintAssist.Hint="最大缓存字符数" />
                 <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
                           IsChecked="True" />
-                <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsSendDataDisplayFormat16,Mode=TwoWay}">十六进制显示发送数据</CheckBox>
-                <CheckBox  IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsReceiveFormat16,Mode=TwoWay}" >十六进制显示接收数据</CheckBox>
-                <CheckBox Name="CheckBoxWriteLogToFile" Content="自动捕获日志并写入文件" IsChecked="{Binding SerialPortMasterModel.SerialPortLogger.IsEnableWriteLogToFile}"></CheckBox>
+                <CheckBox  IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsSendDataDisplayFormat16,Mode=TwoWay}">十六进制显示发送数据</CheckBox>
+                <CheckBox  IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsReceiveFormat16,Mode=TwoWay}" >十六进制显示接收数据</CheckBox>
+                <CheckBox Name="CheckBoxWriteLogToFile" Content="自动捕获日志并写入文件" IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsEnableWriteLogToFile}"></CheckBox>
                 <Button Name="ButtonClearData"
                         Command="{Binding ClearAllDataCommand}"
                         Margin="5"
@@ -44,7 +44,7 @@
                          Style="{StaticResource MaterialDesignTextBox}"
                          materialDesign:HintAssist.Hint="数据收发历史缓存区"
                          TextChanged="TextBoxBase_OnTextChanged"
-                         Text="{Binding SerialPortMasterModel.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                          Margin="3" />
                 <x:Code>
                     <![CDATA[

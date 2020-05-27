@@ -20,7 +20,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             data.GetUInt8();
             while (data.Position < data.Size)
             {
-                HDLCInfo.InfoTag uInt = (HDLCInfo.InfoTag)data.GetUInt8();
+                DLMSInfo.InfoTag uInt = (DLMSInfo.InfoTag)data.GetUInt8();
                 object value;
                 switch (data.GetUInt8())
                 {
@@ -38,10 +38,10 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 }
                 switch (uInt)
                 {
-                    case HDLCInfo.InfoTag.MaxInfoTx:
+                    case DLMSInfo.InfoTag.MaxInfoTx:
                         settings.Limits.MaxInfoRX = Convert.ToUInt16(value);
                         break;
-                    case HDLCInfo.InfoTag.MaxInfoRx:
+                    case DLMSInfo.InfoTag.MaxInfoRx:
                         settings.Limits.MaxInfoTX = Convert.ToUInt16(value);
                         //if (settings.Limits.UseFrameSize)
                         //{
@@ -49,10 +49,10 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                         //    settings.Limits.MaxInfoTX += (ushort)(10 + hdlcAddressBytes.Length);
                         //}
                         break;
-                    case HDLCInfo.InfoTag.WindowSizeTx:
+                    case DLMSInfo.InfoTag.WindowSizeTx:
                         settings.Limits.WindowSizeRX = Convert.ToByte(value);
                         break;
-                    case HDLCInfo.InfoTag.WindowSizeRx:
+                    case DLMSInfo.InfoTag.WindowSizeRx:
                         settings.Limits.WindowSizeTX = Convert.ToByte(value);
                         break;
                     default:

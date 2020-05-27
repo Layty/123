@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Ports;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MaterialDesignThemes.Wpf;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
 
@@ -19,59 +20,87 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SerialPortConfigCaretaker =
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = SerialPortConfigCaretaker.DefaultConfig;
-                SerialPortMasterModel = new SerialPortMaster(config);
+                SerialPortMaster = new SerialPortMaster(config);
             }
             else
             {
                 SerialPortConfigCaretaker =
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
                 var config = SerialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
-                SerialPortMasterModel = new SerialPortMaster(config);
+                SerialPortMaster = new SerialPortMaster(config);
 
                 ClearReceiveDataCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.SerialPortLogger.ClearDataReceiveBytes();
+                    SerialPortMaster.SerialPortLogger.ClearDataReceiveBytes();
                 });
                 ClearHistoryDataCommand =
-                    new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearHistoryText());
-                ClearAllDataCommand = new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearAllText());
+                    new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearHistoryText());
+                ClearAllDataCommand = new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearAllText());
                 ClearAllCountsCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.SerialPortLogger.ClearSendCount();
-                    SerialPortMasterModel.SerialPortLogger.ClearReceiveCount();
+                    SerialPortMaster.SerialPortLogger.ClearSendCount();
+                    SerialPortMaster.SerialPortLogger.ClearReceiveCount();
                 });
-                ClearSendCountCommand = new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearSendCount());
+                ClearSendCountCommand = new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearSendCount());
                 ClearReceivedCountCommand =
-                    new RelayCommand(() => SerialPortMasterModel.SerialPortLogger.ClearReceiveCount());
+                    new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearReceiveCount());
             }
 
             SendersCollection = new ObservableCollection<SenderModel> {new SenderModel {SendText = "1234"}};
             SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
             SendTextCommand = new RelayCommand(() =>
                 {
-                    SerialPortMasterModel.Send(SenderModel.SendText.StringToByte());
+                    SerialPortMaster.Send(SenderModel.SendText.StringToByte());
                 }
             );
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
-                SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMasterModel
+                SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMaster
                     .CreateMySerialPortConfig);
             });
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
+            OpenOrCloseCommand=new RelayCommand(async ()=>{
+                try
+                {
+                    if (!SerialPortMaster.IsOpen)
+                    {
+                        SerialPortMaster.Open();
+                    }
+                    else
+                    {
+                        SerialPortMaster.Close();
+                    }
+                    SaveSerialPortConfigFileCommand.Execute(null);
+                }
+                catch (Exception e)
+                {
+                    var view = new MyControl.MessageBox() { Message = e.Message, Title = e.Source };
+                    await DialogHost.Show(view, "SerialPortPage");
+                }
+               
+            });
         }
 
-        public SerialPortMaster SerialPortMasterModel
+        public SerialPortMaster SerialPortMaster
         {
-            get => _serialPortMasterModel;
+            get => _serialPortMaster;
             set
             {
-                _serialPortMasterModel = value;
+                _serialPortMaster = value;
                 RaisePropertyChanged();
             }
         }
 
-        private SerialPortMaster _serialPortMasterModel;
+        private SerialPortMaster _serialPortMaster;
         private SerialPortConfigCaretaker SerialPortConfigCaretaker { get; set; }
+
+
+        public RelayCommand OpenOrCloseCommand
+        {
+            get => _openOrCloseCommand;
+            set { _openOrCloseCommand = value; RaisePropertyChanged(); }
+        }
+        private RelayCommand _openOrCloseCommand;
 
 
         #region 串口参数资源集合
@@ -140,8 +169,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void SelectSendText(SenderModel senderModel)
         {
             SenderModel = senderModel;
-            //SerialPortMasterModel.CurrentSendBytes = senderModel.SendText.StringToByte();
-            //SerialPortMasterModel.Send();
+            //SerialPortMaster.CurrentSendBytes = senderModel.SendText.StringToByte();
+            //SerialPortMaster.Send();
         }
 
         #endregion

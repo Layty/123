@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace 三相智慧能源网关调试软件.DLMS.HDLC
+namespace 三相智慧能源网关调试软件.DLMS
 {
-    public class HDLCInfo : ValidateModelBase
+    public class DLMSInfo : ValidateModelBase
     {
         internal enum InfoTag : byte
         {
@@ -15,7 +15,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             WindowSizeRx = 0x08
         }
       
-        public HDLCInfo()
+        public DLMSInfo()
         {
             _formatIdentifier = 0x81;
             _groupIdentifier = 0x80;

@@ -5,9 +5,10 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.OBIS;
 
-namespace 三相智慧能源网关调试软件.DLMS.HDLC
+namespace 三相智慧能源网关调试软件.DLMS
 {
-    public struct CosemMethodDescriptor : IToPduBytes
+
+    public class CosemMethodDescriptor : IToPduBytes
     {
         public ObjectType ClassId { get; set; }
         public string InstanceId { get; set; }

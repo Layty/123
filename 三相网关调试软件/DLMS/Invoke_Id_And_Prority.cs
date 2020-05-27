@@ -1,7 +1,7 @@
 ﻿using System;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
-namespace 三相智慧能源网关调试软件.DLMS.HDLC
+namespace 三相智慧能源网关调试软件.DLMS
 {
     public class Invoke_Id_And_Priority
     {
@@ -13,11 +13,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         //        --  priority(7)      0 = normal; 1 = high
         //        --}
 
-        private byte invokeID;
+        private byte _invokeId;
 
-        public byte InvokeID
+        public byte InvokeId
         {
-            get => invokeID;
+            get => _invokeId;
             set
             {
                 if (value > 15)
@@ -25,7 +25,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                     throw new ArgumentException("Invalid InvokeID");
                 }
 
-                invokeID = value;
+                _invokeId = value;
             }
         }
 
@@ -37,13 +37,13 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         /// <summary>
         ///  BIT STRING (SIZE(8))
         /// </summary>
-        /// <param name="ivoke_id">(0..3)</param>
+        /// <param name="invokeId">(0..3)</param>
         /// <param name="serviceClass">0 = Unconfirmed, 1 = Confirmed</param>
         /// <param name="priority">优先级 0=normal,1=high</param>
         /// <param name="reserved"></param>
-        public Invoke_Id_And_Priority(byte ivoke_id, ServiceClass serviceClass, Priority priority, byte reserved = 0)
+        public Invoke_Id_And_Priority(byte invokeId, ServiceClass serviceClass, Priority priority, byte reserved = 0)
         {
-            InvokeID = ivoke_id;
+            InvokeId = invokeId;
             this.reserved = reserved;
             ServiceClass = serviceClass;
             Priority = priority;
@@ -70,7 +70,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 ServiceClass = ServiceClass.UnConfirmed;
             }
 
-            InvokeID = (byte) (value & 0xF);
+            InvokeId = (byte) (value & 0xF);
         }
 
         private byte GetInvoke_Id_And_Priority()
@@ -86,7 +86,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 count += 0x40;
             }
 
-            count += InvokeID;
+            count += InvokeId;
 
             return count;
         }

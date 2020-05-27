@@ -1,20 +1,22 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Text;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.CosemObjects;
+using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class TaiAngViewModel : ViewModelBase
     {
-        //public DLMSTaiAng DlmsTai { get; set; }
-        private ObservableCollection<DLMSTaiAng> _taiAngCollection;
+        public DLMSClient Client { get; set; }
 
-        public ObservableCollection<DLMSTaiAng> TaiAngCollection
+        public SerialPortViewModel SerialPortViewModel =
+            CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+
+        private ObservableCollection<DLMSTaiAngModel> _taiAngCollection;
+
+        public ObservableCollection<DLMSTaiAngModel> TaiAngCollection
         {
             get => _taiAngCollection;
             set
@@ -28,42 +30,47 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             if (IsInDesignMode)
             {
-                TaiAngCollection = new ObservableCollection<DLMSTaiAng>
+                TaiAngCollection = new ObservableCollection<DLMSTaiAngModel>
                 {
-                    new DLMSTaiAng {LogicalName = "1.1.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.2.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.3.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.4.98.0.128.255"}
+                    new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.2.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.3.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.4.98.0.128.255"}
                 };
             }
             else
             {
-                TaiAngCollection = new ObservableCollection<DLMSTaiAng>
+                Client=new DLMSClient(SerialPortViewModel.SerialPortMaster,new MyDLMSSettings(InterfaceType.HDLC));
+                   TaiAngCollection = new ObservableCollection<DLMSTaiAngModel>
                 {
-                    new DLMSTaiAng {LogicalName = "1.1.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.2.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.3.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.4.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.5.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.6.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.7.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.8.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.9.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.10.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.11.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.12.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.13.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.14.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.15.98.0.128.255"},
-                    new DLMSTaiAng {LogicalName = "1.16.98.0.128.255"}
+                    new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.2.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.3.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.4.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.5.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.6.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.7.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.8.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.9.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.10.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.11.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.12.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.13.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.14.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.15.98.0.128.255"},
+                    new DLMSTaiAngModel {LogicalName = "1.16.98.0.128.255"}
                 };
-                GetLogicNameDataCommand = new RelayCommand<DLMSTaiAng>(async t => await t.GetLogicName());
-                GetMeterAddressData = new RelayCommand<DLMSTaiAng>(async t => await t.GetTableId());
-                GetDataLengthData = new RelayCommand<DLMSTaiAng>(async t => await t.GetLength());
-                GetBuffData = new RelayCommand<DLMSTaiAng>(async t =>
+                GetLogicNameDataCommand = new RelayCommand<DLMSTaiAngModel>(
+                    async t =>
+                    {
+                        await Client.GetRequest(t.GetLogicName());
+                    });
+                GetMeterAddressData = new RelayCommand<DLMSTaiAngModel>(async t => await Client.GetRequest(t.GetTableId()) );
+                GetDataLengthData = new RelayCommand<DLMSTaiAngModel>(async t => await Client.GetRequest(t.GetLength()));
+                GetBuffData = new RelayCommand<DLMSTaiAngModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var DataResult = await t.GetBuffer();
+                        var DataResult = await Client.GetRequest(t.GetBuffer());
                         var bytes = NormalDataParse.GetUtilityTablesDataContent(DataResult, 3, out bool result);
                         if (result)
                         {
@@ -74,11 +81,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand<DLMSTaiAng> _getLogicNameDataCommand;
+        private RelayCommand<DLMSTaiAngModel> _getLogicNameDataCommand;
 
-        public RelayCommand<DLMSTaiAng> GetLogicNameDataCommand
+        public RelayCommand<DLMSTaiAngModel> GetLogicNameDataCommand
         {
-            get { return _getLogicNameDataCommand; }
+            get => _getLogicNameDataCommand;
             set
             {
                 _getLogicNameDataCommand = value;
@@ -86,11 +93,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand<DLMSTaiAng> _etMeterAddressData;
+        private RelayCommand<DLMSTaiAngModel> _etMeterAddressData;
 
-        public RelayCommand<DLMSTaiAng> GetMeterAddressData
+        public RelayCommand<DLMSTaiAngModel> GetMeterAddressData
         {
-            get { return _etMeterAddressData; }
+            get => _etMeterAddressData;
             set
             {
                 _etMeterAddressData = value;
@@ -98,11 +105,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand<DLMSTaiAng> _getDataLengthData;
+        private RelayCommand<DLMSTaiAngModel> _getDataLengthData;
 
-        public RelayCommand<DLMSTaiAng> GetDataLengthData
+        public RelayCommand<DLMSTaiAngModel> GetDataLengthData
         {
-            get { return _getDataLengthData; }
+            get => _getDataLengthData;
             set
             {
                 _getDataLengthData = value;
@@ -110,42 +117,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand<DLMSTaiAng> _getBuffData;
+        private RelayCommand<DLMSTaiAngModel> _getBuffData;
 
-        public RelayCommand<DLMSTaiAng> GetBuffData
+        public RelayCommand<DLMSTaiAngModel> GetBuffData
         {
-            get { return _getBuffData; }
+            get => _getBuffData;
             set
             {
                 _getBuffData = value;
                 RaisePropertyChanged();
             }
         }
-    }
 
-    public class DLMSTaiAng : DLMSUtilityTables, INotifyPropertyChanged
-    {
-        public string NameDescription { get; set; } = "logical_name";
-        public string AddrDescription { get; set; } = "抽屉柜modbus_id";
-        public string LengthDescription { get; set; } = "buffer-length";
-        public string DataDescription { get; set; } = "Buffer";
-        private string _dataForShow;
-
-        public string DataForShow
-        {
-            get => _dataForShow;
-            set
-            {
-                _dataForShow = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

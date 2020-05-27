@@ -106,7 +106,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         Title = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
                         Foreground = "#FF0000"
+                    },  new MenuModel
+                    {
+                        Title = "TcpServer", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TcpServerPage",
+                        Foreground = "#FF0000"
                     },
+
 
                     new MenuModel
                     {

@@ -1,27 +1,49 @@
-﻿namespace 三相智慧能源网关调试软件.DLMS._21EMode
+﻿namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 {
-    public class EMode
+    public class EModeFrame
     {
+        /// <summary>
+        /// forward oblique, code 2FH
+        /// </summary>
         internal const char StartChar = '/';
 
+        /// <summary>
+        /// question mark, code 3FH
+        /// </summary>
         internal const char RequestChar = '?';
 
+        /// <summary>
+        /// exclamation mark, code 21H
+        /// </summary>
         internal const char EndChar = '!';
 
-       
 
+        /// <summary>
+        /// CR, carriage return, code ODH
+        /// </summary>
         internal const char CompletCr = '\r';
 
+        /// <summary>
+        ///  LF, line feed, code OAH
+        /// </summary>
         internal const char CompletLf = '\n';
 
+        /// <summary>
+        /// ACK, acknowledge, code 06H
+        /// </summary>
         internal const byte Ack = 0x06;
 
         public string _baudZ;
 
+        /// <summary>
+        /// 分隔符 backslash code 5CH
+        /// </summary>
         internal const char Delimiter = '\\';
 
         private static string _propBaud;
-        private string _deviceAddress ;
+
+        private string _deviceAddress;
+
         public string DeviceAddress
         {
             get => _deviceAddress;
@@ -176,13 +198,9 @@
             }
         }
 
-        public EMode(int requestBaud, string deviceAddress = "")
+        public EModeFrame(int requestBaud, string deviceAddress = "")
         {
             DeviceAddress = deviceAddress;
-            AckBaudZ = requestBaud;
-        }
-        public EMode(int requestBaud)
-        {
             AckBaudZ = requestBaud;
         }
     }

@@ -8,41 +8,14 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using NLog;
-using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class TcpClientHelper : ViewModelBase, IDisposable, IDataErrorInfo
+    public class TcpClientHelper : ObservableObject, IDataErrorInfo
     {
-        #region 网络
-
-        private string _sendMsg;
-
-        public string MySendMessage
-        {
-            get => _sendMsg;
-            set
-            {
-                _sendMsg = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _receiveMsg;
-
-        public string MyReceiveMessage
-        {
-            get => _receiveMsg;
-            set
-            {
-                _receiveMsg = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        public Socket ClientSocket { get; set; }
+        private readonly byte[] _messageByteServer = new byte[1024];
         private string _localIp;
 
         public string LocalIp
@@ -108,229 +81,66 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private RelayCommand _connectOrDisconnectCommand;
+        private string _sendMsg;
 
-        public RelayCommand ConnectOrDisconnectCommand
+        public string MySendMessage
         {
-            get => _connectOrDisconnectCommand;
+            get => _sendMsg;
             set
             {
-                _connectOrDisconnectCommand = value;
+                _sendMsg = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand<string> _sendMsgCommand;
+        private string _receiveMsg;
 
-        public RelayCommand<string> SendMsgCommand
+        public string MyReceiveMessage
         {
-            get => _sendMsgCommand;
+            get => _receiveMsg;
             set
             {
-                _sendMsgCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-        private RelayCommand _sendMsgControlCCommand;
-
-        public RelayCommand SendMsgControlCCommand
-        {
-            get => _sendMsgControlCCommand;
-            set
-            {
-                _sendMsgControlCCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-        #endregion
-
-        #region 网关参数配置业务
-
-        private string _afterIp = "192.168.0.145";
-
-        [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
-            ErrorMessage = "请输入正确的IP地址！")]
-        public string AfterIp
-        {
-            get => _afterIp;
-            set
-            {
-                _afterIp = value;
+                _receiveMsg = value;
                 RaisePropertyChanged();
             }
         }
 
-
-        private string _afterGateway = "192.168.0.1";
-
-        [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
-            ErrorMessage = "请输入正确的IP地址！")]
-        public string AfterGateway
+        public TcpClientHelper(string serverIpAddress, int serverPortNum)
         {
-            get => _afterGateway;
-            set
-            {
-                _afterGateway = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _afterHostIp = "172.32.0.3";
-
-        [Required(ErrorMessage = "不能为空！")]
-        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
-            ErrorMessage = "请输入正确的IP地址！")]
-        public string AfterHostIp
-        {
-            get => _afterHostIp;
-            set
-            {
-                _afterHostIp = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _tryToLoginCommand;
-
-        public RelayCommand TryToLoginCommand
-        {
-            get => _tryToLoginCommand;
-            set
-            {
-                _tryToLoginCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _replaceAppParaHostIpCommand;
-
-        public RelayCommand ReplaceAppParaHostIpCommand
-        {
-            get => _replaceAppParaHostIpCommand;
-            set
-            {
-                _replaceAppParaHostIpCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _replaceAppParaIpAddrCommand;
-
-        public RelayCommand ReplaceAppParaIpAddrCommand
-        {
-            get => _replaceAppParaIpAddrCommand;
-            set
-            {
-                _replaceAppParaIpAddrCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _replaceAppParaIpGateWayCommand;
-
-        public RelayCommand ReplaceAppParaIpGateWayCommand
-        {
-            get => _replaceAppParaIpGateWayCommand;
-            set
-            {
-                _replaceAppParaIpGateWayCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _replaceAllParaCommand;
-
-        public RelayCommand ReplaceAllParaCommand
-        {
-            get => _replaceAllParaCommand;
-            set
-            {
-                _replaceAllParaCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        #endregion
-
-        public TcpClientHelper()
-        {
-            ServerIpAddress = Settings.Default.GatewayIpAddress;
-            ServerPortNum = 23;
-            IpEndPoint = new IPEndPoint(IPAddress.Parse(ServerIpAddress), ServerPortNum);
+            ServerIpAddress = serverIpAddress;
+            ServerPortNum = serverPortNum;
+            IpEndPoint = new IPEndPoint(IPAddress.Parse(serverIpAddress), serverPortNum);
             ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            LocalIp = GetHostIp();
+        }
 
-            var hostAddresses = Dns.GetHostAddresses(Dns.GetHostName());
-            foreach (IPAddress ipa in hostAddresses)
+        public static string GetHostIp()
+        {
+            IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress[] addressList = hostEntry.AddressList;
+            string result = "";
+            if (addressList.Length == 0)
             {
-                if (ipa.AddressFamily == AddressFamily.InterNetwork)
-                    LocalIp = ipa.ToString();
+                return result;
             }
 
-            ConnectOrDisconnectCommand = new RelayCommand(() =>
+            IPAddress[] array = addressList;
+            foreach (IPAddress iPAddress in array)
             {
-                if (ClientSocket.Connected)
+                if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    Disconnect();
+                    result = iPAddress.ToString();
                 }
-                else
-                {
-                    ConnectToServer();
-                }
-            });
-            SendMsgCommand = new RelayCommand<string>(SendDataToServerWithNewLine);
-            SendMsgControlCCommand=new RelayCommand(() =>
-            {
-                SendDataToServer(new byte[]{0x03});
-            });
-            TryToLoginCommand = new RelayCommand((async () =>
-            {
-                SendDataToServerWithNewLine("root");
-                await Task.Delay(500);
-                SendDataToServerWithNewLine("11223344");
-            }));
-            //主站IP
-            ReplaceAppParaHostIpCommand = new RelayCommand(() =>
-            {
-                string data =
-                    $"sed -i 's/^\\[HostStationIp:.*/\\[HostStationIp:{AfterHostIp}\\]/' /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(data);
-            });
-            //网关IP
-            ReplaceAppParaIpAddrCommand = new RelayCommand(() =>
-            {
-                string data = $"sed -i 's/^\\[IpAddr:.*/\\[IpAddr:{AfterIp}\\]/' /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(data);
-            });
-            //网关默认网关
-            ReplaceAppParaIpGateWayCommand = new RelayCommand(() =>
-            {
-                string data =
-                    $"sed -i 's/^\\[Gateway:.*/\\[Gateway:{AfterGateway}\\]/'  /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(data);
-            });
-            //主站IP/网关IP/网关默认网关
-            ReplaceAllParaCommand = new RelayCommand(async () =>
-            {
-                string dataHostStationIp =
-                    $"sed -i 's/^\\[HostStationIp:.*/\\[HostStationIp:{AfterHostIp}\\]/' /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(dataHostStationIp);
-                await Task.Delay(500);
-                string dataIpAddr = $"sed -i 's/^\\[IpAddr:.*/\\[IpAddr:{AfterIp}\\]/' /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(dataIpAddr);
-                await Task.Delay(500);
-                string dataGateway =
-                    $"sed -i 's/^\\[Gateway:.*/\\[Gateway:{AfterGateway}\\]/'  /opt/cfg/AppPara.cfg";
-                SendDataToServerWithNewLine(dataGateway);
-            });
+            }
+
+            return result;
         }
 
         public void ConnectToServer()
         {
             try
             {
-                Task.Run(delegate
+                Task.Run(()=>
                 {
                     try
                     {
@@ -338,24 +148,23 @@ namespace 三相智慧能源网关调试软件
                         Messenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
                             "Status");
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
+
                         ConnectResult = true;
                         Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "Status");
+                        Task.Run(ReceiveData);
                     }
                     catch (Exception e)
                     {
                         ConnectResult = false;
-                        Messenger.Default.Send("连接不成功", "Status");
-                        Messenger.Default.Send("异常" + e.Message, "TelNetErrorEvent");
-                        throw;
+                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "Status");
+                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "TelNetErrorEvent");
                     }
-
-                    Task.Run(ReceiveData);
                 });
             }
             catch (Exception e)
             {
                 ConnectResult = false;
-                Messenger.Default.Send("异常" + e.Message, "TelNetErrorEvent");
+                Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "TelNetErrorEvent");
                 throw;
             }
         }
@@ -376,51 +185,18 @@ namespace 三相智慧能源网关调试软件
                     }
 
                     byte[] receiveBytes = _messageByteServer.Take(receiveDataLen).ToArray();
-                  
+
                     Messenger.Default.Send(receiveBytes, "ReceiveDataEvent");
                 }
             }
             catch (Exception e)
             {
-                Messenger.Default.Send(e.Message, "TelNetErrorEvent");
+                Messenger.Default.Send(e.Message + "from  ReceiveData()", "TelNetErrorEvent");
             }
             finally
             {
-                ClientSocket.Disconnect(false);
+                ClientSocket.Disconnect(true);
                 ConnectResult = false;
-            }
-        }
-
-      
-    
-        /// <summary>
-        /// 发送数据至服务端，并加上换行符
-        /// </summary>
-        /// <param name="inputSendData"></param>
-        public void SendDataToServerWithNewLine(string inputSendData)
-        {
-            if (ConnectResult == false)
-            {
-                return;
-            }
-
-            bool flag = inputSendData == null;
-            if (flag)
-            {
-                throw new ArgumentNullException("inputSendData");
-            }
-
-            try
-            {
-                byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
-                ClientSocket.Send(sendBytes);
-               
-                MySendMessage += inputSendData + Environment.NewLine;
-                Messenger.Default.Send(sendBytes, "SendDataEvent");
-            }
-            catch (Exception ex)
-            {
-                Messenger.Default.Send(ex.Message, "ENetErrorEvent");
             }
         }
 
@@ -469,6 +245,36 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
+        /// <summary>
+        /// 发送数据至服务端，并加上换行符
+        /// </summary>
+        /// <param name="inputSendData"></param>
+        public void SendDataToServerWithNewLine(string inputSendData)
+        {
+            if (ConnectResult == false)
+            {
+                return;
+            }
+
+            bool flag = inputSendData == null;
+            if (flag)
+            {
+                throw new ArgumentNullException("inputSendData");
+            }
+
+            try
+            {
+                byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
+                ClientSocket.Send(sendBytes);
+
+                MySendMessage += inputSendData + Environment.NewLine;
+                Messenger.Default.Send(sendBytes, "SendDataEvent");
+            }
+            catch (Exception ex)
+            {
+                Messenger.Default.Send(ex.Message, "ENetErrorEvent");
+            }
+        }
 
         public void Disconnect()
         {
@@ -477,7 +283,7 @@ namespace 三相智慧能源网关调试软件
                 return;
             }
 
-            ClientSocket.Disconnect(false);
+            ClientSocket.Disconnect(true);
             ConnectResult = false;
             Messenger.Default.Send("关闭连接成功", "Status");
         }
@@ -494,18 +300,10 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Send("关闭连接成功", "Status");
         }
 
-
         public void Dispose()
         {
             ((IDisposable) ClientSocket).Dispose();
         }
-
-
-        public Socket ClientSocket { get; set; }
-
-
-        private readonly byte[] _messageByteServer = new byte[1024];
-
 
         public string this[string columnName]
         {
@@ -531,7 +329,7 @@ namespace 三相智慧能源网关调试软件
         /// <summary>
         /// 表当验证错误集合
         /// </summary>
-        private Dictionary<String, String> dataErrors = new Dictionary<String, String>();
+        private Dictionary<string, string> dataErrors = new Dictionary<string, string>();
 
         public string Error { get; }
 

@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.HDLC;
 
 namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ProfileGeneric : DLMSObject, IDLMSBase
     {
-        public override ObjectType ObjectType { get; set; } = ObjectType.ProfileGeneric;
+      //  public override ObjectType ObjectType { get; set; } = ObjectType.ProfileGeneric;
 
-        public sealed override string LogicalName { get; set; } //1
+        //public sealed override string LogicalName { get; set; } //1
         public List<object[]> Buffer { get; set; } //2
         public object From { get; set; }
         public object To { get; set; }
@@ -39,51 +35,39 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         public uint ProfileEntries { get; set; } //8
 
 
-        public override byte Version { get; set; } = 1;
+        //public override byte Version { get; set; } = 1;
 
         public ProfileGeneric(string logicalName)
         {
             SortMethod = SortMethod.FiFo;
             LogicalName = logicalName;
+            ObjectType = ObjectType.ProfileGeneric;
+            //Version = 1;
         }
 
-        public void GetBuffer()
-        {
-            GetAttributeData(2);
-        }
 
-        public void GetCaptureObjects()
-        {
-            GetAttributeData(3);
-        }
+        public byte[] GetBuffer() => GetAttributeData(2);
 
-        public void GetCapturePeriod()
-        {
-            GetAttributeData(4);
-        }
+        public byte[] GetCaptureObjects() => GetAttributeData(3);
 
-        public void SetCapturePeriod(uint capturePeriod)
+        public byte[] GetCapturePeriod() => GetAttributeData(4);
+
+
+        public byte[] SetCapturePeriod(uint capturePeriod)
         {
             this.CapturePeriod = capturePeriod;
             DLMSDataItem dlmsDataItem =
-                new DLMSDataItem(GetDataType(4), BitConverter.GetBytes(capturePeriod).Reverse().ToArray());
-            SetAttributeData(4, dlmsDataItem);
+                new DLMSDataItem(GetDataType(4), BitConverter.GetBytes(CapturePeriod).Reverse().ToArray());
+            return SetAttributeData(4, dlmsDataItem);
         }
 
-        public void GetSortMethod()
-        {
-            GetAttributeData(5);
-        }
+        public byte[] GetSortMethod() => GetAttributeData(5);
 
-        public void GetEntriesInUse()
-        {
-            GetAttributeData(7);
-        }
+        public byte[] GetEntriesInUse() => GetAttributeData(7);
 
-        public void GetProfileEntries()
-        {
-            GetAttributeData(8);
-        }
+
+        public byte[] GetProfileEntries() => GetAttributeData(8);
+     
 
 
         string[] IDLMSBase.GetNames()

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
@@ -9,26 +8,31 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         public ushort TableId { get; set; }
         public byte[] Buffer { get; set; }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.UtilityTables;
+      //  public override ObjectType ObjectType { get; set; } = ObjectType.UtilityTables;
 
-        public async Task<byte[]> GetLogicName()
+
+        public DLMSUtilityTables()
         {
-            return await GetAttributeData(1);
+            ObjectType = ObjectType.UtilityTables;
+        }
+        public byte[] GetLogicName()
+        {
+            return GetAttributeData(1);
         }
 
-        public async Task<byte[]> GetTableId()
+        public byte[] GetTableId()
         {
-            return await GetAttributeData(2);
+            return GetAttributeData(2);
         }
 
-        public async Task<byte[]> GetLength()
+        public byte[] GetLength()
         {
-            return await GetAttributeData(3);
+            return GetAttributeData(3);
         }
 
-        public async Task<byte[]> GetBuffer()
+        public byte[] GetBuffer()
         {
-            return await GetAttributeData(4);
+            return GetAttributeData(4);
         }
 
         string[] IDLMSBase.GetNames() => new string[4]

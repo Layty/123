@@ -16,26 +16,5 @@ namespace 三相智慧能源网关调试软件.MyControl
         {
             InitializeComponent();
         }
-        public SerialPortViewModel SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
-        private async void BtnOpenSerialPort_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (SerialPortViewModel.SerialPortMasterModel.IsOpen)
-                {
-                    SerialPortViewModel.SerialPortMasterModel.Close();
-                }
-                else
-                {
-                    SerialPortViewModel.SerialPortMasterModel.Open();
-                    SerialPortViewModel.SaveSerialPortConfigFileCommand.Execute(null);
-                }
-            }
-            catch (Exception exception)
-            {
-                var view = new MessageBox(exception.Message, exception.Source);
-                await DialogHost.Show(view, "RootDialog");
-            }
-        }
     }
 }

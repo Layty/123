@@ -11,6 +11,7 @@
         <Border BorderThickness="3" Padding="10">
             <ScrollViewer>
                 <StackPanel>
+                    <Button Margin="3" Command="{Binding ClearCommand}" Content="清空数据"></Button>
                     <GroupBox Header="IIC瞬时量" Height="200">
                         <DataGrid
                             ItemsSource="{Binding InstantDataCollection,UpdateSourceTrigger=PropertyChanged}" />

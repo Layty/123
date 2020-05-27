@@ -33,15 +33,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 if (value)
                 {
-                    if (!SerialPortViewModel.SerialPortMasterModel.IsAutoDataReceived)
+                    if (!SerialPortViewModel.SerialPortMaster.IsAutoDataReceived)
                     {
-                        SerialPortViewModel.SerialPortMasterModel.IsAutoDataReceived = true;
+                        SerialPortViewModel.SerialPortMaster.IsAutoDataReceived = true;
                     }
-                    SerialPortViewModel.SerialPortMasterModel.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortMasterModel.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
                 }
 
                 _isInitUpGradeSerialPort = value;
@@ -178,14 +178,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
             FileTransmitProtocol = new YModem(TransmitMode, YModemType, 10);
             UserComCommand = new RelayCommand(() =>
             {
-                //SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived += SerialPort_DataReceived;
-                SerialPortViewModel.SerialPortMasterModel.SerialDataReceived +=
+                //SerialPortViewModel.SerialPortMaster.SerialPort.DataReceived += SerialPort_DataReceived;
+                SerialPortViewModel.SerialPortMaster.SerialDataReceived +=
                     SerialPortMasterModelSerialDataReceived;
             });
             ReleaseComCommand = new RelayCommand(() =>
             {
-                // SerialPortViewModel.SerialPortMasterModel.SerialPort.DataReceived -= SerialPort_DataReceived;
-                SerialPortViewModel.SerialPortMasterModel.SerialDataReceived -=
+                // SerialPortViewModel.SerialPortMaster.SerialPort.DataReceived -= SerialPort_DataReceived;
+                SerialPortViewModel.SerialPortMaster.SerialDataReceived -=
                     SerialPortMasterModelSerialDataReceived;
             });
             StartCommand = new RelayCommand(() =>
@@ -359,13 +359,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void YModem_SendToUartEvent(object sender, SendToUartEventArgs e)
         {
-            if (!_serialPortViewModel.SerialPortMasterModel.IsOpen)
+            if (!_serialPortViewModel.SerialPortMaster.IsOpen)
             {
-                _serialPortViewModel.SerialPortMasterModel.Open();
+                _serialPortViewModel.SerialPortMaster.Open();
             }
 
-            _serialPortViewModel.SerialPortMasterModel.Send(e.Data); //使用Send可捕捉发送日志
-            //_serialPortViewModel.SerialPortMasterModel.SerialPort.Write(e.Data, 0, e.Data.Length);
+            _serialPortViewModel.SerialPortMaster.Send(e.Data); //使用Send可捕捉发送日志
+            //_serialPortViewModel.SerialPortMaster.SerialPort.Write(e.Data, 0, e.Data.Length);
             //  Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
         }
 

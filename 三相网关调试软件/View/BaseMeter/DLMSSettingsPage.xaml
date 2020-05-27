@@ -12,24 +12,33 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DLMSSettingsPage">
     <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="DlmsViewModel" />
+        <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
         <StackPanel Margin="3">
-            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="DestAddress"
-                Text="{Binding HdlcFrameMaker.Hdlc46Frame.DestAddress,Converter={converters:BytesParseToIntConverter}}" />
-            <TextBox Text="{Binding HdlcFrameMaker.Hdlc46Frame.SourceAddress}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                     materialDesign:HintAssist.Hint="SourceAddress"/>
-            <TextBlock Text="{Binding HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}"  />
-            <TextBlock Text="{Binding HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
-            <TextBox Text="{Binding HdlcFrameMaker.Hdlc46Frame.Password}"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Password"/>
-            <TextBlock Text="{Binding HdlcFrameMaker.Hdlc46Frame.LastCommand}"  />
-            <TextBox Text="{Binding HdlcFrameMaker.Hdlc46Frame.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize" 
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="DestAddress"
+                     Text="{Binding DlmsSettings.ServerAddress}" />
+            <TextBox Text="{Binding DlmsSettings.ClientAddress}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="SourceAddress" />
+            <TextBlock Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}" />
+            <TextBlock Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
+            <TextBox Text="{Binding DlmsSettings.PasswordString}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Password" />
+            <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
+            <TextBox Text="{Binding DlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
                      materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding StartProtocolArray}" SelectedItem="{Binding StartProtocolType}"
-                      materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True"
-                      />
-          
+            <TextBox Text="{Binding DlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
+                     materialDesign:HintAssist.IsFloating="True" />
+            <ComboBox ItemsSource="{Binding StartProtocolArray}"
+                      SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
+                      materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True" />
+            <ComboBox ItemsSource="{Binding CommunicationTypeArray}"
+                      SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
+                      materialDesign:HintAssist.Hint="CommunicationType" materialDesign:HintAssist.IsFloating="True" />
+
         </StackPanel>
     </Grid>
 </Page>

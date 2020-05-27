@@ -71,7 +71,7 @@ namespace Gurux.DLMS
         /// <summary>
         /// Invoke ID.
         /// </summary>
-        internal UInt32 longInvokeID = 0x1;
+        internal uint longInvokeID = 0x1;
 
         ///<summary>
         ///Client to server challenge.

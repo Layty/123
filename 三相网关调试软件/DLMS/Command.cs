@@ -1,7 +1,5 @@
-﻿namespace 三相智慧能源网关调试软件.DLMS.HDLC.Enums
+﻿namespace 三相智慧能源网关调试软件.DLMS
 {
-
-
     public enum Command
     {
         None = 0,

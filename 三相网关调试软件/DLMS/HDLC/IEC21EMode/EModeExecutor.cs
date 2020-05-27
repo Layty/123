@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MySerialPortMaster;
 
-namespace 三相智慧能源网关调试软件.DLMS._21EMode
+namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 {
     public class EModeExecutor
     {
         private readonly SerialPortMaster _opticalPortMaster;
 
-        private  EModeMaker _eModeFrameMaker;
+        private  EModeFrameMaker _eModeFrameFrameMaker;
 
         private  int _requestBaud;
 
@@ -19,31 +19,31 @@ namespace 三相智慧能源网关调试软件.DLMS._21EMode
         {
             _opticalPortMaster = serialOpticalPortMaster;
         }
-        public EModeExecutor(SerialPortMaster serialOpticalPortMaster, EModeMaker eModeFrameMaker)
+        public EModeExecutor(SerialPortMaster serialOpticalPortMaster, EModeFrameMaker eModeFrameFrameMaker)
         {
             _opticalPortMaster = serialOpticalPortMaster;
-            _eModeFrameMaker = eModeFrameMaker;
+            _eModeFrameFrameMaker = eModeFrameFrameMaker;
         }
         private void Init21ESerialPort()
         {
             _requestBaud = _opticalPortMaster.BaudRate;
-            _eModeFrameMaker = new EModeMaker(_requestBaud, "");
+            _eModeFrameFrameMaker = new EModeFrameMaker(_requestBaud, "");
             _opticalPortMaster.BaudRate = 300;
             _opticalPortMaster.DataBits = 7;
             _opticalPortMaster.StopBits = StopBits.One;
             _opticalPortMaster.Parity = Parity.Even;
         }
 
-        public Task<bool> Execute()
+        public Task<bool> Execute21ENegotiate()
         {
             return Task.Run(async delegate
             {
                 BackupPortPara();
                 Init21ESerialPort();
-                byte[] array = await _opticalPortMaster.SendAndReceiveReturnDataAsync(_eModeFrameMaker.GetRequestFrameBytes());
+                byte[] array = await _opticalPortMaster.SendAndReceiveReturnDataAsync(_eModeFrameFrameMaker.GetRequestFrameBytes());
                 if (array.Length != 0 && EModeParser.CheckServerFrameWisEquals2(array))
                 {
-                    _opticalPortMaster.Send(_eModeFrameMaker.GetConfirmFrameBytes());
+                    _opticalPortMaster.Send(_eModeFrameFrameMaker.GetConfirmFrameBytes());
                     Thread.Sleep(200);
                     _opticalPortMaster.BaudRate = _requestBaud; //需要修改波特率 ，再去接收
                     array = _opticalPortMaster.TryToReadReceiveData();

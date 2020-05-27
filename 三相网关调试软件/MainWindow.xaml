@@ -11,7 +11,7 @@
         Loaded="MainWindow_OnLoaded" ResizeMode="CanMinimize"
         WindowStyle="None" AllowsTransparency="True"
         x:Name="ThisWindow" Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
-        Title="三相智慧能源网关调试软件" Height="650" Width="1024">
+        Title="三相智慧能源网关测试软件" Height="650" Width="1024">
     <Window.Resources>
         <Storyboard x:Key="MyOpenMenuStoryboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"

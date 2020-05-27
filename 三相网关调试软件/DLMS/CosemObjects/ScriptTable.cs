@@ -1,35 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonServiceLocator;
+
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.HDLC;
-using 三相智慧能源网关调试软件.ViewModel;
+
 
 namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
     public sealed class ScriptTable : DLMSObject, IDLMSBase
     {
-        public override string LogicalName { get; set; } = "0.0.10.0.0.255";
-        public override byte Version { get; set; } = 1;
-        public override ObjectType ObjectType { get; set; } = ObjectType.ScriptTable; //9
+     //   public override string LogicalName { get; set; } = "0.0.10.0.0.255";
+      //  public override byte Version { get; set; } = 1;
+    //    public override ObjectType ObjectType { get; set; } = ObjectType.ScriptTable; //9
         public List<Script> Scripts { get; set; }
 
         public ScriptTable()
         {
             Scripts = new List<Script>();
+            LogicalName = "0.0.10.0.0.255";
+            Version  = 1;
+            ObjectType = ObjectType.ScriptTable;
         }
 
-        public void GetScripts()
+        public byte[] GetScripts()
         {
-            GetAttributeData(2);
+          return  GetAttributeData(2);
         }
 
-        public void ScriptExecute(ushort scriptId)
+        public byte[] ScriptExecute(ushort scriptId)
         {
             DLMSDataItem dlmsData =
                 new DLMSDataItem(DataType.UInt16, BitConverter.GetBytes(scriptId).Reverse().ToArray());
-            ActionExecute(1, dlmsData);
+         return   ActionExecute(1, dlmsData);
         }
 
         string[] IDLMSBase.GetNames()

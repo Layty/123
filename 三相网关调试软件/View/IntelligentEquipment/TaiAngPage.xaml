@@ -18,7 +18,7 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Content="初始化" Margin="5" DataContext="{Binding Source={StaticResource Locator},Path=DlmsViewModel}" Command="{Binding InitCommand}"></Button>
+                <Button Content="初始化" Margin="5" DataContext="{Binding Source={StaticResource Locator},Path=DlmsBaseMeterViewModel}" Command="{Binding InitCommand}"></Button>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding TaiAngCollection}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

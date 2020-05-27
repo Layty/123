@@ -33,7 +33,7 @@
                               materialDesign:HintAssist.Hint="网关IP(editable)"
                               materialDesign:HintAssist.FloatingScale="0.50"
                               Height="50" FontSize="20"
-                              Text="{Binding ServerIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
+                              Text="{Binding TcpClientHelper.ServerIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
                         <ComboBoxItem>127.0.0.1</ComboBoxItem>
                         <ComboBoxItem>192.168.0.145</ComboBoxItem>
                     </ComboBox>
@@ -43,10 +43,10 @@
                              materialDesign:HintAssist.FloatingScale="0.50"
                              materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
                              materialDesign:HintAssist.Hint="端口号" FontSize="20"
-                             Text="23" />
+                             Text="{Binding TcpClientHelper.ServerPortNum}" />
 
                     <ToggleButton Grid.Column="3" x:Name="ButtonConnect" Command="{Binding ConnectOrDisconnectCommand}"
-                                  IsChecked="{Binding ConnectResult ,Mode=OneWay ,UpdateSourceTrigger=PropertyChanged}"
+                                  IsChecked="{Binding TcpClientHelper.ConnectResult ,Mode=OneWay ,UpdateSourceTrigger=PropertyChanged}"
                                   Width="50" Height="50"
                                   Style="{StaticResource MaterialDesignActionLightToggleButton}" Margin="5">
                         <ToggleButton.Content>
