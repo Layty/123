@@ -170,6 +170,7 @@
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
+    <Compile Include="DLMS\ApplicationContextName.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeExecutor.cs" />
@@ -180,7 +181,7 @@
     <Compile Include="DLMS\DLMSDataItem.cs" />
     <Compile Include="DLMS\CosemObjects\DLMSUtilityTables.cs" />
     <Compile Include="DLMS\CosemObjects\IDLMSBase.cs" />
-    <Compile Include="DLMS\CosemObjects\IToPduBytes.cs" />
+    <Compile Include="DLMS\IToPduBytes.cs" />
     <Compile Include="DLMS\CosemObjects\ProfileGeneric.cs" />
     <Compile Include="DLMS\CosemObjects\Script.cs" />
     <Compile Include="DLMS\CosemObjects\ScriptAction.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="DLMS\HDLC\HDLC_LLC.cs" />
     <Compile Include="DLMS\InterfaceType.cs" />
     <Compile Include="DLMS\Invoke_Id_And_Prority.cs" />
+    <Compile Include="DLMS\MechanismName.cs" />
     <Compile Include="DLMS\MyDLMSSettings.cs" />
     <Compile Include="DLMS\Wrapper\NetFrameMaker.cs" />
     <Compile Include="DLMS\NormalDataParse.cs" />
@@ -527,6 +529,7 @@
   <ItemGroup>
     <Folder Include="DLMS\ApplicationLayEnums\Action\" />
     <Folder Include="DLMS\CustomDevice\" />
+    <Folder Include="DLMS\NewFolder1\" />
     <Folder Include="TFTPServerFiles\" />
     <Folder Include="View\MyTools\" />
   </ItemGroup>

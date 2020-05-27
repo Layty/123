@@ -54,28 +54,8 @@ namespace UnitTestProject1
             var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
         }
 
-        [TestMethod]
-        public void Test47AArq()
-        {
-            NetFrameMaker dFrameMaker=new NetFrameMaker(new byte[]{0x00,0x01},password: "33333333", new byte[] { 0x00, 0x01 });
-            var d = dFrameMaker.AarqRequest();
-           var ByteToString= d.ByteToString();
-        }
-        [TestMethod]
-        public void Test47getRequest()
-        {
-            NetFrameMaker dFrameMaker = new NetFrameMaker(new byte[] { 0x00, 0x01 }, password: "33333333", new byte[] { 0x00, 0x01 });
-            var p = new DLMSTaiAngModel {LogicalName = "1.4.98.0.128.255"};
-            var d = dFrameMaker.GetRequest(p,  4);
-            var ByteToString = d.ByteToString();
-        }
+      
 
-        [TestMethod]
-        public void Test47ReleaseRequest()
-        {
-            NetFrameMaker dFrameMaker = new NetFrameMaker(new byte[] { 0x00, 0x01 }, password: "33333333", new byte[] { 0x00, 0x01 });
-            var d = dFrameMaker.ReleaseRequest();
-            var ByteToString = d.ByteToString();
-        }
+     
     }
 }

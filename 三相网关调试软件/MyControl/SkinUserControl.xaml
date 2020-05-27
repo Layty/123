@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
              xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=Skin}"
@@ -40,10 +39,10 @@
                 </TextBlock>
             </Border>
         </Grid>
-        <materialDesign:Card Grid.Row="1" HorizontalAlignment="Stretch" >
+        <materialDesign:Card Grid.Row="1" HorizontalAlignment="Stretch">
             <DockPanel>
-                <myControl:Palette  DockPanel.Dock="Left" Width="200"/>
-                
+                <myControl:Palette DockPanel.Dock="Left" Width="200" />
+
                 <TextBlock Margin="16" TextWrapping="Wrap" VerticalAlignment="Center">This is your current palette.  Configure your initial palette in App.xaml, but palettes can be changed at runtime.</TextBlock>
             </DockPanel>
         </materialDesign:Card>

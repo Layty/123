@@ -1,11 +1,9 @@
-﻿using System;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using MySerialPortMaster;
-using 三相智慧能源网关调试软件.Converters;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
@@ -79,13 +77,11 @@ namespace 三相智慧能源网关调试软件.DLMS
             byte[] bytes = new byte[] { };
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-//                bytes = await _portMaster.SendAndReceiveReturnDataAsync(hdlcFrameMaker.AarqRequest());
                 bytes = await HowToSendData(HdlcFrameMaker.AarqRequest());
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-//                _socket.SendDataToClient(CurrentSocket, _netFrameMaker.AarqRequest());
-              await  HowToSendData(NetFrameMaker.AarqRequest());
+                await HowToSendData(NetFrameMaker.AarqRequest());
             }
 
             return bytes;
@@ -101,7 +97,7 @@ namespace 三相智慧能源网关调试软件.DLMS
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-              await  HowToSendData(NetFrameMaker.GetRequest(getAttributeBytes));
+                await HowToSendData(NetFrameMaker.GetRequest(getAttributeBytes));
             }
 
             return bytes;

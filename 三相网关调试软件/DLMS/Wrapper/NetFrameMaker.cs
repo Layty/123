@@ -10,45 +10,26 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 {
     public class NetFrameMaker : ObservableObject
     {
-        public MyDLMSSettings MyDlmsSettings { get; set; }
-
-        public NetFrameMaker(byte[] destAddress, string password, byte[] sourceAddress)
-        {
-            DestAddress = destAddress;
-            SourceAddress = sourceAddress;
-            Password = password;
-        }
+        private MyDLMSSettings MyDlmsSettings { get; set; }
 
         public NetFrameMaker(MyDLMSSettings settings)
         {
             MyDlmsSettings = settings;
             DestAddress = BitConverter.GetBytes(settings.ServerAddress).Reverse().ToArray();
             SourceAddress = BitConverter.GetBytes(settings.ClientAddress).Reverse().ToArray();
-            Password = settings.PasswordString;
+            Version = new byte[] {0x00, 0x01};
         }
 
         public byte[] SourceAddress { get; set; }
 
-        public string Password { get; set; }
-
         public byte[] DestAddress { get; set; }
 
-        private ushort _maxReceivePduSize = 65535;
-        public byte[] HexPassword => Encoding.Default.GetBytes(Password);
+        public byte[] Version { get; set; }
 
-        public ushort MaxReceivePduSize
-        {
-            get => _maxReceivePduSize;
-            set
-            {
-                _maxReceivePduSize = value;
-                RaisePropertyChanged();
-            }
-        }
 
         private void PackagingDestinationAndSourceAddress(List<byte> bytes)
         {
-            bytes.AddRange(new byte[] {0x00, 0x01});
+            bytes.AddRange(Version);
             bytes.AddRange(SourceAddress);
             bytes.AddRange(DestAddress);
         }
@@ -63,21 +44,8 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             #region ———application-context-name域 (application-context-name [1], OBJECT IDENTIFIER)
 
             //ApplicationContextName
-            appApduContentList.Add(0xA1); //标签([1],Context-specific)的编码
-            appApduContentList.Add(0x09); //标记组件值域长度的编码
-            appApduContentList
-                .Add(0x06); //appApduContentList.Add((byte)BerType.ObjectIdentifier); //application-context-name(OBJECTIDEN- TIFIER,Universal)选项的编码
-            appApduContentList.Add(0x07); //对象标识符的值域的长度的编码
-            appApduContentList.AddRange(new byte[]
-            {
-                0x60,
-                0x85,
-                0x74,
-                0x05,
-                0x08,
-                0x01,
-                0x01 //0x01,0x03
-            }); //对象标识符的值的编码
+            appApduContentList.AddRange(new ApplicationContextName().ToPduBytes());
+            ;
 
             #endregion
 
@@ -103,21 +71,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 
                 #region mechanism_name[11] IMPLICIT Mechanism_name OPTIONAL,
 
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x8B, //标签([11],IMPLICIT,Context -specific)的编码
-                    0x07 //标记组件的值域的长度的编码
-                });
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x60,
-                    0x85,
-                    0x74,
-                    0x05,
-                    0x08,
-                    0x02,
-                    0x01 //OBJECTIDENTIFIER的值的编码: low-level-security-mechanism-name(1), high-level-security-mechanism-name(5)
-                });
+                appApduContentList.AddRange(new MechanismName().ToPduBytes());
 
                 #endregion
 
@@ -130,7 +84,8 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
                     0x80, //Authentication-value(charstring[0]IM- PLICITGraphicString)选项的编码
                     0x08 //Authentication-value值 域 长 度 的 编 码 (8 字节)
                 });
-                appApduContentList.AddRange(HexPassword);
+
+                appApduContentList.AddRange(MyDlmsSettings.PasswordHex);
 
                 #endregion
             }
@@ -163,7 +118,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
                 0x00, 0x7F, 0x1F //定长 BITSTRING的值的编码  --ProposedConformance
                 /*  0x04, 0xB0*/ //值为 0x04B0,一个 Unsigned16的编码是它本身的值  0x7E, 0x1F/7C FF
             }); //user-information:xDLMS InitiateRequestAPDU   0,  0 = 0x04,0xB0值为 0x04B0,一个 Unsigned16的编码是它本身的值
-            appApduContentList.AddRange(BitConverter.GetBytes(MaxReceivePduSize));
+            appApduContentList.AddRange(BitConverter.GetBytes(MyDlmsSettings.MaxReceivePduSize));
 
             appApduContentList.InsertRange(0, new byte[] {(byte) Command.Aarq, (byte) appApduContentList.Count});
             aarqList.AddRange(BitConverter.GetBytes((ushort) appApduContentList.Count).Reverse());
@@ -228,17 +183,18 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             PackagingDestinationAndSourceAddress(setRequest);
             List<byte> apduBytes = new List<byte>();
             apduBytes.AddRange(cosem.ActionExecute(methodIndex, dataItem));
-            setRequest.AddRange(BitConverter.GetBytes((ushort)apduBytes.Count).Reverse());
+            setRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
             setRequest.AddRange(apduBytes);
             return setRequest.ToArray();
         }
+
         public byte[] ActionRequest(byte[] actionRequest)
         {
             List<byte> actionRequestList = new List<byte>();
             PackagingDestinationAndSourceAddress(actionRequestList);
             List<byte> apduBytes = new List<byte>();
             apduBytes.AddRange(actionRequest);
-            actionRequestList.AddRange(BitConverter.GetBytes((ushort)apduBytes.Count).Reverse());
+            actionRequestList.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
             actionRequestList.AddRange(apduBytes);
             return actionRequestList.ToArray();
         }
