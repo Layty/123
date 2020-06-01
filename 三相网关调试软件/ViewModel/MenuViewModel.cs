@@ -18,23 +18,23 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel {Title = "命令", FontSize = "20", IconFont = "\xe7b7"},
-                    new MenuModel {Title = "系统日志", FontSize = "20", IconFont = "\xe668"},
-                    new MenuModel {Title = "实时数据", FontSize = "20", IconFont = "\xe6ab"},
-                    new MenuModel {Title = "全局参数", FontSize = "20", IconFont = "\xe606"},
+                    new MenuModel {MenuName = "命令", FontSize = "20", IconFont = "\xe7b7"},
+                    new MenuModel {MenuName = "系统日志", FontSize = "20", IconFont = "\xe668"},
+                    new MenuModel {MenuName = "实时数据", FontSize = "20", IconFont = "\xe6ab"},
+                    new MenuModel {MenuName = "全局参数", FontSize = "20", IconFont = "\xe606"},
                 };
 
                 BaseMeterMenuCollection = new ObservableCollection<MenuModel>
                 {
                     new MenuModel
                     {
-                        Title = "基表升级", FontSize = "20", IconFont = "\xe600", Assembly = "UpGradeBaseMeterPage",
+                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600", Assembly = "UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
                     },
 
                     new MenuModel
                     {
-                        Title = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TelnetPage",
                         Foreground = "#00FF00"
                     }
                 };
@@ -48,13 +48,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel()
                     {
-                        Title = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
+                        MenuName = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
                         Foreground = "#FF0000"
                     },
 
                     new MenuModel()
                     {
-                        Title = "基表升级", FontSize = "20", IconFont = "\xe600",
+                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
                         Assembly = "BaseMeter.UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
                     },
@@ -64,7 +64,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel()
                     {
-                        Title = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
                         Foreground = "#FF0000"
                     },
                 };
@@ -72,7 +72,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {  new MenuModel
                     {
-                        Title = "泰昂", FontSize = "20", IconFont = "",
+                        MenuName = "泰昂", FontSize = "20", IconFont = "",
                         Assembly = "IntelligentEquipment.TaiAngPage",
                         Foreground = "#00FF00"
                     },
@@ -83,18 +83,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel
                     {
-                        Title = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
+                        MenuName = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel
                     {
-                        Title = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
+                        MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
                         Assembly = "BaseMeter.DLMSSettingsPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel
                     {
-                        Title = "基表升级", FontSize = "20", IconFont = "\xe600",
+                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
                         Assembly = "BaseMeter.UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
                     }
@@ -104,24 +104,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel
                     {
-                        Title = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
                         Foreground = "#FF0000"
                     },  new MenuModel
                     {
-                        Title = "TcpServer", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TcpServerPage",
+                        MenuName = "TcpServer", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TcpServerPage",
                         Foreground = "#FF0000"
                     },
 
 
                     new MenuModel
                     {
-                        Title = "TFTPServer", FontSize = "20", IconFont = "\xe619",
+                        MenuName = "TFTPServer", FontSize = "20", IconFont = "\xe619",
                         Assembly = "ServerCenter.TftpServerPage",
                         Foreground = "#0000FF"
                     },
                     new MenuModel()
                     {
-                        Title = "IICDataAnalysis",FontSize = "20",IconFont = "\xe6ab",Assembly = "ServerCenter.IicDataPage",
+                        MenuName = "IICDataAnalysis",FontSize = "20",IconFont = "\xe6ab",Assembly = "ServerCenter.IicDataPage",
                         Foreground = "#6666FF"
                     },
                   
@@ -213,7 +213,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             Type type = GetType();
             Assembly assembly = type.Assembly;
             CurrentPage =  assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly) as Page;
-        
+            Activator.CreateInstance(type);
         }
     }
 }

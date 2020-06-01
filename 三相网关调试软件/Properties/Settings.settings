@@ -47,5 +47,8 @@
     <Setting Name="TftpServerDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\TFTPServerFiles</Value>
     </Setting>
+    <Setting Name="Title" Type="System.String" Scope="User">
+      <Value Profile="(Default)">三相能源网关调试软件</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

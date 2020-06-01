@@ -62,18 +62,36 @@
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger SourceName="StackPanelOperatingZone" RoutedEvent="StackPanel.MouseEnter">
+            <BeginStoryboard>
+                <Storyboard TargetName="StackPanelOperatingZone" TargetProperty="Opacity">
+                    <DoubleAnimation
+                        From="1" To="1" Duration="0:0:0.5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger SourceName="StackPanelOperatingZone" RoutedEvent="StackPanel.MouseLeave">
+            <BeginStoryboard>
+                <Storyboard TargetName="StackPanelOperatingZone" TargetProperty="Opacity">
+                    <DoubleAnimation
+                        From="1" To="0" Duration="0:0:1" BeginTime="0:0:5" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <materialDesign:DialogHost IsOpen="False">
         <materialDesign:DialogHost.DialogContent>
             <myControl:SkinView />
         </materialDesign:DialogHost.DialogContent>
-        <Grid >
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!-- 标题栏-->
-            <Grid Grid.Row="0" >
+            <Grid Grid.Row="0">
                 <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
                                           MouseDown="ColorZone_OnMouseDown"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth3"
@@ -105,84 +123,88 @@
                             </ToggleButton>
 
                             <TextBlock
-                                Text="{Binding ElementName=ThisWindow,Path=Title}"
+                                Text="{Binding Title }"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"
                                 VerticalAlignment="Center" Foreground="{StaticResource LinearGradientBrush}" />
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="{Binding MenuModel.Title}"
+                                   Text="{Binding MenuModel.MenuName}"
                                    DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
                                    Foreground="{Binding MenuModel.Foreground}"
                                    FontSize="20" />
                         <!-- 窗口操作区-->
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <ToggleButton x:Name="ToggleButtonLog" Margin="2"
-                                Style="{StaticResource MaterialDesignActionToggleButton}"
-                                ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
-                                <ToggleButton.Content>
+                        <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="ToggleButtonLog" Margin="2"
+                                              Style="{StaticResource MaterialDesignActionToggleButton}"
+                                              ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
+                                    <ToggleButton.Content>
+                                        <materialDesign:PackIcon
+                                            Kind="EyeOff" />
+                                    </ToggleButton.Content>
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <materialDesign:PackIcon
+                                            Kind="Eye" />
+                                    </materialDesign:ToggleButtonAssist.OnContent>
+                                </ToggleButton>
+                                <materialDesign:PopupBox Margin="2" PopupMode="Click">
+                                    <ListBox>
+                                        <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
+                                        <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="PaletteOutline" />
+                                                <TextBlock>主题</TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </ListBox>
+                                </materialDesign:PopupBox>
+                                <ToggleButton x:Name="ToggleButtonTopMost" Margin="2"
+                                              Style="{StaticResource MaterialDesignSwitchAccentToggleButton}">
                                     <materialDesign:PackIcon
-                                        Kind="EyeOff" />
-                                </ToggleButton.Content>
-                                <materialDesign:ToggleButtonAssist.OnContent>
-                                    <materialDesign:PackIcon
-                                        Kind="Eye" />
-                                </materialDesign:ToggleButtonAssist.OnContent>
-                            </ToggleButton>
-                            <materialDesign:PopupBox Margin="2" PopupMode="Click">
-                                <ListBox>
-                                    <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
-                                    <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="PaletteOutline" />
-                                            <TextBlock>主题</TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                </ListBox>
-                            </materialDesign:PopupBox>
-                            <ToggleButton x:Name="ToggleButtonTopMost" Margin="2"
-                                          Style="{StaticResource MaterialDesignSwitchAccentToggleButton}">
-                                <materialDesign:PackIcon
-                                    Kind="Pin"
-                                    RenderTransformOrigin=".5,.5">
-                                    <materialDesign:PackIcon.RenderTransform>
-                                        <RotateTransform
-                                            Angle="45" />
-                                    </materialDesign:PackIcon.RenderTransform>
-                                </materialDesign:PackIcon>
-                                <materialDesign:ToggleButtonAssist.OnContent>
-                                    <materialDesign:PackIcon
-                                        Kind="Pin" />
-                                </materialDesign:ToggleButtonAssist.OnContent>
+                                        Kind="Pin"
+                                        RenderTransformOrigin=".5,.5">
+                                        <materialDesign:PackIcon.RenderTransform>
+                                            <RotateTransform
+                                                Angle="45" />
+                                        </materialDesign:PackIcon.RenderTransform>
+                                    </materialDesign:PackIcon>
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <materialDesign:PackIcon
+                                            Kind="Pin" />
+                                    </materialDesign:ToggleButtonAssist.OnContent>
 
-                            </ToggleButton>
-                            <Button x:Name="Minus" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
-                                    Command="SystemCommands.MinimizeWindowCommand">
-                                <TextBlock Style="{StaticResource MinTextBlockTransformY}">
-                                    <materialDesign:PackIcon Kind="Minus" Height="Auto" Width="Auto" />
-                                </TextBlock>
-                               
-                            </Button>
-                            <Button x:Name="ButtonRestore" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
-                                    Command="SystemCommands.RestoreWindowCommand"
-                                    Visibility="Collapsed">
-                                <materialDesign:PackIcon Kind="WindowRestore" />
-                            </Button>
-                            <Button x:Name="ButtonMaximize" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
-                                    Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
+                                </ToggleButton>
+                                <Button x:Name="Minus" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
+                                        Command="SystemCommands.MinimizeWindowCommand">
+                                    <TextBlock Style="{StaticResource MinTextBlockTransformY}">
+                                        <materialDesign:PackIcon Kind="Minus" Height="Auto" Width="Auto" />
+                                    </TextBlock>
 
-                                <TextBlock  >
-                                    <materialDesign:PackIcon Kind="WindowMaximize"  Height="Auto" Width="Auto"/>
-                                </TextBlock>
-                            </Button>
-                            <Button x:Name="ButtonClose" Margin="5" Background="Transparent" BorderBrush="{x:Null}" 
-                                    Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
-                                <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}" >
-                                    <materialDesign:PackIcon Kind="WindowClose" Height="Auto" Width="Auto" />
-                                </TextBlock>
+                                </Button>
+                                <Button x:Name="ButtonRestore" Margin="2" Background="Transparent"
+                                        BorderBrush="{x:Null}"
+                                        Command="SystemCommands.RestoreWindowCommand"
+                                        Visibility="Collapsed">
+                                    <materialDesign:PackIcon Kind="WindowRestore" />
+                                </Button>
+                                <Button x:Name="ButtonMaximize" Margin="2" Background="Transparent"
+                                        BorderBrush="{x:Null}"
+                                        Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
+                                    <TextBlock>
+                                        <materialDesign:PackIcon Kind="WindowMaximize" Height="Auto" Width="Auto" />
+                                    </TextBlock>
+                                </Button>
+                                <Button x:Name="ButtonClose" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
+                                        Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
+                                    <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}">
+                                        <materialDesign:PackIcon Kind="WindowClose" Height="Auto" Width="Auto" />
+                                    </TextBlock>
 
-                            </Button>
-                        </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
 
                     </Grid>
                 </materialDesign:ColorZone>
@@ -191,13 +213,12 @@
             <Grid Grid.Row="1" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                
 
-             
+
                 <!-- 右侧菜单栏 -->
                 <materialDesign:Card DockPanel.Dock="Left">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -340,7 +361,7 @@
                                                                                        VerticalAlignment="Center" />
 
                                                                             <!-- 文字-->
-                                                                            <TextBlock Text="{Binding Title}"
+                                                                            <TextBlock Text="{Binding MenuName}"
                                                                                        HorizontalAlignment="Center"
                                                                                        x:Name="TextBlockTitle"
                                                                                        VerticalAlignment="Center"
@@ -465,7 +486,7 @@
                                                                                    HorizontalAlignment="Center"
                                                                                    VerticalAlignment="Center" />
                                                                         <!-- 文字-->
-                                                                        <TextBlock Text="{Binding Title}"
+                                                                        <TextBlock Text="{Binding MenuName}"
                                                                                    HorizontalAlignment="Center"
                                                                                    x:Name="TextBlockTitle"
                                                                                    VerticalAlignment="Center"
@@ -588,7 +609,7 @@
                                                                                    HorizontalAlignment="Center"
                                                                                    VerticalAlignment="Center" />
 
-                                                                        <TextBlock Text="{Binding Title}"
+                                                                        <TextBlock Text="{Binding MenuName}"
                                                                                    HorizontalAlignment="Center"
                                                                                    x:Name="TextBlockTitle"
                                                                                    VerticalAlignment="Center"
@@ -615,16 +636,16 @@
                         </Grid>
                     </ScrollViewer>
                 </materialDesign:Card>
-               
+
 
                 <!--<GridSplitter  Grid.Column="2" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                ShowsPreview="False"
                                ></GridSplitter>-->
 
                 <!-- 日志区 -->
-                <Grid   Grid.Column="3" x:Name="GridLog" Width="0" >
-                    <materialDesign:Card  >
-                        <StackPanel >
+                <Grid Grid.Column="3" x:Name="GridLog" Width="0">
+                    <materialDesign:Card>
+                        <StackPanel>
                             <Expander Header="串口参数">
                                 <myControl:SerialPortControl />
                             </Expander>
@@ -643,17 +664,17 @@
 
                 </Grid>
                 <!-- 导航页面区 -->
-                <materialDesign:Card Grid.Column="1"  >
+                <materialDesign:Card Grid.Column="1">
                     <Frame x:Name="Frame"
                            NavigationUIVisibility="Hidden"
                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                            Content="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
                 </materialDesign:Card>
-             
+
             </Grid>
 
             <!-- 状态栏 -->
-            <materialDesign:ColorZone Grid.Row="2"   Mode="PrimaryMid"
+            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid"
                                       x:Name="ColorZoneStatus">
                 <Grid>
                     <StackPanel Orientation="Horizontal"
@@ -680,11 +701,11 @@
                         </StackPanel>
 
 
-                       
                         <UniformGrid Rows="2" Margin="3">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                <materialDesign:PackIcon Kind="Ethernet"  />
-                                <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="5 0">
+                                <materialDesign:PackIcon Kind="Ethernet" />
+                                <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
+                                           Margin="5 0">
                                     <TextBlock.RenderTransform>
                                         <TransformGroup>
                                             <RotateTransform Angle="-45" />
@@ -706,7 +727,8 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                 <materialDesign:PackIcon Kind="SerialPort" />
-                                <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="5 0">
+                                <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
+                                           Margin="5 0">
                                     <TextBlock.RenderTransform>
                                         <TransformGroup>
                                             <RotateTransform Angle="-45" />
@@ -724,9 +746,9 @@
                                     <materialDesign:PackIcon Kind="Send" />
                                 </TextBlock>
                             </StackPanel>
-                           
+
                         </UniformGrid>
-                        
+
                     </StackPanel>
                     <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">
@@ -740,8 +762,8 @@
                 </Grid>
 
             </materialDesign:ColorZone>
-           
-          
+
+
         </Grid>
     </materialDesign:DialogHost>
 

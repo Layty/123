@@ -13,14 +13,14 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
 
-        private string _title;
+        private string _menuName;
 
-        public string Title
+        public string MenuName
         {
-            get => _title;
+            get => _menuName;
             set
             {
-                _title = value;
+                _menuName = value;
                 RaisePropertyChanged();
             }
         }

@@ -135,16 +135,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
             SendDataToServerCommand = new RelayCommand(() =>
             {
-                TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
+                TcpServerHelper.SendDataToClient(DLMSClient.CurrentSocket, CurrentSendMsg.StringToByte());
             });
 
             DLMSClient = new DLMSClient(TcpServerHelper, new MyDLMSSettings(InterfaceType.WRAPPER));
-           
+            DLMSClient.CurrentSocket = CurrentSocketClient;
+
             AarqRequest = new RelayCommand(async () => { await DLMSClient.AarqRequest(); });
 
             GetRequest = new RelayCommand(async () =>
             {
-              await  DLMSClient.GetRequest(new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"}.GetBuffer());
+                await DLMSClient.GetRequest(new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"}.GetBuffer());
             });
         }
 
