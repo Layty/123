@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.Annotations;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
@@ -16,20 +12,46 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         主要用途：
         更改记录：
     */
-    public class DLMSRegister : DLMSObject, IDLMSBase,INotifyPropertyChanged
+    public class DLMSRegister : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
-      
         public object Value
         {
-            get => _Value;
-            set { _Value = value;
+            get => _value;
+            set
+            {
+                _value = value;
                 OnPropertyChanged();
             }
         }
-        private object _Value;
 
-        public double Scalar { get; set; } = 1.0;
-        public Unit Unit { get; set; }
+        private object _value;
+
+
+        public double Scalar
+        {
+            get => _Scalar;
+            set
+            {
+                _Scalar = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Scalar = 1.0;
+
+
+        public Unit Unit
+        {
+            get => _Unit;
+            set
+            {
+                _Unit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Unit _Unit;
+
 
         public DLMSRegister(string logicName)
         {
@@ -42,7 +64,7 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         public byte[] GetValue() => GetAttributeData(2);
         public byte[] GetScalar_Unit() => GetAttributeData(3);
 
-     
+
         public string[] GetNames()
         {
             return new[] {LogicalName, "Value", "Scalar_Unit"};

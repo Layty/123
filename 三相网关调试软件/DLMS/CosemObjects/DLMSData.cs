@@ -1,10 +1,24 @@
-﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using 三相智慧能源网关调试软件.Annotations;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
-    public class DLMSData : DLMSObject, IDLMSBase
+    public class DLMSData : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
-        public object Value { get; set; }
+        public object Value
+        {
+            get => _Value;
+            set
+            {
+                _Value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private object _Value;
+
 
         public DLMSData(string logicalName)
         {
@@ -42,6 +56,14 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
             //    default:
             //        throw new ArgumentException("GetDataType failed. Invalid attribute index.");
             //}
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

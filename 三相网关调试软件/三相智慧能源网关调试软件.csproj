@@ -247,12 +247,17 @@
     <Compile Include="FileTransmit\DataCheck.cs" />
     <Compile Include="FileTransmit\IFileTransmit.cs" />
     <Compile Include="FileTransmit\ITransmitUart.cs" />
+    <Compile Include="Model\DLMSSelfDefineRegisterModel.cs" />
     <Compile Include="Model\IIC\IicDataType.cs" />
     <Compile Include="Model\IIC\IicEnergyData.cs" />
     <Compile Include="Model\IIC\IicCommonDataConvertor.cs" />
     <Compile Include="Model\IIC\IicDemandData.cs" />
     <Compile Include="Model\IIC\IicHarmonicData.cs" />
     <Compile Include="Model\IIC\IicInstantData.cs" />
+    <Compile Include="MyControl\DataControl.xaml.cs">
+      <DependentUpon>DataControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\DataViewModel.cs" />
     <Compile Include="MyControl\GifImage.xaml.cs">
       <DependentUpon>GifImage.xaml</DependentUpon>
     </Compile>
@@ -268,7 +273,7 @@
     <Compile Include="MyControl\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\ResgisetViewModel.cs" />
+    <Compile Include="MyControl\RegisterViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
     </Compile>
@@ -278,13 +283,13 @@
     <Compile Include="MyControl\TaiAngControl.xaml.cs">
       <DependentUpon>TaiAngControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\TemperatureAndHumidityControl.xaml.cs">
-      <DependentUpon>TemperatureAndHumidityControl.xaml</DependentUpon>
+    <Compile Include="MyControl\RegisterControl.xaml.cs">
+      <DependentUpon>RegisterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TcpClientHelper.cs" />
     <Compile Include="TcpServerHelper.cs" />
-    <Compile Include="Model\DLMSTaiAngModel.cs" />
+    <Compile Include="Model\DLMSSelfDefineTaiAngModel.cs" />
     <Compile Include="ViewModel\TcpServerViewModel.cs" />
     <Compile Include="ViewModel\TelnetViewModel.cs" />
     <Compile Include="ViewModel\DlmsBaseMeterViewModel.cs" />
@@ -304,10 +309,13 @@
     <Compile Include="ViewModel\UserLoginViewModel.cs" />
     <Compile Include="ViewModel\NetLogViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
-    <Compile Include="View\BaseMeter\DLMSSettingsPage.xaml.cs">
+    <Compile Include="View\ServerCenter\DLMSClientPage.xaml.cs">
+      <DependentUpon>DLMSClientPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerCenter\DLMSSettingsPage.xaml.cs">
       <DependentUpon>DLMSSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BaseMeter\SerialPortPage.xaml.cs">
+    <Compile Include="View\ServerCenter\SerialPortPage.xaml.cs">
       <DependentUpon>SerialPortPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IntelligentEquipment\TaiAngPage.xaml.cs">
@@ -369,6 +377,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyControl\DataControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\GifImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -397,7 +409,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\TemperatureAndHumidityControl.xaml">
+    <Page Include="MyControl\RegisterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,11 +421,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BaseMeter\DLMSSettingsPage.xaml">
+    <Page Include="View\ServerCenter\DLMSClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BaseMeter\SerialPortPage.xaml">
+    <Page Include="View\ServerCenter\DLMSSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerCenter\SerialPortPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

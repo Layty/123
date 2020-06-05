@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace 三相智慧能源网关调试软件.View.BaseMeter
+namespace 三相智慧能源网关调试软件.View.ServerCenter
 {
     /// <summary>
     /// SerialPortPage.xaml 的交互逻辑

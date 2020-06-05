@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -72,6 +73,8 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
+        public int ResponseTimeOut { get; private set; } = 2;
+
         private ObservableCollection<Socket> _socketClientList;
 
 
@@ -123,7 +126,7 @@ namespace 三相智慧能源网关调试软件
             ListenIpAddress = listenIpAddress;
             ListenPortNum = listenPortNum;
             ProtocolType = protocolType;
-          
+
             SocketClientList = new ObservableCollection<Socket>();
         }
 
@@ -169,10 +172,9 @@ namespace 三相智慧能源网关调试软件
                 {
                     try
                     {
-                     
                         clientSocket = serverSocket.Accept();
                         var socket1 = clientSocket;
-                        DispatcherHelper.CheckBeginInvokeOnUI(()=> { SocketClientList.Add(socket1); });
+                        DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Add(socket1); });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
@@ -205,7 +207,7 @@ namespace 三相智慧能源网关调试软件
                 {
                     OnNotifyErrorMsg("clientThread" + ex.Message + "\r\n");
                     DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Remove(sockClient); });
-                   
+
                     break;
                 }
 
@@ -234,30 +236,59 @@ namespace 三相智慧能源网关调试软件
             destinationSocket.Send(bytes);
             OnSendBytesToClient(destinationSocket, bytes);
         }
-        private  object obj=new object();
-        public async Task< byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
+
+        private object obj = new object();
+
+        public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
-            returnBytes = new byte[2049];
-                ReceiveBytes += TcpServerHelper_ReceiveBytes;
-                destinationSocket.Send(bytes);
-                OnSendBytesToClient(destinationSocket, bytes);
-                await  Task.Delay(2000);
-                ReceiveBytes -= TcpServerHelper_ReceiveBytes;
-                return returnBytes;
-            
+            returnBytes = null;
+            ReceiveBytes += TcpServerHelper_ReceiveBytes;
+            destinationSocket.Send(bytes);
+            OnSendBytesToClient(destinationSocket, bytes);
+            await Task.Run(() =>
+            {
+                byte[] tryToReadReceiveData = { };
+                Stopwatch stopwatch1 = new Stopwatch();
+                TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
+                stopwatch1.Start();
+                while (true)
+                {
+                    TimeSpan stopTimeSpan = new TimeSpan(DateTime.Now.Ticks);
+                    TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
+                    if (timeSpan.Seconds >= ResponseTimeOut)
+                    {
+                        ResponseTime = timeSpan.Seconds.ToString();
+                        stopwatch1.Reset();
+                        break;
+                    }
+                    if (returnBytes!=null)
+                    {
+                        stopwatch1.Stop();
+                        ResponseTime = stopwatch1.ElapsedMilliseconds.ToString();
+                        stopwatch1.Reset();
+                        break;
+                    }
+                }
+            });
+          //  await Task.Delay(2000);
+            ReceiveBytes -= TcpServerHelper_ReceiveBytes;
+            return returnBytes;
         }
 
+        public string ResponseTime { get; set; }
+
         private byte[] returnBytes;
+
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-            returnBytes= bytes;
+            returnBytes = bytes;
         }
 
         public void CloseSever()
         {
-            if (SocketServer != null )
+            if (SocketServer != null)
             {
-               // _sourceServer.Cancel();
+                // _sourceServer.Cancel();
                 SocketServer.Close();
                 SocketServer.Dispose();
                 OnNotifyStatusMsg(DateTime.Now + "已关闭监听" + Environment.NewLine);
@@ -308,7 +339,7 @@ namespace 三相智慧能源网关调试软件
             SocketClientList[num].Shutdown(SocketShutdown.Both);
             SocketClientList[num].Disconnect(reuseSocket: false);
             DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.RemoveAt(num); });
-          //  SocketClientList.RemoveAt(num);
+            //  SocketClientList.RemoveAt(num);
             SocketClientCancellationTokens[num].Cancel();
             SocketClientCancellationTokens.RemoveAt(num);
         }

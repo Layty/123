@@ -59,23 +59,8 @@ namespace 三相智慧能源网关调试软件.DLMS
                     break;
                 case (byte) DataType.Structure:
                     var rangeStruct = pudBytes.Skip(5).Take(1).ToArray()[0];
-                    switch (pudBytes.Skip(6).Take(1).ToArray()[0])
-                    {
-                        case (byte) DataType.Int8:
-                            result += (sbyte)pudBytes.Skip(7).Take(1).ToArray()[0];
-                            break;
-                    }
-
-                    switch (pudBytes.Skip(8).Take(1).ToArray()[0])
-                    {
-                        case (byte) DataType.Enum:
-                            result += (Unit) pudBytes.Skip(9).Take(1).ToArray()[0];
-                            break;
-                    }
-
-
+                    result = pudBytes.Skip(6).ToArray().ByteToString(); //返回结构体
                     break;
-                    ;
             }
 
             return result;

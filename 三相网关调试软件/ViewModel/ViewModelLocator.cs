@@ -68,6 +68,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<MyDLMSSettings>();
                 SimpleIoc.Default.Register<DLMSClient>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
+                SimpleIoc.Default.Register<DataViewModel>();
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -128,6 +129,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public DLMSClient DlmsClient => ServiceLocator.Current.GetInstance<DLMSClient>();
         public MyDLMSSettings DlmsSettings => ServiceLocator.Current.GetInstance<MyDLMSSettings>();
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
+        public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
         public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
        

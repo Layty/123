@@ -70,7 +70,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 };
 #else
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
-                {  new MenuModel
+                {
+                    new MenuModel
                     {
                         MenuName = "泰昂", FontSize = "20", IconFont = "",
                         Assembly = "IntelligentEquipment.TaiAngPage",
@@ -83,17 +84,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel
                     {
-                        MenuName = "基表串口", FontSize = "20", IconFont = "\xe66c", Assembly = "BaseMeter.SerialPortPage",
-                        Foreground = "#FF0000"
-                    },
-                    new MenuModel
-                    {
-                        MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
-                        Assembly = "BaseMeter.DLMSSettingsPage",
-                        Foreground = "#FF0000"
-                    },
-                    new MenuModel
-                    {
                         MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
                         Assembly = "BaseMeter.UpGradeBaseMeterPage",
                         Foreground = "#00FF00"
@@ -104,15 +94,33 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel
                     {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
-                        Foreground = "#FF0000"
-                    },  new MenuModel
-                    {
-                        MenuName = "TcpServer", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TcpServerPage",
+                        MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
+                        Assembly = "ServerCenter.DLMSSettingsPage",
                         Foreground = "#FF0000"
                     },
-
-
+                    new MenuModel
+                    {
+                        MenuName = "SerialPort", FontSize = "20", IconFont = "\xe66c",
+                        Assembly = "ServerCenter.SerialPortPage",
+                        Foreground = "#FF0000"
+                    },
+                    new MenuModel
+                    {
+                        MenuName = "TcpServer", FontSize = "20", IconFont = "\xe6ee",
+                        Assembly = "ServerCenter.TcpServerPage",
+                        Foreground = "#FF0000"
+                    },
+                    new MenuModel
+                    {
+                        MenuName = "DLMSClient", FontSize = "20", IconFont = "\xe6ee",
+                        Assembly = "ServerCenter.DLMSClientPage",
+                        Foreground = "#FF0000"
+                    },
+                    new MenuModel
+                    {
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
+                        Foreground = "#FF0000"
+                    },
                     new MenuModel
                     {
                         MenuName = "TFTPServer", FontSize = "20", IconFont = "\xe619",
@@ -121,10 +129,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel()
                     {
-                        MenuName = "IICDataAnalysis",FontSize = "20",IconFont = "\xe6ab",Assembly = "ServerCenter.IicDataPage",
+                        MenuName = "IICDataAnalysis", FontSize = "20", IconFont = "\xe6ab",
+                        Assembly = "ServerCenter.IicDataPage",
                         Foreground = "#6666FF"
                     },
-                  
                 };
 #endif
                 SelectCommand = new RelayCommand<MenuModel>(Select);
@@ -169,7 +177,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-
         private MenuModel _menuModel;
 
         public MenuModel MenuModel
@@ -212,7 +219,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             MenuModel = menuModel;
             Type type = GetType();
             Assembly assembly = type.Assembly;
-            CurrentPage =  assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly) as Page;
+            CurrentPage = assembly.CreateInstance("三相智慧能源网关调试软件.View" + "." + MenuModel.Assembly) as Page;
             Activator.CreateInstance(type);
         }
     }

@@ -197,8 +197,7 @@ namespace MySerialPortMaster
 
         public SerialPortMaster()
         {
-            
-               SerialPort = new SerialPort();
+            SerialPort = new SerialPort();
             IsAutoDataReceived = true;
         }
 
@@ -253,7 +252,7 @@ namespace MySerialPortMaster
             }
             catch (Exception ex)
             {
-              OnSerialError(ex);
+                OnSerialError(ex);
                 IsOpen = false;
             }
         }
@@ -408,7 +407,7 @@ namespace MySerialPortMaster
             }
 
             Send(sendData);
-            ReceiveTokenSource=new CancellationTokenSource(ResponseTimeOut * 1000);
+            ReceiveTokenSource = new CancellationTokenSource(ResponseTimeOut * 1000);
             var receiveData = await ReceiveDataAsync(ReceiveTokenSource.Token);
             if (!IsOwnCurrentSerialPort) //是否强制占有当前串口，不是则关闭串口&&同时在不读后续帧的情况下不关闭串口
             {

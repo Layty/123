@@ -12,15 +12,16 @@
         <ItemsControl ItemsSource="{Binding TaiAngCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel />
+                    <StackPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <!-- Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.SelectCommand,Mode=TwoWay}" -->
-                    <materialDesign:Card Margin="5" Width="250">
+                    <materialDesign:Card Margin="2" >
                         <Grid>
-                            <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="TextBlockTaiAngName" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"></TextBlock>
                                 <TextBlock x:Name="TextBlockClass" HorizontalAlignment="Center"
                                            VerticalAlignment="Center" Text="{Binding  ObjectType}" />
                                 <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"

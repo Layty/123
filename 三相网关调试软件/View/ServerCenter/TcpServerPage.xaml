@@ -14,10 +14,10 @@
         <materialDesign:Card>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid>
-                    <Grid.RowDefinitions>
+                    <!--<Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
-                    </Grid.RowDefinitions>
+                    </Grid.RowDefinitions>-->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -43,10 +43,6 @@
                              ItemsSource="{Binding TcpServerHelper.SocketClientList }"
                              SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
                              SelectionChanged="Selector_OnSelectionChanged" />
-                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                        <myControl:TemperatureAndHumidityControl />
-                        <myControl:TaiAngControl />
-                    </StackPanel>
 
                 </Grid>
             </ScrollViewer>

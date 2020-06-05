@@ -1,4 +1,7 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
@@ -127,6 +130,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public TcpServerViewModel()
         {
             TcpServerHelper = new TcpServerHelper(Settings.Default.GatewayIpAddress, 8881);
+            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
             StartListen = new RelayCommand(() => { TcpServerHelper.StartListen(); });
@@ -138,6 +142,27 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
         }
 
+        private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
+        {
+            if (bytes.Length != 23)
+            {
+                return;
+            }
+
+            var d= bytes.Take(2).Reverse().ToArray();
+            if (BitConverter.ToUInt16(d,0)==2 )
+            {
+                var t1 = bytes.Skip(2).Take(2).ToArray();
+                var t2 = bytes.Skip(4).Take(2).ToArray();
+                var t3 = bytes.Skip(6).ToArray();
+                List<byte> list = new List<byte>();
+                list.AddRange(new byte[] {0x00, 0x02});
+                list.AddRange(t2);
+                list.AddRange(t1);
+                list.AddRange(t3);
+                TcpServerHelper.SendDataToClient(clientSocket, list.ToArray());
+            }
+        }
 
         public void Select(Socket clientSocket)
         {
