@@ -5,37 +5,52 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.ServerCenter"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding  Source={StaticResource Locator} ,Path=TcpServer}"
       Title="TcpServerPage">
-
     <Grid>
         <materialDesign:Card>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <TextBox x:Name="TextBoxIp" Text="{Binding TcpServerHelper.ListenIpAddress}" Margin="3" />
-                    <TextBox x:Name="TextBoxPort" Text="{Binding TcpServerHelper.ListenPortNum}" Margin="3" />
-                    <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
-                    <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
-                   
-                    <TextBox x:Name="TextBlockSendData" Text="{Binding CurrentSendMsg}" />
-                    <Button x:Name="ButtonHeartBit" Margin="3" Content="响应心跳帧"
-                            Command="{Binding SendDataToServerCommand}" />
-                    <Button Command="{Binding AarqRequest}" Margin="3">AarqRequest</Button>
-                    <Button Command="{Binding GetRequest}" Margin="3">GetRequest</Button>
+                    <StackPanel Grid.Column="0">
+                        <TextBox x:Name="TextBoxIp" Text="{Binding TcpServerHelper.ListenIpAddress}" Margin="3" />
+                        <TextBox x:Name="TextBoxPort" Text="{Binding TcpServerHelper.ListenPortNum}" Margin="3" />
+                        <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
+                        <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
 
-                    <TextBox Height="200" Margin="3" BorderThickness="2" />
-                </StackPanel>
-                <ListBox Grid.Column="1" ItemsSource="{Binding TcpServerHelper.SocketClientList }"
-                         SelectedItem="{Binding DLMSClient.CurrentSocket}" />
+                        <TextBox x:Name="TextBlockSendData" Text="{Binding CurrentSendMsg}" />
+                        <Button x:Name="ButtonHeartBit" Margin="3" Content="响应心跳帧"
+                                Command="{Binding SendDataToServerCommand}" />
+                        <Button Command="{Binding AarqCommand }"
+                                DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}" Margin="3">
+                            AarqRequest
+                        </Button>
+                        <!-- <Button Command="{Binding GetRequest}" Margin="3">GetRequest</Button> -->
 
-            </Grid>
+                    </StackPanel>
+                    <ListBox x:Name="ListBox" Grid.Row="0" Grid.Column="1"
+                             ItemsSource="{Binding TcpServerHelper.SocketClientList }"
+                             SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
+                             SelectionChanged="Selector_OnSelectionChanged" />
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                        <myControl:TemperatureAndHumidityControl />
+                        <myControl:TaiAngControl />
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+
         </materialDesign:Card>
     </Grid>
 </Page>

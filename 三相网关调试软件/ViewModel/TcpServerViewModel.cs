@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -135,44 +134,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
             SendDataToServerCommand = new RelayCommand(() =>
             {
-                TcpServerHelper.SendDataToClient(DLMSClient.CurrentSocket, CurrentSendMsg.StringToByte());
-            });
-
-            DLMSClient = new DLMSClient(TcpServerHelper, new MyDLMSSettings(InterfaceType.WRAPPER));
-            DLMSClient.CurrentSocket = CurrentSocketClient;
-
-            AarqRequest = new RelayCommand(async () => { await DLMSClient.AarqRequest(); });
-
-            GetRequest = new RelayCommand(async () =>
-            {
-                await DLMSClient.GetRequest(new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"}.GetBuffer());
+                TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
         }
-
-
-        public RelayCommand AarqRequest
-        {
-            get => _aarqRequest;
-            set
-            {
-                _aarqRequest = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _aarqRequest;
-
-        public RelayCommand GetRequest
-        {
-            get => _getRequest;
-            set
-            {
-                _getRequest = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _getRequest;
 
 
         public void Select(Socket clientSocket)

@@ -5,7 +5,6 @@ using System.Windows;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
@@ -56,7 +55,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public SerialPortViewModel SerialPortViewModel { get; set; }
 
-
         private StartProtocolType _startProtocolType = StartProtocolType.DLMS;
 
         public StartProtocolType StartProtocolType
@@ -70,17 +68,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
-        public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
-
         public DlmsBaseMeterViewModel()
         {
             SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
             EModeExecutor = new EModeExecutor(SerialPortViewModel.SerialPortMaster, ""); //近红外
 
-            DlmsSettings = new MyDLMSSettings(InterfaceType.HDLC);
-            Client = new DLMSClient(SerialPortViewModel.SerialPortMaster, DlmsSettings);
+            Client = ServiceLocator.Current.GetInstance<DLMSClient>();
 
             InitCommand = new RelayCommand(Init);
             DisconnectCommand = new RelayCommand(async () => { await Client.DisconnectRequest(true); });
@@ -90,15 +84,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 var value = await Client.GetRequest(cosem.GetValue());
                 if (value != null && value.Length != 0)
                 {
-                    var data = NormalDataParse.GetDataContent(value, 3, out bool result);
-                    if (result)
-                    {
-                        SoftVersion = data.ByteToString();
-                    }
-                    else
-                    {
-                        SoftVersion = "";
-                    }
+                    var data = NormalDataParse.ParsePduData(value);
+                    SoftVersion = data;
                 }
             });
             ReadFactoryCommand = new RelayCommand(async () =>
@@ -107,15 +94,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 var value = await Client.GetRequest(cosem.GetValue());
                 if (value != null && value.Length != 0)
                 {
-                    var data = NormalDataParse.GetDataFactoryContent(value, 3, out bool result);
-                    if (result)
-                    {
-                        FactoryStatus = BitConverter.ToUInt16(data.Reverse().ToArray(), 0).ToString();
-                    }
-                    else
-                    {
-                        FactoryStatus = "";
-                    }
+                    FactoryStatus = NormalDataParse.ParsePduData(value);
                 }
             });
             EnterFactorCommand = new RelayCommand(async () =>
@@ -224,16 +203,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 //                     var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
                     var t = Client.SNRMRequest();
                     await t.ContinueWith(
-                        t1 =>
-                        {
-                            //if (!t.Result)
-                            //{
-                            //    return null;
-                            //}
-
-                            //                            return Hdlc46Executor.ExecuteHdlcComm(Hdlc46Executor.HdlcFrameMaker.AarqRequest);
-                            return Client.AarqRequest();
-                        },
+                        t1 => { return Client.AarqRequest(); },
                         TaskContinuationOptions.OnlyOnRanToCompletion);
                 }
             }

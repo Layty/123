@@ -88,23 +88,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             List<byte> appApduContentList = new List<byte>();
 
             #region ———application-context-name域 (application-context-name [1], OBJECT IDENTIFIER)
-
             //ApplicationContextName
-            appApduContentList.Add(0xA1); //标签([1],Context-specific)的编码
-            appApduContentList.Add(0x09); //标记组件值域长度的编码
-            appApduContentList.Add(0x06); //appApduContentList.Add((byte)BerType.ObjectIdentifier); //application-context-name(OBJECTIDEN- TIFIER,Universal)选项的编码
-            appApduContentList.Add(0x07); //对象标识符的值域的长度的编码
-            appApduContentList.AddRange(new byte[]
-            {
-                0x60,
-                0x85,
-                0x74,
-                0x05,
-                0x08,
-                0x01,
-                0x01 //0x01,0x03
-            }); //对象标识符的值的编码
-
+            appApduContentList.AddRange(new ApplicationContextName().ToPduBytes());
             #endregion
 
             #region 认证功能单元的域的编码,只有在选择了身份验证功能单元时，才会出现以下字段。
@@ -127,36 +112,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 #endregion
 
                 #region mechanism_name[11] IMPLICIT Mechanism_name OPTIONAL,
-
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x8B, //标签([11],IMPLICIT,Context -specific)的编码
-                    0x07 //标记组件的值域的长度的编码
-                });
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x60,
-                    0x85,
-                    0x74,
-                    0x05,
-                    0x08,
-                    0x02,
-                    0x01 //OBJECTIDENTIFIER的值的编码: low-level-security-mechanism-name(1), high-level-security-mechanism-name(5)
-                });
-
+                appApduContentList.AddRange(new MechanismName().ToPduBytes());
                 #endregion
 
                 #region calling_authentication_value[12] EXPLICIT Authentication_value OPTIONAL,
-
-                appApduContentList.Add(0xAC); //标签([12],EXPLICIT, Context-specific)的编码
-                appApduContentList.Add(0x0A); //标记组件的值域的长度的编码
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x80, //Authentication-value(charstring[0]IM- PLICITGraphicString)选项的编码
-                    0x08 //Authentication-value值 域 长 度 的 编 码 (8 字节)
-                });
-                appApduContentList.AddRange(Settings.PasswordHex);
-
+                appApduContentList.AddRange(new CallingAuthenticationValue(Settings.PasswordHex).ToPduBytes());
                 #endregion
             }
 

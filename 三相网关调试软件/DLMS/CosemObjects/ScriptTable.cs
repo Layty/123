@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
 
@@ -9,29 +8,24 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
     public sealed class ScriptTable : DLMSObject, IDLMSBase
     {
-     //   public override string LogicalName { get; set; } = "0.0.10.0.0.255";
-      //  public override byte Version { get; set; } = 1;
-    //    public override ObjectType ObjectType { get; set; } = ObjectType.ScriptTable; //9
+
         public List<Script> Scripts { get; set; }
 
         public ScriptTable()
         {
             Scripts = new List<Script>();
             LogicalName = "0.0.10.0.0.255";
-            Version  = 1;
+            Version = 1;
             ObjectType = ObjectType.ScriptTable;
         }
 
-        public byte[] GetScripts()
-        {
-          return  GetAttributeData(2);
-        }
+        public byte[] GetScripts() => GetAttributeData(2);
 
         public byte[] ScriptExecute(ushort scriptId)
         {
             DLMSDataItem dlmsData =
                 new DLMSDataItem(DataType.UInt16, BitConverter.GetBytes(scriptId).Reverse().ToArray());
-         return   ActionExecute(1, dlmsData);
+            return ActionExecute(1, dlmsData);
         }
 
         string[] IDLMSBase.GetNames()
@@ -43,17 +37,11 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
             };
         }
 
-        int IDLMSBase.GetAttributeCount()
-        {
-            return 2;
-        }
+        int IDLMSBase.GetAttributeCount() => 2;
 
-        int IDLMSBase.GetMethodCount()
-        {
-            return 1;
-        }
+        int IDLMSBase.GetMethodCount() => 1;
 
-        public DataType GetDataType(int index)
+        DataType IDLMSBase.GetDataType(int index)
         {
             switch (index)
             {

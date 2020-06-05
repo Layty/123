@@ -27,15 +27,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
             Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent",
                 (s) =>
                 {
-                    MyNetLog.Log = DateTime.Now + "ReceiveDataEvent" + "收到" + s.Item1.RemoteEndPoint+"数据" + Encoding.Default.GetString(s.Item2) +
-                                   Environment.NewLine;
+                    MyNetLog.HandlerReceiveData(s.Item1, s.Item2);
+                    //MyNetLog.Log = DateTime.Now + "ReceiveDataEvent" + "收到" + s.Item1.RemoteEndPoint+"数据" + Encoding.Default.GetString(s.Item2) +
+                    //               Environment.NewLine;
                 });
             Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent",
                 (s) =>
                 {
-                    MyNetLog.Log = DateTime.Now + "SendDataEvent" + "向" + s.Item1.RemoteEndPoint + "发送数据" +
-                                   Encoding.Default.GetString(s.Item2) +
-                                   Environment.NewLine;
+                    MyNetLog.HandlerSendData(s.Item1,s.Item2);
+                    //MyNetLog.Log = DateTime.Now + "SendDataEvent" + "向" + s.Item1.RemoteEndPoint + "发送数据" +
+                    //               Encoding.Default.GetString(s.Item2) +
+                    //               Environment.NewLine;
                 });
             Messenger.Default.Register<string>(this, "ErrorEvent",
                 (errorString) =>

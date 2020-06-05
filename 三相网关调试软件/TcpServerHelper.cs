@@ -213,7 +213,6 @@ namespace 三相智慧能源网关调试软件
                 {
                     OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
                     DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Remove(sockClient); });
-                    
                     break;
                 }
             }
@@ -234,6 +233,24 @@ namespace 三相智慧能源网关调试软件
         {
             destinationSocket.Send(bytes);
             OnSendBytesToClient(destinationSocket, bytes);
+        }
+        private  object obj=new object();
+        public async Task< byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
+        {
+            returnBytes = new byte[2049];
+                ReceiveBytes += TcpServerHelper_ReceiveBytes;
+                destinationSocket.Send(bytes);
+                OnSendBytesToClient(destinationSocket, bytes);
+                await  Task.Delay(2000);
+                ReceiveBytes -= TcpServerHelper_ReceiveBytes;
+                return returnBytes;
+            
+        }
+
+        private byte[] returnBytes;
+        private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
+        {
+            returnBytes= bytes;
         }
 
         public void CloseSever()

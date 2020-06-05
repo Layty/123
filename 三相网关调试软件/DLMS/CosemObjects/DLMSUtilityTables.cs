@@ -8,34 +8,19 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         public ushort TableId { get; set; }
         public byte[] Buffer { get; set; }
 
-      //  public override ObjectType ObjectType { get; set; } = ObjectType.UtilityTables;
-
-
         public DLMSUtilityTables()
         {
             ObjectType = ObjectType.UtilityTables;
         }
-        public byte[] GetLogicName()
-        {
-            return GetAttributeData(1);
-        }
+        public byte[] GetLogicName() => GetAttributeData(1);
 
-        public byte[] GetTableId()
-        {
-            return GetAttributeData(2);
-        }
+        public byte[] GetTableId() => GetAttributeData(2);
 
-        public byte[] GetLength()
-        {
-            return GetAttributeData(3);
-        }
+        public byte[] GetLength() => GetAttributeData(3);
 
-        public byte[] GetBuffer()
-        {
-            return GetAttributeData(4);
-        }
+        public byte[] GetBuffer() => GetAttributeData(4);
 
-        string[] IDLMSBase.GetNames() => new string[4]
+        string[] IDLMSBase.GetNames() => new[]
         {
             LogicalName,
             "Table Id",

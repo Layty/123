@@ -171,7 +171,10 @@
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
     <Compile Include="DLMS\ApplicationContextName.cs" />
+    <Compile Include="DLMS\CallingAuthenticationValue.cs" />
+    <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
+    <Compile Include="DLMS\CosemObjects\DLMSRegister.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeExecutor.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrameMaker.cs" />
@@ -265,11 +268,18 @@
     <Compile Include="MyControl\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\ResgisetViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\SkinUserControl.xaml.cs">
       <DependentUpon>SkinUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\TaiAngControl.xaml.cs">
+      <DependentUpon>TaiAngControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\TemperatureAndHumidityControl.xaml.cs">
+      <DependentUpon>TemperatureAndHumidityControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TcpClientHelper.cs" />
@@ -380,6 +390,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyControl\SerialPortControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\TaiAngControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\TemperatureAndHumidityControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

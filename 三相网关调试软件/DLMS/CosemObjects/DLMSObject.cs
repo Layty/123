@@ -8,16 +8,38 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
     /// </summary>
     public abstract class DLMSObject
     {
-        public MyDLMSSettings Settings { get; set; }
+        public string LogicalName { get; set; }
+        //public MyDLMSSettings Settings { get; set; }
         public string Description { get; set; }
 
-        public  string LogicalName { get; set; }
-
-        public  ObjectType ObjectType { get; set; }
+        public ObjectType ObjectType { get; set; }
         public ushort ShortName { get; set; }
 
         public object Tag { get; set; }
-        public  byte Version { get; set; } = 0;
+        public byte Version { get; set; } = 0;
+
+
+        public DLMSObject()
+            : this(ObjectType.None, null, 0)
+        {
+        }
+
+        protected DLMSObject(ObjectType objectType)
+            : this(objectType, null, 0)
+        {
+        }
+
+        protected DLMSObject(ObjectType objectType, string ln, ushort sn)
+        {
+            ObjectType = objectType;
+            ShortName = sn;
+            if (ln != null)
+            {
+                ValidateLogicalName(ln);
+            }
+
+            LogicalName = ln;
+        }
 
         public static void ValidateLogicalName(string ln)
         {

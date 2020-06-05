@@ -39,20 +39,14 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             PackagingDestinationAndSourceAddress(aarqList);
 
             List<byte> appApduContentList = new List<byte>();
-
             #region ———application-context-name域 (application-context-name [1], OBJECT IDENTIFIER)
-
             //ApplicationContextName
             appApduContentList.AddRange(new ApplicationContextName().ToPduBytes());
-            ;
-
             #endregion
-
             #region 认证功能单元的域的编码,只有在选择了身份验证功能单元时，才会出现以下字段。
-
             // bool flag = Hdlc46Frame.PasswordLvl1 == Hdlc46Frame.PasswordLvl.LLS;
-            bool flag = true;
-            if (flag)
+           // bool flag = true;
+            if (true)
             {
                 //认证功能单元域的编码
 
@@ -69,23 +63,10 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
                 #endregion
 
                 #region mechanism_name[11] IMPLICIT Mechanism_name OPTIONAL,
-
                 appApduContentList.AddRange(new MechanismName().ToPduBytes());
-
                 #endregion
-
                 #region calling_authentication_value[12] EXPLICIT Authentication_value OPTIONAL,
-
-                appApduContentList.Add(0xAC); //标签([12],EXPLICIT, Context-specific)的编码
-                appApduContentList.Add(0x0A); //标记组件的值域的长度的编码
-                appApduContentList.AddRange(new byte[]
-                {
-                    0x80, //Authentication-value(charstring[0]IM- PLICITGraphicString)选项的编码
-                    0x08 //Authentication-value值 域 长 度 的 编 码 (8 字节)
-                });
-
-                appApduContentList.AddRange(MyDlmsSettings.PasswordHex);
-
+                appApduContentList.AddRange(new CallingAuthenticationValue(MyDlmsSettings.PasswordHex).ToPduBytes());
                 #endregion
             }
 

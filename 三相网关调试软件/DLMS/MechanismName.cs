@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
+using MySerialPortMaster;
 
 namespace 三相智慧能源网关调试软件.DLMS
 {
@@ -38,6 +40,7 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         public byte[] ToPduBytes()
         {
+            //var appApduContentList = new List<byte>();
             //appApduContentList.AddRange(new byte[]
             //{
             //    0x8B, //标签([11],IMPLICIT,Context -specific)的编码
@@ -53,7 +56,9 @@ namespace 三相智慧能源网关调试软件.DLMS
             //    0x02,
             //    0x01 //OBJECTIDENTIFIER的值的编码: low-level-security-mechanism-name(1), high-level-security-mechanism-name(5)
             //});
-            return Encoding.Default.GetBytes("8B"+ToPduStringInHex());
+       
+           // return appApduContentList.ToArray();
+            return ("8B"+ToPduStringInHex()).StringToByte();
         }
     }
 }

@@ -8,9 +8,6 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
     public class ProfileGeneric : DLMSObject, IDLMSBase
     {
-      //  public override ObjectType ObjectType { get; set; } = ObjectType.ProfileGeneric;
-
-        //public sealed override string LogicalName { get; set; } //1
         public List<object[]> Buffer { get; set; } //2
         public object From { get; set; }
         public object To { get; set; }
@@ -57,7 +54,7 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         {
             this.CapturePeriod = capturePeriod;
             DLMSDataItem dlmsDataItem =
-                new DLMSDataItem(GetDataType(4), BitConverter.GetBytes(CapturePeriod).Reverse().ToArray());
+                new DLMSDataItem(this.GetDataType(4), BitConverter.GetBytes(CapturePeriod).Reverse().ToArray());
             return SetAttributeData(4, dlmsDataItem);
         }
 
@@ -67,7 +64,6 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 
 
         public byte[] GetProfileEntries() => GetAttributeData(8);
-     
 
 
         string[] IDLMSBase.GetNames()

@@ -2,6 +2,7 @@
 using System.Text;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.Model;
 
@@ -10,9 +11,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
     public class TaiAngViewModel : ViewModelBase
     {
         public DLMSClient Client { get; set; }
-
-        public SerialPortViewModel SerialPortViewModel =
-            CommonServiceLocator.ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
         private ObservableCollection<DLMSTaiAngModel> _taiAngCollection;
 
@@ -40,8 +38,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
-                Client=new DLMSClient(SerialPortViewModel.SerialPortMaster,new MyDLMSSettings(InterfaceType.HDLC));
-                   TaiAngCollection = new ObservableCollection<DLMSTaiAngModel>
+                Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+                TaiAngCollection = new ObservableCollection<DLMSTaiAngModel>
                 {
                     new DLMSTaiAngModel {LogicalName = "1.1.98.0.128.255"},
                     new DLMSTaiAngModel {LogicalName = "1.2.98.0.128.255"},
@@ -63,19 +61,30 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 GetLogicNameDataCommand = new RelayCommand<DLMSTaiAngModel>(
                     async t =>
                     {
-                        await Client.GetRequest(t.GetLogicName());
+                        t.DataForShow = "";
+                        var dataResult = await Client.GetRequest(t.GetLogicName());
+                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
                     });
-                GetMeterAddressData = new RelayCommand<DLMSTaiAngModel>(async t => await Client.GetRequest(t.GetTableId()) );
-                GetDataLengthData = new RelayCommand<DLMSTaiAngModel>(async t => await Client.GetRequest(t.GetLength()));
+                GetMeterAddressData = new RelayCommand<DLMSTaiAngModel>(async t =>
+                    {
+                        t.DataForShow = "";
+                        var dataResult = await Client.GetRequest(t.GetTableId());
+                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
+                    }
+                );
+                GetDataLengthData = new RelayCommand<DLMSTaiAngModel>(async t =>
+                    {
+                        t.DataForShow = "";
+                        var dataResult = await Client.GetRequest(t.GetLength());
+                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
+                    }
+                );
                 GetBuffData = new RelayCommand<DLMSTaiAngModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var DataResult = await Client.GetRequest(t.GetBuffer());
-                        var bytes = NormalDataParse.GetUtilityTablesDataContent(DataResult, 3, out bool result);
-                        if (result)
-                        {
-                            t.DataForShow = Encoding.Default.GetString(bytes);
-                        }
+                        var dataResult = await Client.GetRequest(t.GetBuffer());
+                        t.DataForShow =
+                            Encoding.Default.GetString(NormalDataParse.ParsePduData(dataResult).StringToByte());
                     }
                 );
             }
@@ -128,6 +137,5 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
-
     }
 }

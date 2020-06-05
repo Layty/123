@@ -8,15 +8,19 @@ using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.DLMS
 {
-    public class MyDLMSSettings : ObservableObject
+    public class MyDLMSSettings : ViewModelBase
     {
-        public InterfaceType InterfaceType { get; set; }
 
-        public StartProtocolType StartProtocolType { get; set; }
+        public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
+        public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
+        public Array InterfaceTypeArray => Enum.GetValues(typeof(InterfaceType));
+        public InterfaceType InterfaceType { get; set; } = InterfaceType.HDLC;
+
+        public StartProtocolType StartProtocolType { get; set; } = StartProtocolType.DLMS;
         public ConnectionState Connected { get; set; }
 
 
-        public CommunicationType CommunicationType
+        public CommunicationType CommunicationType 
         {
             get => _communicationType;
             set
@@ -125,19 +129,19 @@ namespace 三相智慧能源网关调试软件.DLMS
             DlmsInfo = new DLMSInfo();
         }
 
-        public MyDLMSSettings(InterfaceType interfaceType, StartProtocolType startProtocolType = StartProtocolType.DLMS)
-        {
-            InterfaceType = interfaceType;
-            StartProtocolType = startProtocolType;
-            CommunicationType = CommunicationType.SerialPort;
-            DLMSVersion = 6;
-            InvokeId = 0x1;
-            Priority = Priority.High;
-            ServiceClass = ServiceClass.Confirmed;
-            MaxServerPDUSize = MaxReceivePduSize = DefaultMaxReceivePduSize;
-            ProposedConformance = (Conformance) 0;
-            DlmsInfo = new DLMSInfo();
-        }
+        //public MyDLMSSettings(InterfaceType interfaceType, StartProtocolType startProtocolType = StartProtocolType.DLMS)
+        //{
+        //    InterfaceType = interfaceType;
+        //    StartProtocolType = startProtocolType;
+        //    CommunicationType = CommunicationType.SerialPort;
+        //    DLMSVersion = 6;
+        //    InvokeId = 0x1;
+        //    Priority = Priority.High;
+        //    ServiceClass = ServiceClass.Confirmed;
+        //    MaxServerPDUSize = MaxReceivePduSize = DefaultMaxReceivePduSize;
+        //    ProposedConformance = (Conformance) 0;
+        //    DlmsInfo = new DLMSInfo();
+        //}
 
         public int RequestBaud { get; set; }
     }

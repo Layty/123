@@ -20,6 +20,8 @@
                      materialDesign:HintAssist.Hint="最大缓存字符数" />
             <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
                       IsChecked="True" />
+            <CheckBox  IsChecked="{Binding MyNetLog.IsSendDataDisplayFormat16,Mode=TwoWay}">十六进制显示发送数据</CheckBox>
+            <CheckBox  IsChecked="{Binding MyNetLog.IsReceiveFormat16,Mode=TwoWay}" >十六进制显示接收数据</CheckBox>
             <CheckBox Name="CheckBoxWriteLog" Content="自动捕获日志并写入文件" IsChecked="{Binding MyNetLog.IsStartWriteLogToFile}"></CheckBox>
             <Button Name="ButtonClearData"
                     Command="{Binding ClearBufferCommand}"

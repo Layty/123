@@ -1,47 +1,47 @@
-﻿using System.IO.Ports;
+﻿using System;
+using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using CommonServiceLocator;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件.DLMS
 {
-    public enum CommunicationType
-    {
-        SerialPort,
-        NetWork
-    }
-
-    public class DLMSClient
+    public class DLMSClient : ViewModelBase
     {
         private EModeFrameMaker _eModeFrameFrameMaker;
         public HdlcFrameMaker HdlcFrameMaker { get; set; }
-
         public NetFrameMaker NetFrameMaker { get; set; }
         public bool IsAuthenticationRequired { get; set; }
-
-        private readonly SerialPortMaster _portMaster;
-        private readonly TcpServerHelper _socket;
+        private SerialPortMaster _portMaster { get; set; }
+        private TcpServerHelper _socket { get; set; }
         public Socket CurrentSocket { get; set; }
 
         public MyDLMSSettings MyDlmsSettings { get; set; }
 
         private async Task<byte[]> HowToSendData(byte[] sendBytes)
         {
+            var pdubyte = new Byte[] { };
             if (MyDlmsSettings.CommunicationType == CommunicationType.SerialPort)
             {
-                return await _portMaster.SendAndReceiveReturnDataAsync(sendBytes);
+                var hdlcReceiveData = await _portMaster.SendAndReceiveReturnDataAsync(sendBytes);
+                pdubyte = hdlcReceiveData.Skip(11).ToArray();
             }
             else if (MyDlmsSettings.CommunicationType == CommunicationType.NetWork)
             {
-                _socket.SendDataToClient(CurrentSocket, sendBytes);
+                var wrapperReceiveData = await _socket.SendDataToClientAndWaitReceiveData(CurrentSocket, sendBytes);
+                pdubyte = wrapperReceiveData.Skip(8).ToArray();
             }
 
-            return null;
+            return pdubyte;
         }
 
         public async Task<byte[]> SNRMRequest()
@@ -97,7 +97,7 @@ namespace 三相智慧能源网关调试软件.DLMS
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                await HowToSendData(NetFrameMaker.GetRequest(getAttributeBytes));
+                bytes = await HowToSendData(NetFrameMaker.GetRequest(getAttributeBytes));
             }
 
             return bytes;
@@ -185,22 +185,60 @@ namespace 三相智慧能源网关调试软件.DLMS
             _portMaster.Parity = Parity.Even;
         }
 
-        public DLMSClient(SerialPortMaster serialPortMaster, MyDLMSSettings settings)
+
+        public RelayCommand AarqCommand
         {
-            _portMaster = serialPortMaster;
-            InitSerialPortParams(_portMaster);
-            MyDlmsSettings = settings;
-            HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
-            MyDlmsSettings.CommunicationType = CommunicationType.SerialPort;
+            get => _AarqCommand;
+            set
+            {
+                _AarqCommand = value;
+                RaisePropertyChanged();
+            }
         }
 
-        public DLMSClient(TcpServerHelper socket, MyDLMSSettings settings)
+        private RelayCommand _AarqCommand;
+
+        public RelayCommand GetRequestCommand
         {
-            _socket = socket;
-            MyDlmsSettings = settings;
-            NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
-            MyDlmsSettings.CommunicationType = CommunicationType.NetWork;
+            get => _GetRequestCommand;
+            set
+            {
+                _GetRequestCommand = value;
+                RaisePropertyChanged();
+            }
         }
+
+        private RelayCommand _GetRequestCommand;
+
+
+        public DLMSClient()
+        {
+            MyDlmsSettings = ServiceLocator.Current.GetInstance<MyDLMSSettings>();
+            ;
+            HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
+            NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
+            _socket = ServiceLocator.Current.GetInstance<TcpServerViewModel>().TcpServerHelper;
+            _portMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
+            InitSerialPortParams(_portMaster);
+            AarqCommand = new RelayCommand(() => { AarqRequest(); });
+            //   GetRequestCommand=new RelayCommand(()=>{GetRequest()});
+        }
+        //public DLMSClient(SerialPortMaster serialPortMaster, MyDLMSSettings settings)
+        //{
+        //    _portMaster = serialPortMaster;
+        //    InitSerialPortParams(_portMaster);
+        //    MyDlmsSettings = settings;
+        //    HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
+        //    MyDlmsSettings.CommunicationType = CommunicationType.SerialPort;
+        //}
+
+        //public DLMSClient(TcpServerHelper socket, MyDLMSSettings settings)
+        //{
+        //    _socket = socket;
+        //    MyDlmsSettings = settings;
+        //    NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
+        //    MyDlmsSettings.CommunicationType = CommunicationType.NetWork;
+        //}
 
 
         private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();

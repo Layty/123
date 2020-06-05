@@ -18,27 +18,29 @@
         <StackPanel Margin="3">
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="DestAddress"
-                     Text="{Binding DlmsSettings.ServerAddress}" />
-            <TextBox Text="{Binding DlmsSettings.ClientAddress}"
+                     Text="{Binding  Client.MyDlmsSettings.ServerAddress}" />
+            <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="SourceAddress" />
             <TextBlock Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}" />
             <TextBlock Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
-            <TextBox Text="{Binding DlmsSettings.PasswordString}"
+            <TextBox Text="{Binding  Client.MyDlmsSettings.PasswordString}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Password" />
             <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
-            <TextBox Text="{Binding DlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
+            <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
                      materialDesign:HintAssist.IsFloating="True" />
-            <TextBox Text="{Binding DlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
+            <TextBox Text="{Binding  Client.MyDlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
                      materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding StartProtocolArray}"
+            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
                       materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding CommunicationTypeArray}"
+            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.CommunicationTypeArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
                       materialDesign:HintAssist.Hint="CommunicationType" materialDesign:HintAssist.IsFloating="True" />
-
+            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.InterfaceTypeArray}"
+                      SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType}"
+                      materialDesign:HintAssist.Hint="InterfaceType" materialDesign:HintAssist.IsFloating="True" />
         </StackPanel>
     </Grid>
 </Page>
