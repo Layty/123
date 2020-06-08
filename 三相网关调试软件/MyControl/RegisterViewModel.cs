@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
+using System.Windows.Documents;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
@@ -56,18 +59,22 @@ namespace 三相智慧能源网关调试软件.MyControl
 
         public DLMSClient Client { get; set; }
 
+
         public RegisterViewModel()
         {
+            
+            ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+            //  var sheetName = excel.GetDataFromExcelWithAppointSheetNames();
+            //  var table=  ExcelHelper.ExcelToDataTable("DLMS设备信息.xls", true);
+            var DataTable = excel.GetExcelDataTable("Register$");
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
-            Registers = new ObservableCollection<DLMSSelfDefineRegisterModel>()
+
+            Registers = new ObservableCollection<DLMSSelfDefineRegisterModel>();
+            for (int i = 0; i < DataTable.Rows.Count; i++)
             {
-                new DLMSSelfDefineRegisterModel("0.1.24.2.30.255") {RegisterName = "温度"},
-                new DLMSSelfDefineRegisterModel("0.1.24.2.31.255") {RegisterName = "湿度"},
-                new DLMSSelfDefineRegisterModel("1.0.91.7.0.255") {RegisterName = "Current (neutral)"},
-                new DLMSSelfDefineRegisterModel("1.0.32.7.0.255") {RegisterName = "L1 voltage"},
-                new DLMSSelfDefineRegisterModel("1.0.52.7.0.255") {RegisterName = "L2 voltage"},
-                new DLMSSelfDefineRegisterModel("1.0.72.7.0.255") {RegisterName = "L3 voltage"},
-            };
+                Registers.Add(new DLMSSelfDefineRegisterModel(DataTable.Rows[i][0].ToString())
+                    {RegisterName = DataTable.Rows[i][1].ToString()});
+            }
 
             GetValueCommand = new RelayCommand<DLMSRegister>(
                 async t =>
@@ -75,9 +82,9 @@ namespace 三相智慧能源网关调试软件.MyControl
                     t.Value = "";
                     t.Scalar = 1;
                     t.Unit = Unit.None;
-                    var dataResult = await Client.GetRequest(t.GetValue());
+                    var dataResult = await Client.GetRequest(t.GetAttributeData(2));
                     t.Value = NormalDataParse.ParsePduData(dataResult);
-                    var scalarUnit = await Client.GetRequest(t.GetScalar_Unit());
+                    var scalarUnit = await Client.GetRequest(t.GetAttributeData(3));
                     var structData = NormalDataParse.ParsePduData(scalarUnit);
                     var unitbyte = structData.StringToByte();
                     switch (unitbyte.Take(1).ToArray()[0])
@@ -94,11 +101,6 @@ namespace 三相智慧能源网关调试软件.MyControl
                             break;
                     }
                 });
-
-            //GetLogicNameCommand=new RelayCommand<DLMSRegister>(t =>
-            //{t.LogicalName
-
-            //});
         }
     }
 }

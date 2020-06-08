@@ -121,7 +121,9 @@
                                 </ToggleButton.Triggers>
 
                             </ToggleButton>
-
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="{StaticResource LinearGradientBrush}">
+                                <materialDesign:PackIcon Kind="MicrosoftWindows" Width="Auto" Height="Auto" />
+                            </TextBlock>
                             <TextBlock
                                 Text="{Binding Title }"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"

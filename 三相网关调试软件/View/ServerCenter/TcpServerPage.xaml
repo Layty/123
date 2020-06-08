@@ -24,8 +24,22 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBox x:Name="TextBoxIp" Text="{Binding TcpServerHelper.ListenIpAddress}" Margin="3" />
-                        <TextBox x:Name="TextBoxPort" Text="{Binding TcpServerHelper.ListenPortNum}" Margin="3" />
+                        <ComboBox Margin="3" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  IsEditable="True"
+                                  materialDesign:HintAssist.Hint="ServerIP(editable)"
+                                  materialDesign:HintAssist.FloatingScale="0.50"
+                                  Height="50" FontSize="20"
+                                  Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
+                            <ComboBoxItem>127.0.0.1</ComboBoxItem>
+                            <ComboBoxItem>192.168.0.145</ComboBoxItem>
+                        </ComboBox>
+                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5" 
+                                  Height="50"
+                                 materialDesign:HintAssist.FloatingScale="0.50"
+                                 materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                                 materialDesign:HintAssist.Hint="端口号" FontSize="20"
+                                 Text="{Binding TcpServerHelper.ListenPortNum}" />
+
                         <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
                         <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
 
@@ -36,8 +50,6 @@
                                 DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}" Margin="3">
                             AarqRequest
                         </Button>
-                        <!-- <Button Command="{Binding GetRequest}" Margin="3">GetRequest</Button> -->
-
                     </StackPanel>
                     <ListBox x:Name="ListBox" Grid.Row="0" Grid.Column="1"
                              ItemsSource="{Binding TcpServerHelper.SocketClientList }"

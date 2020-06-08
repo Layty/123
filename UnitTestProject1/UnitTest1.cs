@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using 三相智慧能源网关调试软件;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
@@ -54,8 +55,12 @@ namespace UnitTestProject1
             var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
         }
 
-      
-
-     
+        [TestMethod]
+        public void TestExcel()
+        {
+            ExcelHelper excel = new ExcelHelper("DLMS设备信息");
+            var sheetName = excel.GetDataFromExcelWithAppointSheetNames();
+            var table = excel.GetExcelDataTable("Register");
+        }
     }
 }

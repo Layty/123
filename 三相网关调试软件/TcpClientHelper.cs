@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -140,7 +141,7 @@ namespace 三相智慧能源网关调试软件
         {
             try
             {
-                Task.Run(()=>
+                Task.Run(() =>
                 {
                     try
                     {
