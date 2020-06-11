@@ -46,13 +46,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearReceiveCount());
             }
 
-            SendersCollection = new ObservableCollection<SenderModel> {new SenderModel {SendText = "1234"}};
-            SelectCommand = new RelayCommand<SenderModel>(SelectSendText);
-            SendTextCommand = new RelayCommand(() =>
-                {
-                    SerialPortMaster.Send(SenderModel.SendText.StringToByte());
-                }
-            );
+        
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
                 SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMaster
@@ -139,40 +133,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         #region 发送区
 
-        public RelayCommand<SenderModel> ClearSendDataCommand { get; set; }
+    
         public RelayCommand SendTextCommand { get; set; }
-        private ObservableCollection<SenderModel> _sendersCollection;
-        public RelayCommand<SenderModel> SelectCommand { get; set; }
+       
+       
 
-        public ObservableCollection<SenderModel> SendersCollection
-        {
-            get => _sendersCollection;
-            set
-            {
-                _sendersCollection = value;
-                RaisePropertyChanged();
-            }
-        }
+    
 
-        private SenderModel _senderModel = new SenderModel();
+       
 
-        public SenderModel SenderModel
-        {
-            get => _senderModel;
-            set
-            {
-                _senderModel = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private void SelectSendText(SenderModel senderModel)
-        {
-            SenderModel = senderModel;
-            //SerialPortMaster.CurrentSendBytes = senderModel.SendText.StringToByte();
-            //SerialPortMaster.Send();
-        }
-
+       
         #endregion
     }
 }

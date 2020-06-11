@@ -2,34 +2,74 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using 三相智慧能源网关调试软件.Annotations;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
 {
-    public class ProfileGeneric : DLMSObject, IDLMSBase
+    public class ProfileGeneric : DLMSObject, IDLMSBase,INotifyPropertyChanged
     {
-        public List<object[]> Buffer { get; set; } //2
+        public DLMSArray Buffer { get; set; } //2
         public object From { get; set; }
         public object To { get; set; }
         public List<KeyValuePair<DLMSObject, DLMSCaptureObject>> CaptureObjects { get; set; } //3
 
-        public uint CapturePeriod { get; set; } //4
-        [DefaultValue(SortMethod.FiFo)] public SortMethod SortMethod { get; set; } //5
-        public DLMSObject SortObject { get; set; } //6
+
+        public uint CapturePeriod
+        {
+            get => _CapturePeriod;
+            set { _CapturePeriod = value; OnPropertyChanged(); }
+        }
+        private uint _CapturePeriod;
+
+
+         //5
+
+        [DefaultValue(SortMethod.FiFo)]
+        public SortMethod SortMethod
+        {
+            get => _SortMethod;
+            set { _SortMethod = value; OnPropertyChanged(); }
+        }
+        private SortMethod _SortMethod;
+
+       //6
+       public DLMSObject SortObject
+        {
+            get => _SortObject;
+            set { _SortObject = value; OnPropertyChanged(); }
+        }
+        private DLMSObject _SortObject;
+
+
         public int SortAttributeIndex { get; set; }
         public int SortDataIndex { get; set; }
 
         public AccessRange AccessSelector { get; set; }
 
         /// <summary>
-        /// 加载的条目数
+        /// 加载的条目数 //7
         /// </summary>
-        public uint EntriesInUse { get; set; } //7
+
+        public uint EntriesInUse
+        {
+            get => _EntriesInUse;
+            set { _EntriesInUse = value; OnPropertyChanged(); }
+        }
+        private uint _EntriesInUse;
+
 
         /// <summary>
-        /// 保持最大条目数
+        /// 保持最大条目数   //8
         /// </summary>
-        public uint ProfileEntries { get; set; } //8
+
+        public uint ProfileEntries
+        {
+            get => _ProfileEntries;
+            set { _ProfileEntries = value; OnPropertyChanged(); }
+        }
+        private uint _ProfileEntries;
 
 
         //public override byte Version { get; set; } = 1;
@@ -126,5 +166,13 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         }
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

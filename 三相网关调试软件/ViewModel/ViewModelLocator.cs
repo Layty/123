@@ -2,7 +2,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -17,21 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 //// Create design time view services and models
                 //SimpleIoc.Default.Register<IDataService, DesignDataService>();
-                //SimpleIoc.Default.Register<MainViewModel>();
-                //SimpleIoc.Default.Register<MenuViewModel>();
-                //SimpleIoc.Default.Register<UserLoginViewModel>();
-                //SimpleIoc.Default.Register<InstantDataViewModel>();
-                //SimpleIoc.Default.Register<EnergyDataViewModel>();
-                //SimpleIoc.Default.Register<CommandViewModel>();
-                //SimpleIoc.Default.Register<LogViewModel>();
-                //SimpleIoc.Default.Register<ENetClientHelper>();
-
-                //SimpleIoc.Default.Register<SerialPortViewModel>();
-                //SimpleIoc.Default.Register<DlmsBaseMeterViewModel>();
-                //SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>();
-
-                //SimpleIoc.Default.Register<SkinViewModel>();
-                //SimpleIoc.Default.Register<TcpClientHelper>();
+               
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -69,6 +54,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<DLMSClient>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
+                SimpleIoc.Default.Register<ProfileGenericViewModel>();
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -130,6 +116,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public MyDLMSSettings DlmsSettings => ServiceLocator.Current.GetInstance<MyDLMSSettings>();
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
+        public ProfileGenericViewModel ProfileGenericViewModel => ServiceLocator.Current.GetInstance<ProfileGenericViewModel>();
+
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
         public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
        

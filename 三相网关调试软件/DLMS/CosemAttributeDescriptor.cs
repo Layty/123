@@ -7,6 +7,32 @@ using 三相智慧能源网关调试软件.DLMS.OBIS;
 
 namespace 三相智慧能源网关调试软件.DLMS
 {
+    public class SelectiveAccessDescriptor : IToPduBytes
+    {
+        public byte AccessSelector { get; set; }
+        public DLMSDataItem DlmsDataItem { get; set; }
+
+        public byte[] ToPduBytes()
+        {
+            List<byte> list = new List<byte>();
+            list.Add(AccessSelector);
+            list.AddRange(DlmsDataItem.ToPduBytes());
+            return list.ToArray();
+        }
+    }
+
+    public class CosemAttributeDescriptorWithSelection : IToPduBytes
+    {
+        public CosemAttributeDescriptor AttributeDescriptor { get; set; }
+        public SelectiveAccessDescriptor SelectiveAccessDescriptor { get; set; }
+
+        public byte[] ToPduBytes()
+        {
+          //  SelectiveAccessDescriptor.ToPduBytes();
+          return null;
+        }
+    }
+
     public class CosemAttributeDescriptor : IToPduBytes
     {
         public ObjectType ClassId { get; set; }
@@ -15,10 +41,12 @@ namespace 三相智慧能源网关调试软件.DLMS
         public byte Version { get; set; }
 
         public int Length => CalculateLength();
+
         private int CalculateLength()
         {
             return 10;
         }
+
         public CosemAttributeDescriptor(DLMSObject dlmsObject, byte index)
         {
             ClassId = dlmsObject.ObjectType;

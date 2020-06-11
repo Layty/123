@@ -121,7 +121,8 @@
                                 </ToggleButton.Triggers>
 
                             </ToggleButton>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="{StaticResource LinearGradientBrush}">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="{StaticResource LinearGradientBrush}">
                                 <materialDesign:PackIcon Kind="MicrosoftWindows" Width="Auto" Height="Auto" />
                             </TextBlock>
                             <TextBlock
@@ -647,19 +648,15 @@
                 <!-- 日志区 -->
                 <Grid Grid.Column="3" x:Name="GridLog" Width="0">
                     <materialDesign:Card>
-                        <StackPanel>
-                            <Expander Header="串口参数">
-                                <myControl:SerialPortControl />
-                            </Expander>
-                            <Expander Header="串口报文" MaxHeight="500" Width="Auto" Margin="3">
+                        <TabControl>
+                            <TabItem Header="串口报文">
                                 <myControl:SerialPortLogger />
-                            </Expander>
-                            <Expander Header="网络报文" MaxHeight="500" Width="Auto" Margin="3">
+                            </TabItem>
+                            <TabItem Header="网络报文">
                                 <myControl:NetLogger />
-                            </Expander>
+                            </TabItem>
 
-
-                        </StackPanel>
+                        </TabControl>
 
 
                     </materialDesign:Card>

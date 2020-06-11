@@ -7,19 +7,30 @@
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
+      DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}"
       Title="DLMSClientPage">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <Expander Header="Data">
-                    <myControl:DataControl />
-                </Expander>
-                <Expander Header="Register">
-                    <myControl:RegisterControl />
-                </Expander>
-                <Expander Header="UtilityTables">
-                    <myControl:TaiAngControl />
-                </Expander>
+                <Button Command="{Binding AarqCommand }"
+                        Margin="3">
+                    AarqRequest
+                </Button>
+                <TabControl>
+                    <TabItem Header="Data">
+                        <myControl:DataControl />
+                    </TabItem>
+                    <TabItem Header="Register">
+                        <myControl:RegisterControl />
+                    </TabItem>
+                    <TabItem Header="UtilityTables">
+                        <myControl:TaiAngControl />
+                    </TabItem>
+                    <TabItem Header="ProfileGeneric">
+                        <myControl:ProfileGenericUserControl />
+                    </TabItem>
+                </TabControl>
+
 
             </StackPanel>
         </ScrollViewer>

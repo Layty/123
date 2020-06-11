@@ -10,6 +10,8 @@ namespace 三相智慧能源网关调试软件.DLMS
 {
     public class MyDLMSSettings : ViewModelBase
     {
+        public bool UseLogicalNameReferencing { get; set; }
+
 
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
@@ -115,6 +117,16 @@ namespace 三相智慧能源网关调试软件.DLMS
         /// </summary>
         public Command LastCommand { get; set; }
 
+        public uint BlockIndex
+        {
+            get;
+            internal set;
+        }
+        public ushort BlockNumberAck
+        {
+            get;
+            set;
+        }
         public DLMSInfo DlmsInfo { get; set; }
 
 
@@ -128,20 +140,6 @@ namespace 三相智慧能源网关调试软件.DLMS
             ProposedConformance = (Conformance) 0;
             DlmsInfo = new DLMSInfo();
         }
-
-        //public MyDLMSSettings(InterfaceType interfaceType, StartProtocolType startProtocolType = StartProtocolType.DLMS)
-        //{
-        //    InterfaceType = interfaceType;
-        //    StartProtocolType = startProtocolType;
-        //    CommunicationType = CommunicationType.SerialPort;
-        //    DLMSVersion = 6;
-        //    InvokeId = 0x1;
-        //    Priority = Priority.High;
-        //    ServiceClass = ServiceClass.Confirmed;
-        //    MaxServerPDUSize = MaxReceivePduSize = DefaultMaxReceivePduSize;
-        //    ProposedConformance = (Conformance) 0;
-        //    DlmsInfo = new DLMSInfo();
-        //}
 
         public int RequestBaud { get; set; }
     }

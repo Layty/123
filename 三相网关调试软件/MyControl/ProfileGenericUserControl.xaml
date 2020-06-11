@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.ProfileGenericUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource Locator},Path=ProfileGenericViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel>
+            <TabControl>
+                <TabItem Header="Profile Params">
+                    <StackPanel>
+                        <TextBlock Text="Capture Objects" />
+                        <TextBox Text="{Binding Generic.CaptureObjects}" />
+                        <Button>read</Button>
+                        <Button>write</Button>
+
+                        <TextBox Text="{Binding Generic.CapturePeriod,UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="GetCapturePeriodCommand" Command="{Binding GetCapturePeriodCommand}" />
+                        <TextBox Text="{Binding Generic.EntriesInUse,UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="GetEntriesInUseCommand" Command="{Binding GetEntriesInUseCommand}" />
+                        <TextBox Text="{Binding Generic.ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="GetProfileEntriesCommand" Command="{Binding GetProfileEntriesCommand}" />
+                        <TextBox Text="{Binding Generic.SortMethod,UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="GetSortMethodCommand" Command="{Binding GetSortMethodCommand}" />
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Buffer">
+                    <StackPanel>
+                        <Button Command="{Binding GetBufferCommand}" />
+                        <DataGrid ItemsSource="{Binding ListObservableCollection}"></DataGrid>
+                    </StackPanel>
+                  
+                </TabItem>
+            </TabControl>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

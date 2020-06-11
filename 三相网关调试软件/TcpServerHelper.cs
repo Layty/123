@@ -73,11 +73,21 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        public int ResponseTimeOut { get; private set; } = 2;
-
         private ObservableCollection<Socket> _socketClientList;
 
+        public ObservableCollection<EndPoint> SocketClientListEndPoint
+        {
+            get => _socketClientListEndPoint;
+            set
+            {
+                _socketClientListEndPoint = value;
+                RaisePropertyChanged();
+            }
+        }
 
+        private ObservableCollection<EndPoint> _socketClientListEndPoint;
+
+        public int ResponseTimeOut { get; private set; } = 2;
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
 
@@ -174,7 +184,11 @@ namespace 三相智慧能源网关调试软件
                     {
                         clientSocket = serverSocket.Accept();
                         var socket1 = clientSocket;
-                        DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Add(socket1); });
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            SocketClientList.Add(socket1);
+                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
+                        });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
@@ -214,7 +228,11 @@ namespace 三相智慧能源网关调试软件
                 if (num == 0)
                 {
                     OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Remove(sockClient); });
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        SocketClientList.Remove(sockClient);
+                        SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                    });
                     break;
                 }
             }
@@ -237,7 +255,7 @@ namespace 三相智慧能源网关调试软件
             OnSendBytesToClient(destinationSocket, bytes);
         }
 
-        private object obj = new object();
+      
 
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {

@@ -209,7 +209,7 @@
     <Compile Include="DLMS\CosemObjects\ScriptTable.cs" />
     <Compile Include="DLMS\ActionRequest.cs" />
     <Compile Include="DLMS\DLMSClient.cs" />
-    <Compile Include="DLMS\GetRequest.cs" />
+    <Compile Include="DLMS\GetRequestNormal.cs" />
     <Compile Include="DLMS\HDLC\BerType.cs" />
     <Compile Include="DLMS\CosemAttributeDescriptor.cs" />
     <Compile Include="DLMS\CosemMethodDescriptor.cs" />
@@ -277,9 +277,6 @@
       <DependentUpon>DataControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\DataViewModel.cs" />
-    <Compile Include="MyControl\GifImage.xaml.cs">
-      <DependentUpon>GifImage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MyControl\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
@@ -292,6 +289,10 @@
     <Compile Include="MyControl\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\ProfileGenericUserControl.xaml.cs">
+      <DependentUpon>ProfileGenericUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\ProfileGenericViewModel.cs" />
     <Compile Include="MyControl\RegisterViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
@@ -313,7 +314,6 @@
     <Compile Include="ViewModel\TelnetViewModel.cs" />
     <Compile Include="ViewModel\DlmsBaseMeterViewModel.cs" />
     <Compile Include="ViewModel\IicDataViewModel.cs" />
-    <Compile Include="ViewModel\SenderModel.cs" />
     <Compile Include="ViewModel\SkinViewModel.cs" />
     <Compile Include="ViewModel\TaiAngViewModel.cs" />
     <Compile Include="ViewModel\TftpServerViewModel.cs" />
@@ -356,8 +356,8 @@
     <Compile Include="MyControl\SerialPortLogger.xaml.cs">
       <DependentUpon>SerialPortLogger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\TcpServerPage.xaml.cs">
-      <DependentUpon>TcpServerPage.xaml</DependentUpon>
+    <Compile Include="MyControl\DLMSTcpFrontServerPage.xaml.cs">
+      <DependentUpon>DLMSTcpFrontServerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ServerCenter\TelnetPage.xaml.cs">
       <DependentUpon>TelnetPage.xaml</DependentUpon>
@@ -400,10 +400,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\GifImage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MyControl\MenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -419,6 +415,10 @@
     <Page Include="MyControl\Palette.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MyControl\ProfileGenericUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControl\SerialPortControl.xaml">
       <SubType>Designer</SubType>
@@ -476,7 +476,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\TcpServerPage.xaml">
+    <Page Include="MyControl\DLMSTcpFrontServerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

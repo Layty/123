@@ -221,7 +221,7 @@ namespace 三相智慧能源网关调试软件.DLMS
             _portMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
             InitSerialPortParams(_portMaster);
             AarqCommand = new RelayCommand(() => { AarqRequest(); });
-            //   GetRequestCommand=new RelayCommand(()=>{GetRequest()});
+            //   GetRequestCommand=new RelayCommand(()=>{GetRequestNormal()});
         }
         //public DLMSClient(SerialPortMaster serialPortMaster, MyDLMSSettings settings)
         //{

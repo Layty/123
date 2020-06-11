@@ -9,6 +9,7 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
     public abstract class DLMSObject
     {
         public string LogicalName { get; set; }
+
         //public MyDLMSSettings Settings { get; set; }
         public string Description { get; set; }
 
@@ -18,6 +19,9 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
         public object Tag { get; set; }
         public byte Version { get; set; } = 0;
 
+        public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
+        public SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
+        public ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
 
         public DLMSObject()
             : this(ObjectType.None, null, 0)
@@ -49,22 +53,25 @@ namespace 三相智慧能源网关调试软件.DLMS.CosemObjects
             }
         }
 
+
         public byte[] GetAttributeData(byte attrId)
         {
-            GetRequest getRequest = new GetRequest(new CosemAttributeDescriptor(this, attrId));
-            return getRequest.ToPduBytes();
+            GetRequestNormal getRequestNormal = new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), GetRequestType);
+            return getRequestNormal.ToPduBytes();
         }
 
 
         public byte[] SetAttributeData(byte attrId, DLMSDataItem dlmsDataItem)
         {
-            SetRequest setRequest = new SetRequest(new CosemAttributeDescriptor(this, attrId), dlmsDataItem);
+            SetRequest setRequest =
+                new SetRequest(new CosemAttributeDescriptor(this, attrId), dlmsDataItem, SetRequestType);
             return setRequest.ToPduBytes();
         }
 
         public byte[] ActionExecute(byte methodIndex, DLMSDataItem dlmsDataItem)
         {
-            ActionRequest actionRequest = new ActionRequest(new CosemMethodDescriptor(this, methodIndex), dlmsDataItem);
+            ActionRequest actionRequest = new ActionRequest(new CosemMethodDescriptor(this, methodIndex), dlmsDataItem,
+                ActionRequestType);
             return actionRequest.ToPduBytes();
         }
 

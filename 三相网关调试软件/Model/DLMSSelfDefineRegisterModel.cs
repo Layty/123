@@ -13,6 +13,13 @@ namespace 三相智慧能源网关调试软件.Model
         主要用途：
         更改记录：
     */
+
+    public class DLMSSelfDefineProfileGeneric : ProfileGeneric
+    {
+        public DLMSSelfDefineProfileGeneric(string logicalName) : base(logicalName)
+        {
+        }
+    }
    public class DLMSSelfDefineRegisterModel:DLMSRegister
     {
         public string RegisterName { get; set; }

@@ -38,8 +38,8 @@
                  Style="{StaticResource MaterialDesignTextBox}"
                  Text="{Binding MyNetLog.Log,Mode=OneWay}"
                  TextWrapping="Wrap"
-                 MaxHeight="300"
-                 Margin="0 0 0 10"
+                 
+                 Margin="3"
                  BorderThickness="2">
           
         </TextBox>

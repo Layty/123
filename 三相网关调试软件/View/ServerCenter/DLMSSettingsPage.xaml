@@ -15,32 +15,43 @@
         <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
-        <StackPanel Margin="3">
-            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+        <TabControl>
+            <TabItem Header="DLMSSettings">
+                <StackPanel Margin="3">
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="DestAddress"
                      Text="{Binding  Client.MyDlmsSettings.ServerAddress}" />
-            <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress}"
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="SourceAddress" />
-            <TextBlock Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}" />
-            <TextBlock Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
-            <TextBox Text="{Binding  Client.MyDlmsSettings.PasswordString}"
+                    <TextBlock Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}" />
+                    <TextBlock Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.PasswordString}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Password" />
-            <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
-            <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
+                    <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
+                    <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
                      materialDesign:HintAssist.IsFloating="True" />
-            <TextBox Text="{Binding  Client.MyDlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
                      materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
+                    <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
                       materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.CommunicationTypeArray}"
+                    <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.CommunicationTypeArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
                       materialDesign:HintAssist.Hint="CommunicationType" materialDesign:HintAssist.IsFloating="True" />
-            <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.InterfaceTypeArray}"
+                    <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.InterfaceTypeArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType}"
                       materialDesign:HintAssist.Hint="InterfaceType" materialDesign:HintAssist.IsFloating="True" />
-        </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="HDLCSerialPort">
+                <myControl:SerialPortControl></myControl:SerialPortControl>
+            </TabItem>
+            <TabItem Header="WrapperFrontServer">
+                
+            </TabItem>
+        </TabControl>
+       
     </Grid>
 </Page>
