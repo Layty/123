@@ -9,7 +9,7 @@
              DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
     <materialDesign:DialogHost Identifier="SerialPortControl">
         <Grid>
-            <materialDesign:Card Margin="2">
+            <materialDesign:Card Margin="2" UniformCornerRadius="5">
                 <StackPanel x:Name="StackPanel">
                     <ComboBox x:Name="CmbPortName"
                               ItemsSource="{Binding PortNamesCollection}"
@@ -39,7 +39,7 @@
                     <StackPanel>
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                                    Text="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
-                        <materialDesign:RatingBar HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <materialDesign:RatingBar HorizontalAlignment="Left" VerticalAlignment="Center"
                                                   Value="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay}"
                                                   Min="2" Max="10">
                             <materialDesign:RatingBar.ValueItemTemplate>
@@ -67,21 +67,21 @@
 
                     <CheckBox Content="实时监控串口数据"
                               IsChecked="{Binding SerialPortMaster.IsAutoDataReceived}" />
-                    <Button HorizontalAlignment="Left" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" />
-                  
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" />
+                    <ToggleButton Width="50" Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                  VerticalAlignment="Bottom" 
+                                  ToolTip="开启或关闭串口"
+                                  HorizontalAlignment="Center"
+                                  Style="{StaticResource MaterialDesignActionToggleButton}"
+                                  x:Name="BtnOpenSerialPort"
+                                  Command="{Binding OpenOrCloseCommand}"
+                                  IsChecked="{Binding SerialPortMaster.IsOpen,Mode=OneWay}">
+                        <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
+
+                    </ToggleButton>
                 </StackPanel>
             </materialDesign:Card>
-            <ToggleButton Width="50" Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth5"
-                          VerticalAlignment="Bottom" 
-                          ToolTip="开启或关闭串口"
-                          HorizontalAlignment="Right"
-                          Style="{StaticResource MaterialDesignActionToggleButton}"
-                          x:Name="BtnOpenSerialPort"
-                          Command="{Binding OpenOrCloseCommand}"
-                          IsChecked="{Binding SerialPortMaster.IsOpen,Mode=OneWay}">
-                <materialDesign:PackIcon Kind="SerialPort" Height="40" Width="40" />
-
-            </ToggleButton>
+           
         </Grid>
     </materialDesign:DialogHost>
 </UserControl>

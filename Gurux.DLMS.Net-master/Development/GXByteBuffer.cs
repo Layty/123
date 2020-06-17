@@ -629,21 +629,21 @@ namespace Gurux.DLMS
         }
 
         /// <summary>
-        /// Get float value from byte array from the current position and then increments the position.
+        /// Get double value from byte array from the current position and then increments the position.
         /// </summary>
-        public float GetFloat()
+        public double Getdouble()
         {
             byte[] tmp = new byte[4];
             Get(tmp);
             System.Array.Reverse(tmp, 0, 4);
-            float value = BitConverter.ToSingle(tmp, 0);
+            double value = BitConverter.ToSingle(tmp, 0);
             return value;
         }
 
         /// <summary>
-        /// Set float value to byte array.
+        /// Set double value to byte array.
         /// </summary>
-        public void SetFloat(float value)
+        public void Setdouble(double value)
         {
             byte[] tmp = BitConverter.GetBytes(value);
             System.Array.Reverse(tmp, 0, 4);
@@ -651,7 +651,7 @@ namespace Gurux.DLMS
 
         }
         /// <summary>
-        /// Set float value to byte array.
+        /// Set double value to byte array.
         /// </summary>
         public void SetDouble(double value)
         {

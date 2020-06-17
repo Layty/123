@@ -77,7 +77,7 @@ namespace Gurux.DLMS.Internal
         /// </summary>
         External = 8,
         /// <summary>
-        /// Real (float).
+        /// Real (double).
         /// </summary>
         Real = 9,
         /// <summary>

@@ -2,7 +2,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -23,7 +22,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<MenuViewModel>(); //菜单
                 SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
                 SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
-
+               
                 #endregion
 
                 #region 管理芯相关业务
@@ -44,7 +43,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 智能仪表
 
-                SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
+                SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
 
                 #endregion
             }
@@ -61,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<MenuViewModel>(); //菜单
                 SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
                 SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
-
+                SimpleIoc.Default.Register<GrowlDemoViewModel>();
                 #endregion
 
                 #region 管理芯相关业务
@@ -86,7 +85,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 智能仪表
 
-                SimpleIoc.Default.Register<TaiAngViewModel>(); //泰昂设备
+                SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
 
                 #endregion
                 
@@ -108,6 +107,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public MenuViewModel Menu => ServiceLocator.Current.GetInstance<MenuViewModel>();
         public UserLoginViewModel Login => ServiceLocator.Current.GetInstance<UserLoginViewModel>();
         public SkinViewModel Skin => ServiceLocator.Current.GetInstance<SkinViewModel>();
+
+        public GrowlDemoViewModel GrowlDemoViewModel => ServiceLocator.Current.GetInstance<GrowlDemoViewModel>();
 
         #endregion
 
@@ -133,8 +134,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public SerialPortViewModel SerialPortViewModel => ServiceLocator.Current.GetInstance<SerialPortViewModel>();
         public DlmsBaseMeterViewModel DlmsBaseMeterViewModel => ServiceLocator.Current.GetInstance<DlmsBaseMeterViewModel>();
 
-        public TaiAngViewModel TaiAngViewModel =>
-            ServiceLocator.Current.GetInstance<TaiAngViewModel>();
+        public UtilityTablesViewModel UtilityTablesViewModel =>
+            ServiceLocator.Current.GetInstance<UtilityTablesViewModel>();
 
         #endregion
 

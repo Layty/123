@@ -9,14 +9,14 @@
              DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ItemsControl ItemsSource="{Binding Registers}">
+
+        <ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2"  >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-
                 <DataTemplate>
                     <materialDesign:Card Margin="2">
                         <UniformGrid Rows="1">
@@ -26,7 +26,7 @@
                                        VerticalAlignment="Center" Text="{Binding  ObjectType}" />
                             <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"
                                        VerticalAlignment="Center" Text="{Binding LogicalName}" />
-                           
+
                             <!-- <TextBox Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.DataForShow}"></TextBox> -->
                             <TextBlock Text="{Binding Value}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             <Button
@@ -34,10 +34,18 @@
                                 CommandParameter="{Binding}">
                                 GetValue
                             </Button>
+                            <Button
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
+                                CommandParameter="{Binding}">
+                                SetValue
+                            </Button>
                         </UniformGrid>
                     </materialDesign:Card>
+
                 </DataTemplate>
+
             </ItemsControl.ItemTemplate>
+
         </ItemsControl>
     </Grid>
 </UserControl>

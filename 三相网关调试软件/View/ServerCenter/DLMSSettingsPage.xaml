@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.BaseMeter"
+     
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
@@ -32,7 +32,7 @@
                     <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
                     <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
                      materialDesign:HintAssist.IsFloating="True" />
-                    <TextBox Text="{Binding  Client.MyDlmsSettings.DLMSVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.DlmsVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
                      materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
                       SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
@@ -45,11 +45,11 @@
                       materialDesign:HintAssist.Hint="InterfaceType" materialDesign:HintAssist.IsFloating="True" />
                 </StackPanel>
             </TabItem>
-            <TabItem Header="HDLCSerialPort">
+            <TabItem Header="SerialPort">
                 <myControl:SerialPortControl></myControl:SerialPortControl>
             </TabItem>
-            <TabItem Header="WrapperFrontServer">
-                
+            <TabItem Header="FrontEndProcessor">
+                <myControl:DLMSFrontEndProcessorControl></myControl:DLMSFrontEndProcessorControl>
             </TabItem>
         </TabControl>
        

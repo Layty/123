@@ -276,7 +276,7 @@ namespace MySerialPortMaster
             CurrentSendData = IsSendDataDisplayFormat16
                 ? sendBytes.ByteToString()
                 : Encoding.ASCII.GetString(sendBytes);
-            SendAndReceiveDataCollections = $"{DateTime.Now} => {CurrentSendData}{Environment.NewLine}";
+            SendAndReceiveDataCollections = $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} => {CurrentSendData}{Environment.NewLine}";
         }
 
         public void HandlerReceiveData(byte[] receiveBytes)
@@ -287,7 +287,7 @@ namespace MySerialPortMaster
             //根据当前设置的显示格式，进行存储
             DataReceiveForShow =
                 IsReceiveFormat16 ? receiveBytes.ByteToString() : Encoding.ASCII.GetString(receiveBytes);
-            SendAndReceiveDataCollections = $"{DateTime.Now} <= {DataReceiveForShow}{Environment.NewLine}";
+            SendAndReceiveDataCollections = $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} <= {DataReceiveForShow}{Environment.NewLine}";
         }
 
         /// <summary>

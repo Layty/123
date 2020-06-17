@@ -71,12 +71,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 #else
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    new MenuModel
-                    {
-                        MenuName = "泰昂", FontSize = "20", IconFont = "",
-                        Assembly = "IntelligentEquipment.TaiAngPage",
-                        Foreground = "#00FF00"
-                    },
+                    //new MenuModel
+                    //{
+                    //    MenuName = "泰昂", FontSize = "20", IconFont = "",
+                    //    Assembly = "IntelligentEquipment.TaiAngPage",
+                    //    Foreground = "#00FF00"
+                    //},
                 };
 
 
@@ -96,18 +96,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
                         Assembly = "ServerCenter.DLMSSettingsPage",
-                        Foreground = "#FF0000"
-                    },
-                    new MenuModel
-                    {
-                        MenuName = "SerialPort", FontSize = "20", IconFont = "\xe66c",
-                        Assembly = "ServerCenter.SerialPortPage",
-                        Foreground = "#FF0000"
-                    },
-                    new MenuModel
-                    {
-                        MenuName = "TcpServer", FontSize = "20", IconFont = "\xe6ee",
-                        Assembly = "ServerCenter.TcpServerPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel

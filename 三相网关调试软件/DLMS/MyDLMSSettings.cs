@@ -2,7 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using GalaSoft.MvvmLight;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 
@@ -34,7 +35,7 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         private CommunicationType _communicationType = CommunicationType.SerialPort;
 
-        public byte DLMSVersion { get; set; } = 6;
+        public byte DlmsVersion { get; set; } = 6;
 
         public ushort MaxReceivePduSize
         {
@@ -132,7 +133,7 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         public MyDLMSSettings()
         {
-            DLMSVersion = 6;
+            DlmsVersion = 6;
             InvokeId = 0x1;
             Priority = Priority.High;
             ServiceClass = ServiceClass.Confirmed;

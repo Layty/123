@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using 三相智慧能源网关调试软件;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Model.IIC;
@@ -61,6 +60,16 @@ namespace UnitTestProject1
             ExcelHelper excel = new ExcelHelper("DLMS设备信息");
             var sheetName = excel.GetDataFromExcelWithAppointSheetNames();
             var table = excel.GetExcelDataTable("Register");
+        }
+
+        [TestMethod]
+        public void Testfloat()
+        {
+            byte[] s = new byte[] {0xC1, 0x48, 0x00, 0x00};
+            byte[] s1 = new byte[] {0x43, 0x6B, 0xD7, 0x23};
+            var float1 = BitConverter.ToSingle(s1.Reverse().ToArray(), 0);
+            var float2 = 1.3f;
+            var fl = BitConverter.GetBytes(1.3f);
         }
     }
 }

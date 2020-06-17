@@ -140,6 +140,7 @@
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton x:Name="ToggleButtonLog" Margin="2"
+                                              IsChecked="True"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
                                               ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
                                     <ToggleButton.Content>
@@ -216,9 +217,8 @@
             <Grid Grid.Row="1" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="500" />
                 </Grid.ColumnDefinitions>
 
 
@@ -640,35 +640,41 @@
                     </ScrollViewer>
                 </materialDesign:Card>
 
-
-                <!--<GridSplitter  Grid.Column="2" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                               ShowsPreview="False"
-                               ></GridSplitter>-->
-
-                <!-- 日志区 -->
-                <Grid Grid.Column="3" x:Name="GridLog" Width="0">
-                    <materialDesign:Card>
-                        <TabControl>
-                            <TabItem Header="串口报文">
-                                <myControl:SerialPortLogger />
-                            </TabItem>
-                            <TabItem Header="网络报文">
-                                <myControl:NetLogger />
-                            </TabItem>
-
-                        </TabControl>
-
-
-                    </materialDesign:Card>
-
-                </Grid>
                 <!-- 导航页面区 -->
-                <materialDesign:Card Grid.Column="1">
+                <materialDesign:Card Grid.Column="1" Width="Auto" HorizontalAlignment="Stretch">
                     <Frame x:Name="Frame"
                            NavigationUIVisibility="Hidden"
                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                            Content="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
                 </materialDesign:Card>
+
+                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                              ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
+                              ResizeDirection="Columns" />
+                <!-- 日志区 -->
+
+
+                <materialDesign:Card x:Name="CardLog" Width="Auto" Visibility="Visible" Grid.Column="2"
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TabControl>
+                        <TabItem >
+                            <TabItem.Header>
+                                <materialDesign:PackIcon Kind="SerialPort"></materialDesign:PackIcon>
+                            </TabItem.Header>
+                          
+                            <myControl:SerialPortLogger />
+                        </TabItem>
+                        <TabItem >
+                            <TabItem.Header>
+                                <materialDesign:PackIcon Kind="Ethernet"></materialDesign:PackIcon>
+                            </TabItem.Header>
+                            <myControl:NetLogger />
+                        </TabItem>
+                    </TabControl>
+
+
+                </materialDesign:Card>
+
 
             </Grid>
 

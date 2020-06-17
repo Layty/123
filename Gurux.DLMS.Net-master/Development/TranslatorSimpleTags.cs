@@ -314,10 +314,10 @@ namespace Gurux.DLMS
             list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.DateTime,
                      "DateTime");
             list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Enum, "Enum");
-            list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Float32,
-                     "Float32");
-            list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Float64,
-                     "Float64");
+            list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.double32,
+                     "double32");
+            list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.double64,
+                     "double64");
             list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Int16, "Int16");
             list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Int32, "Int32");
             list.Add(GXDLMS.DATA_TYPE_OFFSET + (int)DataType.Int64, "Int64");

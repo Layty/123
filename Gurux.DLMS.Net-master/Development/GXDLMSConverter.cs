@@ -642,9 +642,9 @@ namespace Gurux.DLMS
                     return typeof(DateTime);
                 case DataType.DateTime:
                     return typeof(DateTime);
-                case DataType.Float32:
-                    return typeof(float);
-                case DataType.Float64:
+                case DataType.double32:
+                    return typeof(double);
+                case DataType.double64:
                     return typeof(double);
                 case DataType.Int16:
                     return typeof(Int16);

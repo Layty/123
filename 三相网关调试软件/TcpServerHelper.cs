@@ -85,9 +85,15 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private ObservableCollection<EndPoint> _socketClientListEndPoint;
+        private ObservableCollection<EndPoint> _socketClientListEndPoint=new ObservableCollection<EndPoint>();
 
-        public int ResponseTimeOut { get; private set; } = 2;
+        public int ResponseTimeOut
+        {
+            get => _responseTimeOut;
+            set { _responseTimeOut = value; RaisePropertyChanged(); }
+        }
+        private int _responseTimeOut=2;
+
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
 
@@ -277,6 +283,7 @@ namespace 三相智慧能源网关调试软件
                     {
                         ResponseTime = timeSpan.Seconds.ToString();
                         stopwatch1.Reset();
+                        OnNotifyStatusMsg($"超时{ResponseTimeOut}秒未响应");
                         break;
                     }
                     if (returnBytes!=null)

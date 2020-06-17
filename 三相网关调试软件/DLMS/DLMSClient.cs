@@ -2,13 +2,13 @@
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
+using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.ViewModel;
@@ -26,6 +26,17 @@ namespace 三相智慧能源网关调试软件.DLMS
         public Socket CurrentSocket { get; set; }
 
         public MyDLMSSettings MyDlmsSettings { get; set; }
+        private StartProtocolType _startProtocolType = StartProtocolType.DLMS;
+
+        public StartProtocolType StartProtocolType
+        {
+            get => _startProtocolType;
+            set
+            {
+                _startProtocolType = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private async Task<byte[]> HowToSendData(byte[] sendBytes)
         {
@@ -42,6 +53,34 @@ namespace 三相智慧能源网关调试软件.DLMS
             }
 
             return pdubyte;
+        }
+
+        public async Task<byte[]> InitRequest()
+        {
+            byte[] bytes;
+            if (MyDlmsSettings.CommunicationType != CommunicationType.NetWork)
+            {
+                bytes = await SNRMRequest();
+                bytes = await AarqRequest();
+            }
+            else
+            {
+                bytes = await AarqRequest();
+            }
+
+            return bytes;
+        }
+
+        public async Task<bool> Execute21ENegotiate()
+        {
+            bool isSucceed = false;
+            if (StartProtocolType == StartProtocolType.IEC21E)
+            {
+                var EModeExecutor = new EModeExecutor(_portMaster, "");
+                isSucceed = await EModeExecutor.Execute21ENegotiate();
+            }
+
+            return isSucceed;
         }
 
         public async Task<byte[]> SNRMRequest()
@@ -81,7 +120,7 @@ namespace 三相智慧能源网关调试软件.DLMS
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                await HowToSendData(NetFrameMaker.AarqRequest());
+                bytes = await HowToSendData(NetFrameMaker.AarqRequest());
             }
 
             return bytes;
@@ -132,20 +171,18 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
 
 
-        public async Task<byte[]> DisconnectRequest(bool force)
+        public async Task<byte[]> DisconnectRequest(bool force = true)
         {
-            //if (!force &&/* MyDlmsSettings.Connected == ConnectionState.None*/)
-            //{
-            //    return null;
-            //}
             byte[] result = null;
-            if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
+            if (force && (MyDlmsSettings.InterfaceType == InterfaceType.HDLC))
             {
-                result = await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
+                result = await HowToSendData(HdlcFrameMaker.DisconnectRequest());
+                //result = await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
             }
-            else if (force || MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
+            else if (force && MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                _socket.SendDataToClient(CurrentSocket, NetFrameMaker.ReleaseRequest());
+                result = await HowToSendData(NetFrameMaker.ReleaseRequest());
+                // _socket.SendDataToClient(CurrentSocket, NetFrameMaker.ReleaseRequest());
             }
 
             return result;
@@ -186,60 +223,44 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
 
 
-        public RelayCommand AarqCommand
+        public RelayCommand InitRequestCommand
         {
-            get => _AarqCommand;
+            get => _initRequestCommand;
             set
             {
-                _AarqCommand = value;
+                _initRequestCommand = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand _AarqCommand;
+        private RelayCommand _initRequestCommand;
 
-        public RelayCommand GetRequestCommand
+        public RelayCommand ReleaseRequestCommand
         {
-            get => _GetRequestCommand;
+            get => _releaseRequestCommand;
             set
             {
-                _GetRequestCommand = value;
+                _releaseRequestCommand = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand _GetRequestCommand;
+        private RelayCommand _releaseRequestCommand;
 
 
         public DLMSClient()
         {
             MyDlmsSettings = ServiceLocator.Current.GetInstance<MyDLMSSettings>();
-            ;
+
             HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
             NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
             _socket = ServiceLocator.Current.GetInstance<TcpServerViewModel>().TcpServerHelper;
             _portMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
             InitSerialPortParams(_portMaster);
-            AarqCommand = new RelayCommand(() => { AarqRequest(); });
+            InitRequestCommand = new RelayCommand(async () => {await InitRequest(); });
+            ReleaseRequestCommand=new RelayCommand(async () => { await DisconnectRequest(true);});
             //   GetRequestCommand=new RelayCommand(()=>{GetRequestNormal()});
         }
-        //public DLMSClient(SerialPortMaster serialPortMaster, MyDLMSSettings settings)
-        //{
-        //    _portMaster = serialPortMaster;
-        //    InitSerialPortParams(_portMaster);
-        //    MyDlmsSettings = settings;
-        //    HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
-        //    MyDlmsSettings.CommunicationType = CommunicationType.SerialPort;
-        //}
-
-        //public DLMSClient(TcpServerHelper socket, MyDLMSSettings settings)
-        //{
-        //    _socket = socket;
-        //    MyDlmsSettings = settings;
-        //    NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
-        //    MyDlmsSettings.CommunicationType = CommunicationType.NetWork;
-        //}
-
 
         private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
 
@@ -249,37 +270,37 @@ namespace 三相智慧能源网关调试软件.DLMS
             return _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));
         }
 
-        public Task<bool> Execute21ENegotiate()
-        {
-            return Task.Run(async () =>
-            {
-                BackupPortPara();
-                Init21ESerialPort();
-                byte[] array =
-                    await _portMaster.SendAndReceiveReturnDataAsync(_eModeFrameFrameMaker.GetRequestFrameBytes());
-                if (array.Length != 0 && EModeParser.CheckServerFrameWisEquals2(array))
-                {
-                    _portMaster.Send(_eModeFrameFrameMaker.GetConfirmFrameBytes());
-                    Thread.Sleep(200);
-                    _portMaster.BaudRate = MyDlmsSettings.RequestBaud; //需要修改波特率 ，再去接收
-                    array = _portMaster.TryToReadReceiveData();
-                    if (array.Length != 0 && EModeParser.CheckServerFrameZisEqualsClient(array))
-                    {
-                        _portMaster.SerialPortLogger.AddInfo("协商成功");
-                        LoadBackupPortPara();
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    LoadBackupPortPara();
-                    return false;
-                }
-            });
-        }
+        //public Task<bool> Execute21ENegotiate()
+        //{
+        //    return Task.Run(async () =>
+        //    {
+        //        BackupPortPara();
+        //        Init21ESerialPort();
+        //        byte[] array =
+        //            await _portMaster.SendAndReceiveReturnDataAsync(_eModeFrameFrameMaker.GetRequestFrameBytes());
+        //        if (array.Length != 0 && EModeParser.CheckServerFrameWisEquals2(array))
+        //        {
+        //            _portMaster.Send(_eModeFrameFrameMaker.GetConfirmFrameBytes());
+        //            Thread.Sleep(200);
+        //            _portMaster.BaudRate = MyDlmsSettings.RequestBaud; //需要修改波特率 ，再去接收
+        //            array = _portMaster.TryToReadReceiveData();
+        //            if (array.Length != 0 && EModeParser.CheckServerFrameZisEqualsClient(array))
+        //            {
+        //                _portMaster.SerialPortLogger.AddInfo("协商成功");
+        //                LoadBackupPortPara();
+        //                return true;
+        //            }
+        //            else
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            LoadBackupPortPara();
+        //            return false;
+        //        }
+        //    });
+        //}
     }
 }

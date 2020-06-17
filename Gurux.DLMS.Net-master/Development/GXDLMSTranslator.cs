@@ -1942,11 +1942,11 @@ namespace Gurux.DLMS
                 case DataType.Enum:
                     GXCommon.SetData(s.settings, s.data, DataType.Enum, s.ParseShort(GetValue(node, s)));
                     break;
-                case DataType.Float32:
-                    GetFloat32(node, s);
+                case DataType.double32:
+                    Getdouble32(node, s);
                     break;
-                case DataType.Float64:
-                    GetFloat64(node, s);
+                case DataType.double64:
+                    Getdouble64(node, s);
                     break;
                 case DataType.Int16:
                     GXCommon.SetData(s.settings, s.data, DataType.Int16, s.ParseShort(GetValue(node, s)));
@@ -2871,18 +2871,18 @@ namespace Gurux.DLMS
             GXCommon.SetData(s.settings, s.data, DataType.OctetString, bb.Array());
         }
 
-        private static void GetFloat32(XmlNode node, GXDLMSXmlSettings s)
+        private static void Getdouble32(XmlNode node, GXDLMSXmlSettings s)
         {
             GXByteBuffer bb = new GXByteBuffer();
             bb.SetHexString(GetValue(node, s));
-            GXCommon.SetData(s.settings, s.data, DataType.Float32, bb.GetFloat());
+            GXCommon.SetData(s.settings, s.data, DataType.double32, bb.Getdouble());
         }
 
-        private static void GetFloat64(XmlNode node, GXDLMSXmlSettings s)
+        private static void Getdouble64(XmlNode node, GXDLMSXmlSettings s)
         {
             GXByteBuffer bb = new GXByteBuffer();
             bb.SetHexString(GetValue(node, s));
-            GXCommon.SetData(s.settings, s.data, DataType.Float64, bb.GetDouble());
+            GXCommon.SetData(s.settings, s.data, DataType.double64, bb.GetDouble());
         }
 
         /// <summary>

@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
+using HandyControl.Controls;
 using 三相智慧能源网关调试软件.View.Management;
+using MessageBox = System.Windows.MessageBox;
+using Window = System.Windows.Window;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -59,6 +64,8 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
             Messenger.Default.Register<byte[]>(this, "SendDataEvent", PlayNetSendFlashing);
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
+            Messenger.Default.Register<(Socket,byte[]) >(this, "SendDataEvent", PlayNetSendFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
         private void PlaySendFlashing(string obj)
@@ -85,8 +92,22 @@ namespace 三相智慧能源网关调试软件
                 BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
+        private void PlayNetSendFlashing((Socket,byte[]) obj)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            });
+        }
 
         private void PlayNetReceiveFlashing(byte[] obj)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            });
+        }
+        private void PlayNetReceiveFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
@@ -164,7 +185,9 @@ namespace 三相智慧能源网关调试软件
 
         private void ToggleButtonLog_OnClick(object sender, RoutedEventArgs e)
         {
-            GridLog.Width = ToggleButtonLog.IsChecked == true ? 250 : 0;
+            CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            ColumnLog.Width = new GridLength(CardLog.ActualWidth);
         }
+
     }
 }

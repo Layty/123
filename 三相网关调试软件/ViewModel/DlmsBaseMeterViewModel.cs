@@ -6,8 +6,9 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 
@@ -55,17 +56,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public SerialPortViewModel SerialPortViewModel { get; set; }
 
-        private StartProtocolType _startProtocolType = StartProtocolType.DLMS;
-
-        public StartProtocolType StartProtocolType
-        {
-            get => _startProtocolType;
-            set
-            {
-                _startProtocolType = value;
-                RaisePropertyChanged();
-            }
-        }
+      
 
 
         public DlmsBaseMeterViewModel()
@@ -76,7 +67,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             Client = ServiceLocator.Current.GetInstance<DLMSClient>();
 
-            InitCommand = new RelayCommand(Init);
+            InitCommand = new RelayCommand(async () => { await Client.InitRequest();});
             DisconnectCommand = new RelayCommand(async () => { await Client.DisconnectRequest(true); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
@@ -173,45 +164,31 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        private async void Init()
-        {
-            try
-            {
-                if (StartProtocolType == StartProtocolType.IEC21E)
-                {
-                    if (await EModeExecutor.Execute21ENegotiate())
-                    {
-//                        var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
-                        var t = Client.SNRMRequest();
-                        await t.ContinueWith(
-                            t1 =>
-                            {
-                                //if (!t.Result)
-                                //{
-                                //    return null;
-                                //}
+//        private async void Init()
+//        {
+//            try
+//            {
+//                if (StartProtocolType == StartProtocolType.IEC21E)
+//                {
+//                    if (await EModeExecutor.Execute21ENegotiate())
+//                    {
+////                        var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
+//                        var t = Client.SNRMRequest();
+//                        await t.ContinueWith(
+//                            t1 =>
+//                            {
+//                                return Client.AarqRequest();
+//                            },
+//                            TaskContinuationOptions.OnlyOnRanToCompletion);
+//                    }
+//                }
 
-                                //return Hdlc46Executor.ExecuteHdlcComm(Hdlc46Executor.HdlcFrameMaker.AarqRequest);
-                                return Client.AarqRequest();
-                            },
-                            TaskContinuationOptions.OnlyOnRanToCompletion);
-                    }
-                }
-
-                else
-                {
-//                     var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
-                    var t = Client.SNRMRequest();
-                    await t.ContinueWith(
-                        t1 => { return Client.AarqRequest(); },
-                        TaskContinuationOptions.OnlyOnRanToCompletion);
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
-        }
+//            }
+//            catch (Exception exception)
+//            {
+//                MessageBox.Show(exception.Message);
+//            }
+//        }
 
 
         #region Command

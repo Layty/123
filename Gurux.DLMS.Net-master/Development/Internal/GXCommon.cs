@@ -522,10 +522,10 @@ namespace Gurux.DLMS.Internal
                 case DataType.Enum:
                     value = GetEnum(data, info);
                     break;
-                case DataType.Float32:
-                    value = Getfloat(data, info);
+                case DataType.double32:
+                    value = Getdouble(data, info);
                     break;
-                case DataType.Float64:
+                case DataType.double64:
                     value = GetDouble(data, info);
                     break;
                 case DataType.DateTime:
@@ -964,14 +964,14 @@ namespace Gurux.DLMS.Internal
                     info.xml.AppendComment(value.ToString());
                 }
                 GXByteBuffer tmp = new GXByteBuffer();
-                SetData(null, tmp, DataType.Float64, value);
+                SetData(null, tmp, DataType.double64, value);
                 info.xml.AppendLine(info.xml.GetDataType(info.Type), "Value", GXCommon.ToHex(tmp.Data, false, 1, tmp.Size - 1));
             }
             return value;
         }
 
         ///<summary>
-        ///Get float value from DLMS data.
+        ///Get double value from DLMS data.
         ///</summary>
         ///<param name="buff">
         ///Received DLMS data.
@@ -980,9 +980,9 @@ namespace Gurux.DLMS.Internal
         ///Data info.
         ///</param>
         ///<returns>
-        ///Parsed float value.
+        ///Parsed double value.
         ///</returns>
-        private static object Getfloat(GXByteBuffer buff, GXDataInfo info)
+        private static object Getdouble(GXByteBuffer buff, GXDataInfo info)
         {
             // If there is not enough data available.
             if (buff.Size - buff.Position < 4)
@@ -990,7 +990,7 @@ namespace Gurux.DLMS.Internal
                 info.Complete = false;
                 return null;
             }
-            float value = buff.GetFloat();
+            double value = buff.Getdouble();
 
             if (info.xml != null)
             {
@@ -999,7 +999,7 @@ namespace Gurux.DLMS.Internal
                     info.xml.AppendComment(value.ToString());
                 }
                 GXByteBuffer tmp = new GXByteBuffer();
-                SetData(null, tmp, DataType.Float32, value);
+                SetData(null, tmp, DataType.double32, value);
                 info.xml.AppendLine(info.xml.GetDataType(info.Type), "Value", GXCommon.ToHex(tmp.Data, false, 1, tmp.Size - 1));
             }
             return value;
@@ -1979,10 +1979,10 @@ namespace Gurux.DLMS.Internal
                 case DataType.Enum:
                     size = 1;
                     break;
-                case DataType.Float32:
+                case DataType.double32:
                     size = 4;
                     break;
-                case DataType.Float64:
+                case DataType.double64:
                     size = 8;
                     break;
                 case DataType.Int16:
@@ -2102,10 +2102,10 @@ namespace Gurux.DLMS.Internal
                 case DataType.UInt64:
                     buff.SetUInt64(Convert.ToUInt64(value));
                     break;
-                case DataType.Float32:
-                    buff.SetFloat(Convert.ToSingle(value));
+                case DataType.double32:
+                    buff.Setdouble(Convert.ToSingle(value));
                     break;
-                case DataType.Float64:
+                case DataType.double64:
                     buff.SetDouble(Convert.ToDouble(value));
                     break;
                 case DataType.BitString:
@@ -2769,9 +2769,9 @@ namespace Gurux.DLMS.Internal
                     return typeof(DateTime);
                 case DataType.DateTime:
                     return typeof(DateTime);
-                case DataType.Float32:
-                    return typeof(float);
-                case DataType.Float64:
+                case DataType.double32:
+                    return typeof(double);
+                case DataType.double64:
                     return typeof(double);
                 case DataType.Int16:
                     return typeof(Int16);
@@ -2844,13 +2844,13 @@ namespace Gurux.DLMS.Internal
             {
                 return DataType.UInt64;
             }
-            if (type == typeof(float))
+            if (type == typeof(double))
             {
-                return DataType.Float32;
+                return DataType.double32;
             }
             else if (type == typeof(double))
             {
-                return DataType.Float64;
+                return DataType.double64;
             }
             else if (type == typeof(DateTime) || type == typeof(GXDateTime))
             {

@@ -10,30 +10,53 @@
       DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}"
       Title="DLMSClientPage">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <Button Command="{Binding AarqCommand }"
-                        Margin="3">
-                    AarqRequest
-                </Button>
-                <TabControl>
-                    <TabItem Header="Data">
-                        <myControl:DataControl />
-                    </TabItem>
-                    <TabItem Header="Register">
-                        <myControl:RegisterControl />
-                    </TabItem>
-                    <TabItem Header="UtilityTables">
-                        <myControl:TaiAngControl />
-                    </TabItem>
-                    <TabItem Header="ProfileGeneric">
-                        <myControl:ProfileGenericUserControl />
-                    </TabItem>
-                </TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding InitRequestCommand }"
+                    Margin="3">
+                InitRequest
+            </Button>
+            <Button Command="{Binding ReleaseRequestCommand }"
+                    Margin="3">
+                ReleaseRequest
+            </Button>
+            <StackPanel  DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }" >
+                <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
+                <ListBox x:Name="ListBox"  ItemsSource="{Binding TcpServerHelper.SocketClientList}"
+                         SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
+                         SelectionChanged="Selector_OnSelectionChanged" >
 
-
+                </ListBox>
             </StackPanel>
-        </ScrollViewer>
+         
+        </StackPanel>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Data">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <myControl:DataControl />
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Register">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <myControl:RegisterControl />
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="UtilityTables">
+               
+                    <myControl:TaiAngControl />
+            
+            </TabItem>
+            <TabItem Header="ProfileGeneric">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <myControl:ProfileGenericUserControl />
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
 
     </Grid>
 </Page>

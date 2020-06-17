@@ -210,9 +210,28 @@ namespace MySerialPortMaster
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            byte[] readBuffer = new byte[SerialPort.BytesToRead];
-            SerialPort.Read(readBuffer, 0, readBuffer.Length);
-            OnDataReceived(readBuffer, null);
+            while (SerialPort.BytesToRead != 0)
+            {
+               
+                var n = SerialPort.BytesToRead;
+                Task.Delay(50);
+
+                var n1 = SerialPort.BytesToRead;
+                if (n != 0 && n1 == n)
+                {
+                    //声明一个临时数组存储当前来的串口数据 
+                    var tryToReadReceiveData = new byte[SerialPort.BytesToRead];
+
+                    SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
+
+                    OnDataReceived(tryToReadReceiveData, null);
+                    break;
+                }
+            }
+
+            //byte[] readBuffer = new byte[SerialPort.BytesToRead];
+            //SerialPort.Read(readBuffer, 0, readBuffer.Length);
+            //OnDataReceived(readBuffer, null);
         }
 
         #region 串口开启与关闭

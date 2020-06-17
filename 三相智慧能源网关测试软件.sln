@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29721.120
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调试软件", "三相网关调试软件\三相智慧能源网关调试软件.csproj", "{A885422F-B044-41AE-9139-1C384FC2367D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{31E1DC0B-2A22-4B14-96D9-1692382E2530}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A885422F-B044-41AE-9139-1C384FC2367D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A885422F-B044-41AE-9139-1C384FC2367D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A885422F-B044-41AE-9139-1C384FC2367D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A885422F-B044-41AE-9139-1C384FC2367D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31E1DC0B-2A22-4B14-96D9-1692382E2530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E1DC0B-2A22-4B14-96D9-1692382E2530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E1DC0B-2A22-4B14-96D9-1692382E2530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E1DC0B-2A22-4B14-96D9-1692382E2530}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8FF8A2CE-41D5-47B1-9BA3-991ED4B6D2F8}
+	EndGlobalSection
+EndGlobal

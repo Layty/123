@@ -2,9 +2,12 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
+using HandyControl.Controls;
 using Lierda.WPFHelper;
 using NLog;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -15,9 +18,11 @@ namespace 三相智慧能源网关调试软件
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
         //LierdaCracker cracker = new LierdaCracker();
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
-           // cracker.Cracker();
+            // cracker.Cracker();
             DispatcherHelper.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
@@ -25,11 +30,12 @@ namespace 三相智慧能源网关调试软件
             base.OnStartup(e);
         }
 
-
+        //GrowlDemoViewModel d = CommonServiceLocator.ServiceLocator.Current.GetInstance<GrowlDemoViewModel>();
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            Logger.Error("TaskError"+ e.Exception);
+            Logger.Error("TaskError" + e.Exception);
+       
             e.SetObserved();
         }
 
@@ -37,12 +43,14 @@ namespace 三相智慧能源网关调试软件
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.Error("无法处理的异常啊");
+      
         }
 
         //能够捕获 UI 线程抛出的未处理异常 可通过事件参数 e.Handled = true 来阻止程序崩溃
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Logger.Error($"Current_DispatcherUnhandledException:{e.Exception}");
+         
             e.Handled = true;
         }
     }

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using MaterialDesignThemes.Wpf;
+using GalaSoft.MvvmLight.Threading;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
 
@@ -44,6 +44,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ClearSendCountCommand = new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearSendCount());
                 ClearReceivedCountCommand =
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearReceiveCount());
+
+
             }
 
         
@@ -69,12 +71,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 catch (Exception e)
                 {
                     var view = new MyControl.MessageBox() { Message = e.Message, Title = e.Source };
-                    await DialogHost.Show(view, "SerialPortPage");
+                    //  await DialogHost.Show(view, "SerialPortPage");
                 }
                
             });
         }
-
+    
         public SerialPortMaster SerialPortMaster
         {
             get => _serialPortMaster;

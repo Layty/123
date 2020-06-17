@@ -94,8 +94,8 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="HandyControl, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\HandyControl.2.4.0\lib\net47\HandyControl.dll</HintPath>
+    <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HandyControl.2.5.0.2\lib\net48\HandyControl.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -109,11 +109,11 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=1.2.5.1465, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.1.2.5\lib\net45\MaterialDesignColors.dll</HintPath>
+    <Reference Include="MaterialDesignColors, Version=1.2.6.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.6\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.2.1465, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.3.1.2\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.3.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.3.1.3\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -188,77 +188,81 @@
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
-    <Compile Include="DLMS\ApplicationContextName.cs" />
-    <Compile Include="DLMS\CallingAuthenticationValue.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\CallingAuthenticationValue.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSRegister.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSRegister.cs" />
+    <Compile Include="DLMS\ApplicationLay\DataBlockG.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetRequestNext.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetRequestWithList.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeExecutor.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrameMaker.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeParser.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSCaptureObject.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSData.cs" />
-    <Compile Include="DLMS\DLMSDataItem.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSUtilityTables.cs" />
-    <Compile Include="DLMS\CosemObjects\IDLMSBase.cs" />
-    <Compile Include="DLMS\IToPduBytes.cs" />
-    <Compile Include="DLMS\CosemObjects\ProfileGeneric.cs" />
-    <Compile Include="DLMS\CosemObjects\Script.cs" />
-    <Compile Include="DLMS\CosemObjects\ScriptAction.cs" />
-    <Compile Include="DLMS\CosemObjects\ScriptTable.cs" />
-    <Compile Include="DLMS\ActionRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSCaptureObject.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSData.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSDataItem.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSUtilityTables.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\IDLMSBase.cs" />
+    <Compile Include="DLMS\ApplicationLay\IToPduBytes.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\ProfileGeneric.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\Script.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptAction.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptTable.cs" />
+    <Compile Include="DLMS\ApplicationLay\ActionRequestNormal.cs" />
     <Compile Include="DLMS\DLMSClient.cs" />
-    <Compile Include="DLMS\GetRequestNormal.cs" />
-    <Compile Include="DLMS\HDLC\BerType.cs" />
-    <Compile Include="DLMS\CosemAttributeDescriptor.cs" />
-    <Compile Include="DLMS\CosemMethodDescriptor.cs" />
-    <Compile Include="DLMS\Command.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSClock.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ActionResult.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\AccessRange.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ApplicationContextName.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ClockStatus.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\DataAccessResult.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\DataType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ErrorCode.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ObjectType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\Priority.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ReleaseRequestReason.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ReleaseResponseReason.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ServiceClass.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\SortMethod.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\Unit.cs" />
-    <Compile Include="DLMS\Conformance.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\BerType.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemMethodDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Command.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSClock.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessRange.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ClockStatus.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataAccessResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ErrorCode.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ObjectType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Priority.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ReleaseRequestReason.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ReleaseResponseReason.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ServiceClass.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SortMethod.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Unit.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Conformance.cs" />
     <Compile Include="DLMS\HDLC\Enums\Hdlc46ControlTypes.cs" />
     <Compile Include="DLMS\HDLC\Enums\Hdlc46ResponseType.cs" />
     <Compile Include="DLMS\HDLC\Enums\HdlcControlFrame.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\PduType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\PduType.cs" />
     <Compile Include="DLMS\HDLC\HdlcFrameMaker.cs" />
     <Compile Include="DLMS\HDLC\HdlcFrameParser.cs" />
     <Compile Include="DLMS\HDLC\Enums\HdlcFrameType.cs" />
     <Compile Include="DLMS\HDLC\HDLC_LLC.cs" />
     <Compile Include="DLMS\InterfaceType.cs" />
-    <Compile Include="DLMS\Invoke_Id_And_Prority.cs" />
-    <Compile Include="DLMS\MechanismName.cs" />
+    <Compile Include="DLMS\ApplicationLay\Invoke_Id_And_Prority.cs" />
+    <Compile Include="DLMS\ApplicationLay\MechanismName.cs" />
     <Compile Include="DLMS\MyDLMSSettings.cs" />
     <Compile Include="DLMS\Wrapper\NetFrameMaker.cs" />
-    <Compile Include="DLMS\NormalDataParse.cs" />
+    <Compile Include="DLMS\ApplicationLay\NormalDataParse.cs" />
     <Compile Include="DLMS\HDLC\DataCheck.cs" />
     <Compile Include="DLMS\HDLC\Enums\Hdlc46CommandType.cs" />
     <Compile Include="DLMS\HDLC\Hdlc46Frame.cs" />
-    <Compile Include="DLMS\DLMSInfo.cs" />
-    <Compile Include="DLMS\OBIS\OBISClass.cs" />
-    <Compile Include="DLMS\OBIS\OBISHelper.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ActionRequestType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ActionResponseType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\ActionSpecification.cs" />
-    <Compile Include="DLMS\CosemObjects\DLMSObject.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\GetRequestType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\GetResponseType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\SetRequestType.cs" />
-    <Compile Include="DLMS\ApplicationLayEnums\SetResponseType.cs" />
-    <Compile Include="DLMS\SetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSInfo.cs" />
+    <Compile Include="DLMS\OBIS\AbstractObisClass.cs" />
+    <Compile Include="DLMS\OBIS\ObisHelper.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionSpecification.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSObject.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\SetRequestNormal.cs" />
     <Compile Include="DLMS\HDLC\Enums\StartProtocolType.cs" />
     <Compile Include="ENetClientHelper.cs" />
     <Compile Include="ExcelHelper.cs" />
@@ -276,7 +280,7 @@
     <Compile Include="MyControl\DataControl.xaml.cs">
       <DependentUpon>DataControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\DataViewModel.cs" />
+    <Compile Include="ViewModel\DataViewModel.cs" />
     <Compile Include="MyControl\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
@@ -292,16 +296,17 @@
     <Compile Include="MyControl\ProfileGenericUserControl.xaml.cs">
       <DependentUpon>ProfileGenericUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\ProfileGenericViewModel.cs" />
-    <Compile Include="MyControl\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\GrowlViewModel.cs" />
+    <Compile Include="ViewModel\ProfileGenericViewModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\SkinUserControl.xaml.cs">
       <DependentUpon>SkinUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\TaiAngControl.xaml.cs">
-      <DependentUpon>TaiAngControl.xaml</DependentUpon>
+    <Compile Include="MyControl\UtilityTablesControl.xaml.cs">
+      <DependentUpon>UtilityTablesControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\RegisterControl.xaml.cs">
       <DependentUpon>RegisterControl.xaml</DependentUpon>
@@ -309,13 +314,13 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TcpClientHelper.cs" />
     <Compile Include="TcpServerHelper.cs" />
-    <Compile Include="Model\DLMSSelfDefineTaiAngModel.cs" />
+    <Compile Include="Model\DLMSSelfDefineUtilityTablesModel.cs" />
     <Compile Include="ViewModel\TcpServerViewModel.cs" />
     <Compile Include="ViewModel\TelnetViewModel.cs" />
     <Compile Include="ViewModel\DlmsBaseMeterViewModel.cs" />
     <Compile Include="ViewModel\IicDataViewModel.cs" />
     <Compile Include="ViewModel\SkinViewModel.cs" />
-    <Compile Include="ViewModel\TaiAngViewModel.cs" />
+    <Compile Include="ViewModel\UtilityTablesViewModel.cs" />
     <Compile Include="ViewModel\TftpServerViewModel.cs" />
     <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
     <Compile Include="FileTransmit\XModem.cs" />
@@ -337,9 +342,6 @@
     <Compile Include="View\ServerCenter\SerialPortPage.xaml.cs">
       <DependentUpon>SerialPortPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\IntelligentEquipment\TaiAngPage.xaml.cs">
-      <DependentUpon>TaiAngPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\MessageBoxWindow.xaml.cs">
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
@@ -356,8 +358,8 @@
     <Compile Include="MyControl\SerialPortLogger.xaml.cs">
       <DependentUpon>SerialPortLogger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\DLMSTcpFrontServerPage.xaml.cs">
-      <DependentUpon>DLMSTcpFrontServerPage.xaml</DependentUpon>
+    <Compile Include="MyControl\DLMSFrontEndProcessorControl.xaml.cs">
+      <DependentUpon>DLMSFrontEndProcessorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ServerCenter\TelnetPage.xaml.cs">
       <DependentUpon>TelnetPage.xaml</DependentUpon>
@@ -424,7 +426,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\TaiAngControl.xaml">
+    <Page Include="MyControl\UtilityTablesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -464,10 +466,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\IntelligentEquipment\TaiAngPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\MessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -476,7 +474,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\DLMSTcpFrontServerPage.xaml">
+    <Page Include="MyControl\DLMSFrontEndProcessorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -583,17 +581,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DLMS\ApplicationLayEnums\Action\" />
-    <Folder Include="DLMS\CustomDevice\" />
-    <Folder Include="DLMS\NewFolder1\" />
     <Folder Include="TFTPServerFiles\" />
+    <Folder Include="View\IntelligentEquipment\" />
     <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gurux.DLMS.Net-master\Development\Gurux.DLMS.Net.csproj">
-      <Project>{48705335-52d1-4a65-9cfd-e409dfe34491}</Project>
-      <Name>Gurux.DLMS.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SerialPortMaster\MySerialPortMaster.csproj">
       <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
       <Name>MySerialPortMaster</Name>
@@ -606,7 +598,7 @@
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets'))" />
-    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.1.2\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.1.2\build\MaterialDesignThemes.targets'))" />
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets'))" />
   </Target>
-  <Import Project="..\packages\MaterialDesignThemes.3.1.2\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.2\build\MaterialDesignThemes.targets')" />
+  <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />
 </Project>

@@ -258,15 +258,15 @@ namespace Gurux.DLMS.Objects
                 {
                     writer.WriteAttributeString("UIType", ((int)uiType).ToString());
                 }
-                else if (value is float || value is double)
+                else if (value is double || value is double)
                 {
                     if (value is double)
                     {
-                        writer.WriteAttributeString("UIType", ((int)DataType.Float64).ToString());
+                        writer.WriteAttributeString("UIType", ((int)DataType.double64).ToString());
                     }
                     else
                     {
-                        writer.WriteAttributeString("UIType", ((int)DataType.Float32).ToString());
+                        writer.WriteAttributeString("UIType", ((int)DataType.double32).ToString());
                     }
                 }
                 if (dt == DataType.Array || dt == DataType.Structure)

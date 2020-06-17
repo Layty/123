@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E821DD24-597C-4B2E-93A8-134266672A3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DLMSMaster</RootNamespace>
+    <AssemblyName>DLMSMaster</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationLay\CosemObjects\DLMSCaptureObject.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\DLMSClock.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\DLMSData.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\DLMSObject.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\DLMSRegister.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\DLMSUtilityTables.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\IDLMSBase.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\ProfileGeneric.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\Script.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\ScriptAction.cs" />
+    <Compile Include="ApplicationLay\CosemObjects\ScriptTable.cs" />
+    <Compile Include="ApplicationLay\Enums\AccessRange.cs" />
+    <Compile Include="ApplicationLay\Enums\ActionRequestType.cs" />
+    <Compile Include="ApplicationLay\Enums\ActionResponseType.cs" />
+    <Compile Include="ApplicationLay\Enums\ActionResult.cs" />
+    <Compile Include="ApplicationLay\Enums\ActionSpecification.cs" />
+    <Compile Include="ApplicationLay\Enums\ApplicationContextName.cs" />
+    <Compile Include="ApplicationLay\Enums\ClockStatus.cs" />
+    <Compile Include="ApplicationLay\Enums\DataAccessResult.cs" />
+    <Compile Include="ApplicationLay\Enums\DataType.cs" />
+    <Compile Include="ApplicationLay\Enums\ErrorCode.cs" />
+    <Compile Include="ApplicationLay\Enums\GetRequestType.cs" />
+    <Compile Include="ApplicationLay\Enums\GetResponseType.cs" />
+    <Compile Include="ApplicationLay\Enums\ObjectType.cs" />
+    <Compile Include="ApplicationLay\Enums\PduType.cs" />
+    <Compile Include="ApplicationLay\Enums\Priority.cs" />
+    <Compile Include="ApplicationLay\Enums\ReleaseRequestReason.cs" />
+    <Compile Include="ApplicationLay\Enums\ReleaseResponseReason.cs" />
+    <Compile Include="ApplicationLay\Enums\ServiceClass.cs" />
+    <Compile Include="ApplicationLay\Enums\SetRequestType.cs" />
+    <Compile Include="ApplicationLay\Enums\SetResponseType.cs" />
+    <Compile Include="ApplicationLay\Enums\SortMethod.cs" />
+    <Compile Include="ApplicationLay\Enums\Unit.cs" />
+    <Compile Include="ApplicationLay\GetRequest\GetRequestNext.cs" />
+    <Compile Include="ApplicationLay\GetRequest\GetRequestNormal.cs" />
+    <Compile Include="ApplicationLay\GetRequest\GetRequestWithList.cs" />
+    <Compile Include="ApplicationLay\Invoke_Id_And_Prority.cs" />
+    <Compile Include="ApplicationLay\IToPduBytes.cs" />
+    <Compile Include="ApplicationLay\MechanismName.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="ApplicationLay\Enums\Command.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="HDLCLay\Enums\Hdlc46CommandType.cs" />
+    <Compile Include="HDLCLay\Enums\Hdlc46ControlTypes.cs" />
+    <Compile Include="HDLCLay\Enums\Hdlc46ResponseType.cs" />
+    <Compile Include="HDLCLay\Enums\HdlcControlFrame.cs" />
+    <Compile Include="HDLCLay\Enums\HdlcFrameType.cs" />
+    <Compile Include="HDLCLay\Enums\StartProtocolType.cs" />
+    <Compile Include="OBIS\AbstractObisClass.cs" />
+    <Compile Include="OBIS\ObisHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ApplicationLay\ActionRequest\" />
+    <Folder Include="ApplicationLay\SetRequest\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -104,19 +104,19 @@ namespace Gurux.DLMS.Enums
         Enum = 0x16,
 
         ///<summary>
-        ///Data type is Float32.
+        ///Data type is double32.
         ///</summary>
         ///<remarks>
-        /// DLMS/COSEM type is: float 32.
+        /// DLMS/COSEM type is: double 32.
         ///</remarks>
-        Float32 = 0x17,
+        double32 = 0x17,
         ///<summary>
-        ///Data type is Float64.
+        ///Data type is double64.
         ///</summary>
         ///<remarks>
-        /// DLMS/COSEM type is: float 64.
+        /// DLMS/COSEM type is: double 64.
         ///</remarks>
-        Float64 = 0x18,
+        double64 = 0x18,
         ///<summary>
         ///Data type is Int16.
         ///</summary>
