@@ -140,7 +140,7 @@
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton x:Name="ToggleButtonLog" Margin="2"
-                                              IsChecked="True"
+                                              IsChecked="False"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
                                               ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
                                     <ToggleButton.Content>
@@ -218,11 +218,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="7*" />
-                    <ColumnDefinition Width="200" x:Name="ColumnLog" MaxWidth="500" />
+                    <ColumnDefinition Width="0" x:Name="ColumnLog" MaxWidth="500" />
                 </Grid.ColumnDefinitions>
 
 
-                <!-- 右侧菜单栏 -->
+                <!-- 左侧菜单栏 -->
                 <materialDesign:Card DockPanel.Dock="Left">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
@@ -651,10 +651,10 @@
                 <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch"
                               ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
                               ResizeDirection="Columns" />
-                <!-- 日志区 -->
+                <!-- 右侧日志区 -->
 
 
-                <materialDesign:Card x:Name="CardLog" Width="Auto" Visibility="Visible" Grid.Column="2"
+                <materialDesign:Card x:Name="CardLog" Width="Auto"  Visibility="Visible" Grid.Column="2"
                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TabControl>
                         <TabItem >

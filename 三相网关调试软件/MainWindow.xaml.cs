@@ -6,15 +6,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
-using HandyControl.Controls;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.View.ServerCenter;
-using MessageBox = System.Windows.MessageBox;
-using Window = System.Windows.Window;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -188,8 +184,21 @@ namespace 三相智慧能源网关调试软件
 
         private void ToggleButtonLog_OnClick(object sender, RoutedEventArgs e)
         {
-            CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            ColumnLog.Width = new GridLength(CardLog.ActualWidth);
+            if (ColumnLog.Width==new GridLength(0))
+            {
+                CardLog.Width = 200;
+                CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+                ColumnLog.Width=new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
+                CardLog.Width = Double.NaN;
+                //  ColumnLog.Width=new GridLength(1,);
+            }
+            else
+            {
+                CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+                CardLog.Width = Double.NaN; 
+                ColumnLog.Width = new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
+            }
         }
+          
     }
 }
