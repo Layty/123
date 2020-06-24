@@ -48,7 +48,7 @@
       <Value Profile="(Default)">.\TFTPServerFiles</Value>
     </Setting>
     <Setting Name="Title" Type="System.String" Scope="User">
-      <Value Profile="(Default)">三相能源网关测试软件--TEST TO DO</Value>
+      <Value Profile="(Default)">TO DO</Value>
     </Setting>
   </Settings>
 </SettingsFile>

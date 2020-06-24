@@ -65,7 +65,7 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
             Messenger.Default.Register<byte[]>(this, "SendDataEvent", PlayNetSendFlashing);
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
-            Messenger.Default.Register<(Socket,byte[]) >(this, "SendDataEvent", PlayNetSendFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent", PlayNetSendFlashing);
             Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
@@ -93,7 +93,8 @@ namespace 三相智慧能源网关调试软件
                 BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
-        private void PlayNetSendFlashing((Socket,byte[]) obj)
+
+        private void PlayNetSendFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
@@ -108,6 +109,7 @@ namespace 三相智慧能源网关调试软件
                 BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
             });
         }
+
         private void PlayNetReceiveFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -189,6 +191,5 @@ namespace 三相智慧能源网关调试软件
             CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
             ColumnLog.Width = new GridLength(CardLog.ActualWidth);
         }
-
     }
 }

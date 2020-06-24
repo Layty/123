@@ -205,7 +205,7 @@ namespace 三相智慧能源网关调试软件.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("三相能源网关测试软件--TEST TO DO")]
+        [global::System.Configuration.DefaultSettingValueAttribute("TO DO")]
         public string Title {
             get {
                 return ((string)(this["Title"]));

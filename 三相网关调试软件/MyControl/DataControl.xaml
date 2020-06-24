@@ -8,8 +8,30 @@
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
     <Grid>
-
-        <ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2">
+        <DataGrid ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DataName }" Header="DataName" />
+                <!--<DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType" />-->
+                <DataGridTextColumn Binding="{Binding LogicalName}" Header="LogicName" />
+                <DataGridTextColumn Binding="{Binding DataValue}" Header="Value" Width="150" />
+                <DataGridTemplateColumn Header="操作区">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="GetValue"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding}" />
+                                <!--<Button  Content="SetValue"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
+                                         CommandParameter="{Binding}"></Button>-->
+                                <!--<Button Content="GetLogicName"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding}"></Button>-->
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--<ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />
@@ -51,6 +73,6 @@
 
             </ItemsControl.ItemTemplate>
 
-        </ItemsControl>
+        </ItemsControl>-->
     </Grid>
 </UserControl>

@@ -81,16 +81,22 @@ namespace 三相智慧能源网关调试软件.ViewModel
             //};
             GetLogicNameCommand=new RelayCommand<DLMSSelfDefineData>(async t =>
             {
-                t.LogicalName = "";
+                t.DataValue = "";
                 var dataResult = await Client.GetRequest(t.GetLogicName());
+                t.DataValue = NormalDataParse.ParsePduData(dataResult);
+
             });
             GetValueCommand = new RelayCommand<DLMSSelfDefineData>(async t =>
             {
-                t.Value = "";
+                t.DataValue = "";
                 var dataResult = await Client.GetRequest(t.GetValue());
-                t.Value = NormalDataParse.ParsePduData(dataResult);
+                t.DataValue = NormalDataParse.ParsePduData(dataResult);
             });
-          
+          SetValueCommand=new RelayCommand<DLMSSelfDefineData>(async (t) =>
+          {
+              //t.DataValue = "";
+              //var dataResult = await Client.SetRequest(t.SetValue(new DLMSDataItem()));
+          });
         }
     }
 }
