@@ -89,7 +89,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Row="0" x:Name="TextBoxSendFile" Margin="4"
-                                     Style="{StaticResource MaterialDesigndoubleingHintTextBox}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      materialDesign:HintAssist.Hint="当前选择文件"
                                      Text="{Binding FileName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay }" />
                             <Button Grid.Column="1" x:Name="ButtonOpenFile" Margin="4"

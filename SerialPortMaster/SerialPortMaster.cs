@@ -198,6 +198,7 @@ namespace MySerialPortMaster
         public SerialPortMaster()
         {
             SerialPort = new SerialPort();
+          
             IsAutoDataReceived = true;
         }
 
@@ -208,13 +209,13 @@ namespace MySerialPortMaster
             LoadSerialPortConfig(serialPortConfig);
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private async void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             while (SerialPort.BytesToRead != 0)
             {
                
                 var n = SerialPort.BytesToRead;
-                Task.Delay(50);
+               await Task.Delay(50);
 
                 var n1 = SerialPort.BytesToRead;
                 if (n != 0 && n1 == n)
@@ -345,7 +346,7 @@ namespace MySerialPortMaster
                     while (true)
                     {
                         var n = SerialPort.BytesToRead;
-                        Thread.Sleep(50);
+                        Thread.Sleep(100);
                         var n1 = SerialPort.BytesToRead;
                         if (n != 0 && n1 == n)
                         {

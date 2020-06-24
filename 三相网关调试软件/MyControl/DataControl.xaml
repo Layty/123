@@ -6,11 +6,10 @@
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
     <Grid>
 
-        <ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2"  >
+        <ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />
@@ -19,16 +18,17 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <materialDesign:Card Margin="2">
-                        <UniformGrid Rows="1">
-                            <TextBlock x:Name="TextBlockName" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <UniformGrid Columns="8">
+                            <TextBlock x:Name="TextBlockName" VerticalAlignment="Center"
                                        Text="{Binding DataName}" />
-                            <TextBlock x:Name="TextBlockClass" HorizontalAlignment="Center"
+                            <TextBlock x:Name="TextBlockClass"
                                        VerticalAlignment="Center" Text="{Binding  ObjectType}" />
-                            <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"
+                            <TextBlock x:Name="TextBlockLogicName"
                                        VerticalAlignment="Center" Text="{Binding LogicalName}" />
 
-                            <!-- <TextBox Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.DataForShow}"></TextBox> -->
-                            <TextBlock Text="{Binding Value}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" />
+                            <TextBox Text="{Binding Value}" VerticalAlignment="Center" />
                             <Button
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                 CommandParameter="{Binding}">
@@ -38,6 +38,11 @@
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                 CommandParameter="{Binding}">
                                 SetValue
+                            </Button>
+                            <Button
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameCommand ,Mode=TwoWay}"
+                                CommandParameter="{Binding}">
+                                GetLogicName
                             </Button>
                         </UniformGrid>
                     </materialDesign:Card>

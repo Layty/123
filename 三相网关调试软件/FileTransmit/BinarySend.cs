@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using Gurux.DLMS.Enums;
 using Task = System.Threading.Tasks.Task;
 
 namespace 三相智慧能源网关调试软件.FileTransmit

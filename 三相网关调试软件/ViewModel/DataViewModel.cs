@@ -22,6 +22,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private ObservableCollection<DLMSSelfDefineData> _dataCollection;
 
+        public RelayCommand<DLMSSelfDefineData> GetLogicNameCommand
+        {
+            get => _getLogicNameCommand;
+            set
+            {
+                _getLogicNameCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand<DLMSSelfDefineData> _getLogicNameCommand;
+
         public RelayCommand<DLMSSelfDefineData> GetValueCommand
         {
             get => _getValueCommand;
@@ -52,13 +64,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
-            var DataTable = excel.GetExcelDataTable("Data$");
+            var dataTable = excel.GetExcelDataTable("Data$");
 
             DataCollection = new ObservableCollection<DLMSSelfDefineData>();
-            for (int i = 0; i < DataTable.Rows.Count; i++)
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                DataCollection.Add(new DLMSSelfDefineData(DataTable.Rows[i][0].ToString())
-                    { DataName = DataTable.Rows[i][1].ToString() });
+                DataCollection.Add(new DLMSSelfDefineData(dataTable.Rows[i][0].ToString())
+                    { DataName = dataTable.Rows[i][1].ToString() });
             }
             //DataCollection = new ObservableCollection<DLMSSelfDefineData>()
             //{
@@ -67,6 +79,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             //    new DLMSSelfDefineData("1.0.0.2.0.255") {DataName = "Software version"},
             //    new DLMSSelfDefineData("0.0.96.5.0.255") {DataName = "工厂模式"},
             //};
+            GetLogicNameCommand=new RelayCommand<DLMSSelfDefineData>(async t =>
+            {
+                t.LogicalName = "";
+                var dataResult = await Client.GetRequest(t.GetLogicName());
+            });
             GetValueCommand = new RelayCommand<DLMSSelfDefineData>(async t =>
             {
                 t.Value = "";

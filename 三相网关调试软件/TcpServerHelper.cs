@@ -85,14 +85,19 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private ObservableCollection<EndPoint> _socketClientListEndPoint=new ObservableCollection<EndPoint>();
+        private ObservableCollection<EndPoint> _socketClientListEndPoint = new ObservableCollection<EndPoint>();
 
         public int ResponseTimeOut
         {
             get => _responseTimeOut;
-            set { _responseTimeOut = value; RaisePropertyChanged(); }
+            set
+            {
+                _responseTimeOut = value;
+                RaisePropertyChanged();
+            }
         }
-        private int _responseTimeOut=2;
+
+        private int _responseTimeOut = 2;
 
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
@@ -203,8 +208,8 @@ namespace 三相智慧能源网关调试软件
                     }
                     catch (Exception ex)
                     {
-                        OnNotifyErrorMsg("serverTask" + ex.Message);
-                        CloseSever();
+                        OnNotifyStatusMsg("退出服务端监听Task");
+                        // CloseSever();
                         break;
                     }
                 }
@@ -214,6 +219,7 @@ namespace 三相智慧能源网关调试软件
         private void ClientThread(Socket sockClient)
         {
             byte[] array = new byte[1024];
+
             while (true)
             {
                 int num;
@@ -225,8 +231,14 @@ namespace 三相智慧能源网关调试软件
                 }
                 catch (Exception ex)
                 {
-                    OnNotifyErrorMsg("clientThread" + ex.Message + "\r\n");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Remove(sockClient); });
+                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                        }
+                    });
 
                     break;
                 }
@@ -236,14 +248,17 @@ namespace 三相智慧能源网关调试软件
                     OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
-                        SocketClientList.Remove(sockClient);
-                        SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                        }
                     });
                     break;
                 }
             }
 
-            sockClient.Close();
+            //  sockClient.Close();
         }
 
         public void SendDataToAllClients(byte[] bytes)
@@ -261,7 +276,6 @@ namespace 三相智慧能源网关调试软件
             OnSendBytesToClient(destinationSocket, bytes);
         }
 
-      
 
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
@@ -286,7 +300,8 @@ namespace 三相智慧能源网关调试软件
                         OnNotifyStatusMsg($"超时{ResponseTimeOut}秒未响应");
                         break;
                     }
-                    if (returnBytes!=null)
+
+                    if (returnBytes != null)
                     {
                         stopwatch1.Stop();
                         ResponseTime = stopwatch1.ElapsedMilliseconds.ToString();
@@ -295,7 +310,7 @@ namespace 三相智慧能源网关调试软件
                     }
                 }
             });
-          //  await Task.Delay(2000);
+            //  await Task.Delay(2000);
             ReceiveBytes -= TcpServerHelper_ReceiveBytes;
             return returnBytes;
         }
@@ -311,26 +326,29 @@ namespace 三相智慧能源网关调试软件
 
         public void CloseSever()
         {
-            if (SocketServer != null)
-            {
-                // _sourceServer.Cancel();
-                SocketServer.Close();
-                SocketServer.Dispose();
-                OnNotifyStatusMsg(DateTime.Now + "已关闭监听" + Environment.NewLine);
-            }
-
             if (SocketClientList.Count != 0)
             {
                 foreach (Socket socketClient in SocketClientList)
                 {
-                    socketClient.Shutdown(SocketShutdown.Both);
-                    socketClient.Close();
+                    if (socketClient != null)
+                    {
+                        socketClient.Shutdown(SocketShutdown.Both);
+                        socketClient.Close();
+                    }
                 }
 
                 foreach (CancellationTokenSource socketClientCancellationToken in SocketClientCancellationTokens)
                 {
                     socketClientCancellationToken.Cancel();
                 }
+            }
+
+            if (SocketServer != null)
+            {
+                // _sourceServer.Cancel();
+                SocketServer.Close();
+                SocketServer.Dispose();
+                OnNotifyStatusMsg(DateTime.Now + "已关闭监听" + Environment.NewLine);
             }
         }
 

@@ -8,7 +8,7 @@
              DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}"
              d:DesignHeight="450" d:DesignWidth="500">
 
-<materialDesign:Card UniformCornerRadius="5">
+    <materialDesign:Card UniformCornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -17,36 +17,36 @@
 
             <StackPanel Grid.Row="0">
                 <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding SerialPortMaster.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
-                     materialDesign:HintAssist.Hint="最大缓存字符数" />
+                         Text="{Binding SerialPortMaster.SerialPortLogger.KeepMaxSendAndReceiveDataLength}"
+                         materialDesign:HintAssist.Hint="最大缓存字符数" />
                 <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
-                      IsChecked="True" />
+                          IsChecked="True" />
                 <CheckBox IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsSendDataDisplayFormat16,Mode=TwoWay}">十六进制显示发送数据</CheckBox>
                 <CheckBox IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsReceiveFormat16,Mode=TwoWay}">十六进制显示接收数据</CheckBox>
                 <CheckBox Name="CheckBoxWriteLogToFile" Content="自动捕获日志并写入文件"
-                      IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsEnableWriteLogToFile}" />
-                <Button Name="ButtonClearData" VerticalAlignment="Center" 
-                    Command="{Binding ClearAllDataCommand}"
-                    Margin="5"
-                    materialDesign:RippleAssist.Feedback="#DD000000">
+                          IsChecked="{Binding SerialPortMaster.SerialPortLogger.IsEnableWriteLogToFile}" />
+                <Button Name="ButtonClearData" VerticalAlignment="Center"
+                        Command="{Binding ClearAllDataCommand}"
+                        Margin="5"
+                        materialDesign:RippleAssist.Feedback="#DD000000">
                     清空缓存(_C)
                 </Button>
             </StackPanel>
 
             <Grid Grid.Row="1">
                 <TextBox Name="TextBoxReceive"
-                     BorderThickness="2"
-                     HorizontalAlignment="Stretch"
-                     VerticalAlignment="Stretch"
-                     VerticalScrollBarVisibility="Auto"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     SpellCheck.IsEnabled="True"
-                     Style="{StaticResource MaterialDesignTextBox}"
-                     materialDesign:HintAssist.Hint="数据收发历史缓存区"
-                     TextChanged="TextBoxBase_OnTextChanged"
-                     Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                     Margin="3" />
+                         materialDesign:HintAssist.Hint="数据收发历史缓存区"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True" Width="{Binding RelativeSource={RelativeSource  AncestorType={x:Type UserControl}, Mode=FindAncestor } ,Path=Width}"
+                         SpellCheck.IsEnabled="True"
+                         Style="{StaticResource MaterialDesignTextBox}"
+                         TextChanged="TextBoxBase_OnTextChanged"
+                         Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay}"
+                         Margin="3"
+                         BorderThickness="2" />
                 <x:Code>
                     <![CDATA[
                          private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -62,7 +62,6 @@
             </Grid>
         </Grid>
     </materialDesign:Card>
- 
 
 
 </UserControl>

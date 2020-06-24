@@ -189,6 +189,7 @@
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ScriptActionType.cs" />
     <Compile Include="DLMS\ApplicationLay\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />

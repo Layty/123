@@ -9,15 +9,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
     {
         public object Value
         {
-            get => _Value;
+            get => _value;
             set
             {
-                _Value = value;
+                _value = value;
                 OnPropertyChanged();
             }
         }
 
-        private object _Value;
+        private object _value;
 
 
         public DLMSData(string logicalName)
@@ -26,16 +26,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             ObjectType = ObjectType.Data;
         }
 
+        public byte[] GetLogicName() => GetAttributeData(1);
         public byte[] GetValue() => GetAttributeData(2);
-
         public byte[] SetValue(DLMSDataItem ddi) => SetAttributeData(2, ddi);
         public string[] GetNames() => new[] {LogicalName, "Value"};
 
         public int GetAttributeCount() => 2;
 
-
         public int GetMethodCount() => 0;
-
 
         public DataType GetDataType(int index)
         {
@@ -45,16 +43,16 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             //    case 1:
             //        return DataType.OctetString;
             //    case 2:
-            //    {
-            //        DataType dataType = base.GetDataType(index);
-            //        if (dataType == DataType.None && Value != null)
             //        {
-            //            dataType = GXCommon.GetDLMSDataType(Value.GetType());
+            //            DataType dataType = base.GetDataType(index);
+            //            if (dataType == DataType.None && Value != null)
+            //            {
+            //                dataType = GXCommon.GetDLMSDataType(Value.GetType());
+            //            }
+            //            return dataType;
             //        }
-            //        return dataType;
-            //    }
-            //    default:
-            //        throw new ArgumentException("GetDataType failed. Invalid attribute index.");
+            //    default: break;
+
             //}
         }
 

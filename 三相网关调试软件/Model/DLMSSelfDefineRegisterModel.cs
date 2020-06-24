@@ -27,6 +27,7 @@ namespace 三相智慧能源网关调试软件.Model
    public class DLMSSelfDefineData : DLMSData
    {
        public string DataName { get; set; }
+       public bool Result { get; set; }
         public DLMSSelfDefineData(string logicalName) : base(logicalName)
        {
        }

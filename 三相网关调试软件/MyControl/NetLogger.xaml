@@ -37,7 +37,7 @@
                          TextChanged="TextBoxNetLog_OnTextChanged"
                          HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch"
-                         VerticalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto" Width="{Binding RelativeSource={RelativeSource  AncestorType={x:Type UserControl}, Mode=FindAncestor } ,Path=Width}"
                          Style="{StaticResource MaterialDesignTextBox}"
                          Text="{Binding MyNetLog.Log,Mode=OneWay}"
                          TextWrapping="Wrap"

@@ -26,8 +26,8 @@
                                   materialDesign:HintAssist.FloatingScale="0.50"
                                   Height="50" FontSize="20"
                                   Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
+                            <ComboBoxItem>192.168.1.155</ComboBoxItem>
                             <ComboBoxItem>127.0.0.1</ComboBoxItem>
-                            <ComboBoxItem>192.168.0.145</ComboBoxItem>
                         </ComboBox>
                         <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
                                  Height="50"

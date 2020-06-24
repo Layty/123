@@ -12,6 +12,7 @@ using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using HandyControl.Controls;
 using 三相智慧能源网关调试软件.View.Management;
+using 三相智慧能源网关调试软件.View.ServerCenter;
 using MessageBox = System.Windows.MessageBox;
 using Window = System.Windows.Window;
 
@@ -125,7 +126,7 @@ namespace 三相智慧能源网关调试软件
             if (ExpandMenu.IsEnabled)
             {
                 ExpandMenu.IsChecked = true;
-                Frame.Navigate(new GateWayLoginPage());
+                Frame.Navigate(new DLMSSettingsPage());
             }
         }
 

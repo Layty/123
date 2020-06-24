@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using ENet;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Org.BouncyCastle.Utilities.Encoders;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件
@@ -220,7 +222,7 @@ namespace 三相智慧能源网关调试软件
             {
                 Console.WriteLine(@"Initializing server...");
 
-                host.InitializeServer(5000, 1);
+                host.InitializeServer(8001, 1);
 
                 var peer = new Peer();
 
@@ -242,13 +244,19 @@ namespace 三相智慧能源网关调试软件
                                     case EventType.Receive:
                                         byte[] data = @event.Packet.GetBytes();
                                         peer.Send(@event.ChannelID, data, PacketFlags.Reliable);
+                                        string @string = Encoding.Default.GetString(data);
+                                        byte[] bytes = Convert.FromBase64String(@string);
+                                       ;
+                                        Messenger.Default.Send(Encoding.Default.GetString(bytes), "Status");
+                                       
                                         @event.Packet.Dispose();
                                         break;
                                     case EventType.Disconnect:
                                         Messenger.Default.Send($"客户端{peer.GetRemoteAddress()}主动断开", "Status");
                                         break;
                                 }
-                            } while (host.CheckEvents(out @event));
+                            } 
+                            while (host.CheckEvents(out @event));
                         }
                     }
                     catch (Exception e)

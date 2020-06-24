@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
@@ -23,21 +24,22 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     var dt = BitConverter.ToInt16(datatype, 0);
                     switch (dt)
                     {
-                        case (byte)DataType.UInt16:
+                        case (byte) DataType.UInt16:
                             result = BitConverter.ToUInt16(pudBytes.Skip(5).Take(2).Reverse().ToArray(), 0).ToString();
                             break;
-                        case (byte)DataType.Int32:
+                        case (byte) DataType.Int32:
                             result = BitConverter.ToInt32(pudBytes.Skip(5).Take(4).Reverse().ToArray(), 0).ToString();
                             break;
-                        case (byte)DataType.UInt32:
+                        case (byte) DataType.UInt32:
                             result = BitConverter.ToUInt32(pudBytes.Skip(5).Take(4).Reverse().ToArray(), 0).ToString();
                             break;
-                        case (byte)DataType.OctetString:
+                        case (byte) DataType.OctetString:
                             if ((pudBytes[5] & 0x80) == 0x80)
                             {
                                 var index = pudBytes[5] - 0x80;
                                 var range = BitConverter.ToInt16(pudBytes.Skip(6).Take(index).Reverse().ToArray(), 0);
-                                result = pudBytes.Skip(6 + index).Take(range).ToArray().ByteToString();
+                                var resultBytes = pudBytes.Skip(6 + index).Take(range).ToArray();
+                                result = Encoding.Default.GetString(resultBytes);
                             }
                             else
                             {
@@ -45,18 +47,20 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                             }
 
                             break;
-                        case (byte)DataType.Structure:
+                        case (byte) DataType.Structure:
                             var rangeStruct = pudBytes.Skip(5).Take(1).ToArray()[0];
                             result = pudBytes.Skip(6).ToArray().ByteToString(); //返回结构体
                             break;
-                        case (byte)DataType.Enum:
+                        case (byte) DataType.Enum:
                             // var EnumValue = pudBytes.Skip(5).Take(1).ToArray()[0];
                             result = pudBytes.Skip(5).Take(1).ToArray()[0].ToString();
                             break;
-                        case (byte)DataType.Array:
+                        case (byte) DataType.Array:
                             result = pudBytes.Skip(5).ToArray().ByteToString();
                             break;
-                    };
+                    }
+
+                    ;
                     break;
                 case (byte) GetResponseType.WithDataBlock:
                     var InvokeIdAndPriority2 = pudBytes[2];
@@ -72,11 +76,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     break;
             }
 
-        
 
             return result;
         }
-
-      
     }
 }

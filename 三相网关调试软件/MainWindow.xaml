@@ -22,7 +22,7 @@
         <Storyboard x:Key="MyCloseMenuStoryboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
                                               Storyboard.TargetName="GridMenu">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-250 0 0 0" />
+                <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-200 0 0 0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard1Storyboard">
@@ -46,19 +46,19 @@
         <Storyboard x:Key="CloseCard1Storyboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
                                               Storyboard.TargetName="Card1">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
+                <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard2Storyboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
                                               Storyboard.TargetName="Card2">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
+                <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard3Storyboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
                                               Storyboard.TargetName="Card3">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
+                <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
@@ -226,7 +226,7 @@
                 <materialDesign:Card DockPanel.Dock="Left">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                              Width="250" Margin="-250 0 0 0" RenderTransformOrigin="0.5,0.5">
+                              Width="200" Margin="-200 0 0 0" RenderTransformOrigin="0.5,0.5">
                             <Grid.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
@@ -244,7 +244,7 @@
                                 <Binding Source="{StaticResource Locator}" Path="Login" />
                             </Grid.DataContext>
 
-                            <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-250 3 3 5">
+                            <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 3 3 5">
                                 <Expander ExpandDirection="Down" IsExpanded="True" Margin="5"
                                           IsEnabled="{Binding LoginModel.LoginResult}"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
@@ -355,7 +355,7 @@
                                                                     </RadioButton.IsChecked>
                                                                     <Border>
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <!-- 图标-->
+                                                                            <!-- 图标 -->
                                                                             <TextBlock Text="{Binding IconFont}"
                                                                                        FontFamily="/Fonts/#iconfont"
                                                                                        x:Name="TextBlockIcon"
@@ -363,7 +363,7 @@
                                                                                        HorizontalAlignment="Center"
                                                                                        VerticalAlignment="Center" />
 
-                                                                            <!-- 文字-->
+                                                                             <!-- 文字 -->
                                                                             <TextBlock Text="{Binding MenuName}"
                                                                                        HorizontalAlignment="Center"
                                                                                        x:Name="TextBlockTitle"
@@ -391,7 +391,7 @@
                             </materialDesign:Card>
 
 
-                            <materialDesign:Card x:Name="Card2" Margin="-250 3 3 5" Grid.Row="1">
+                            <materialDesign:Card x:Name="Card2" Margin="-200 3 3 5" Grid.Row="1">
                                 <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
                                     <Expander.Header>计量芯</Expander.Header>
@@ -513,7 +513,7 @@
                                 </Expander>
                             </materialDesign:Card>
 
-                            <materialDesign:Card x:Name="Card3" Margin="-250 3 3 5" Grid.Row="2">
+                            <materialDesign:Card x:Name="Card3" Margin="-200 3 3 5" Grid.Row="2">
                                 <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
                                     <Expander.Header>服务中心</Expander.Header>

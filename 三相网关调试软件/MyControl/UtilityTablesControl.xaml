@@ -26,72 +26,66 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card Margin="2" UniformCornerRadius="6">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                            <GroupBox>
+                                <GroupBox.Header>
+                                    <StackPanel>
+                                        <TextBlock x:Name="TextBlockTaiAngName" HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" Text="{Binding Name}" />
+                                        <TextBlock x:Name="TextBlockClass" HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" Text="{Binding  ObjectType}" />
+                                        <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" Text="{Binding LogicalName}" />
+                                    </StackPanel>
+                                </GroupBox.Header>
+                                <GroupBox.Content>
+                                    <StackPanel>
+                                        <Button
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameDataCommand,Mode=TwoWay}"
+                                            CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Get" />
+                                                <TextBlock x:Name="TextBlockName" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Text="{Binding NameDescription}" />
+                                            </StackPanel>
+                                        </Button>
 
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"
-                                            Grid.Row="0">
-                                    <TextBlock x:Name="TextBlockTaiAngName" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" Text="{Binding Name}" />
-                                    <TextBlock x:Name="TextBlockClass" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" Text="{Binding  ObjectType}" />
-                                    <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center" Text="{Binding LogicalName}" />
-                                </StackPanel>
+                                        <Button
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetMeterAddressData,Mode=TwoWay}"
+                                            CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>Get</TextBlock>
+                                                <TextBlock x:Name="TextBlockObis" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Text="{Binding AddrDescription}" />
+                                            </StackPanel>
+                                        </Button>
 
-                                <UniformGrid Columns="1" Grid.Row="1">
-                                    <Button
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameDataCommand,Mode=TwoWay}"
-                                        CommandParameter="{Binding}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Get" />
-                                            <TextBlock x:Name="TextBlockName" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" Text="{Binding NameDescription}" />
-                                        </StackPanel>
-                                    </Button>
+                                        <Button
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetDataLengthData,Mode=TwoWay}"
+                                            CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>Get</TextBlock>
+                                                <TextBlock x:Name="TextBlockAttr" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding LengthDescription }" />
+                                            </StackPanel>
+                                        </Button>
 
-                                    <Button
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetMeterAddressData,Mode=TwoWay}"
-                                        CommandParameter="{Binding}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock>Get</TextBlock>
-                                            <TextBlock x:Name="TextBlockObis" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" Text="{Binding AddrDescription}" />
-                                        </StackPanel>
-                                    </Button>
+                                        <Button
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBuffData,Mode=TwoWay}"
+                                            CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock>Get</TextBlock>
+                                                <TextBlock x:Name="TextBlockData" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" Text="{Binding DataDescription }" />
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBox x:Name="TextBlockValue" Width="200" Height="250" TextWrapping="Wrap"
+                                                 Text="{Binding DataForShow}" />
+                                    </StackPanel>
 
-                                    <Button
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetDataLengthData,Mode=TwoWay}"
-                                        CommandParameter="{Binding}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock>Get</TextBlock>
-                                            <TextBlock x:Name="TextBlockAttr" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       Text="{Binding LengthDescription }" />
-                                        </StackPanel>
-                                    </Button>
+                                </GroupBox.Content>
+                            </GroupBox>
 
-                                    <Button
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBuffData,Mode=TwoWay}"
-                                        CommandParameter="{Binding}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock>Get</TextBlock>
-                                            <TextBlock x:Name="TextBlockData" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" Text="{Binding DataDescription }" />
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                                <UniformGrid Grid.Row="2">
-                                    <TextBox x:Name="TextBlockValue" Width="200" Height="200" TextWrapping="Wrap"
-                                             Text="{Binding DataForShow,UpdateSourceTrigger=PropertyChanged}" />
-
-                                </UniformGrid>
-
-                            </Grid>
 
                         </materialDesign:Card>
 

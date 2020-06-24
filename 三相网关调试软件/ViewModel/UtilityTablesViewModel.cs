@@ -6,6 +6,7 @@ using MySerialPortMaster;
 using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -460,6 +461,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             private float? _TempC;
 
+
+            public float? Breaker
+            {
+                get => _Breaker;
+                set { _Breaker = value; RaisePropertyChanged(); }
+            }
+            private float? _Breaker;
+
             public float? AlarmStatus
             {
                 get => _AlarmStatus;
@@ -537,19 +546,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        public DiYaGuiDataModel DiyiDataModel
-        {
-            get => _DiyiDataModel;
-            set
-            {
-                _DiyiDataModel = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private DiYaGuiDataModel _DiyiDataModel;
-
-
         public ObservableCollection<DiYaGuiDataModel> DiYaGuiDataModels
         {
             get => _DiYaGuiDataModels;
@@ -576,17 +572,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
+                
                 DiYaGuiDataModels = new ObservableCollection<DiYaGuiDataModel>();
                 Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
 
                 ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
-                var DataTable = excel.GetExcelDataTable("UtilityTables$");
+                var dataTable = excel.GetExcelDataTable("UtilityTables$");
 
                 UtilityTablesCollection = new ObservableCollection<DLMSSelfDefineUtilityTablesModel>();
-                for (int i = 0; i < DataTable.Rows.Count; i++)
+                for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                     UtilityTablesCollection.Add(new DLMSSelfDefineUtilityTablesModel()
-                        {LogicalName = DataTable.Rows[i][0].ToString(), Name = DataTable.Rows[i][1].ToString()});
+                        {LogicalName = dataTable.Rows[i][0].ToString(), Name = dataTable.Rows[i][1].ToString()});
                 }
 
                 GetLogicNameDataCommand = new RelayCommand<DLMSSelfDefineUtilityTablesModel>(
@@ -595,6 +592,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         t.DataForShow = "";
                         var dataResult = await Client.GetRequest(t.GetLogicName());
                         t.DataForShow = NormalDataParse.ParsePduData(dataResult);
+                        if (t.GetDataType(1) == DataType.OctetString)
+                        {
+                            
+                        }
                     });
                 GetMeterAddressData = new RelayCommand<DLMSSelfDefineUtilityTablesModel>(async t =>
                     {
@@ -615,7 +616,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         t.DataForShow = "";
                         var dataResult = await Client.GetRequest(t.GetBuffer());
                         t.DataForShow =
-                            Encoding.Default.GetString(NormalDataParse.ParsePduData(dataResult).StringToByte());
+                            NormalDataParse.ParsePduData(dataResult);
                         var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));
                         var daa = d as DiYaGuiDataModel;
                         {
