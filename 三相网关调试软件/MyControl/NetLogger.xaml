@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="500">
+             mc:Ignorable="d" 
+            >
     <UserControl.DataContext>
         <Binding Source="{StaticResource Locator}" Path="Log" />
     </UserControl.DataContext>
     <materialDesign:Card UniformCornerRadius="5">
-        <Grid>
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />

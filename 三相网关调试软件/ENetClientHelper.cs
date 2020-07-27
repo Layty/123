@@ -180,6 +180,7 @@ namespace 三相智慧能源网关调试软件
                     {
                         byte[] data = @event.Packet.GetBytes();
                         Messenger.Default.Send(data, "ReceiveDataEvent");
+                        Messenger.Default.Send(data, "ENetReceiveDataEvent");
                         @event.Packet.Dispose();
                     }
                     else if (@event.Type == EventType.Disconnect)

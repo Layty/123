@@ -149,6 +149,19 @@ namespace MySerialPortMaster
             }
         }
 
+
+        public int Interval
+        {
+            get => _interval;
+            set
+            {
+                _interval = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int _interval;
+
         #endregion
 
 
@@ -160,7 +173,7 @@ namespace MySerialPortMaster
         public SerialPortConfig CreateMySerialPortConfig =>
             new SerialPortConfig(PortName, BaudRate, StopBits, Parity, DataBits, ResponseTimeOut,
                 IsOwnCurrentSerialPort,
-                IsAutoDataReceived);
+                IsAutoDataReceived, Interval);
 
         /// <summary>
         /// 导入串口的配置参数
@@ -178,6 +191,7 @@ namespace MySerialPortMaster
                 if (TryParseStopBits(serialPortConfig.StopBits, out StopBits stopBits)) StopBits = stopBits;
                 IsOwnCurrentSerialPort = serialPortConfig.IsOwnThisSerialPort;
                 IsAutoDataReceived = serialPortConfig.IsAutoDataReceived;
+                Interval = serialPortConfig.Interval;
             }
             catch (Exception ex)
             {
@@ -198,8 +212,8 @@ namespace MySerialPortMaster
         public SerialPortMaster()
         {
             SerialPort = new SerialPort();
-          
             IsAutoDataReceived = true;
+            
         }
 
         public SerialPortMaster(SerialPortConfig serialPortConfig)
@@ -213,9 +227,8 @@ namespace MySerialPortMaster
         {
             while (SerialPort.BytesToRead != 0)
             {
-               
                 var n = SerialPort.BytesToRead;
-               await Task.Delay(50);
+                await Task.Delay(50);
 
                 var n1 = SerialPort.BytesToRead;
                 if (n != 0 && n1 == n)
@@ -229,10 +242,6 @@ namespace MySerialPortMaster
                     break;
                 }
             }
-
-            //byte[] readBuffer = new byte[SerialPort.BytesToRead];
-            //SerialPort.Read(readBuffer, 0, readBuffer.Length);
-            //OnDataReceived(readBuffer, null);
         }
 
         #region 串口开启与关闭

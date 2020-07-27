@@ -50,7 +50,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             InvokeIdAndPriority = GetInvoke_Id_And_Priority();
         }
 
-        internal void UpdateInvokeId(byte value)
+        public Invoke_Id_And_Priority()
+        {
+            
+        }
+        public  void UpdateInvokeIdAndPriority(byte value)
         {
             if ((value & 0x80) != 0)
             {
@@ -73,7 +77,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             InvokeId = (byte) (value & 0xF);
         }
 
-        private byte GetInvoke_Id_And_Priority()
+        public byte GetInvoke_Id_And_Priority()
         {
             byte count = 0;
             if (Priority == Priority.High)
@@ -90,5 +94,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
             return count;
         }
+
+      
     }
 }

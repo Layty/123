@@ -60,16 +60,16 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             if (inputBytes[0] == 0x80)
             {
                 var data = inputBytes.Skip(2).ToArray();
-                PosActT0 = getValue(data.Skip(0).Take(8).ToArray(), ("Kw", 3));
-                PosActT1 = getValue(data.Skip(8).Take(8).ToArray(), ("Kw", 3));
-                PosActT2 = getValue(data.Skip(16).Take(8).ToArray(), ("Kw", 3));
-                PosActT3 = getValue(data.Skip(24).Take(8).ToArray(), ("Kw", 3));
-                PosActT4 = getValue(data.Skip(32).Take(8).ToArray(), ("Kw", 3));
-                RevActT0 = getValue(data.Skip(40).Take(8).ToArray(), ("Kw", 3));
-                RevActT1 = getValue(data.Skip(48).Take(8).ToArray(), ("Kw", 3));
-                RevActT2 = getValue(data.Skip(56).Take(8).ToArray(), ("Kw", 3));
-                RevActT3 = getValue(data.Skip(64).Take(8).ToArray(), ("Kw", 3));
-                RevActT4 = getValue(data.Skip(72).Take(8).ToArray(), ("Kw", 3));
+                PosActT0 = getValue(data.Skip(0).Take(8).ToArray(), ("kW", 3));
+                PosActT1 = getValue(data.Skip(8).Take(8).ToArray(), ("kW", 3));
+                PosActT2 = getValue(data.Skip(16).Take(8).ToArray(), ("kW", 3));
+                PosActT3 = getValue(data.Skip(24).Take(8).ToArray(), ("kW", 3));
+                PosActT4 = getValue(data.Skip(32).Take(8).ToArray(), ("kW", 3));
+                RevActT0 = getValue(data.Skip(40).Take(8).ToArray(), ("kW", 3));
+                RevActT1 = getValue(data.Skip(48).Take(8).ToArray(), ("kW", 3));
+                RevActT2 = getValue(data.Skip(56).Take(8).ToArray(), ("kW", 3));
+                RevActT3 = getValue(data.Skip(64).Take(8).ToArray(), ("kW", 3));
+                RevActT4 = getValue(data.Skip(72).Take(8).ToArray(), ("kW", 3));
 
                 PosReactT0 = getValue(data.Skip(80).Take(8).ToArray(), ("kvarh", 3));
                 PosReactT1 = getValue(data.Skip(88).Take(8).ToArray(), ("kvarh", 3));

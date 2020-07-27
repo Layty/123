@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using CommonServiceLocator;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件.View
 {
@@ -10,6 +13,12 @@ namespace 三相智慧能源网关调试软件.View
         public UserLoginPage()
         {
             InitializeComponent();
+        }
+
+        private void UserLoginPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+           var userLoginViewModel= ServiceLocator.Current.GetInstance<UserLoginViewModel>();
+           userLoginViewModel.ReadUserInfoFromResource();
         }
     }
 }

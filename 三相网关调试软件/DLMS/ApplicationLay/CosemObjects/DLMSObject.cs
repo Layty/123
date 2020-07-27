@@ -10,7 +10,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
     {
         public string LogicalName { get; set; }
 
-        //public MyDLMSSettings Settings { get; set; }
         public string Description { get; set; }
 
         public ObjectType ObjectType { get; set; }
@@ -19,9 +18,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         public object Tag { get; set; }
         public byte Version { get; set; } = 0;
 
-        public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
-        public SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
-        public ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
+        //public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
+        //public SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
+        //public ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
 
         public DLMSObject()
             : this(ObjectType.None, null, 0)
@@ -56,22 +55,27 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public byte[] GetAttributeData(byte attrId)
         {
-            GetRequestNormal getRequestNormal = new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), GetRequestType);
-            return getRequestNormal.ToPduBytes();
+            //GetRequestNormal getRequestNormal = new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High));
+            //return getRequestNormal.ToPduBytes();
+            GetRequest getRequest=new GetRequest();
+
+            getRequest.GetRequestNormal=new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High));
+            return getRequest.ToPduBytes();
         }
 
 
         public byte[] SetAttributeData(byte attrId, DLMSDataItem dlmsDataItem)
         {
             SetRequestNormal setRequestNormal =
-                new SetRequestNormal(new CosemAttributeDescriptor(this, attrId), dlmsDataItem, SetRequestType);
+                new SetRequestNormal(new CosemAttributeDescriptor(this, attrId), dlmsDataItem);
             return setRequestNormal.ToPduBytes();
         }
 
         public byte[] ActionExecute(byte methodIndex, DLMSDataItem dlmsDataItem)
         {
-            ActionRequestNormal actionRequestNormal = new ActionRequestNormal(new CosemMethodDescriptor(this, methodIndex), dlmsDataItem,
-                ActionRequestType);
+            ActionRequestNormal actionRequestNormal = new ActionRequestNormal(
+                new CosemMethodDescriptor(this, methodIndex), dlmsDataItem
+            );
             return actionRequestNormal.ToPduBytes();
         }
 

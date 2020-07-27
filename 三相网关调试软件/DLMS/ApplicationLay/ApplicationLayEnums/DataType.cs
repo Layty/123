@@ -2,74 +2,42 @@
 {
     public enum DataType : byte
     {
+        NullData=0,
         Array = 1,
-
-
-        Bcd = 13,
-
-
-        BitString = 4,
-
-
-        Boolean = 3,
-
-
-        CompactArray = 19,
-
-
-        Date = 26,
-
-
-        DateTime = 25,
-
-        Enum = 22,
-
-
-        double32 = 7,
-
-
-        double64 = 8,
-
-
-        Int16 = 16,
-
-
-        Int32 = 5,
-
-
-        Int64 = 20,
-
-
-        Int8 = 15,
-
-
-        None = 0,
-
-
-        OctetString = 9,
-
-
-        String = 10,
-
-
-        StringUTF8 = 12,
-
-
         Structure = 2,
-
-
-        Time = 27,
-
-
-        UInt16 = 18,
-
-
+        Boolean = 3,
+        BitString = 4,
+        Int32 = 5,
         UInt32 = 6,
 
-
+        double32 = 7,
+        double64 = 8,
+        
+        OctetString = 9,
+        String = 10,
+        UTF8String = 12,
+        Bcd = 13,
+        Int8 = 15,
+        Int16 = 16, UInt8 = 17, UInt16 = 18,
+        CompactArray = 19,
+        Int64 = 20,
         UInt64 = 21,
+        Enum = 22,
+        Float32 = 23,
+        Float64 = 24,
+        DateTime = 25,
+        Date = 26,
+        Time = 27,
+        DoNotCare=255
 
 
-        UInt8 = 17
+    
+
+
+    
+
+
+  
+
     }
 }

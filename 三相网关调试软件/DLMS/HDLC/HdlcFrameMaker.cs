@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using ApplicationContextName = 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationContextName;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
 {
     public class HdlcFrameMaker
     {
-        public MyDLMSSettings Settings;
+        private readonly MyDLMSSettings _dlmsSettings;
 
-        public Hdlc46Frame Hdlc46Frame { get; set; }
+        public  Hdlc46Frame Hdlc46Frame { get; set; }
 
-        public HdlcFrameMaker(MyDLMSSettings settings)
+        public HdlcFrameMaker(MyDLMSSettings dlmsSettings)
         {
-            this.Settings = settings;
-            Hdlc46Frame = new Hdlc46Frame((settings.ServerAddress),
-                settings.ClientAddress);
+            _dlmsSettings = dlmsSettings;
+            Hdlc46Frame = new Hdlc46Frame( dlmsSettings.ServerAddress,
+                dlmsSettings.ClientAddress);
         }
 
         public byte[] SNRMRequest(bool snrmContainInfoFlag = true)
@@ -25,31 +24,25 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             InitFrameSequenceNumber();
             List<byte> snrmFrame = new List<byte>();
             PackagingDestinationAndSourceAddress(snrmFrame);
-            Settings.LastCommand = Command.Snrm;
+            _dlmsSettings.LastCommand = Command.Snrm;
             snrmFrame.Add((byte) Command.Snrm);
             byte[] snrmInfo = { };
             byte hcs = 0;
             if (snrmContainInfoFlag)
             {
                 hcs = 2;
-                snrmInfo = Settings.DlmsInfo.GetSnrmInfo();
+                snrmInfo = _dlmsSettings.DlmsInfo.GetSnrmInfo();
             }
 
             //不包含头尾2个0x7E
             //FrameFormatField=2，,1/2/4个字节的目的地址字节数，  command=1个字节， hcs字节=2，snrminfo=12, 2个字节FCS,
-            int count = 2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + hcs + snrmInfo.Length + 2;
-
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            snrmFrame.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            int count = 2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + hcs + snrmInfo.Length + Hdlc46Frame.Fcs.Length;
+            snrmFrame.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
 
             if (snrmContainInfoFlag)
             {
                 PackingHcs(snrmFrame);
-                snrmFrame.AddRange(Settings.DlmsInfo.GetSnrmInfo());
+                snrmFrame.AddRange(_dlmsSettings.DlmsInfo.GetSnrmInfo());
             }
 
             PackingFcs_And_FrameStartEnd(snrmFrame);
@@ -61,15 +54,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         {
             List<byte> disConnect = new List<byte>();
             PackagingDestinationAndSourceAddress(disConnect);
-            Settings.LastCommand = Command.DisconnectRequest;
+            _dlmsSettings.LastCommand = Command.DisconnectRequest;
             disConnect.Add((byte) Command.DisconnectRequest);
-            byte len = (byte) (disConnect.Count + 2 + 2); //FCS=2,FrameFormatField=2 ,目的地址=1/2/4，源地址=1
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(len)
-            };
-            disConnect.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            byte count = (byte) (disConnect.Count + 2 + 2); //FCS=2,FrameFormatField=2 ,目的地址=1/2/4，源地址=1
+        
+            disConnect.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(disConnect);
             InitFrameSequenceNumber();
             return disConnect.ToArray();
@@ -97,7 +86,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
             #region 认证功能单元的域的编码,只有在选择了身份验证功能单元时，才会出现以下字段。
 
-           // bool flag = Hdlc46Frame.PasswordLvl1 == Hdlc46Frame.PasswordLvl.LLS;
+           // bool flag = _hdlc46Frame.PasswordLvl1 == _hdlc46Frame.PasswordLvl.LLS;
             if (true)
             {
                 //认证功能单元域的编码
@@ -119,7 +108,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 #endregion
 
                 #region calling_authentication_value[12] EXPLICIT Authentication_value OPTIONAL,
-                appApduContentList.AddRange(new CallingAuthenticationValue(Settings.PasswordHex).ToPduBytes());
+                appApduContentList.AddRange(new CallingAuthenticationValue(_dlmsSettings.PasswordHex).ToPduBytes());
                 #endregion
             }
 
@@ -151,24 +140,19 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
                 0x00, 0x7F, 0x1F //定长 BITSTRING的值的编码  --ProposedConformance
                 /*  0x04, 0xB0*/ //值为 0x04B0,一个 Unsigned16的编码是它本身的值  0x7E, 0x1F/7C FF
             }); //user-information:xDLMS InitiateRequestAPDU   0,  0 = 0x04,0xB0值为 0x04B0,一个 Unsigned16的编码是它本身的值
-            appApduContentList.AddRange(BitConverter.GetBytes(Settings.MaxReceivePduSize));
+            appApduContentList.AddRange(BitConverter.GetBytes(_dlmsSettings.MaxReceivePduSize));
 
             #endregion
 
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2 + 3 + 1 + 1 + appApduContentList.Count +
                                  2);
 
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            arrqListBytes.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            arrqListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
 
             PackingHcs(arrqListBytes);
             arrqListBytes.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
 
-            Settings.LastCommand = Command.Aarq;
+            _dlmsSettings.LastCommand = Command.Aarq;
             arrqListBytes.Add((byte) Command.Aarq);
             arrqListBytes.Add((byte) appApduContentList.Count);
             arrqListBytes.AddRange(appApduContentList);
@@ -187,15 +171,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
 
             rlrqListBytes.Add((byte) ctr);
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2 + 3 + 1 + 1 + 3 + 2);
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            rlrqListBytes.InsertRange(0, Hdlc46Frame.FrameFormatField);
+         
+            rlrqListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingHcs(rlrqListBytes);
             rlrqListBytes.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
-            Settings.LastCommand = Command.ReleaseRequest;
+            _dlmsSettings.LastCommand = Command.ReleaseRequest;
             rlrqListBytes.Add((byte) Command.ReleaseRequest); //
             rlrqListBytes.AddRange(new byte[]
             {
@@ -216,39 +196,30 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             List<byte> listUi = new List<byte>();
             PackagingDestinationAndSourceAddress(listUi);
             listUi.Add((byte) Command.UiCommand); //19
-            byte len = (byte) (listUi.Count + 4); //4=FCS+帧头帧尾
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(len)
-            };
-            listUi.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            byte count = (byte) (listUi.Count + 4); //4=FCS+帧头帧尾
+            listUi.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(listUi);
             return listUi.ToArray();
         }
 
-        public byte[] GetRequest(byte[] getAttributeBytes)
+        public byte[] BuildPduRequestBytes(byte[] pduBytes)
         {
             List<byte> getRequest = new List<byte>();
             PackagingDestinationAndSourceAddress(getRequest); //源地址固定一个字节，目的地址1~4个字节
             int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
                       (Hdlc46Frame.CurrentSendSequenceNumber << 1);
             IncreaseFrameSequenceNumber();
-            getRequest.Add((byte) ctr);
+            getRequest.Add((byte)ctr);
             //2个起始帧字节,目的地址长度，1个源地址长度+ 1字节ctr  +2个字节Hcs，3个字节LLCHead 13字节+2字节FCS
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2 + 3 + getAttributeBytes.Length + 2);
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            getRequest.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            byte count = (byte)(2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2 + 3 + pduBytes.Length + Hdlc46Frame.Fcs.Length);
+       
+            getRequest.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingHcs(getRequest);
             getRequest.AddRange(Hdlc46Frame.LlcHeadFrameBytes); //3字节
 
             #region 13字节Apdu
 
-            getRequest.AddRange(getAttributeBytes);
+            getRequest.AddRange(pduBytes);
 
             #endregion
 
@@ -256,56 +227,6 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             return getRequest.ToArray();
         }
 
-
-        public byte[] SetRequest(byte[] setAttributeBytes)
-        {
-            List<byte> setRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(setRequest);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
-            IncreaseFrameSequenceNumber();
-            setRequest.Add((byte) ctr);
-
-            var count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 +1+ 2 + 3 + setAttributeBytes.Length + 2);
-
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                (0xA0),
-                Convert.ToByte(count)
-            };
-            setRequest.InsertRange(0, Hdlc46Frame.FrameFormatField);
-            PackingHcs(setRequest);
-            setRequest.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
-
-            setRequest.AddRange(setAttributeBytes);
-
-            PackingFcs_And_FrameStartEnd(setRequest);
-            return setRequest.ToArray();
-        }
-
-
-        public byte[] ActionRequest(byte[] actionRequestBytes)
-        {
-            List<byte> actionRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(actionRequest);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
-            IncreaseFrameSequenceNumber();
-            actionRequest.Add((byte) ctr);
-
-            var count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 +1+ 2 + 3 + actionRequestBytes.Length +
-                                2);
-
-            Hdlc46Frame.FrameFormatField = new byte[] {0xA0, count};
-            actionRequest.InsertRange(0, Hdlc46Frame.FrameFormatField);
-            PackingHcs(actionRequest);
-            actionRequest.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
-            //pdu
-            actionRequest.AddRange(actionRequestBytes);
-
-            PackingFcs_And_FrameStartEnd(actionRequest);
-            return actionRequest.ToArray();
-        }
 
         /// <summary>
         /// 进入基表升级模式
@@ -323,17 +244,13 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             enterUpgradeMode.Add((byte) ctr);
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 2 + 3 + 2 + 2 + 2 + 2);
 
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            enterUpgradeMode.InsertRange(0, Hdlc46Frame.FrameFormatField);
+            enterUpgradeMode.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingHcs(enterUpgradeMode);
             enterUpgradeMode.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
 
             enterUpgradeMode.AddRange(new byte[] {0xFF, 0x10});
             enterUpgradeMode.AddRange(BitConverter.GetBytes(id).Reverse().ToArray());
+
             PackingFcs_And_FrameStartEnd(enterUpgradeMode);
             return enterUpgradeMode.ToArray();
         }
@@ -345,12 +262,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 1;
             rr.Add((byte) ctr);
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2);
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            rr.InsertRange(0, Hdlc46Frame.FrameFormatField);
+       
+            rr.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(rr);
             return rr.ToArray();
         }
@@ -362,12 +275,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 5;
             rnrListBytes.Add((byte) ctr);
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2);
-            Hdlc46Frame.FrameFormatField = new byte[]
-            {
-                160,
-                Convert.ToByte(count)
-            };
-            rnrListBytes.InsertRange(0, Hdlc46Frame.FrameFormatField);
+         
+            rnrListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(rnrListBytes);
             return rnrListBytes.ToArray();
         }

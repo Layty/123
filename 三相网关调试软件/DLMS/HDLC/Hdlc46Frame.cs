@@ -51,12 +51,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             }
         }
 
-        private byte[] _frameformatfield;
+        public byte[] FrameFormatField { get; set; }
 
-        public byte[] FrameFormatField
+        public byte[] GetFrameFormatField(int count)
         {
-            get => _frameformatfield;
-            set { _frameformatfield = value; }
+            return new byte[]{0xA0, Convert.ToByte(count) };
         }
 
         /// <summary>

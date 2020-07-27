@@ -122,10 +122,10 @@ namespace 三相智慧能源网关调试软件.Model.IIC
                     AngleIb = IicCommonDataConvertor.ValueConvertor(bytes.Skip(116), ("", 4));
                     AngleIc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(120), ("", 4));
 
-                    PosActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(124), ("W", 3));
-                    RevActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(128), ("W", 3));
-                    PosReactT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(132), ("var", 3));
-                    RevReactT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(136), ("var", 3));
+                    PosActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(124), ("kW", 3));
+                    RevActT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(128), ("kW", 3));
+                    PosReactT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(132), ("kvar", 3));
+                    RevReactT = IicCommonDataConvertor.ValueConvertor(bytes.Skip(136), ("kvar", 3));
 
                     RtcBattV = IicCommonDataConvertor.ValueConvertor(bytes.Skip(140), ("V", 2));
 

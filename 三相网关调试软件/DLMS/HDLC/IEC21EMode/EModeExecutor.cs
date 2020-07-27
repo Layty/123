@@ -36,7 +36,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 
         public Task<bool> Execute21ENegotiate()
         {
-            return Task.Run(async delegate
+            return Task.Run(async()=>
             {
                 BackupPortPara();
                 Init21ESerialPort();

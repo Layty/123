@@ -192,6 +192,8 @@
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ScriptActionType.cs" />
     <Compile Include="DLMS\ApplicationLay\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetResponseNormal.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSRegister.cs" />
@@ -222,7 +224,7 @@
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSClock.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResult.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessRange.cs" />
-    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ApplicationContextNameType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ClockStatus.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataAccessResult.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataType.cs" />
@@ -272,14 +274,28 @@
     <Compile Include="FileTransmit\IFileTransmit.cs" />
     <Compile Include="FileTransmit\ITransmitUart.cs" />
     <Compile Include="Model\DLMSSelfDefineRegisterModel.cs" />
+    <Compile Include="Model\ENetConfig\ENetEventType.cs" />
+    <Compile Include="Model\ENetConfig\ENetMessageBuilder.cs" />
     <Compile Include="Model\IIC\IicDataType.cs" />
     <Compile Include="Model\IIC\IicEnergyData.cs" />
     <Compile Include="Model\IIC\IicCommonDataConvertor.cs" />
     <Compile Include="Model\IIC\IicDemandData.cs" />
     <Compile Include="Model\IIC\IicHarmonicData.cs" />
     <Compile Include="Model\IIC\IicInstantData.cs" />
+    <Compile Include="MyControl\ClockControl.xaml.cs">
+      <DependentUpon>ClockControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\DataControl.xaml.cs">
       <DependentUpon>DataControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\HeartBeatButton.xaml.cs">
+      <DependentUpon>HeartBeatButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\SuperButton.xaml.cs">
+      <DependentUpon>SuperButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\UserControlForMenu.xaml.cs">
+      <DependentUpon>UserControlForMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DataViewModel.cs" />
     <Compile Include="MyControl\MenuControl.xaml.cs">
@@ -297,6 +313,7 @@
     <Compile Include="MyControl\ProfileGenericUserControl.xaml.cs">
       <DependentUpon>ProfileGenericUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ENetMessageBuilderViewModel.cs" />
     <Compile Include="ViewModel\GrowlViewModel.cs" />
     <Compile Include="ViewModel\ProfileGenericViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
@@ -334,6 +351,15 @@
     <Compile Include="ViewModel\UserLoginViewModel.cs" />
     <Compile Include="ViewModel\NetLogViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="View\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CoverPage.xaml.cs">
+      <DependentUpon>CoverPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Management\ENetDataPage.xaml.cs">
+      <DependentUpon>ENetDataPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ServerCenter\DLMSClientPage.xaml.cs">
       <DependentUpon>DLMSClientPage.xaml</DependentUpon>
     </Compile>
@@ -399,7 +425,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyControl\ClockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\DataControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\HeartBeatButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -427,6 +461,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyControl\SuperButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\UserControlForMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\UtilityTablesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -440,6 +482,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyControl\SkinUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CoverPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Management\ENetDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -532,10 +586,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="Fonts\3.ico" />
+    <Resource Include="Image\伊利斯逐星.jpg" />
+    <Resource Include="Image\Image1.jpg" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Config\AppPara.cfg" />
     <None Include="DLMS设备信息.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

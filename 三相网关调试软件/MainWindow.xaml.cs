@@ -10,7 +10,6 @@ using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
-using 三相智慧能源网关调试软件.View.ServerCenter;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -124,7 +123,7 @@ namespace 三相智慧能源网关调试软件
             if (ExpandMenu.IsEnabled)
             {
                 ExpandMenu.IsChecked = true;
-                Frame.Navigate(new DLMSSettingsPage());
+                Frame.Navigate(new CoverPage());
             }
         }
 
@@ -184,21 +183,9 @@ namespace 三相智慧能源网关调试软件
 
         private void ToggleButtonLog_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ColumnLog.Width==new GridLength(0))
-            {
-                CardLog.Width = 200;
-                CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-                ColumnLog.Width=new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
-                CardLog.Width = Double.NaN;
-                //  ColumnLog.Width=new GridLength(1,);
-            }
-            else
-            {
-                CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-                CardLog.Width = Double.NaN; 
-                ColumnLog.Width = new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
-            }
+            CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            ColumnLog.Width = new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
+            TabControl.Width = Double.NaN;
         }
-          
     }
 }

@@ -47,16 +47,16 @@ namespace 三相智慧能源网关调试软件.Model.IIC
 
                 {
                     var data = inputBytes.Skip(2).ToArray();
-                    PosActT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(0), ("kw", 3));
-                    PosActT1 = IicCommonDataConvertor.ValueConvertor(data.Skip(4), ("kw", 3));
-                    PosActT2 = IicCommonDataConvertor.ValueConvertor(data.Skip(8), ("kw", 3));
-                    PosActT3 = IicCommonDataConvertor.ValueConvertor(data.Skip(12), ("kw", 3));
-                    PosActT4 = IicCommonDataConvertor.ValueConvertor(data.Skip(16), ("kw", 3));
-                    RevActT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(20), ("kw", 3));
-                    RevActT1 = IicCommonDataConvertor.ValueConvertor(data.Skip(24), ("kw", 3));
-                    RevActT2 = IicCommonDataConvertor.ValueConvertor(data.Skip(28), ("kw", 3));
-                    RevActT3 = IicCommonDataConvertor.ValueConvertor(data.Skip(32), ("kw", 3));
-                    RevActT4 = IicCommonDataConvertor.ValueConvertor(data.Skip(36), ("kw", 3));
+                    PosActT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(0), ("kWh", 3));
+                    PosActT1 = IicCommonDataConvertor.ValueConvertor(data.Skip(4), ("kWh", 3));
+                    PosActT2 = IicCommonDataConvertor.ValueConvertor(data.Skip(8), ("kWh", 3));
+                    PosActT3 = IicCommonDataConvertor.ValueConvertor(data.Skip(12), ("kWh", 3));
+                    PosActT4 = IicCommonDataConvertor.ValueConvertor(data.Skip(16), ("kWh", 3));
+                    RevActT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(20), ("kWh", 3));
+                    RevActT1 = IicCommonDataConvertor.ValueConvertor(data.Skip(24), ("kWh", 3));
+                    RevActT2 = IicCommonDataConvertor.ValueConvertor(data.Skip(28), ("kWh", 3));
+                    RevActT3 = IicCommonDataConvertor.ValueConvertor(data.Skip(32), ("kWh", 3));
+                    RevActT4 = IicCommonDataConvertor.ValueConvertor(data.Skip(36), ("kWh", 3));
 
                     Quad1ReactT0 = IicCommonDataConvertor.ValueConvertor(data.Skip(40), ("kvarh", 3));
                     Quad1ReactT1 = IicCommonDataConvertor.ValueConvertor(data.Skip(44), ("kvarh", 3));

@@ -9,9 +9,7 @@ namespace 三相智慧能源网关调试软件.Model
 {
     public class UserLoginModel : ObservableObject, IDataErrorInfo
     {
-      
-
-        [Required(ErrorMessage = "用户名不能为空！")]
+        [Required(ErrorMessage = "The user name cannot be empty！")]
         public string UserName
         {
             get => _userName;
@@ -23,7 +21,8 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
         private string _userName;
-        [Required(ErrorMessage = "密码不能为空！")]
+
+        [Required(ErrorMessage = "The password cannot be empty！")]
         public string Password
         {
             get => _password;
@@ -92,7 +91,11 @@ namespace 三相智慧能源网关调试软件.Model
         public string SucceedLoginTime
         {
             get => _succeedLoginTime;
-            set { _succeedLoginTime = value; RaisePropertyChanged(); }
+            set
+            {
+                _succeedLoginTime = value;
+                RaisePropertyChanged();
+            }
         }
 
         private byte _loginErrorCounts;
@@ -100,7 +103,11 @@ namespace 三相智慧能源网关调试软件.Model
         public byte LoginErrorCounts
         {
             get => _loginErrorCounts;
-            set { _loginErrorCounts = value; RaisePropertyChanged(); }
+            set
+            {
+                _loginErrorCounts = value;
+                RaisePropertyChanged();
+            }
         }
 
 
@@ -111,24 +118,27 @@ namespace 三相智慧能源网关调试软件.Model
                 ValidationContext vc = new ValidationContext(this, null, null);
                 vc.MemberName = columnName;
                 var res = new List<ValidationResult>();
-                var result = Validator.TryValidateProperty(this.GetType().GetProperty(columnName).GetValue(this, null), vc, res);
+                var result = Validator.TryValidateProperty(this.GetType().GetProperty(columnName).GetValue(this, null),
+                    vc, res);
                 if (res.Count > 0)
                 {
                     AddDic(dataErrors, vc.MemberName);
                     return string.Join(Environment.NewLine, res.Select(r => r.ErrorMessage).ToArray());
                 }
+
                 RemoveDic(dataErrors, vc.MemberName);
                 return null;
             }
         }
 
-    
+
         /// <summary>
         /// 表当验证错误集合
         /// </summary>
         private Dictionary<String, String> dataErrors = new Dictionary<String, String>();
 
         public string Error { get; }
+
         /// <summary>
         /// 移除字典
         /// </summary>

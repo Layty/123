@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}"
-             d:DesignHeight="450" d:DesignWidth="500">
+             >
 
-    <materialDesign:Card UniformCornerRadius="5">
+    <materialDesign:Card UniformCornerRadius="5" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -45,7 +45,7 @@
                          Style="{StaticResource MaterialDesignTextBox}"
                          TextChanged="TextBoxBase_OnTextChanged"
                          Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay}"
-                         Margin="3"
+                         Margin="3" 
                          BorderThickness="2" />
                 <x:Code>
                     <![CDATA[

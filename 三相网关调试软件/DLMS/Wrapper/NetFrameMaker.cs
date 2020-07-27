@@ -4,36 +4,44 @@ using System.Linq;
 using GalaSoft.MvvmLight;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
-using ApplicationContextName = 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationContextName;
+
 
 
 namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 {
+    public class NetFrame
+    {
+        public byte[] Version { get; set; }
+        public byte[] SourceAddress { get; set; }
+
+        public byte[] DestAddress { get; set; }
+    }
+
     public class NetFrameMaker : ObservableObject
     {
         private MyDLMSSettings MyDlmsSettings { get; set; }
 
+        private NetFrame _netFrame;
+
         public NetFrameMaker(MyDLMSSettings settings)
         {
             MyDlmsSettings = settings;
-            DestAddress = BitConverter.GetBytes(settings.ServerAddress).Reverse().ToArray();
-            SourceAddress = BitConverter.GetBytes(settings.ClientAddress).Reverse().ToArray();
-            Version = new byte[] {0x00, 0x01};
+            //DestAddress = BitConverter.GetBytes(settings.ServerAddress).Reverse().ToArray();
+            //SourceAddress = BitConverter.GetBytes(settings.ClientAddress).Reverse().ToArray();
+            //Version = new byte[] {0x00, 0x01};
+           
         }
-
-        public byte[] SourceAddress { get; set; }
-
-        public byte[] DestAddress { get; set; }
-
-        public byte[] Version { get; set; }
 
 
         private void PackagingDestinationAndSourceAddress(List<byte> bytes)
         {
-            bytes.AddRange(Version);
-            bytes.AddRange(SourceAddress);
-            bytes.AddRange(DestAddress);
+            _netFrame = new NetFrame();
+            _netFrame.Version = new byte[] { 0x00, 0x01 };
+            _netFrame.SourceAddress = BitConverter.GetBytes( MyDlmsSettings .ClientAddress).Reverse().ToArray();
+            _netFrame.DestAddress = BitConverter.GetBytes(MyDlmsSettings.ServerAddress).Reverse().ToArray();
+            bytes.AddRange(_netFrame.Version);
+            bytes.AddRange(_netFrame.SourceAddress);
+            bytes.AddRange(_netFrame.DestAddress);
         }
 
         public byte[] AarqRequest()
@@ -42,13 +50,18 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             PackagingDestinationAndSourceAddress(aarqList);
 
             List<byte> appApduContentList = new List<byte>();
+
             #region ———application-context-name域 (application-context-name [1], OBJECT IDENTIFIER)
+
             //ApplicationContextName
             appApduContentList.AddRange(new ApplicationContextName().ToPduBytes());
+
             #endregion
+
             #region 认证功能单元的域的编码,只有在选择了身份验证功能单元时，才会出现以下字段。
+
             // bool flag = Hdlc46Frame.PasswordLvl1 == Hdlc46Frame.PasswordLvl.LLS;
-           // bool flag = true;
+            // bool flag = true;
             if (true)
             {
                 //认证功能单元域的编码
@@ -66,10 +79,15 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
                 #endregion
 
                 #region mechanism_name[11] IMPLICIT Mechanism_name OPTIONAL,
+
                 appApduContentList.AddRange(new MechanismName().ToPduBytes());
+
                 #endregion
+
                 #region calling_authentication_value[12] EXPLICIT Authentication_value OPTIONAL,
+
                 appApduContentList.AddRange(new CallingAuthenticationValue(MyDlmsSettings.PasswordHex).ToPduBytes());
+
                 #endregion
             }
 
@@ -113,73 +131,16 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
         }
 
 
-        public byte[] GetRequest(DLMSObject cosem, byte attrIndex)
+        public byte[] BuildPduRequestBytes(byte[] pduBytes)
         {
             List<byte> getRequest = new List<byte>();
             PackagingDestinationAndSourceAddress(getRequest);
             List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(cosem.GetAttributeData(attrIndex));
+            apduBytes.AddRange(pduBytes);
             getRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
             getRequest.AddRange(apduBytes);
 
             return getRequest.ToArray();
-        }
-
-        public byte[] GetRequest(byte[] getAttributeBytes)
-        {
-            List<byte> getRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(getRequest);
-            List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(getAttributeBytes);
-            getRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
-            getRequest.AddRange(apduBytes);
-
-            return getRequest.ToArray();
-        }
-
-        public byte[] SetRequest(DLMSObject cosem, byte attrIndex, DLMSDataItem dataItem)
-        {
-            List<byte> setRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(setRequest);
-            List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(cosem.SetAttributeData(attrIndex, dataItem));
-            setRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
-            setRequest.AddRange(apduBytes);
-            return setRequest.ToArray();
-        }
-
-        public byte[] SetRequest(byte[] setAttributeData)
-        {
-            List<byte> setRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(setRequest);
-            List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(setAttributeData);
-            setRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
-            setRequest.AddRange(apduBytes);
-            return setRequest.ToArray();
-        }
-
-
-        public byte[] ActionRequest(DLMSObject cosem, byte methodIndex, DLMSDataItem dataItem)
-        {
-            List<byte> setRequest = new List<byte>();
-            PackagingDestinationAndSourceAddress(setRequest);
-            List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(cosem.ActionExecute(methodIndex, dataItem));
-            setRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
-            setRequest.AddRange(apduBytes);
-            return setRequest.ToArray();
-        }
-
-        public byte[] ActionRequest(byte[] actionRequest)
-        {
-            List<byte> actionRequestList = new List<byte>();
-            PackagingDestinationAndSourceAddress(actionRequestList);
-            List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(actionRequest);
-            actionRequestList.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
-            actionRequestList.AddRange(apduBytes);
-            return actionRequestList.ToArray();
         }
 
 
@@ -188,7 +149,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             List<byte> getRequest = new List<byte>();
             PackagingDestinationAndSourceAddress(getRequest);
             List<byte> apduBytes = new List<byte>();
-            apduBytes.AddRange(new byte[] {(byte) Command.Aarq, 0x00});
+            apduBytes.AddRange(new byte[] {(byte) Command.ReleaseRequest, 0x00});
             getRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
             getRequest.AddRange(apduBytes);
             return getRequest.ToArray();

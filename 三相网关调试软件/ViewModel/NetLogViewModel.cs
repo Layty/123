@@ -15,9 +15,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             MyNetLog = new MyNetLogModel();
             ClearBufferCommand = new RelayCommand(() => { MyNetLog.ClearBuffer(); });
             Messenger.Default.Register<byte[]>(this, "SendDataEvent",
-                sendData => { MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData); });
+                sendData => { MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData) + Environment.NewLine; });
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent",
-                receiveData => { MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData); });
+                receiveData => { MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData) + Environment.NewLine; });
             Messenger.Default.Register<string>(this, "ENetErrorEvent",
                 errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
             Messenger.Default.Register<string>(this, "TelNetErrorEvent",

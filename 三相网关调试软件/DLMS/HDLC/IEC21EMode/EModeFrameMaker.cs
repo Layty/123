@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 {
@@ -20,8 +21,11 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 
         public byte[] GetConfirmFrameBytes()
         {
-            string s = EModeFrame.Ack + "2" + _eModeFrame._baudZ + "2" + EModeFrame.CompletCr + EModeFrame.CompletLf;
-            return Encoding.Default.GetBytes(s);
+            string s =  "2" + _eModeFrame._baudZ + "2"+ EModeFrame.CompletCr + EModeFrame.CompletLf;
+            List<byte> list = new List<byte>();
+            list.Add(EModeFrame.Ack);
+            list.AddRange(Encoding.Default.GetBytes(s));
+            return  list.ToArray();
         }
     }
 }

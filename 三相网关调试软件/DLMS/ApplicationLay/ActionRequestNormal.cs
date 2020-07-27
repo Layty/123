@@ -3,18 +3,27 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnu
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
+    public class ActionResponseNormal:IPduBytesToConstructor
+    {
+        public Invoke_Id_And_Priority InvokeIdAndPriority { get; set; }
+
+        public bool PduBytesToConstructor(byte[] pduBytes)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
     public class ActionRequestNormal : IToPduBytes
     {
         protected Command Command { get; set; } = Command.MethodRequest;
-        protected ActionRequestType ActionRequestType { get; set; }
+        protected ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
         public Invoke_Id_And_Priority InvokeIdAndPriority { get; set; }
         public CosemMethodDescriptor CosemMethodDescriptor { get; set; }
         public DLMSDataItem MethodInvocationParameters { get; set; }
 
         public ActionRequestNormal( CosemMethodDescriptor cosemMethodDescriptor,
-            DLMSDataItem methodInvocationParameters,ActionRequestType actionRequestType=ActionRequestType.Normal)
+            DLMSDataItem methodInvocationParameters)
         {
-            ActionRequestType = actionRequestType;
+           
             CosemMethodDescriptor = cosemMethodDescriptor;
             MethodInvocationParameters = methodInvocationParameters;
             InvokeIdAndPriority = new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High);

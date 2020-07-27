@@ -305,22 +305,37 @@ namespace 三相智慧能源网关调试软件.ViewModel
             public float? Qa
             {
                 get => _Qa;
-                set { _Qa = value; RaisePropertyChanged(); }
+                set
+                {
+                    _Qa = value;
+                    RaisePropertyChanged();
+                }
             }
+
             private float? _Qa;
 
             public float? Qb
             {
                 get => _Qb;
-                set { _Qb = value; RaisePropertyChanged(); }
+                set
+                {
+                    _Qb = value;
+                    RaisePropertyChanged();
+                }
             }
+
             private float? _Qb;
 
             public float? Qc
             {
                 get => _Qc;
-                set { _Qc = value; RaisePropertyChanged(); }
+                set
+                {
+                    _Qc = value;
+                    RaisePropertyChanged();
+                }
             }
+
             private float? _Qc;
 
             public float? STotal
@@ -465,8 +480,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
             public float? Breaker
             {
                 get => _Breaker;
-                set { _Breaker = value; RaisePropertyChanged(); }
+                set
+                {
+                    _Breaker = value;
+                    RaisePropertyChanged();
+                }
             }
+
             private float? _Breaker;
 
             public float? AlarmStatus
@@ -572,7 +592,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
-                
                 DiYaGuiDataModels = new ObservableCollection<DiYaGuiDataModel>();
                 Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
 
@@ -591,10 +610,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         t.DataForShow = "";
                         var dataResult = await Client.GetRequest(t.GetLogicName());
-                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
-                        if (t.GetDataType(1) == DataType.OctetString)
+                        GetResponse getResponse = new GetResponse();
+                        if (getResponse.PduBytesToConstructor(dataResult))
                         {
-                            
+                            if (getResponse.GetResponseNormal.GetDataResult.Data.DataType == DataType.OctetString)
+                            {
+                                t.DataForShow = NormalDataParse.HowToDisplayOctetString(
+                                    getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes,
+                                    DisplayFormatToShow.OBIS);
+                            }
                         }
                     });
                 GetMeterAddressData = new RelayCommand<DLMSSelfDefineUtilityTablesModel>(async t =>

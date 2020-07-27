@@ -127,9 +127,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private DLMSClient _DLMSClient;
 
 
+        public bool IsAutoResponseHeartBeat
+        {
+            get => _isAutoResponseHeartBeat;
+            set { _isAutoResponseHeartBeat = value; RaisePropertyChanged(); }
+        }
+        private bool _isAutoResponseHeartBeat;
+
+
         public TcpServerViewModel()
         {
             TcpServerHelper = new TcpServerHelper(Settings.Default.GatewayIpAddress, 8881);
+            IsAutoResponseHeartBeat = true;
             TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
@@ -144,6 +153,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
+            if (!IsAutoResponseHeartBeat)
+            {
+                return;
+            }
+
             if (bytes.Length != 23)
             {
                 return;

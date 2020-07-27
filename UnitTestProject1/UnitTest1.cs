@@ -6,6 +6,7 @@ using 三相智慧能源网关调试软件;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Model;
+using 三相智慧能源网关调试软件.Model.ENetConfig;
 using 三相智慧能源网关调试软件.Model.IIC;
 using 三相智慧能源网关调试软件.ViewModel;
 
@@ -62,14 +63,14 @@ namespace UnitTestProject1
             var table = excel.GetExcelDataTable("Register");
         }
 
+      
+
         [TestMethod]
-        public void Testfloat()
+        public void TestENetEventType()
         {
-            byte[] s = new byte[] {0xC1, 0x48, 0x00, 0x00};
-            byte[] s1 = new byte[] {0x43, 0x6B, 0xD7, 0x23};
-            var float1 = BitConverter.ToSingle(s1.Reverse().ToArray(), 0);
-            var float2 = 1.3f;
-            var fl = BitConverter.GetBytes(1.3f);
+            ENetMessageBuilder messageMaker = new ENetMessageBuilder(ENetEventType.运行状态字);
+            messageMaker.Timestamp = 1593316175641;
+            var tRequest = messageMaker.GetRequest();
         }
     }
 }

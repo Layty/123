@@ -7,7 +7,6 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding  Source={StaticResource Locator} ,Path=TcpServer}">
     <Grid>
         <materialDesign:Card UniformCornerRadius="5">
@@ -22,7 +21,7 @@
                     <StackPanel>
                         <ComboBox Margin="3" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   IsEditable="True"
-                                  materialDesign:HintAssist.Hint="ServerIP(editable)"
+                                  materialDesign:HintAssist.Hint="Server IP(editable)"
                                   materialDesign:HintAssist.FloatingScale="0.50"
                                   Height="50" FontSize="20"
                                   Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
@@ -33,17 +32,16 @@
                                  Height="50"
                                  materialDesign:HintAssist.FloatingScale="0.50"
                                  materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
-                                 materialDesign:HintAssist.Hint="端口号" FontSize="20"
-                                 Text="{Binding TcpServerHelper.ListenPortNum}" />
+                                 materialDesign:HintAssist.Hint="Listen Port" FontSize="20"
+                                 Text="{Binding TcpServerHelper.ListenPort}" />
                         <TextBox   Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5" 
                                    materialDesign:HintAssist.Hint="超时时间" FontSize="20"
                                    Text="{Binding TcpServerHelper.ResponseTimeOut}" />
-
+                        <CheckBox IsChecked="{Binding IsAutoResponseHeartBeat}" Content="自动响应心跳帧"></CheckBox>
                         <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
                         <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
-
-                        <TextBox x:Name="TextBlockSendData" Text="{Binding CurrentSendMsg}" />
-                        <Button x:Name="ButtonHeartBit" Margin="3" Content="响应心跳帧"
+                        <TextBox x:Name="TextBlockSendData" Text="{Binding CurrentSendMsg}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="响应心跳帧" />
+                        <Button x:Name="ButtonHeartBit" Margin="3" Content="发送"
                                 Command="{Binding SendDataToServerCommand}" />
                         <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
                       

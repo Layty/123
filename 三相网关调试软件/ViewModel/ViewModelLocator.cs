@@ -53,6 +53,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<DLMSClient>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
+                SimpleIoc.Default.Register<ClockViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
                 #region 主程序界面相关
 
@@ -65,6 +66,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 管理芯相关业务
                 SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
+                SimpleIoc.Default.Register<ENetMessageBuilderViewModel>();
                 #endregion
 
                 #region 服务中心相关业务
@@ -117,9 +119,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public MyDLMSSettings DlmsSettings => ServiceLocator.Current.GetInstance<MyDLMSSettings>();
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
+        public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
         public ProfileGenericViewModel ProfileGenericViewModel => ServiceLocator.Current.GetInstance<ProfileGenericViewModel>();
 
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
+
+        public ENetMessageBuilderViewModel ENetMessageMakerViewModel =>
+            ServiceLocator.Current.GetInstance<ENetMessageBuilderViewModel>();
+
         public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
        
         public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();

@@ -3,11 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-     
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DLMSSettingsPage">
@@ -15,43 +13,97 @@
         <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
-        <TabControl>
-            <TabItem Header="DLMSSettings">
-                <StackPanel Margin="3">
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="DestAddress"
-                     Text="{Binding  Client.MyDlmsSettings.ServerAddress}" />
+
+
+        <UniformGrid Margin="3" Columns="5">
+            <GroupBox Header="SerialPort">
+                <myControl:SerialPortControl />
+            </GroupBox>
+            <GroupBox Header="FrontEndProcessor">
+                <myControl:DLMSFrontEndProcessorControl />
+            </GroupBox>
+            <GroupBox Header="Other Parameters">
+                <StackPanel>
                     <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress}"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="SourceAddress" />
-                    <TextBlock Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}" />
-                    <TextBlock Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}" />
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="SourceAddress" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="DestAddress"
+                             Text="{Binding  Client.MyDlmsSettings.ServerAddress}" />
                     <TextBox Text="{Binding  Client.MyDlmsSettings.PasswordString}"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="Password" />
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="Password" />
                     <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
-                    <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}" materialDesign:HintAssist.Hint="MaxReceivePduSize"
-                     materialDesign:HintAssist.IsFloating="True" />
-                    <TextBox Text="{Binding  Client.MyDlmsSettings.DlmsVersion}" materialDesign:HintAssist.Hint="DLMSVersion"
-                     materialDesign:HintAssist.IsFloating="True" />
+
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.DlmsVersion}"
+                             materialDesign:HintAssist.Hint="DLMSVersion"
+                             materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
-                      SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
-                      materialDesign:HintAssist.Hint="StartProtocolType" materialDesign:HintAssist.IsFloating="True" />
+                              SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
+                              materialDesign:HintAssist.Hint="StartProtocolType"
+                              materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.CommunicationTypeArray}"
-                      SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
-                      materialDesign:HintAssist.Hint="CommunicationType" materialDesign:HintAssist.IsFloating="True" />
+                              SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
+                              materialDesign:HintAssist.Hint="CommunicationType"
+                              materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.InterfaceTypeArray}"
-                      SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType}"
-                      materialDesign:HintAssist.Hint="InterfaceType" materialDesign:HintAssist.IsFloating="True" />
+                              SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType}"
+                              materialDesign:HintAssist.Hint="InterfaceType"
+                              materialDesign:HintAssist.IsFloating="True" />
+
                 </StackPanel>
-            </TabItem>
-            <TabItem Header="SerialPort">
-                <myControl:SerialPortControl></myControl:SerialPortControl>
-            </TabItem>
-            <TabItem Header="FrontEndProcessor">
-                <myControl:DLMSFrontEndProcessorControl></myControl:DLMSFrontEndProcessorControl>
-            </TabItem>
-        </TabControl>
-       
+            </GroupBox>
+            <GroupBox Header="HDLC Layer Parameters">
+                <StackPanel>
+                
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="TransmitMaxInfoValue"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfo.TransmitMaxInfoValue}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="TransmitMaxWindowSize"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfo.TransmitMaxWindowSize}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="ReceiveMaxInfoValue"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfo.ReceiveMaxInfoValue}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="ReceiveMaxWindowSize"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfo.ReceiveMaxWindowSize}" />
+                    <TextBox Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="CurrentSendSequenceNumber" />
+                    <TextBox Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="CurrentReceiveSequenceNumber" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Application Layer Parameters">
+                <StackPanel>
+                    <CheckBox IsChecked="{Binding Client.MyDlmsSettings.UseLogicalNameReferencing}" Content="UseLogicalNameReferencing"></CheckBox>
+                    <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}"
+                             materialDesign:HintAssist.Hint="MaxReceivePduSize"
+                             materialDesign:HintAssist.IsFloating="True" />
+                    <ComboBox SelectedItem="{Binding Client.MyDlmsSettings.Priority}" Style="{StaticResource MaterialDesignComboBox}"
+                              ItemsSource="{Binding Client.MyDlmsSettings.PriorityArray}"
+                              materialDesign:HintAssist.Hint="Priority"
+                              materialDesign:HintAssist.IsFloating="True" />
+                    <ComboBox SelectedItem="{Binding Client.MyDlmsSettings.ServiceClass}"
+                              ItemsSource="{Binding Client.MyDlmsSettings.ServiceClassArray}"
+                              materialDesign:HintAssist.Hint="ServiceClass"
+                              materialDesign:HintAssist.IsFloating="True" />
+                    <TextBox Text="{Binding Client.MyDlmsSettings.ProposedConformance}" />
+
+                    <ListBox SelectionMode="Multiple" materialDesign:CheckBoxAssist.CheckBoxSize="2"
+                             ItemsSource="{Binding Client.MyDlmsSettings.ProposedConformanceArray}" />
+                    <ListBox />
+                </StackPanel>
+
+
+            </GroupBox>
+            
+         
+        </UniformGrid>
+
+
     </Grid>
 </Page>

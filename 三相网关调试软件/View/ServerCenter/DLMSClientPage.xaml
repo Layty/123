@@ -55,6 +55,11 @@
                     <myControl:ProfileGenericUserControl />
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Clock">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <myControl:ClockControl />
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
 
 

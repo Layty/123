@@ -7,6 +7,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
@@ -26,18 +27,7 @@ namespace 三相智慧能源网关调试软件.DLMS
         public Socket CurrentSocket { get; set; }
 
         public MyDLMSSettings MyDlmsSettings { get; set; }
-        private StartProtocolType _startProtocolType = StartProtocolType.DLMS;
-
-        public StartProtocolType StartProtocolType
-        {
-            get => _startProtocolType;
-            set
-            {
-                _startProtocolType = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        
         private async Task<byte[]> HowToSendData(byte[] sendBytes)
         {
             var pdubyte = new Byte[] { };
@@ -57,11 +47,23 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         public async Task<byte[]> InitRequest()
         {
-            byte[] bytes;
+            byte[] bytes = null;
             if (MyDlmsSettings.CommunicationType != CommunicationType.NetWork)
             {
-                bytes = await SNRMRequest();
-                bytes = await AarqRequest();
+                if (MyDlmsSettings.StartProtocolType == StartProtocolType.IEC21E)
+                {
+                    var flag21E = await Execute21ENegotiate();
+                    if (flag21E)
+                    {
+                        bytes = await SNRMRequest();
+                        bytes = await AarqRequest();
+                    }
+                }
+                else
+                {
+                    bytes = await SNRMRequest();
+                    bytes = await AarqRequest();
+                }
             }
             else
             {
@@ -74,15 +76,29 @@ namespace 三相智慧能源网关调试软件.DLMS
         public async Task<bool> Execute21ENegotiate()
         {
             bool isSucceed = false;
-            if (StartProtocolType == StartProtocolType.IEC21E)
+            if (MyDlmsSettings.StartProtocolType == StartProtocolType.IEC21E)
             {
                 var EModeExecutor = new EModeExecutor(_portMaster, "");
+                var keepAutoDataReceived = false;
+                if (_portMaster.IsAutoDataReceived)
+                {
+                    keepAutoDataReceived = true;
+                    _portMaster.IsAutoDataReceived = false;
+                }
                 isSucceed = await EModeExecutor.Execute21ENegotiate();
+                if (keepAutoDataReceived)
+                {
+                    _portMaster.IsAutoDataReceived = true;
+                }
+               
             }
 
             return isSucceed;
         }
-
+        /// <summary>
+        /// 只有HDLC-46才需要SNRM
+        /// </summary>
+        /// <returns></returns>
         public async Task<byte[]> SNRMRequest()
         {
             IsAuthenticationRequired = false;
@@ -127,32 +143,35 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
 
 
-        public async Task<byte[]> GetRequest(byte[] getAttributeBytes)
+        public async Task<byte[]> GetRequest(byte[] getAttributeBytes) 
         {
             byte[] bytes = new byte[] { };
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-                bytes = await HowToSendData(HdlcFrameMaker.GetRequest(getAttributeBytes));
+                bytes = await HowToSendData(HdlcFrameMaker.BuildPduRequestBytes(getAttributeBytes));
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                bytes = await HowToSendData(NetFrameMaker.GetRequest(getAttributeBytes));
+                bytes = await HowToSendData(NetFrameMaker.BuildPduRequestBytes(getAttributeBytes));
             }
 
             return bytes;
         }
+   
 
-
-        public async Task SetRequest(byte[] setAttributeBytes)
+        public async Task<byte[]> SetRequest(byte[] setAttributeBytes)
         {
+            byte[] bytes = { };
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-                await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetRequest(setAttributeBytes));
+                bytes= await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.BuildPduRequestBytes(setAttributeBytes));
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                _socket.SendDataToClient(CurrentSocket, NetFrameMaker.SetRequest(setAttributeBytes));
+                bytes= await _socket.SendDataToClientAndWaitReceiveData(CurrentSocket, NetFrameMaker.BuildPduRequestBytes(setAttributeBytes));
             }
+
+            return bytes;
         }
 
 
@@ -160,11 +179,11 @@ namespace 三相智慧能源网关调试软件.DLMS
         {
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-                await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.ActionRequest(actionRequestBytes));
+                await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.BuildPduRequestBytes(actionRequestBytes));
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                _socket.SendDataToClient(CurrentSocket, NetFrameMaker.ActionRequest(actionRequestBytes));
+                _socket.SendDataToClient(CurrentSocket, NetFrameMaker.BuildPduRequestBytes(actionRequestBytes));
             }
 
             return null;
@@ -257,8 +276,8 @@ namespace 三相智慧能源网关调试软件.DLMS
             _socket = ServiceLocator.Current.GetInstance<TcpServerViewModel>().TcpServerHelper;
             _portMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
             InitSerialPortParams(_portMaster);
-            InitRequestCommand = new RelayCommand(async () => {await InitRequest(); });
-            ReleaseRequestCommand=new RelayCommand(async () => { await DisconnectRequest(true);});
+            InitRequestCommand = new RelayCommand(async () => { await InitRequest(); });
+            ReleaseRequestCommand = new RelayCommand(async () => { await DisconnectRequest(true); });
             //   GetRequestCommand=new RelayCommand(()=>{GetRequestNormal()});
         }
 

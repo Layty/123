@@ -16,9 +16,9 @@ namespace MySerialPortMaster
         public bool IsOwnThisSerialPort { get; set; }
         public bool IsAutoDataReceived { get; set; }
 
-
+        public int Interval { get; set; }
         public SerialPortConfig(string portName, int baudRate, StopBits stopBits, Parity parity, int dataBits,
-            int delayTimeOut, bool isOwnThisSerialPort, bool isAutoDataReceived)
+            int delayTimeOut, bool isOwnThisSerialPort, bool isAutoDataReceived,int interval)
         {
             PortName = portName;
             BaudRate = baudRate;
@@ -28,6 +28,7 @@ namespace MySerialPortMaster
             DelayTimeOut = delayTimeOut;
             IsOwnThisSerialPort = isOwnThisSerialPort;
             IsAutoDataReceived = isAutoDataReceived;
+            Interval = interval;
         }
     }
 }

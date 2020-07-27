@@ -3,6 +3,7 @@ using System.Windows.Controls;
 
 namespace 三相智慧能源网关调试软件.View
 {
+ 
     public static class PasswordBoxHelper
     {
         public static string GetPassword(DependencyObject obj)

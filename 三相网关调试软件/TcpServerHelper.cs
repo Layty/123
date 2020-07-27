@@ -21,17 +21,17 @@ namespace 三相智慧能源网关调试软件
 
     public class TcpServerHelper : ViewModelBase
     {
-        public int ListenPortNum
+        public int ListenPort
         {
-            get => _listenPortNum;
+            get => _listenPort;
             set
             {
-                _listenPortNum = value;
+                _listenPort = value;
                 RaisePropertyChanged();
             }
         }
 
-        private int _listenPortNum;
+        private int _listenPort;
 
 
         public string ListenIpAddress
@@ -134,18 +134,18 @@ namespace 三相智慧能源网关调试软件
             StatusMsg?.Invoke(msg);
         }
 
-        public TcpServerHelper(string listenIpAddress, int listenPortNum)
+        public TcpServerHelper(string listenIpAddress, int listenPort)
         {
             ListenIpAddress = listenIpAddress;
-            ListenPortNum = listenPortNum;
+            ListenPort = listenPort;
             SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             SocketClientList = new ObservableCollection<Socket>();
         }
 
-        public TcpServerHelper(string listenIpAddress, int listenPortNum, ProtocolType protocolType = ProtocolType.Tcp)
+        public TcpServerHelper(string listenIpAddress, int listenPort, ProtocolType protocolType = ProtocolType.Tcp)
         {
             ListenIpAddress = listenIpAddress;
-            ListenPortNum = listenPortNum;
+            ListenPort = listenPort;
             ProtocolType = protocolType;
 
             SocketClientList = new ObservableCollection<Socket>();
@@ -176,7 +176,7 @@ namespace 三相智慧能源网关调试软件
         public void StartListen()
         {
             SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPortNum);
+            IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
             SocketServer.Bind(IpEndPoint);
             SocketServer.Listen(5);
             OnNotifyStatusMsg($"监听{IpEndPoint}成功");

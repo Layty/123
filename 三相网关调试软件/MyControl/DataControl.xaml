@@ -8,24 +8,31 @@
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
     <Grid>
-        <DataGrid ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False"
+                  HorizontalGridLinesBrush="{DynamicResource PrimaryHueDarkBrush}" GridLinesVisibility="Horizontal">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding DataName }" Header="DataName" />
-                <!--<DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType" />-->
+                <DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType" />
                 <DataGridTextColumn Binding="{Binding LogicalName}" Header="LogicName" />
-                <DataGridTextColumn Binding="{Binding DataValue}" Header="Value" Width="150" />
+                
+                <DataGridTextColumn Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Header="DataType" />
+                <DataGridTextColumn
+                    Binding="{Binding Value.ValueString,UpdateSourceTrigger=PropertyChanged}"
+                    Header="Value" Width="100" />
+                <DataGridTextColumn Binding="{Binding LastResult}" Header="Result" />
                 <DataGridTemplateColumn Header="操作区">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="GetValue"
+                            <UniformGrid Columns="2">
+                                <Button Content="GetValue" Margin="10 0"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                         CommandParameter="{Binding}" />
-                                <!--<Button  Content="SetValue"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
-                                         CommandParameter="{Binding}"></Button>-->
-                                <!--<Button Content="GetLogicName"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameCommand ,Mode=TwoWay}"
-                                        CommandParameter="{Binding}"></Button>-->
-                            </StackPanel>
+                                <Button Content="SetValue" Margin="10 0"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding}" />
+
+                            </UniformGrid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

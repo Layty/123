@@ -9,7 +9,7 @@
              DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
     <materialDesign:DialogHost Identifier="SerialPortControl">
         <Grid>
-            <materialDesign:Card Margin="2" UniformCornerRadius="5">
+            <materialDesign:Card UniformCornerRadius="5">
                 <StackPanel x:Name="StackPanel">
                     <ComboBox x:Name="CmbPortName"
                               ItemsSource="{Binding PortNamesCollection}"
@@ -37,8 +37,10 @@
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               materialDesign:HintAssist.Hint="停止位" />
                     <StackPanel>
+                        <!--<TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="间隔(ms)" materialDesign:HintAssist.IsFloating="True" Text="{Binding SerialPortMaster.Interval,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ></TextBox>
+                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="连续发送前延时(ms)" materialDesign:HintAssist.IsFloating="True" Text="{Binding SerialPortMaster.Interval,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ></TextBox>-->
                         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   Text="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间 \{\0\} 秒 '}" />
+                                   Text="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间\{0}秒 '}" />
                         <materialDesign:RatingBar HorizontalAlignment="Left" VerticalAlignment="Center"
                                                   Value="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay}"
                                                   Min="2" Max="10">
@@ -67,9 +69,12 @@
 
                     <CheckBox Content="实时监控串口数据"
                               IsChecked="{Binding SerialPortMaster.IsAutoDataReceived}" />
-                    <Button HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding OpenCalcCommand}" Content="打开计算机管理" />
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding OpenCalcCommand}" Style="{StaticResource MaterialDesignFlatAccentButton}"
+                            materialDesign:HintAssist.Hint="打开计算机管理">
+                        <materialDesign:PackIcon Kind="ComputerClassic" />
+                    </Button>
                     <ToggleButton Width="50" Height="50" materialDesign:ShadowAssist.ShadowDepth="Depth5"
-                                  VerticalAlignment="Bottom" 
+                                  VerticalAlignment="Bottom"
                                   ToolTip="开启或关闭串口"
                                   HorizontalAlignment="Center"
                                   Style="{StaticResource MaterialDesignActionToggleButton}"
@@ -81,7 +86,7 @@
                     </ToggleButton>
                 </StackPanel>
             </materialDesign:Card>
-           
+
         </Grid>
     </materialDesign:DialogHost>
 </UserControl>

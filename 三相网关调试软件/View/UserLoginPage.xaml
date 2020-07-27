@@ -12,7 +12,9 @@
       DataContext="{Binding Source={StaticResource Locator },Path=Login}"
       xmlns:viewModel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-      xmlns:view="clr-namespace:三相智慧能源网关调试软件.View">
+      xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
+      Loaded="UserLoginPage_OnLoaded"
+      >
     <Page.Resources>
         <Storyboard x:Key="OpenStoryboard" TargetName="RootBorder" TargetProperty="Width">
             <DoubleAnimation From="0" To="{Binding ElementName=ThisPage,Path=Width}" Duration="00:00:1"
@@ -108,11 +110,10 @@
                             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5"
                                      FontSize="20"
                                      Grid.Row="0" Grid.Column="1"
-                                     materialDesign:HintAssist.Hint="用户名"
+                                     materialDesign:HintAssist.Hint="UserName"
                                      materialDesign:HintAssist.IsFloating="True"
                                      Width="150"
                                      Text="{ Binding  Path=LoginModel.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=True}" />
-
 
                             <materialDesign:PackIcon Kind="Key" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                      Grid.Row="1" Grid.Column="0" Height="Auto" Width="Auto" />
@@ -120,7 +121,7 @@
                                          PasswordChar="*"
                                          Grid.Row="1" Grid.Column="1"
                                          CaretBrush="Black"
-                                         materialDesign:HintAssist.Hint="密码"
+                                         materialDesign:HintAssist.Hint="Password"
                                          materialDesign:HintAssist.IsFloating="True" FontSize="20"
                                          view:PasswordBoxHelper.Password="{Binding LoginModel.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                          Width="150">
@@ -130,12 +131,9 @@
                             </PasswordBox>
 
                             <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
-                                <CheckBox Content="记住密码" Margin="20 0"
+                                <CheckBox Content="记住密码" Margin="20 10"
                                           IsChecked="{Binding LoginModel.KeepPassword}"
                                           Command="{Binding SaveUserInfoToResourceCommand}" />
-                                <TextBlock Text="{Binding LoginModel.Report}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                                           Margin="5" />
                             </StackPanel>
 
                         </Grid>
@@ -148,7 +146,7 @@
 
             </materialDesign:Card>
             <Button Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 -20"
-                    Width="180" 
+                    Width="180"
                     Height="40" materialDesign:ShadowAssist.ShadowDepth="Depth5"
                     x:Name="ButtonLogin" Command="{Binding LoginCommand}">
                 <StackPanel Orientation="Horizontal">
@@ -156,6 +154,8 @@
                     <TextBlock>登录</TextBlock>
                 </StackPanel>
             </Button>
+            <TextBlock Text="{Binding LoginModel.Report}" Margin="0 0 0 -40"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom" />
         </Grid>
 
     </Border>

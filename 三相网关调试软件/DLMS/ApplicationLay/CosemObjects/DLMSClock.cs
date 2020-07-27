@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using 三相智慧能源网关调试软件.Annotations;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public class DLMSClock : DLMSObject
+    public class DLMSClock : DLMSObject ,IDLMSBase,INotifyPropertyChanged
     {
 
-        public int TimeZone { get; set; }
+
+
+        public int TimeZone
+        {
+            get => _TimeZone;
+            set { _TimeZone = value; OnPropertyChanged(); }
+        }
+        private int _TimeZone;
+
+
+     
         public short Year { get; set; }
         public ClockStatus Status { get; set; }
         public int Deviation { get; set; }
@@ -46,8 +59,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         public byte Hundredths { get; set; }
 
 
-        public string time { get; set; }
+       
 
+
+        public string  Time
+        {
+            get => _Time;
+            set { _Time = value; OnPropertyChanged(); }
+        }
+        private string  _Time;
 
         public override string ToString()
         {
@@ -62,8 +82,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
                 this.Second.ToString().PadLeft(2, '0')
             });
             this._dateTime = DateTime.ParseExact(tp, dateTimeformat, CultureInfo.CurrentCulture);
-            this.time = this._dateTime.ToString("yyyy-MM-dd dddd HH:mm:ss");
-            return this.time;
+            this.Time = this._dateTime.ToString("yyyy-MM-dd dddd HH:mm:ss");
+            return this.Time;
         }
 
 
@@ -163,9 +183,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             return result;
         }
 
-        public DLMSClock()
-        {
-        }
+        
 
         public DLMSClock(byte[] dateTimeBytes)
         {
@@ -286,6 +304,95 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             Sunday,
 
             NotSpecified = 255
+        }
+
+        public DLMSClock()
+        {
+            LogicalName = "0.0.1.0.0.255";
+            ObjectType = ObjectType.Clock;
+        }
+        public DLMSClock(string logicalName)
+        {
+            LogicalName = logicalName;
+            ObjectType = ObjectType.Clock;
+        }
+        public string[] GetNames()
+        {
+            return new string[9]
+            {
+                LogicalName,
+                "Time",
+                "Time Zone",
+                "Status",
+                "Begin",
+                "End",
+                "Deviation",
+                "Enabled",
+                "Clock Base"
+            };
+        }
+        public string[] GetNames1 =>
+            new string[9]
+            {
+                LogicalName,
+                "Time",
+                "Time Zone",
+                "Status",
+                "Begin",
+                "End",
+                "Deviation",
+                "Enabled",
+                "Clock Base"
+            };
+
+        public int GetAttributeCount()
+        {
+            return 9;
+        }
+
+        public int GetMethodCount()
+        {
+            return 6;
+        }
+
+        public DataType GetDataType(int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    return DataType.OctetString;
+                case 2:
+                    return DataType.OctetString;
+                case 3:
+                    return DataType.Int16;
+                case 4:
+                    return DataType.UInt8;
+                case 5:
+                    return DataType.OctetString;
+                case 6:
+                    return DataType.OctetString;
+                case 7:
+                    return DataType.Int8;
+                case 8:
+                    return DataType.Boolean;
+                case 9:
+                    return DataType.Enum;
+                default:
+                    throw new ArgumentException("GetDataType failed. Invalid attribute index.");
+            }
+
+            
+        }
+
+        public byte[] GetTime() => GetAttributeData(2);
+        public byte[] GetTimeZone() => GetAttributeData(3);
+        public byte[] GetStatus() => GetAttributeData(4);
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

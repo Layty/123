@@ -54,8 +54,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMaster
                     .CreateMySerialPortConfig);
             });
-            OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
-            OpenOrCloseCommand=new RelayCommand(async ()=>{
+            OpenCalcCommand = new RelayCommand( () => {  Process.Start("compmgmt.msc"); });
+            OpenOrCloseCommand=new RelayCommand( ()=> {
                 try
                 {
                     if (!SerialPortMaster.IsOpen)

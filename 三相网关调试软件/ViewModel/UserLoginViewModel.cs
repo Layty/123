@@ -21,8 +21,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 LoginModel = new UserLoginModel();
 
-
-
                 ReadUserInfoFromResource();
                
                 LoginCommand = new RelayCommand(Login);
@@ -146,7 +144,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                 LoginModel.LoginResult = true;
+                Messenger.Default.Send(true,"LoginResult");
                 LoginModel.Report = "登录成功";
+                //SaveUserInfoToResource();
+
             }
             else
             {

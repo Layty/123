@@ -95,7 +95,7 @@
                 <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
                                           MouseDown="ColorZone_OnMouseDown"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5">
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
                     <Grid>
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton x:Name="ExpandMenu" Cursor="Hand" HorizontalAlignment="Left"
@@ -123,10 +123,10 @@
                             </ToggleButton>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Foreground="{StaticResource LinearGradientBrush}">
-                                <materialDesign:PackIcon Kind="MicrosoftWindows" Width="Auto" Height="Auto" />
+                                <materialDesign:PackIcon Kind="MicrosoftVisualStudio" Width="Auto" Height="Auto" />
                             </TextBlock>
                             <TextBlock
-                                Text="{Binding Title }"
+                                Text="{Binding Title}"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"
                                 VerticalAlignment="Center" Foreground="{StaticResource LinearGradientBrush}" />
                         </StackPanel>
@@ -139,7 +139,10 @@
                         <!-- 窗口操作区-->
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
-                                <ToggleButton x:Name="ToggleButtonLog" Margin="2"
+
+                                <myControl:HeartBeatButton Content="Hello World" HorizontalContentAlignment="Center"
+                                                           Width="100" Height="30" />
+                                <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
                                               IsChecked="False"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
                                               ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
@@ -152,7 +155,7 @@
                                             Kind="Eye" />
                                     </materialDesign:ToggleButtonAssist.OnContent>
                                 </ToggleButton>
-                                <materialDesign:PopupBox Margin="2" PopupMode="Click">
+                                <materialDesign:PopupBox Margin="2 0" PopupMode="Click">
                                     <ListBox>
                                         <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
                                         <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
@@ -161,9 +164,10 @@
                                                 <TextBlock>主题</TextBlock>
                                             </StackPanel>
                                         </Button>
+                                        <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
                                     </ListBox>
                                 </materialDesign:PopupBox>
-                                <ToggleButton x:Name="ToggleButtonTopMost" Margin="2"
+                                <ToggleButton x:Name="ToggleButtonTopMost" Margin="2 0"
                                               Style="{StaticResource MaterialDesignSwitchAccentToggleButton}">
                                     <materialDesign:PackIcon
                                         Kind="Pin"
@@ -182,7 +186,7 @@
                                 <Button x:Name="Minus" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
                                         Command="SystemCommands.MinimizeWindowCommand">
                                     <TextBlock Style="{StaticResource MinTextBlockTransformY}">
-                                        <materialDesign:PackIcon Kind="Minus" Height="Auto" Width="Auto" />
+                                        <materialDesign:PackIcon Kind="Minus" />
                                     </TextBlock>
 
                                 </Button>
@@ -196,13 +200,13 @@
                                         BorderBrush="{x:Null}"
                                         Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
                                     <TextBlock>
-                                        <materialDesign:PackIcon Kind="WindowMaximize" Height="Auto" Width="Auto" />
+                                        <materialDesign:PackIcon Kind="WindowMaximize" />
                                     </TextBlock>
                                 </Button>
                                 <Button x:Name="ButtonClose" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
                                         Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
                                     <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}">
-                                        <materialDesign:PackIcon Kind="WindowClose" Height="Auto" Width="Auto" />
+                                        <materialDesign:PackIcon Kind="WindowClose" />
                                     </TextBlock>
 
                                 </Button>
@@ -217,8 +221,8 @@
             <Grid Grid.Row="1" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="7*" />
-                    <ColumnDefinition Width="0" x:Name="ColumnLog" MaxWidth="500" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="300" />
                 </Grid.ColumnDefinitions>
 
 
@@ -239,12 +243,13 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.DataContext>
                                 <Binding Source="{StaticResource Locator}" Path="Login" />
                             </Grid.DataContext>
 
-                            <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 3 3 5">
+                            <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 0 0 0">
                                 <Expander ExpandDirection="Down" IsExpanded="True" Margin="5"
                                           IsEnabled="{Binding LoginModel.LoginResult}"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
@@ -327,6 +332,8 @@
                                                                                         TargetName="border"
                                                                                         Value="{DynamicResource PrimaryHueMidBrush}" />
                                                                                 <Setter Property="FontSize" Value="20" />
+                                                                                <Setter Property="FontWeight"
+                                                                                        Value="Bold" />
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
@@ -363,7 +370,7 @@
                                                                                        HorizontalAlignment="Center"
                                                                                        VerticalAlignment="Center" />
 
-                                                                             <!-- 文字 -->
+                                                                            <!-- 文字 -->
                                                                             <TextBlock Text="{Binding MenuName}"
                                                                                        HorizontalAlignment="Center"
                                                                                        x:Name="TextBlockTitle"
@@ -391,7 +398,7 @@
                             </materialDesign:Card>
 
 
-                            <materialDesign:Card x:Name="Card2" Margin="-200 3 3 5" Grid.Row="1">
+                            <materialDesign:Card x:Name="Card2" Margin="-200 0 0 0" Grid.Row="1">
                                 <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
                                     <Expander.Header>计量芯</Expander.Header>
@@ -452,6 +459,8 @@
                                                                                     TargetName="border"
                                                                                     Value="{DynamicResource PrimaryHueMidBrush}" />
                                                                             <Setter Property="FontSize" Value="20" />
+                                                                            <Setter Property="FontWeight"
+                                                                                    Value="ExtraBlack" />
                                                                         </Trigger>
 
                                                                     </ControlTemplate.Triggers>
@@ -513,7 +522,7 @@
                                 </Expander>
                             </materialDesign:Card>
 
-                            <materialDesign:Card x:Name="Card3" Margin="-200 3 3 5" Grid.Row="2">
+                            <materialDesign:Card x:Name="Card3" Margin="-200 0 0 0" Grid.Row="2">
                                 <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
                                     <Expander.Header>服务中心</Expander.Header>
@@ -575,6 +584,8 @@
                                                                                     TargetName="border"
                                                                                     Value="{DynamicResource PrimaryHueMidBrush}" />
                                                                             <Setter Property="FontSize" Value="20" />
+                                                                            <Setter Property="FontWeight"
+                                                                                    Value="ExtraBlack" />
                                                                         </Trigger>
 
                                                                     </ControlTemplate.Triggers>
@@ -635,7 +646,130 @@
                                     </Expander.Content>
                                 </Expander>
                             </materialDesign:Card>
+                            <materialDesign:Card x:Name="Card4" Margin="-200 0 0 0" Grid.Row="3">
+                                <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
+                                          materialDesign:ExpanderAssist.DownHeaderPadding="20">
+                                    <Expander.Header>Help</Expander.Header>
+                                    <Expander.Content>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <ListBox ItemsSource="{Binding ServicesMenuCollection}"
+                                                     SelectedItem="{Binding MenuModel}"
+                                                     Style="{DynamicResource ListBoxStyle311}">
+                                                <ListBox.DataContext>
+                                                    <Binding Source="{StaticResource Locator}" Path="Menu" />
+                                                </ListBox.DataContext>
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="ListBoxItem">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                                        <Setter Property="HorizontalContentAlignment"
+                                                                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+                                                        <Setter Property="VerticalContentAlignment"
+                                                                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+                                                        <Setter Property="Padding" Value="8" />
+                                                        <Setter Property="FontSize" Value="15" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                                    <Border Name="border">
+                                                                        <ContentPresenter />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <EventTrigger RoutedEvent="MouseEnter">
+                                                                            <EventTrigger.Actions>
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <DoubleAnimation
+                                                                                            Storyboard.TargetProperty="FontSize"
+                                                                                            To="20" Duration="0:0:0.2" />
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </EventTrigger.Actions>
+                                                                        </EventTrigger>
+                                                                        <EventTrigger RoutedEvent="MouseLeave">
+                                                                            <EventTrigger.Actions>
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <DoubleAnimation
+                                                                                            Storyboard.TargetProperty="FontSize"
+                                                                                            BeginTime="0:0:0.2"
+                                                                                            Duration="0:0:0.2" />
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </EventTrigger.Actions>
 
+                                                                        </EventTrigger>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background"
+                                                                                    Value="{DynamicResource PrimaryHueLightBrush}"
+                                                                                    TargetName="border" />
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsSelected" Value="True">
+                                                                            <Setter Property="Background"
+                                                                                    TargetName="border"
+                                                                                    Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                                            <Setter Property="FontSize" Value="20" />
+                                                                            <Setter Property="FontWeight"
+                                                                                    Value="ExtraBlack" />
+                                                                        </Trigger>
+
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border>
+                                                            <RadioButton
+                                                                Style="{DynamicResource MaterialDesignTabRadioButton}"
+                                                                x:Name="RadioButton"
+                                                                Height="50" Margin="0"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                FontSize="{TemplateBinding ListBoxItem.FontSize}"
+                                                                HorizontalContentAlignment="Left"
+                                                                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.SelectCommand,Mode=TwoWay}"
+                                                                CommandParameter="{Binding}">
+                                                                <RadioButton.IsChecked>
+                                                                    <Binding Path="IsSelected"
+                                                                             RelativeSource="{RelativeSource AncestorType=ListBoxItem }"
+                                                                             Mode="TwoWay" />
+                                                                </RadioButton.IsChecked>
+                                                                <Border>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <!-- 图标-->
+                                                                        <TextBlock Text="{Binding IconFont}"
+                                                                                   FontFamily="/Fonts/#iconfont"
+                                                                                   x:Name="TextBlockIcon"
+                                                                                   Foreground="{Binding Foreground}"
+                                                                                   HorizontalAlignment="Center"
+                                                                                   VerticalAlignment="Center" />
+
+                                                                        <TextBlock Text="{Binding MenuName}"
+                                                                                   HorizontalAlignment="Center"
+                                                                                   x:Name="TextBlockTitle"
+                                                                                   VerticalAlignment="Center"
+
+                                                                                   Margin="15 0 0 0" />
+
+                                                                    </StackPanel>
+                                                                </Border>
+
+
+                                                            </RadioButton>
+                                                        </Border>
+
+                                                    </DataTemplate>
+
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </ScrollViewer>
+
+                                    </Expander.Content>
+                                </Expander>
+                            </materialDesign:Card>
                         </Grid>
                     </ScrollViewer>
                 </materialDesign:Card>
@@ -652,62 +786,50 @@
                               ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
                               ResizeDirection="Columns" />
                 <!-- 右侧日志区 -->
+                <Grid Grid.Column="2" x:Name="CardLog" Width="300" Visibility="Collapsed">
+                    <materialDesign:Card>
+                        <TabControl x:Name="TabControl">
+                            <TabItem>
+                                <TabItem.Header>
+                                    <materialDesign:PackIcon Kind="SerialPort" />
+                                </TabItem.Header>
+
+                                <myControl:SerialPortLogger />
+                            </TabItem>
+                            <TabItem>
+                                <TabItem.Header>
+                                    <materialDesign:PackIcon Kind="Ethernet" />
+                                </TabItem.Header>
+                                <myControl:NetLogger />
+                            </TabItem>
+                        </TabControl>
 
 
-                <materialDesign:Card x:Name="CardLog" Width="Auto"  Visibility="Visible" Grid.Column="2"
-                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TabControl>
-                        <TabItem >
-                            <TabItem.Header>
-                                <materialDesign:PackIcon Kind="SerialPort"></materialDesign:PackIcon>
-                            </TabItem.Header>
-                          
-                            <myControl:SerialPortLogger />
-                        </TabItem>
-                        <TabItem >
-                            <TabItem.Header>
-                                <materialDesign:PackIcon Kind="Ethernet"></materialDesign:PackIcon>
-                            </TabItem.Header>
-                            <myControl:NetLogger />
-                        </TabItem>
-                    </TabControl>
+                    </materialDesign:Card>
 
-
-                </materialDesign:Card>
+                </Grid>
 
 
             </Grid>
 
             <!-- 状态栏 -->
-            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid"
-                                      x:Name="ColorZoneStatus">
+            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid" x:Name="ColorZoneStatus">
                 <Grid>
                     <StackPanel Orientation="Horizontal"
-                                DataContext="{Binding Source={StaticResource Locator } ,Path=Login}">
-                        <StackPanel Margin="3">
-                            <TextBlock>
-                                电脑时间
-                            </TextBlock>
-                            <TextBlock x:Name="TextBlockTime" />
-                        </StackPanel>
-                        <StackPanel Margin="3">
-                            <TextBlock Text="当前登录用户" />
-                            <TextBlock Text="{Binding LoginModel.UserName}" />
-                        </StackPanel>
-                        <StackPanel Margin="3">
-                            <TextBlock Text="登录时刻" />
-                            <TextBlock
-                                Text="{Binding LoginModel.SucceedLoginTime}" />
-                        </StackPanel>
-                        <StackPanel Margin="3">
-                            <TextBlock Text="当前登录状态" />
-                            <TextBlock
-                                Text="{Binding LoginModel.Report}" />
-                        </StackPanel>
-
-
-                        <UniformGrid Rows="2" Margin="3">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                DataContext="{Binding Source={StaticResource Locator} ,Path=Login}">
+                        <TextBlock x:Name="TextBlockTime" Text="DateTime" Margin="15 0" Width="150"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding LoginModel.UserName,StringFormat='用户\{0}'}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="{Binding LoginModel.SucceedLoginTime,StringFormat='\{0}'}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="{Binding LoginModel.Report,StringFormat='\{0}'}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <UniformGrid Columns="2" Margin="5 0">
+                            <StackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Ethernet" />
                                 <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
                                            Margin="5 0">
@@ -730,7 +852,7 @@
                                 </TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
+                                        VerticalAlignment="Center" Margin="5 0">
                                 <materialDesign:PackIcon Kind="SerialPort" />
                                 <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
                                            Margin="5 0">
@@ -750,10 +872,12 @@
                                     </TextBlock.RenderTransform>
                                     <materialDesign:PackIcon Kind="Send" />
                                 </TextBlock>
+                                <StackPanel />
                             </StackPanel>
 
                         </UniformGrid>
-
+                        <TextBlock Text="O(∩_∩)O   (#^.^#)" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <myControl:UserControlForMenu ></myControl:UserControlForMenu>
                     </StackPanel>
                     <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">

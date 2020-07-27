@@ -71,12 +71,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 #else
                 ManagementMenuCollection = new ObservableCollection<MenuModel>
                 {
-                    //new MenuModel
-                    //{
-                    //    MenuName = "泰昂", FontSize = "20", IconFont = "",
-                    //    Assembly = "IntelligentEquipment.TaiAngPage",
-                    //    Foreground = "#00FF00"
-                    //},
+                    new MenuModel
+                    {
+                        MenuName = "ENetMessageBuilder", FontSize = "20", IconFont = "\xe6ee",
+                        Assembly = "Management.ENetDataPage",
+                        Foreground = "#00FF00"
+                    },
                 };
 
 
