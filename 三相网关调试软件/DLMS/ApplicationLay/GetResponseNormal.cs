@@ -15,6 +15,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {
+            if (pduBytes.Length == 0)
+            {
+                return false;
+            }
+
             if (pduBytes[0] == (byte) Command)
             {
                 if (pduBytes[1] == (byte) GetResponseType.Normal)
@@ -25,7 +30,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
                 if (pduBytes[1] == (byte) GetResponseType.WithDataBlock)
                 {
-                    GetResponseWithDataBlock=new GetResponseWithDataBlock();
+                    GetResponseWithDataBlock = new GetResponseWithDataBlock();
                     return GetResponseWithDataBlock.PduBytesToConstructor(pduBytes);
                 }
 
@@ -90,7 +95,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             InvokeIdAndPriority.UpdateInvokeIdAndPriority(pduBytes[2]);
             InvokeIdAndPriority.InvokeIdAndPriority = InvokeIdAndPriority.GetInvoke_Id_And_Priority();
 
-            Result=new GetDataResult[]{};
+            Result = new GetDataResult[] { };
             return true;
         }
     }
@@ -119,20 +124,21 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             GetDataResult.Data = new DLMSDataItem();
             if (GetResponseNormalByte[2] != 0)
             {
-                GetDataResult.DataAccessResult = (ErrorCode)GetResponseNormalByte[3];
+                GetDataResult.DataAccessResult = (ErrorCode) GetResponseNormalByte[3];
 
                 return true;
             }
             else if (GetResponseNormalByte[2] == 0)
             {
-                GetDataResult.DataAccessResult = (ErrorCode)GetResponseNormalByte[2];
+                GetDataResult.DataAccessResult = (ErrorCode) GetResponseNormalByte[2];
                 var dataTypeBytes = GetResponseNormalByte.Skip(2).Take(2).Reverse().ToArray();
                 var dt = BitConverter.ToInt16(dataTypeBytes, 0);
                 switch (dt)
                 {
                     case (byte) DataType.UInt8:
                         GetDataResult.Data =
-                            new DLMSDataItem(DataType.UInt8, GetResponseNormalByte.Skip(4).Take(1).ToArray()[0].ToString());
+                            new DLMSDataItem(DataType.UInt8,
+                                GetResponseNormalByte.Skip(4).Take(1).ToArray()[0].ToString());
                         break;
                     case (byte) DataType.UInt16:
                         result = BitConverter.ToUInt16(GetResponseNormalByte.Skip(4).Take(2).Reverse().ToArray(), 0)
@@ -159,7 +165,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                         if ((GetResponseNormalByte[4] & 0x80) == 0x80)
                         {
                             var index = GetResponseNormalByte[4] - 0x80;
-                            var range = BitConverter.ToInt16(GetResponseNormalByte.Skip(5).Take(index).Reverse().ToArray(),
+                            var range = BitConverter.ToInt16(
+                                GetResponseNormalByte.Skip(5).Take(index).Reverse().ToArray(),
                                 0);
                             var resultBytes = GetResponseNormalByte.Skip(5 + index).Take(range).ToArray();
                             result = Encoding.Default.GetString(resultBytes);
@@ -167,7 +174,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                         }
                         else
                         {
-                            result = GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[4]).ToArray().ByteToString();
+                            result = GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[4]).ToArray()
+                                .ByteToString();
 //                            result =Encoding.Default.GetString(GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[4]).ToArray()) ;
                             GetDataResult.Data = new DLMSDataItem(DataType.OctetString, result);
                         }
@@ -185,14 +193,52 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                         break;
                     case (byte) DataType.Array:
                         result = GetResponseNormalByte.Skip(4).ToArray().ByteToString();
+
                         GetDataResult.Data = new DLMSDataItem(DataType.Array, result);
                         break;
+                    case (byte) DataType.BitString:
+                        result = GetResponseNormalByte.Skip(4).Take(2).ToArray().ByteToString();
+                        //var tmp = GetResponseNormalByte.Skip(4).ToArray();
+                        //var last = tmp.Length;
+
+                       // result = tmp.Take(last - 3).ToArray().ByteToString();
+
+                        GetDataResult.Data = new DLMSDataItem(DataType.BitString, result);
+                        break;
+                    case (byte)DataType.String:
+                        result = GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[5]).ToArray().ByteToString();
+                        GetDataResult.Data=new DLMSDataItem(DataType.String, result);
+                        break;
                 }
-            
             }
 
 
             return true;
+        }
+
+        internal static void ToBitString(StringBuilder sb, byte value, int count)
+        {
+            if (count <= 0)
+            {
+                return;
+            }
+
+            if (count > 8)
+            {
+                count = 8;
+            }
+
+            for (int num = 7; num != 8 - count - 1; num--)
+            {
+                if ((value & (1 << num)) != 0)
+                {
+                    sb.Append('1');
+                }
+                else
+                {
+                    sb.Append('0');
+                }
+            }
         }
     }
 }

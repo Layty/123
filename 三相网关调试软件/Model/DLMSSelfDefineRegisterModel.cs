@@ -14,6 +14,17 @@ namespace 三相智慧能源网关调试软件.Model
 
     public class DLMSSelfDefineRegisterModel : DLMSRegister
     {
+        public ErrorCode LastResult
+        {
+            get => _lastResult;
+            set
+            {
+                _lastResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ErrorCode _lastResult;
         public string RegisterName { get; set; }
 
         public DLMSSelfDefineRegisterModel(string logicName) : base(logicName)

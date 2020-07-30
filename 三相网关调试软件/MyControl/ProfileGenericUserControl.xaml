@@ -13,7 +13,7 @@
                 <TabItem Header="Profile Params">
                     <StackPanel>
                         <TextBlock Text="Capture Objects" />
-                        <TextBox Text="{Binding Generic.CaptureObjects}" />
+                        <TextBlock Text="{Binding Generic.CaptureObjects}" />
                         <Button>read</Button>
                         <Button>write</Button>
 

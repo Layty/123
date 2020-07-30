@@ -14,17 +14,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
     */
     public class DLMSRegister : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
-        public object Value
+        
+        public DLMSDataItem Value
         {
             get => _value;
-            set
-            {
-                _value = value;
-                OnPropertyChanged();
-            }
+            set { _value = value; OnPropertyChanged(); }
         }
+        private DLMSDataItem _value;
 
-        private object _value;
 
 
         public double Scalar
@@ -49,6 +46,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
                 OnPropertyChanged();
             }
         }
+
+    
 
         private Unit _Unit;
 

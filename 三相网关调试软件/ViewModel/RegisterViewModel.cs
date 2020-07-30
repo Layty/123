@@ -31,7 +31,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private ObservableCollection<DLMSSelfDefineRegisterModel> _registers;
 
-        public RelayCommand<DLMSRegister> GetValueCommand
+        public RelayCommand<DLMSSelfDefineRegisterModel> GetValueCommand
         {
             get => _getValueCommand;
             set
@@ -41,7 +41,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private RelayCommand<DLMSRegister> _getValueCommand;
+        private RelayCommand<DLMSSelfDefineRegisterModel> _getValueCommand;
+
+        public RelayCommand<DLMSSelfDefineRegisterModel> SetValueCommand
+        {
+            get => _setValueCommand;
+            set
+            {
+                _setValueCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand<DLMSSelfDefineRegisterModel> _setValueCommand;
 
         public RelayCommand<DLMSRegister> GetLogicNameCommand
         {
@@ -74,31 +86,50 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {RegisterName = DataTable.Rows[i][1].ToString()});
             }
 
-            GetValueCommand = new RelayCommand<DLMSRegister>(
+            GetValueCommand = new RelayCommand<DLMSSelfDefineRegisterModel>(
                 async t =>
                 {
-                    t.Value = "";
+                    t.Value = new DLMSDataItem();
                     t.Scalar = 1;
                     t.Unit = Unit.None;
+                    GetResponse getResponse = new GetResponse();
                     var dataResult = await Client.GetRequest(t.GetAttributeData(2));
-                    t.Value = NormalDataParse.ParsePduData(dataResult);
-                    var scalarUnit = await Client.GetRequest(t.GetAttributeData(3));
-                    var structData = NormalDataParse.ParsePduData(scalarUnit);
-                    var unitbyte = structData.StringToByte();
-                    switch (unitbyte.Take(1).ToArray()[0])
+                    if (getResponse.PduBytesToConstructor(dataResult))
                     {
-                        case (byte) DataType.Int8:
-                            t.Scalar = (sbyte) unitbyte.Skip(1).Take(1).ToArray()[0];
-                            break;
-                    }
+                        t.Value.DataType = getResponse.GetResponseNormal.GetDataResult.Data.DataType;
+                        t.LastResult = getResponse.GetResponseNormal.GetDataResult.DataAccessResult;
+                        t.Value.ValueString = getResponse.GetResponseNormal.GetDataResult.Data.ValueString;
+                        t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
+                        if (t.Value.DataType == DataType.OctetString)
+                        {
+                            t.Value.ValueString =
+                                NormalDataParse.HowToDisplayOctetString(t.Value.ValueBytes, DisplayFormatToShow.Original);
+                        }
+                        var scalarUnit = await Client.GetRequest(t.GetAttributeData(3));
+                        var structData = NormalDataParse.ParsePduData(scalarUnit);
+                        var unitbyte = structData.StringToByte();
+                        switch (unitbyte.Take(1).ToArray()[0])
+                        {
+                            case (byte)DataType.Int8:
+                                t.Scalar = (sbyte)unitbyte.Skip(1).Take(1).ToArray()[0];
+                                break;
+                        }
 
-                    switch (unitbyte.Skip(2).Take(1).ToArray()[0])
-                    {
-                        case (byte) DataType.Enum:
-                            t.Unit = (Unit) unitbyte.Skip(3).Take(1).ToArray()[0];
-                            break;
+                        switch (unitbyte.Skip(2).Take(1).ToArray()[0])
+                        {
+                            case (byte)DataType.Enum:
+                                t.Unit = (Unit)unitbyte.Skip(3).Take(1).ToArray()[0];
+                                break;
+                        }
                     }
+//              
+                   
                 });
+            SetValueCommand=new RelayCommand<DLMSSelfDefineRegisterModel>(async(t) =>
+            {
+                
+                var dataResult = await Client.SetRequest(t.SetAttributeData(2, t.Value));
+            });
         }
     }
 }

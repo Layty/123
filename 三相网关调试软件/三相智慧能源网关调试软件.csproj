@@ -297,6 +297,7 @@
     <Compile Include="MyControl\UserControlForMenu.xaml.cs">
       <DependentUpon>UserControlForMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ClockViewModel.cs" />
     <Compile Include="ViewModel\DataViewModel.cs" />
     <Compile Include="MyControl\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>

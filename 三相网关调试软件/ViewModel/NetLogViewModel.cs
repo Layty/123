@@ -15,9 +15,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
             MyNetLog = new MyNetLogModel();
             ClearBufferCommand = new RelayCommand(() => { MyNetLog.ClearBuffer(); });
             Messenger.Default.Register<byte[]>(this, "SendDataEvent",
-                sendData => { MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData) + Environment.NewLine; });
+                sendData =>
+                {
+                    MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData) + Environment.NewLine;
+                });
             Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent",
-                receiveData => { MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData) + Environment.NewLine; });
+                receiveData =>
+                {
+                    MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData) + Environment.NewLine;
+                });
             Messenger.Default.Register<string>(this, "ENetErrorEvent",
                 errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
             Messenger.Default.Register<string>(this, "TelNetErrorEvent",
@@ -25,20 +31,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             Messenger.Default.Register<string>(this, "Status",
                 status => { MyNetLog.Log = DateTime.Now + "Status" + status + Environment.NewLine; });
             Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent",
-                (s) =>
-                {
-                    MyNetLog.HandlerReceiveData(s.Item1, s.Item2);
-                    //MyNetLog.Log = DateTime.Now + "ReceiveDataEvent" + "收到" + s.Item1.RemoteEndPoint+"数据" + Encoding.Default.GetString(s.Item2) +
-                    //               Environment.NewLine;
-                });
+                (s) => { MyNetLog.HandlerReceiveData(s.Item1, s.Item2); });
             Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent",
-                (s) =>
-                {
-                    MyNetLog.HandlerSendData(s.Item1,s.Item2);
-                    //MyNetLog.Log = DateTime.Now + "SendDataEvent" + "向" + s.Item1.RemoteEndPoint + "发送数据" +
-                    //               Encoding.Default.GetString(s.Item2) +
-                    //               Environment.NewLine;
-                });
+                (s) => { MyNetLog.HandlerSendData(s.Item1, s.Item2); });
             Messenger.Default.Register<string>(this, "ErrorEvent",
                 (errorString) =>
                 {

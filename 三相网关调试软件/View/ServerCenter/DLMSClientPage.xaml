@@ -23,40 +23,36 @@
                     Margin="3">
                 ReleaseRequest
             </Button>
-            <StackPanel  DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }" >
+            <StackPanel DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }">
                 <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
-                <ListBox x:Name="ListBox"  ItemsSource="{Binding TcpServerHelper.SocketClientList}"
+                <ListBox x:Name="ListBox" ItemsSource="{Binding TcpServerHelper.SocketClientList}"
                          SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-                         SelectionChanged="Selector_OnSelectionChanged" >
-
-                </ListBox>
+                         SelectionChanged="Selector_OnSelectionChanged" />
             </StackPanel>
-         
+
         </StackPanel>
 
         <TabControl Grid.Row="1">
             <TabItem Header="Data">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <myControl:DataControl />
-                </ScrollViewer>
+
+                <myControl:DataControl />
+
             </TabItem>
             <TabItem Header="Register">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <myControl:RegisterControl />
-                </ScrollViewer>
+                <myControl:RegisterControl />
             </TabItem>
             <TabItem Header="UtilityTables">
-               
-                    <myControl:TaiAngControl />
-            
+
+                <myControl:TaiAngControl />
+
             </TabItem>
             <TabItem Header="ProfileGeneric">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <myControl:ProfileGenericUserControl />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Clock">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <myControl:ClockControl />
                 </ScrollViewer>
             </TabItem>

@@ -222,7 +222,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="300" />
+                    <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="250" />
                 </Grid.ColumnDefinitions>
 
 
@@ -646,130 +646,7 @@
                                     </Expander.Content>
                                 </Expander>
                             </materialDesign:Card>
-                            <materialDesign:Card x:Name="Card4" Margin="-200 0 0 0" Grid.Row="3">
-                                <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
-                                          materialDesign:ExpanderAssist.DownHeaderPadding="20">
-                                    <Expander.Header>Help</Expander.Header>
-                                    <Expander.Content>
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ListBox ItemsSource="{Binding ServicesMenuCollection}"
-                                                     SelectedItem="{Binding MenuModel}"
-                                                     Style="{DynamicResource ListBoxStyle311}">
-                                                <ListBox.DataContext>
-                                                    <Binding Source="{StaticResource Locator}" Path="Menu" />
-                                                </ListBox.DataContext>
-                                                <ListBox.ItemContainerStyle>
-                                                    <Style TargetType="ListBoxItem">
-                                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                                        <Setter Property="HorizontalContentAlignment"
-                                                                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
-                                                        <Setter Property="VerticalContentAlignment"
-                                                                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
-                                                        <Setter Property="Padding" Value="8" />
-                                                        <Setter Property="FontSize" Value="15" />
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                                    <Border Name="border">
-                                                                        <ContentPresenter />
-                                                                    </Border>
-                                                                    <ControlTemplate.Triggers>
-                                                                        <EventTrigger RoutedEvent="MouseEnter">
-                                                                            <EventTrigger.Actions>
-                                                                                <BeginStoryboard>
-                                                                                    <Storyboard>
-                                                                                        <DoubleAnimation
-                                                                                            Storyboard.TargetProperty="FontSize"
-                                                                                            To="20" Duration="0:0:0.2" />
-                                                                                    </Storyboard>
-                                                                                </BeginStoryboard>
-                                                                            </EventTrigger.Actions>
-                                                                        </EventTrigger>
-                                                                        <EventTrigger RoutedEvent="MouseLeave">
-                                                                            <EventTrigger.Actions>
-                                                                                <BeginStoryboard>
-                                                                                    <Storyboard>
-                                                                                        <DoubleAnimation
-                                                                                            Storyboard.TargetProperty="FontSize"
-                                                                                            BeginTime="0:0:0.2"
-                                                                                            Duration="0:0:0.2" />
-                                                                                    </Storyboard>
-                                                                                </BeginStoryboard>
-                                                                            </EventTrigger.Actions>
-
-                                                                        </EventTrigger>
-                                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background"
-                                                                                    Value="{DynamicResource PrimaryHueLightBrush}"
-                                                                                    TargetName="border" />
-                                                                        </Trigger>
-                                                                        <Trigger Property="IsSelected" Value="True">
-                                                                            <Setter Property="Background"
-                                                                                    TargetName="border"
-                                                                                    Value="{DynamicResource PrimaryHueMidBrush}" />
-                                                                            <Setter Property="FontSize" Value="20" />
-                                                                            <Setter Property="FontWeight"
-                                                                                    Value="ExtraBlack" />
-                                                                        </Trigger>
-
-                                                                    </ControlTemplate.Triggers>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </ListBox.ItemContainerStyle>
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border>
-                                                            <RadioButton
-                                                                Style="{DynamicResource MaterialDesignTabRadioButton}"
-                                                                x:Name="RadioButton"
-                                                                Height="50" Margin="0"
-                                                                HorizontalAlignment="Stretch"
-                                                                VerticalAlignment="Stretch"
-                                                                FontSize="{TemplateBinding ListBoxItem.FontSize}"
-                                                                HorizontalContentAlignment="Left"
-                                                                materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.SelectCommand,Mode=TwoWay}"
-                                                                CommandParameter="{Binding}">
-                                                                <RadioButton.IsChecked>
-                                                                    <Binding Path="IsSelected"
-                                                                             RelativeSource="{RelativeSource AncestorType=ListBoxItem }"
-                                                                             Mode="TwoWay" />
-                                                                </RadioButton.IsChecked>
-                                                                <Border>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <!-- 图标-->
-                                                                        <TextBlock Text="{Binding IconFont}"
-                                                                                   FontFamily="/Fonts/#iconfont"
-                                                                                   x:Name="TextBlockIcon"
-                                                                                   Foreground="{Binding Foreground}"
-                                                                                   HorizontalAlignment="Center"
-                                                                                   VerticalAlignment="Center" />
-
-                                                                        <TextBlock Text="{Binding MenuName}"
-                                                                                   HorizontalAlignment="Center"
-                                                                                   x:Name="TextBlockTitle"
-                                                                                   VerticalAlignment="Center"
-
-                                                                                   Margin="15 0 0 0" />
-
-                                                                    </StackPanel>
-                                                                </Border>
-
-
-                                                            </RadioButton>
-                                                        </Border>
-
-                                                    </DataTemplate>
-
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </ScrollViewer>
-
-                                    </Expander.Content>
-                                </Expander>
-                            </materialDesign:Card>
+                       
                         </Grid>
                     </ScrollViewer>
                 </materialDesign:Card>
@@ -786,7 +663,7 @@
                               ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
                               ResizeDirection="Columns" />
                 <!-- 右侧日志区 -->
-                <Grid Grid.Column="2" x:Name="CardLog" Width="300" Visibility="Collapsed">
+                <Grid Grid.Column="2" x:Name="CardLog" Width="250" Visibility="Collapsed">
                     <materialDesign:Card>
                         <TabControl x:Name="TabControl">
                             <TabItem>

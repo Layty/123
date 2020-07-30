@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using 三相智慧能源网关调试软件.Annotations;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -18,6 +19,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         Time,
         OBIS
     }
+
     public class DLMSDataItem : IToPduBytes, INotifyPropertyChanged
     {
         public DataType DataType
@@ -50,31 +52,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             get => _valueString;
             set
             {
+                setValueByte(DataType, value);
                 _valueString = value;
                 OnPropertyChanged();
             }
         }
 
         private string _valueString;
-
-
-
-        public DisplayFormatToShow DisplayFormat
-        {
-            get => _displayFormat;
-            set
-            {
-                _displayFormat = value;
-                if (DataType==DataType.OctetString)
-                {
-                    ValueString = NormalDataParse.HowToDisplayOctetString(ValueBytes, value);
-                }
-               
-                OnPropertyChanged();
-            }
-        }
-
-        private DisplayFormatToShow _displayFormat = DisplayFormatToShow.Original;
 
 
         public DLMSDataItem()
@@ -91,7 +75,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
             DataType = dataType;
             ValueString = valueString;
-            switch (DataType)
+            ParseDLMSDataItem(DataType, ValueString);
+        }
+
+        private void setValueByte(DataType dataType, string valueString)
+        {
+            switch (dataType)
             {
                 case DataType.UInt8:
                     ValueBytes = new[] {byte.Parse(valueString)};
@@ -103,7 +92,118 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     ValueBytes = BitConverter.GetBytes(uint.Parse(valueString)).Reverse().ToArray();
                     break;
                 case DataType.OctetString:
-                    ValueBytes = valueString.StringToByte();break;
+                    ValueBytes = valueString.StringToByte();
+                    break;
+                case DataType.BitString:
+                    ValueBytes = valueString.StringToByte().Skip(1).ToArray();
+                    var count = valueString.StringToByte()[0];
+                    var value = valueString.StringToByte().Skip(1).ToArray();
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (byte value2 in value)
+                    {
+                        //if (index != 0)
+                        //{
+                        //    index--;
+                        //    continue;
+                        //}
+                        if (count < 1)
+                        {
+                            break;
+                        }
+
+                        ToBitString(stringBuilder, value2, count);
+                        count -= 8;
+                    }
+
+                    break;
+                case DataType.String:
+                    ValueBytes = Encoding.Default.GetBytes(valueString);
+                    break;
+            }
+        }
+
+        public void ParseDLMSDataItem(DataType dataType, string valueString)
+        {
+            switch (dataType)
+            {
+                case DataType.UInt8:
+                    ValueBytes = new[] {byte.Parse(valueString)};
+                    break;
+                case DataType.UInt16:
+                    ValueBytes = BitConverter.GetBytes(ushort.Parse(valueString)).Reverse().ToArray();
+                    break;
+                case DataType.UInt32:
+                    ValueBytes = BitConverter.GetBytes(uint.Parse(valueString)).Reverse().ToArray();
+                    break;
+                case DataType.OctetString:
+                    ValueBytes = valueString.StringToByte();
+                    break;
+                case DataType.BitString:
+                    ValueBytes = valueString.StringToByte().Skip(1).ToArray();
+                    var count = valueString.StringToByte()[0];
+                    var value = valueString.StringToByte().Skip(1).ToArray();
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (byte value2 in value)
+                    {
+                        //if (index != 0)
+                        //{
+                        //    index--;
+                        //    continue;
+                        //}
+                        if (count < 1)
+                        {
+                            break;
+                        }
+
+                        ToBitString(stringBuilder, value2, count);
+                        count -= 8;
+                    }
+
+                    ValueString = stringBuilder.ToString();
+                    break;
+                case DataType.String:
+                 
+                    ValueString = Encoding.Default.GetString(valueString.StringToByte());
+                    break;
+            }
+        }
+
+        public string GXBitString(byte value, int count)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            ToBitString(stringBuilder, value, 8);
+            if (count != 8)
+            {
+                stringBuilder.Remove(count, 8 - count);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        public void ToBitString(StringBuilder stringBuilder, byte value, int count)
+        {
+            if (count <= 0)
+            {
+                return;
+            }
+
+            if (count > 8)
+            {
+                count = 8;
+            }
+
+            for (int num = 7; num != 8 - count - 1; num--)
+            {
+                if ((value & (1 << num)) != 0)
+                {
+                    stringBuilder.Append('1');
+                }
+                else
+                {
+                    stringBuilder.Append('0');
+                }
             }
         }
 

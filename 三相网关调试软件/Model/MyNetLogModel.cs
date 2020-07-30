@@ -54,17 +54,17 @@ namespace 三相智慧能源网关调试软件.Model
         public void HandlerSendData(Socket socket, byte[] sendBytes)
         {
             //根据当前设置的显示格式，进行存储
-            var CurrentSendData = IsSendDataDisplayFormat16
+            var currentSendData = IsSendDataDisplayFormat16
                 ? sendBytes.ByteToString()
                 : Encoding.ASCII.GetString(sendBytes);
-            Log = $"{DateTime.Now} => SendDataEvent 向{socket.RemoteEndPoint}发送数据{CurrentSendData}{Environment.NewLine}";
+            Log = $"{DateTime.Now:yy-MM-dd HH:mm:ss fff} => SendDataEvent 向{socket.RemoteEndPoint}发送数据{currentSendData}{Environment.NewLine}";
         }
         public void HandlerReceiveData(Socket socket, byte[] receiveBytes)
         {
             //根据当前设置的显示格式，进行存储
-            var   DataReceiveForShow =
+            var   dataReceiveForShow =
                 IsReceiveFormat16 ? receiveBytes.ByteToString() : Encoding.ASCII.GetString(receiveBytes);
-            Log = $"{DateTime.Now} ReceiveDataEvent 收到 {socket.RemoteEndPoint}数据 <={DataReceiveForShow}{Environment.NewLine}";
+            Log = $"{DateTime.Now:yy-MM-dd HH:mm:ss fff} ReceiveDataEvent 收到 {socket.RemoteEndPoint}数据 <={dataReceiveForShow}{Environment.NewLine}";
         }
         public string Log
         {

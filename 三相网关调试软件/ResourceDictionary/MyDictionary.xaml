@@ -536,4 +536,12 @@
         </Setter>
     </Style>
 
+
+    
+        <!-- DataGridTextColumn 文字居中 -->
+        <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+   
 </ResourceDictionary>

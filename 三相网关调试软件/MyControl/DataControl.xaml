@@ -8,78 +8,51 @@
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
     <Grid>
-        <DataGrid ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding DisplayArray}" SelectedValue="{Binding DisplayFormat }"></ComboBox>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                   HorizontalGridLinesBrush="{DynamicResource PrimaryHueDarkBrush}" GridLinesVisibility="Horizontal">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Width" Value="Auto"></Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DataName }" Header="DataName" />
-                <DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType" />
-                <DataGridTextColumn Binding="{Binding LogicalName}" Header="LogicName" />
-                
-                <DataGridTextColumn Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="DataType" />
-                <DataGridTextColumn
-                    Binding="{Binding Value.ValueString,UpdateSourceTrigger=PropertyChanged}"
-                    Header="Value" Width="100" />
-                <DataGridTextColumn Binding="{Binding LastResult}" Header="Result" />
-                <DataGridTemplateColumn Header="操作区">
+                <DataGridTemplateColumn Header="操作区" Width="Auto" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <UniformGrid Columns="2">
-                                <Button Content="GetValue" Margin="10 0"
+                            <Grid  >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Get" Margin="2 0" Grid.Column="0"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                         CommandParameter="{Binding}" />
-                                <Button Content="SetValue" Margin="10 0"
+                                <Button Content="Set" Margin="2 0"  Grid.Column="1"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
                                         CommandParameter="{Binding}" />
-
-                            </UniformGrid>
+                                <!-- <ComboBox  x:Name="ComboBox" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.DisplayArray ,Mode=TwoWay}"></ComboBox> -->
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"  Binding="{Binding DataName }" Header="DataName" Width="150" />
+                <!--<DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType"  />-->
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding LogicalName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="LogicName" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding LastResult}" Header="Result" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"  Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Header="DataType" />
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" 
+                    Binding="{Binding Value.ValueString,UpdateSourceTrigger=PropertyChanged}"
+                    Header="Value" />
             </DataGrid.Columns>
         </DataGrid>
-        <!--<ItemsControl ItemsSource="{Binding DataCollection}" AlternationCount="2">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <materialDesign:Card Margin="2">
-                        <UniformGrid Columns="8">
-                            <TextBlock x:Name="TextBlockName" VerticalAlignment="Center"
-                                       Text="{Binding DataName}" />
-                            <TextBlock x:Name="TextBlockClass"
-                                       VerticalAlignment="Center" Text="{Binding  ObjectType}" />
-                            <TextBlock x:Name="TextBlockLogicName"
-                                       VerticalAlignment="Center" Text="{Binding LogicalName}" />
-
-
-                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" />
-                            <TextBox Text="{Binding Value}" VerticalAlignment="Center" />
-                            <Button
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
-                                CommandParameter="{Binding}">
-                                GetValue
-                            </Button>
-                            <Button
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
-                                CommandParameter="{Binding}">
-                                SetValue
-                            </Button>
-                            <Button
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetLogicNameCommand ,Mode=TwoWay}"
-                                CommandParameter="{Binding}">
-                                GetLogicName
-                            </Button>
-                        </UniformGrid>
-                    </materialDesign:Card>
-
-                </DataTemplate>
-
-            </ItemsControl.ItemTemplate>
-
-        </ItemsControl>-->
     </Grid>
 </UserControl>

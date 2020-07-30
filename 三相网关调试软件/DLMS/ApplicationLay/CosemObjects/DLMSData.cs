@@ -8,7 +8,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
     public class DLMSData : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
-     
+
+      
+
         public DLMSDataItem Value
         {
             get => _value;

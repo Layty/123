@@ -7,9 +7,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=RegisterViewModel}">
+   
     <Grid>
-        <StackPanel>
-
+        <!--<StackPanel>
             <ItemsControl ItemsSource="{Binding Registers}" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -19,6 +19,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card Margin="2">
+                        
                             <UniformGrid Rows="1">
                                 <TextBlock x:Name="TextBlockName" HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
@@ -45,7 +46,51 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </StackPanel>-->
+        <DataGrid  ItemsSource="{Binding Registers}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Width" Value="Auto"></Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+               
+                <DataGridTemplateColumn Header="操作区">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Margin="3"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding}">
+                                    Get
+                                </Button>
+                                <Button Margin="3" Grid.Column="1"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding}">
+                                    Set
+                                </Button>
+                            </Grid>
+                          
 
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding  RegisterName }" Header="RegisterName" Width="150" ></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding LogicalName}" Header="LogicalName"></DataGridTextColumn>
+                <DataGridTextColumn  ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding ObjectType}" Header="ObjectType"></DataGridTextColumn>
+                <DataGridTextColumn  ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding LastResult,UpdateSourceTrigger=PropertyChanged}" Header="LastResult" ></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Value.DataType" ></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Value.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="ValueString" ></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Scalar,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}" Header="Scalar" ></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Unit,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Unit" ></DataGridTextColumn>
+            </DataGrid.Columns>
+           
+        </DataGrid>
     </Grid>
 </UserControl>

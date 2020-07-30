@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
@@ -22,27 +20,31 @@ namespace 三相智慧能源网关调试软件.DLMS
         public HdlcFrameMaker HdlcFrameMaker { get; set; }
         public NetFrameMaker NetFrameMaker { get; set; }
         public bool IsAuthenticationRequired { get; set; }
-        private SerialPortMaster _portMaster { get; set; }
+        private SerialPortMaster PortMaster { get; set; }
         private TcpServerHelper _socket { get; set; }
         public Socket CurrentSocket { get; set; }
 
         public MyDLMSSettings MyDlmsSettings { get; set; }
-        
+
         private async Task<byte[]> HowToSendData(byte[] sendBytes)
         {
-            var pdubyte = new Byte[] { };
+            var returnPduBytes = new byte[] { };
             if (MyDlmsSettings.CommunicationType == CommunicationType.SerialPort)
             {
-                var hdlcReceiveData = await _portMaster.SendAndReceiveReturnDataAsync(sendBytes);
-                pdubyte = hdlcReceiveData.Skip(11).ToArray();
+                var hdlcReceiveData = await PortMaster.SendAndReceiveReturnDataAsync(sendBytes);
+                //取消FC校验 和 0x7E尾
+                //TODO :校验CRC
+                var pduAndFcsBytes = hdlcReceiveData.Skip(11).ToArray();
+                returnPduBytes = pduAndFcsBytes.Take(pduAndFcsBytes.Length - 3).ToArray();
             }
             else if (MyDlmsSettings.CommunicationType == CommunicationType.NetWork)
             {
                 var wrapperReceiveData = await _socket.SendDataToClientAndWaitReceiveData(CurrentSocket, sendBytes);
-                pdubyte = wrapperReceiveData.Skip(8).ToArray();
+
+                returnPduBytes = wrapperReceiveData.Skip(8).ToArray();
             }
 
-            return pdubyte;
+            return returnPduBytes;
         }
 
         public async Task<byte[]> InitRequest()
@@ -78,23 +80,24 @@ namespace 三相智慧能源网关调试软件.DLMS
             bool isSucceed = false;
             if (MyDlmsSettings.StartProtocolType == StartProtocolType.IEC21E)
             {
-                var EModeExecutor = new EModeExecutor(_portMaster, "");
+                var EModeExecutor = new EModeExecutor(PortMaster, "");
                 var keepAutoDataReceived = false;
-                if (_portMaster.IsAutoDataReceived)
+                if (PortMaster.IsAutoDataReceived)
                 {
                     keepAutoDataReceived = true;
-                    _portMaster.IsAutoDataReceived = false;
+                    PortMaster.IsAutoDataReceived = false;
                 }
+
                 isSucceed = await EModeExecutor.Execute21ENegotiate();
                 if (keepAutoDataReceived)
                 {
-                    _portMaster.IsAutoDataReceived = true;
+                    PortMaster.IsAutoDataReceived = true;
                 }
-               
             }
 
             return isSucceed;
         }
+
         /// <summary>
         /// 只有HDLC-46才需要SNRM
         /// </summary>
@@ -143,7 +146,7 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
 
 
-        public async Task<byte[]> GetRequest(byte[] getAttributeBytes) 
+        public async Task<byte[]> GetRequest(byte[] getAttributeBytes)
         {
             byte[] bytes = new byte[] { };
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
@@ -157,18 +160,22 @@ namespace 三相智慧能源网关调试软件.DLMS
 
             return bytes;
         }
-   
+
 
         public async Task<byte[]> SetRequest(byte[] setAttributeBytes)
         {
             byte[] bytes = { };
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-                bytes= await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.BuildPduRequestBytes(setAttributeBytes));
+                bytes = await HowToSendData(HdlcFrameMaker.BuildPduRequestBytes(setAttributeBytes));
+//                bytes = await _portMaster.SendAndReceiveReturnDataAsync(
+//                    HdlcFrameMaker.BuildPduRequestBytes(setAttributeBytes));
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
-                bytes= await _socket.SendDataToClientAndWaitReceiveData(CurrentSocket, NetFrameMaker.BuildPduRequestBytes(setAttributeBytes));
+                bytes = await HowToSendData(NetFrameMaker.BuildPduRequestBytes(setAttributeBytes));
+//                bytes = await _socket.SendDataToClientAndWaitReceiveData(CurrentSocket,
+//                    NetFrameMaker.BuildPduRequestBytes(setAttributeBytes));
             }
 
             return bytes;
@@ -179,7 +186,8 @@ namespace 三相智慧能源网关调试软件.DLMS
         {
             if (MyDlmsSettings.InterfaceType == InterfaceType.HDLC)
             {
-                await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.BuildPduRequestBytes(actionRequestBytes));
+                await PortMaster.SendAndReceiveReturnDataAsync(
+                    HdlcFrameMaker.BuildPduRequestBytes(actionRequestBytes));
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
@@ -196,12 +204,10 @@ namespace 三相智慧能源网关调试软件.DLMS
             if (force && (MyDlmsSettings.InterfaceType == InterfaceType.HDLC))
             {
                 result = await HowToSendData(HdlcFrameMaker.DisconnectRequest());
-                //result = await _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.DisconnectRequest());
             }
             else if (force && MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {
                 result = await HowToSendData(NetFrameMaker.ReleaseRequest());
-                // _socket.SendDataToClient(CurrentSocket, NetFrameMaker.ReleaseRequest());
             }
 
             return result;
@@ -218,27 +224,27 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         private void BackupPortPara()
         {
-            var memento = _portMaster.CreateMySerialPortConfig;
+            var memento = PortMaster.CreateMySerialPortConfig;
             _caretaker.Dictionary["before"] = memento;
-            _portMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
-            _portMaster.SerialPortLogger.IsReceiveFormat16 = false;
+            PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
+            PortMaster.SerialPortLogger.IsReceiveFormat16 = false;
         }
 
         private void LoadBackupPortPara()
         {
-            _portMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
-            _portMaster.SerialPortLogger.IsSendDataDisplayFormat16 = true;
-            _portMaster.SerialPortLogger.IsReceiveFormat16 = true;
+            PortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = true;
+            PortMaster.SerialPortLogger.IsReceiveFormat16 = true;
         }
 
         private void Init21ESerialPort()
         {
-            MyDlmsSettings.RequestBaud = _portMaster.BaudRate;
+            MyDlmsSettings.RequestBaud = PortMaster.BaudRate;
             _eModeFrameFrameMaker = new EModeFrameMaker(MyDlmsSettings.RequestBaud, "");
-            _portMaster.BaudRate = 300;
-            _portMaster.DataBits = 7;
-            _portMaster.StopBits = StopBits.One;
-            _portMaster.Parity = Parity.Even;
+            PortMaster.BaudRate = 300;
+            PortMaster.DataBits = 7;
+            PortMaster.StopBits = StopBits.One;
+            PortMaster.Parity = Parity.Even;
         }
 
 
@@ -270,15 +276,13 @@ namespace 三相智慧能源网关调试软件.DLMS
         public DLMSClient()
         {
             MyDlmsSettings = ServiceLocator.Current.GetInstance<MyDLMSSettings>();
-
             HdlcFrameMaker = new HdlcFrameMaker(MyDlmsSettings);
             NetFrameMaker = new NetFrameMaker(MyDlmsSettings);
             _socket = ServiceLocator.Current.GetInstance<TcpServerViewModel>().TcpServerHelper;
-            _portMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
-            InitSerialPortParams(_portMaster);
+            PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
+            InitSerialPortParams(PortMaster);
             InitRequestCommand = new RelayCommand(async () => { await InitRequest(); });
             ReleaseRequestCommand = new RelayCommand(async () => { await DisconnectRequest(true); });
-            //   GetRequestCommand=new RelayCommand(()=>{GetRequestNormal()});
         }
 
         private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
@@ -286,7 +290,7 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         public Task<byte[]> SetEnterUpGradeMode()
         {
-            return _portMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));
+            return PortMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));
         }
 
         //public Task<bool> Execute21ENegotiate()

@@ -139,7 +139,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
             apduBytes.AddRange(pduBytes);
             getRequest.AddRange(BitConverter.GetBytes((ushort) apduBytes.Count).Reverse());
             getRequest.AddRange(apduBytes);
-
             return getRequest.ToArray();
         }
 

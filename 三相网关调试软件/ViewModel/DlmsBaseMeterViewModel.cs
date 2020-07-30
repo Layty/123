@@ -91,15 +91,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
-                byte[] inputBytes = BitConverter.GetBytes(short.Parse("8192")).Reverse().ToArray();
-                DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt16, inputBytes);
+//                byte[] inputBytes = BitConverter.GetBytes(short.Parse("8192")).Reverse().ToArray();
+                DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt16, "8192");
                 await Client.SetRequest(cosem.SetValue(dataItem));
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
-                byte[] inputDate = BitConverter.GetBytes(short.Parse("0")).Reverse().ToArray();
-                var dataItem = new DLMSDataItem(DataType.UInt16, inputDate);
+//                byte[] inputDate = BitConverter.GetBytes(ushort.Parse("0")).Reverse().ToArray();
+                var dataItem = new DLMSDataItem(DataType.UInt16, "0");
                 await Client.SetRequest(cosem.SetValue(dataItem));
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
