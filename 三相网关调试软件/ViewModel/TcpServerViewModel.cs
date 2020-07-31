@@ -130,8 +130,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public bool IsAutoResponseHeartBeat
         {
             get => _isAutoResponseHeartBeat;
-            set { _isAutoResponseHeartBeat = value; RaisePropertyChanged(); }
+            set
+            {
+                _isAutoResponseHeartBeat = value;
+                RaisePropertyChanged();
+            }
         }
+
         private bool _isAutoResponseHeartBeat;
 
 
@@ -151,30 +156,83 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
         }
 
+        public class HeartBeatFrame
+        {
+            public byte[] VersionBytes { get; set; }
+            public byte[] SourceAddressBytes { get; set; }
+            public byte[] DestinationAddressBytes { get; set; }
+            public byte[] LengthBytes { get; set; }
+            public byte[] MeterAddressBytes { get; set; }
+            public byte[] HeartBeatFrameType { get; set; }
+
+            public HeartBeatFrame()
+            {
+                VersionBytes = new byte[] {0x00, 0x02};
+                HeartBeatFrameType = new byte[] {0x00, 0x01, 0x03};
+            }
+
+            public bool ParseHeartBeatFrame(byte[] bytes, out byte[] outPutBytes)
+            {
+                outPutBytes = new byte[] { };
+                if (bytes == null || bytes.Length <= 11)
+                {
+                    return false;
+                }
+
+                //比对版本号
+                if (!Common.ByteArraysEqual(bytes.Take(2).ToArray(), VersionBytes))
+                {
+                    return false;
+                }
+
+
+                {
+                    SourceAddressBytes = bytes.Skip(2).Take(2).ToArray();
+                    DestinationAddressBytes = bytes.Skip(4).Take(2).ToArray();
+                    LengthBytes = bytes.Skip(6).Take(2).ToArray();
+                    var length = BitConverter.ToUInt16(LengthBytes.Reverse().ToArray(), 0);
+                    if (bytes.Skip(8).ToArray().Length != length)
+                        return false;
+                    var data = bytes.Skip(8).ToArray();
+                    if (!Common.ByteArraysEqual(data.Take(3).ToArray(), HeartBeatFrameType))
+                        return false;
+                    MeterAddressBytes = data.Skip(3).ToArray();
+                    outPutBytes = BuildBytes();
+                    return true;
+                }
+            }
+
+            private byte[] BuildBytes()
+            {
+                List<byte> list = new List<byte>();
+                list.AddRange(VersionBytes);
+                list.AddRange(DestinationAddressBytes);
+                list.AddRange(SourceAddressBytes);
+                list.AddRange(LengthBytes);
+                list.AddRange(HeartBeatFrameType);
+                list.AddRange(MeterAddressBytes);
+                return list.ToArray();
+            }
+        }
+
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             if (!IsAutoResponseHeartBeat)
             {
                 return;
             }
-
-            if (bytes.Length != 23)
+            try
             {
-                return;
+                var heart = new HeartBeatFrame();
+                var result = heart.ParseHeartBeatFrame(bytes, out var outPutBytes);
+                if (result)
+                {
+                    TcpServerHelper.SendDataToClient(clientSocket, outPutBytes);
+                }
             }
-
-            var d= bytes.Take(2).Reverse().ToArray();
-            if (BitConverter.ToUInt16(d,0)==2 )
+            catch (Exception e)
             {
-                var t1 = bytes.Skip(2).Take(2).ToArray();
-                var t2 = bytes.Skip(4).Take(2).ToArray();
-                var t3 = bytes.Skip(6).ToArray();
-                List<byte> list = new List<byte>();
-                list.AddRange(new byte[] {0x00, 0x02});
-                list.AddRange(t2);
-                list.AddRange(t1);
-                list.AddRange(t3);
-                TcpServerHelper.SendDataToClient(clientSocket, list.ToArray());
+                Console.WriteLine(e);
             }
         }
 
