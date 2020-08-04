@@ -109,7 +109,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         public bool PduBytesToConstructor(byte[] GetResponseNormalByte)
         {
-            string result = "";
             if (GetResponseNormalByte[0] != (byte) GetResponseType)
             {
                 return false;
@@ -133,6 +132,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 GetDataResult.DataAccessResult = (ErrorCode) GetResponseNormalByte[2];
                 var dataTypeBytes = GetResponseNormalByte.Skip(2).Take(2).Reverse().ToArray();
                 var dt = BitConverter.ToInt16(dataTypeBytes, 0);
+                var result = "";
                 switch (dt)
                 {
                     case (byte) DataType.UInt8:
@@ -187,26 +187,19 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                         GetDataResult.Data = new DLMSDataItem(DataType.Structure, result);
                         break;
                     case (byte) DataType.Enum:
-                        // var EnumValue = pduBytes.Skip(5).Take(1).ToArray()[0];
                         result = GetResponseNormalByte.Skip(4).Take(1).ToArray()[0].ToString();
                         GetDataResult.Data = new DLMSDataItem(DataType.Enum, result);
                         break;
                     case (byte) DataType.Array:
                         result = GetResponseNormalByte.Skip(4).ToArray().ByteToString();
-
                         GetDataResult.Data = new DLMSDataItem(DataType.Array, result);
                         break;
                     case (byte) DataType.BitString:
                         result = GetResponseNormalByte.Skip(4).Take(2).ToArray().ByteToString();
-                        //var tmp = GetResponseNormalByte.Skip(4).ToArray();
-                        //var last = tmp.Length;
-
-                       // result = tmp.Take(last - 3).ToArray().ByteToString();
-
                         GetDataResult.Data = new DLMSDataItem(DataType.BitString, result);
                         break;
                     case (byte)DataType.String:
-                        result = GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[5]).ToArray().ByteToString();
+                        result = GetResponseNormalByte.Skip(5).Take(GetResponseNormalByte[4]).ToArray().ByteToString();
                         GetDataResult.Data=new DLMSDataItem(DataType.String, result);
                         break;
                 }

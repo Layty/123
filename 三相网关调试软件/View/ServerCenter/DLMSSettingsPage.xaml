@@ -13,8 +13,6 @@
         <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
-
-
         <UniformGrid Margin="3" Columns="5">
             <GroupBox Header="SerialPort">
                 <myControl:SerialPortControl />
@@ -24,16 +22,16 @@
             </GroupBox>
             <GroupBox Header="Other Parameters">
                 <StackPanel>
-                    <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress}"
+                    <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="SourceAddress" />
                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="DestAddress"
-                             Text="{Binding  Client.MyDlmsSettings.ServerAddress}" />
+                             Text="{Binding  Client.MyDlmsSettings.ServerAddress,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" />
                     <TextBox Text="{Binding  Client.MyDlmsSettings.PasswordString}"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="Password" />
-                    <TextBlock Text="{Binding DlmsSettings.LastCommand}" />
+                    <TextBlock Text="{Binding Client.MyDlmsSettings.LastCommand}" />
 
                     <TextBox Text="{Binding  Client.MyDlmsSettings.DlmsVersion}"
                              materialDesign:HintAssist.Hint="DLMSVersion"

@@ -96,10 +96,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     var dataResult = await Client.GetRequest(t.GetAttributeData(2));
                     if (getResponse.PduBytesToConstructor(dataResult))
                     {
-                        t.Value.DataType = getResponse.GetResponseNormal.GetDataResult.Data.DataType;
                         t.LastResult = getResponse.GetResponseNormal.GetDataResult.DataAccessResult;
-                        t.Value.ValueString = getResponse.GetResponseNormal.GetDataResult.Data.ValueString;
-                        t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
+                        t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
                         if (t.Value.DataType == DataType.OctetString)
                         {
                             t.Value.ValueString =

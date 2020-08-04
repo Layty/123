@@ -50,7 +50,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         #endregion
 
-        public MyDLMSSettings DlmsSettings { get; set; }
+       
         public DLMSClient Client { get; set; }
         public EModeExecutor EModeExecutor { get; set; }
 

@@ -15,12 +15,12 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         public HdlcFrameMaker(MyDLMSSettings dlmsSettings)
         {
             _dlmsSettings = dlmsSettings;
-            Hdlc46Frame = new Hdlc46Frame( dlmsSettings.ServerAddress,
-                dlmsSettings.ClientAddress);
         }
 
         public byte[] SNRMRequest(bool snrmContainInfoFlag = true)
         {
+            Hdlc46Frame = new Hdlc46Frame(_dlmsSettings.ServerAddress,
+                _dlmsSettings.ClientAddress);
             InitFrameSequenceNumber();
             List<byte> snrmFrame = new List<byte>();
             PackagingDestinationAndSourceAddress(snrmFrame);
@@ -196,6 +196,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             List<byte> listUi = new List<byte>();
             PackagingDestinationAndSourceAddress(listUi);
             listUi.Add((byte) Command.UiCommand); //19
+            _dlmsSettings.LastCommand = Command.UiCommand;
             byte count = (byte) (listUi.Count + 4); //4=FCS+帧头帧尾
             listUi.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(listUi);
@@ -262,7 +263,6 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 1;
             rr.Add((byte) ctr);
             byte count = (byte) (2 + Hdlc46Frame.DestAddress.Length + 1 + 1 + 2);
-       
             rr.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(rr);
             return rr.ToArray();

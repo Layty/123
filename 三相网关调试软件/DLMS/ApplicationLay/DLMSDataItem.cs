@@ -38,7 +38,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         public byte[] ValueBytes
         {
             get => _valueBytes;
-            set
+            private set
             {
                 _valueBytes = value;
                 OnPropertyChanged();
@@ -75,7 +75,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
             DataType = dataType;
             ValueString = valueString;
-            ParseDLMSDataItem(DataType, ValueString);
+            ParseDLMSDataItem(DataType, valueString);
         }
 
         private void setValueByte(DataType dataType, string valueString)
@@ -118,7 +118,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
                     break;
                 case DataType.String:
-                    ValueBytes = Encoding.Default.GetBytes(valueString);
+                    var data = Encoding.Default.GetBytes(valueString);
+                    var dataLength = (byte) data.Length;
+                    List<byte> ls = new List<byte>();
+                    ls.Add(dataLength);
+                    ls.AddRange(data);
+                    ValueBytes = ls.ToArray();
+
                     break;
             }
         }
@@ -164,7 +170,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     ValueString = stringBuilder.ToString();
                     break;
                 case DataType.String:
-                 
                     ValueString = Encoding.Default.GetString(valueString.StringToByte());
                     break;
             }

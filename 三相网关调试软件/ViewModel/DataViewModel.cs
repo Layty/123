@@ -96,7 +96,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 var dataResult = await Client.GetRequest(t.GetLogicName());
                 GetResponse getResponse = new GetResponse();
                 getResponse.GetResponseNormal.PduBytesToConstructor(dataResult);
-                t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
+//                t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
+                t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
                 DisplayFormat = DisplayFormatToShow.OBIS;
             });
             GetValueCommand = new RelayCommand<DLMSSelfDefineData>(async t =>
@@ -111,8 +112,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     t.Value.DataType = getResponse.GetResponseNormal.GetDataResult.Data.DataType;
                     t.LastResult = getResponse.GetResponseNormal.GetDataResult.DataAccessResult;
-                    t.Value.ValueString = getResponse.GetResponseNormal.GetDataResult.Data.ValueString;
-                    t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
+                    t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
+              
                     if (t.Value.DataType == DataType.OctetString)
                     {
                         t.Value.ValueString =
@@ -123,8 +124,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SetValueCommand = new RelayCommand<DLMSSelfDefineData>(async (t) =>
             {
                 t.LastResult = new ErrorCode();
-                var d = new DLMSDataItem(t.Value.DataType, t.Value.ValueString);
-                await Client.SetRequest(t.SetValue(d));
+       
+                await Client.SetRequest(t.SetValue(t.Value));
             });
 
             DisplayArray = Enum.GetValues(typeof(DisplayFormatToShow));

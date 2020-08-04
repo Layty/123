@@ -203,7 +203,9 @@ namespace 三相智慧能源网关调试软件.DLMS
             byte[] result = null;
             if (force && (MyDlmsSettings.InterfaceType == InterfaceType.HDLC))
             {
-                result = await HowToSendData(HdlcFrameMaker.DisconnectRequest());
+               // result = await HowToSendData(HdlcFrameMaker.ReleaseRequest());
+               result = await HowToSendData(HdlcFrameMaker.DisconnectRequest());
+                
             }
             else if (force && MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
             {

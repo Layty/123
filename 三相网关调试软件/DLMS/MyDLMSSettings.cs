@@ -205,8 +205,26 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         private string _passwordString ;
 
-        public byte ClientAddress { get; set; } = 1;
-        public byte ServerAddress { get; set; } = 1;
+     
+
+
+        public byte ClientAddress
+        {
+            get => _ClientAddress;
+            set { _ClientAddress = value; RaisePropertyChanged(); }
+        }
+        private byte _ClientAddress;
+
+
+     
+
+        public byte ServerAddress
+        {
+            get => _ServerAddress;
+            set { _ServerAddress = value; RaisePropertyChanged(); }
+        }
+        private byte _ServerAddress;
+
         public byte ServerAddressSize { get; set; } = 1;
 
         /// <summary>
@@ -241,6 +259,8 @@ namespace 三相智慧能源网关调试软件.DLMS
             CommunicationType = CommunicationType.SerialPort;
             InterfaceType = InterfaceType.HDLC;
             StartProtocolType = StartProtocolType.DLMS;
+            ClientAddress = 1;
+            ServerAddress = 1;
         }
 
       
