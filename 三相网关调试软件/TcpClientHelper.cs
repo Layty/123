@@ -196,7 +196,7 @@ namespace 三相智慧能源网关调试软件
             }
             finally
             {
-                ClientSocket.Disconnect(true);
+                ClientSocket?.Disconnect(false);
                 ConnectResult = false;
             }
         }
@@ -284,7 +284,7 @@ namespace 三相智慧能源网关调试软件
                 return;
             }
 
-            ClientSocket.Disconnect(true);
+            ClientSocket.Disconnect(false);
             ConnectResult = false;
             Messenger.Default.Send("关闭连接成功", "Status");
         }

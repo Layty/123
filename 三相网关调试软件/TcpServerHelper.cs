@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using NLog;
+using NLog.LayoutRenderers.Wrappers;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -204,11 +206,13 @@ namespace 三相智慧能源网关调试软件
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
                         var socket = clientSocket;
-                        
+
                         Task.Run(delegate { ClientThread(socket); }, cancellationTokenSource.Token);
                     }
                     catch (Exception ex)
                     {
+                        Logger logger = LogManager.GetCurrentClassLogger();
+                        logger.Error(ex);
                         OnNotifyStatusMsg("退出服务端监听Task");
                         // CloseSever();
                         break;
@@ -217,12 +221,11 @@ namespace 三相智慧能源网关调试软件
             });
         }
 
-       
 
-        private void ClientThread(  Socket sockClient)
+        private void ClientThread(Socket sockClient)
         {
             byte[] array = new byte[1024];
-         
+
             while (true)
             {
                 int num;
@@ -234,6 +237,8 @@ namespace 三相智慧能源网关调试软件
                 }
                 catch (Exception ex)
                 {
+                    Logger logger = LogManager.GetCurrentClassLogger();
+                    logger.Error(ex);
                     OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
@@ -320,10 +325,64 @@ namespace 三相智慧能源网关调试软件
         public string ResponseTime { get; set; }
 
         private byte[] returnBytes;
+        private List<byte> listReturnByteses = new List<byte>();
+        private bool isNeedContinue = false;
+        private int totalLength { get; set; }
+        private int needReceiveLength { get; set; }
 
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-            returnBytes = bytes;
+            if (bytes == null)
+            {
+                return;
+            }
+
+            if (!isNeedContinue)
+            {
+                if (bytes.Length < 7)
+                {
+                    Logger lgLogger = LogManager.GetCurrentClassLogger();
+                    lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
+                    listReturnByteses.AddRange(bytes);
+                    returnBytes = listReturnByteses.ToArray();
+                    listReturnByteses.Clear();
+                }
+                else
+                {
+                    if (bytes[7] == (bytes.Length - 8))
+                    {
+                        listReturnByteses.AddRange(bytes);
+                        returnBytes = listReturnByteses.ToArray();
+                        listReturnByteses.Clear();
+                        isNeedContinue = false;
+                    }
+
+                    if (bytes[7] > (bytes.Length - 8))
+                    {
+                        totalLength = bytes[7];
+                        needReceiveLength = totalLength - (bytes.Length - 8);
+                        listReturnByteses.AddRange(bytes);
+                        isNeedContinue = true;
+                    }
+                }
+            }
+            else
+            {
+                if (bytes.Length < needReceiveLength)
+                {
+                    needReceiveLength = needReceiveLength - bytes.Length;
+                    listReturnByteses.AddRange(bytes);
+                }
+
+                if (bytes.Length >= needReceiveLength)
+                {
+                    needReceiveLength = 0;
+                    isNeedContinue = false;
+                    listReturnByteses.AddRange(bytes);
+                    returnBytes = listReturnByteses.ToArray();
+                    listReturnByteses.Clear();
+                }
+            }
         }
 
         public void CloseSever()
@@ -343,6 +402,7 @@ namespace 三相智慧能源网关调试软件
                 {
                     socketClientCancellationToken.Cancel();
                 }
+
                 SocketClientList.Clear();
             }
 

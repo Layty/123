@@ -13,7 +13,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
 
         public AxdrBoolean(byte boolByte)
         {
-            Value = boolByte.ToString().PadLeft(2,'0');
+            Value = boolByte.ToString("X2").PadLeft(2,'0');
         }
         public bool GetEntityValue()
         {

@@ -320,7 +320,7 @@
     <Compile Include="MyControl\DLMSControl\DataControl.xaml.cs">
       <DependentUpon>DataControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\DisconnecrtControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\DisconnecrtControl.xaml.cs">
       <DependentUpon>DisconnecrtControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
@@ -349,7 +349,7 @@
     <Compile Include="MyControl\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\ProfileGenericUserControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\ProfileGenericUserControl.xaml.cs">
       <DependentUpon>ProfileGenericUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ENetMessageBuilderViewModel.cs" />
@@ -362,10 +362,10 @@
     <Compile Include="MyControl\SkinUserControl.xaml.cs">
       <DependentUpon>SkinUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\UtilityTablesControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\UtilityTablesControl.xaml.cs">
       <DependentUpon>UtilityTablesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\RegisterControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\RegisterControl.xaml.cs">
       <DependentUpon>RegisterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
@@ -424,7 +424,7 @@
     <Compile Include="MyControl\SerialPortLogger.xaml.cs">
       <DependentUpon>SerialPortLogger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\DLMSFrontEndProcessorControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\DLMSFrontEndProcessorControl.xaml.cs">
       <DependentUpon>DLMSFrontEndProcessorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ServerCenter\TelnetPage.xaml.cs">
@@ -472,7 +472,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\DisconnecrtControl.xaml">
+    <Page Include="MyControl\DLMSControl\DisconnecrtControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -496,7 +496,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MyControl\ProfileGenericUserControl.xaml">
+    <Page Include="MyControl\DLMSControl\ProfileGenericUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -512,11 +512,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\UtilityTablesControl.xaml">
+    <Page Include="MyControl\DLMSControl\UtilityTablesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\RegisterControl.xaml">
+    <Page Include="MyControl\DLMSControl\RegisterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -576,7 +576,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\DLMSFrontEndProcessorControl.xaml">
+    <Page Include="MyControl\DLMSControl\DLMSFrontEndProcessorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

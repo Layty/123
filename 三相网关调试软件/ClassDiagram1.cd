@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="三相智慧能源网关调试软件.DLMS.DLMSClient" Collapsed="true">
+  <Class Name="三相智慧能源网关调试软件.DLMS.DLMSClient">
     <Position X="0.5" Y="0.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AABACQAEAAAABCAAAABQgAjAQAAMBCOQAAAAUBEAECA=</HashCode>
+      <HashCode>AABACQAEAAJARCAAAABAgAiAQAAIBQGQAAAAEBUIECA=</HashCode>
       <FileName>DLMS\DLMSClient.cs</FileName>
     </TypeIdentifier>
   </Class>
