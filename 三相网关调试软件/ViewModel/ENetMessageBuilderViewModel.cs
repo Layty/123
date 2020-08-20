@@ -94,9 +94,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 var base64 = Convert.FromBase64String(Encoding.Default.GetString(t));
                 ResultStr = ConvertJsonString(Encoding.Default.GetString(base64));
-
-                //var data = JsonConvert.DeserializeObject<object>(ResultStr);
-                //DispatcherHelper.CheckBeginInvokeOnUI(() => { ItemsCollection.Add(data); });
             });
             RequestCommand = new RelayCommand(() =>
             {

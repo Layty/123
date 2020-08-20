@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace 三相智慧能源网关调试软件.MyControl
 {
     /// <summary>
-    /// DataControl.xaml 的交互逻辑
+    /// DisconnecrtControl.xaml 的交互逻辑
     /// </summary>
-    public partial class DataControl : UserControl
+    public partial class DisconnecrtControl : UserControl
     {
-        public DataControl()
+        public DisconnecrtControl()
         {
             InitializeComponent();
         }

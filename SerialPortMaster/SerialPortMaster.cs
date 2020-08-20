@@ -213,7 +213,6 @@ namespace MySerialPortMaster
         {
             SerialPort = new SerialPort();
             IsAutoDataReceived = true;
-            
         }
 
         public SerialPortMaster(SerialPortConfig serialPortConfig)
@@ -434,7 +433,6 @@ namespace MySerialPortMaster
                 keepAutoDataReceived = true;
                 IsAutoDataReceived = false;
             }
-
             Send(sendData);
             ReceiveTokenSource = new CancellationTokenSource(ResponseTimeOut * 1000);
             var receiveData = await ReceiveDataAsync(ReceiveTokenSource.Token);

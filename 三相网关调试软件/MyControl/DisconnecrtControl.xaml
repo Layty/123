@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.DisconnecrtControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <materialDesign:Card>
+            <StackPanel>
+                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="OutputState"  ></TextBox>
+                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="ControlState" ></TextBox>
+                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="ControlMode" ></TextBox>
+                <Button Content="Disconnect"></Button>
+                <Button Content="Connect"></Button>
+            </StackPanel>
+        </materialDesign:Card>
+       
+    </Grid>
+</UserControl>

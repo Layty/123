@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
-namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
+namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
     public class GetRequestWithList : IToPduBytes
     {
         protected GetRequestType GetRequestType { get; set; } = GetRequestType.WithList;
-        public Invoke_Id_And_Priority InvokeIdAndPriority { get; set; }
+        public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
 
-        public CosemAttributeDescriptor[] CosemAttributeDescriptors { get; set; }
+        public AttributeDescriptor[] CosemAttributeDescriptors { get; set; }
 
-        public GetRequestWithList(CosemAttributeDescriptor[] cosemAttributeDescriptors)
+        public GetRequestWithList(AttributeDescriptor[] cosemAttributeDescriptors)
         {
             CosemAttributeDescriptors = cosemAttributeDescriptors;
-            InvokeIdAndPriority = new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High);
+            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
         }
 
         public byte[] ToPduBytes()
@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             List<byte> pduBytes = new List<byte>();
 
             pduBytes.Add((byte) GetRequestType);
-            pduBytes.Add(InvokeIdAndPriority.InvokeIdAndPriority);
+            pduBytes.Add(InvokeIdAndPriority.Value);
             if (CosemAttributeDescriptors != null)
             {
                 foreach (var cosemAttributeDescriptor in CosemAttributeDescriptors)

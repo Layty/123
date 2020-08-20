@@ -204,6 +204,7 @@ namespace 三相智慧能源网关调试软件
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
                         var socket = clientSocket;
+                        
                         Task.Run(delegate { ClientThread(socket); }, cancellationTokenSource.Token);
                     }
                     catch (Exception ex)
@@ -216,10 +217,12 @@ namespace 三相智慧能源网关调试软件
             });
         }
 
-        private void ClientThread(Socket sockClient)
+       
+
+        private void ClientThread(  Socket sockClient)
         {
             byte[] array = new byte[1024];
-
+         
             while (true)
             {
                 int num;
@@ -285,7 +288,6 @@ namespace 三相智慧能源网关调试软件
             OnSendBytesToClient(destinationSocket, bytes);
             await Task.Run(() =>
             {
-                byte[] tryToReadReceiveData = { };
                 Stopwatch stopwatch1 = new Stopwatch();
                 TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
                 stopwatch1.Start();

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -613,11 +614,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         GetResponse getResponse = new GetResponse();
                         if (getResponse.PduBytesToConstructor(dataResult))
                         {
-                            if (getResponse.GetResponseNormal.GetDataResult.Data.DataType == DataType.OctetString)
+                            if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
                             {
                                 t.DataForShow = NormalDataParse.HowToDisplayOctetString(
-                                    getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes,
-                                    DisplayFormatToShow.OBIS);
+                                    getResponse.GetResponseNormal.Result.Data.ValueBytes,
+                                    OctetStringDisplayFormat.Obis);
                             }
                         }
                     });

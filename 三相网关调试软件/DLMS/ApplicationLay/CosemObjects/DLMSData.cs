@@ -6,16 +6,71 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnu
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
+    public class DLMSDisconnectControl: DLMSObject, IDLMSBase, INotifyPropertyChanged
+ {
+
+        public bool OutputState
+        {
+            get => _OutputState;
+            set { _OutputState = value;OnPropertyChanged();  }
+        }
+        private bool _OutputState;
+
+        
+        public DLMSDisconnectControl()
+        {
+            LogicalName = "0.0.96.3.10.255";
+            ObjectType = ObjectType.DisconnectControl;
+        }
+
+        public DLMSDisconnectControl(string logicalName, ObjectType objectType)
+        {
+            LogicalName = logicalName;
+            ObjectType = objectType;
+        }
+        public string[] GetNames()
+     {
+         throw new NotImplementedException();
+     }
+
+     public int GetAttributeCount()
+     {
+         throw new NotImplementedException();
+     }
+
+     public int GetMethodCount()
+     {
+         throw new NotImplementedException();
+     }
+
+     public DataType GetDataType(int index)
+     {
+         throw new NotImplementedException();
+     }
+
+     public event PropertyChangedEventHandler PropertyChanged;
+
+     [NotifyPropertyChangedInvocator]
+     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+     {
+         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+     }
+    }
+
     public class DLMSData : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
-
-      
-
         public DLMSDataItem Value
         {
             get => _value;
-            set { _value = value; OnPropertyChanged(); }
+            set
+            {
+                _value = value;
+               
+
+                OnPropertyChanged();
+            }
         }
+
         private DLMSDataItem _value;
 
 
@@ -24,13 +79,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             LogicalName = logicalName;
             ObjectType = ObjectType.Data;
         }
-
-        public byte[] GetLogicName() => GetAttributeData(1);
-        public byte[] GetValue() => GetAttributeData(2);
-        public byte[] SetValue(DLMSDataItem ddi) => SetAttributeData(2, ddi);
-
-
-
+        public DLMSData(string logicalName,ObjectType objectType)
+        {
+            LogicalName = logicalName;
+            ObjectType = objectType;
+        }
+        public AttributeDescriptor GetLogicNameAttributeDescriptor() => GetCosemAttributeDescriptor(1);
+        public AttributeDescriptor GetValueAttributeDescriptor() => GetCosemAttributeDescriptor(2);
+       
+        
 
         string[] IDLMSBase.GetNames() => new[] {LogicalName, "Value"};
 

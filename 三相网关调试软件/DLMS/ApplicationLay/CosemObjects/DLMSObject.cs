@@ -1,5 +1,8 @@
 ﻿using System;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
@@ -17,10 +20,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public object Tag { get; set; }
         public byte Version { get; set; } = 0;
-
-        //public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
-        //public SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
-        //public ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
 
         public DLMSObject()
             : this(ObjectType.None, null, 0)
@@ -55,21 +54,22 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public byte[] GetAttributeData(byte attrId)
         {
-            //GetRequestNormal getRequestNormal = new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High));
-            //return getRequestNormal.ToPduBytes();
             GetRequest getRequest=new GetRequest();
-
-            getRequest.GetRequestNormal=new GetRequestNormal(new CosemAttributeDescriptor(this, attrId), new Invoke_Id_And_Priority(1, ServiceClass.Confirmed, Priority.High));
+            getRequest.GetRequestNormal=new GetRequestNormal(new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High),new AttributeDescriptor(this, attrId));
             return getRequest.ToPduBytes();
         }
+
+       
 
 
         public byte[] SetAttributeData(byte attrId, DLMSDataItem dlmsDataItem)
         {
             SetRequestNormal setRequestNormal =
-                new SetRequestNormal(new CosemAttributeDescriptor(this, attrId), dlmsDataItem);
+                new SetRequestNormal(new AttributeDescriptor(this, attrId), dlmsDataItem);
             return setRequestNormal.ToPduBytes();
         }
+        
+
 
         public byte[] ActionExecute(byte methodIndex, DLMSDataItem dlmsDataItem)
         {
@@ -79,14 +79,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             return actionRequestNormal.ToPduBytes();
         }
 
+        public AttributeDescriptor GetCosemAttributeDescriptor(byte attributeIndex)
+        {
+            return new AttributeDescriptor(this, attributeIndex);
+        }
         public CosemMethodDescriptor GetCosemMethodDescriptor(byte methodIndex)
         {
             return new CosemMethodDescriptor(this, methodIndex);
         }
 
-        public CosemAttributeDescriptor GetCosemAttributeDescriptor(byte attributeIndex)
-        {
-            return new CosemAttributeDescriptor(this, attributeIndex);
-        }
+
     }
 }

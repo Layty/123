@@ -83,13 +83,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         }
 
 
-        public byte[] GetBuffer() => GetAttributeData(2);
+       
+        public AttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
-        public byte[] GetCaptureObjects() => GetAttributeData(3);
-
-        public byte[] GetCapturePeriod() => GetAttributeData(4);
-
-
+        public AttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);
+        
+        public AttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
         public byte[] SetCapturePeriod(uint capturePeriod)
         {
             this.CapturePeriod = capturePeriod;
@@ -99,12 +98,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         }
 
         public byte[] GetSortMethod() => GetAttributeData(5);
-
-        public byte[] GetEntriesInUse() => GetAttributeData(7);
-
+        public AttributeDescriptor GetSortMethodAttributeDescriptor() =>GetCosemAttributeDescriptor(5);
+       
+        public byte[] GetEntriesInUse() => GetCosemAttributeDescriptor(7).ToPduBytes();
+        public AttributeDescriptor GetEntriesInUseAttributeDescriptor() => GetCosemAttributeDescriptor(7);
 
         public byte[] GetProfileEntries() => GetAttributeData(8);
-
+        public AttributeDescriptor GetProfileEntriesAttributeDescriptor() => GetCosemAttributeDescriptor(8);
 
         string[] IDLMSBase.GetNames()
         {

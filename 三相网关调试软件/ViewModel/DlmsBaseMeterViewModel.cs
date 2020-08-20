@@ -9,6 +9,8 @@ using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 
@@ -67,12 +69,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             Client = ServiceLocator.Current.GetInstance<DLMSClient>();
 
-            InitCommand = new RelayCommand(async () => { await Client.InitRequest();});
+            InitCommand = new RelayCommand(async () => { await Client.InitRequestNew();});
             DisconnectCommand = new RelayCommand(async () => { await Client.DisconnectRequest(true); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("1.0.0.2.0.255");
-                var value = await Client.GetRequest(cosem.GetValue());
+                GetRequest getRequest=new GetRequest();
+                getRequest.GetRequestNormal = new GetRequestNormal(cosem.GetValueAttributeDescriptor());
+                var value = await Client.GetRequest(getRequest);
                 if (value != null && value.Length != 0)
                 {
                     var data = NormalDataParse.ParsePduData(value);
@@ -82,7 +86,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             ReadFactoryCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
-                var value = await Client.GetRequest(cosem.GetValue());
+                GetRequest getRequest = new GetRequest();
+                getRequest.GetRequestNormal = new GetRequestNormal(cosem.GetValueAttributeDescriptor());
+                var value = await Client.GetRequest(getRequest);
                 if (value != null && value.Length != 0)
                 {
                     FactoryStatus = NormalDataParse.ParsePduData(value);
@@ -91,16 +97,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
-//                byte[] inputBytes = BitConverter.GetBytes(short.Parse("8192")).Reverse().ToArray();
                 DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt16, "8192");
-                await Client.SetRequest(cosem.SetValue(dataItem));
+                SetRequest setRequest = new SetRequest();
+                setRequest.SetRequestNormal = new SetRequestNormal(cosem.GetCosemAttributeDescriptor(2), dataItem);
+                await Client.SetRequest(setRequest);
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new DLMSData("0.0.96.5.0.255");
-//                byte[] inputDate = BitConverter.GetBytes(ushort.Parse("0")).Reverse().ToArray();
                 var dataItem = new DLMSDataItem(DataType.UInt16, "0");
-                await Client.SetRequest(cosem.SetValue(dataItem));
+                SetRequest setRequest = new SetRequest();
+                setRequest.SetRequestNormal = new SetRequestNormal(cosem.GetValueAttributeDescriptor(), dataItem);
+                await Client.SetRequest(setRequest);
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
             {

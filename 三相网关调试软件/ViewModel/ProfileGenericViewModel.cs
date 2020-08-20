@@ -6,6 +6,7 @@ using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -27,10 +28,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public RelayCommand GetCapturePeriodCommand
         {
-            get => _GetCapturePeriodCommand;
+            get => _getCapturePeriodCommand;
             set
             {
-                _GetCapturePeriodCommand = value;
+                _getCapturePeriodCommand = value;
                 RaisePropertyChanged();
             }
         }
@@ -40,51 +41,58 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public RelayCommand GetSortMethodCommand { get; private set; }
         public RelayCommand GetBufferCommand { get; private set; }
 
-        private RelayCommand _GetCapturePeriodCommand;
+        private RelayCommand _getCapturePeriodCommand;
         public DLMSClient Client { get; set; }
 
 
         public ObservableCollection<byte[]> ListObservableCollection
         {
-            get => _ListObservableCollection;
-            set { _ListObservableCollection = value; RaisePropertyChanged(); }
+            get => _listObservableCollection;
+            set { _listObservableCollection = value; RaisePropertyChanged(); }
         }
-        private ObservableCollection<byte[]> _ListObservableCollection;
-
+        private ObservableCollection<byte[]> _listObservableCollection;
+         public   GetRequest getRequest = new GetRequest();
 
         public ProfileGenericViewModel()
         {
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
             Generic = new DLMSSelfDefineProfileGeneric("1.0.99.1.0.255");
+            getRequest.GetRequestNormal=new GetRequestNormal();
+         
             GetCapturePeriodCommand = new RelayCommand(async
                 () =>
             {
-                var resultBytes = await Client.GetRequest(Generic.GetCapturePeriod());
+                getRequest.GetRequestNormal.AttributeDescriptor = Generic.GetCosemAttributeDescriptor(4);
+                 var resultBytes = await Client.GetRequest(getRequest);
                 Generic.CapturePeriod = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
             GetEntriesInUseCommand = new RelayCommand(async
                 () =>
             {
-                var resultBytes = await Client.GetRequest(Generic.GetEntriesInUse());
+                getRequest.GetRequestNormal = new GetRequestNormal(Generic.GetEntriesInUseAttributeDescriptor());
+                var resultBytes = await Client.GetRequest(getRequest);
                 Generic.EntriesInUse = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
             GetProfileEntriesCommand = new RelayCommand(async
                 () =>
             {
-                var resultBytes = await Client.GetRequest(Generic.GetProfileEntries());
+                getRequest.GetRequestNormal.AttributeDescriptor = Generic.GetProfileEntriesAttributeDescriptor();
+                var resultBytes = await Client.GetRequest(getRequest);
                 Generic.ProfileEntries = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
             GetSortMethodCommand = new RelayCommand(async
                 () =>
             {
-                var resultBytes = await Client.GetRequest(Generic.GetSortMethod());
+                getRequest.GetRequestNormal.AttributeDescriptor = Generic.GetSortMethodAttributeDescriptor();
+                var resultBytes = await Client.GetRequest(getRequest);
                 Generic.SortMethod = (SortMethod) ushort.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
 
             GetBufferCommand = new RelayCommand(async
                 () =>
             {
-                var resultBytes = await Client.GetRequest(Generic.GetBuffer());
+                getRequest.GetRequestNormal.AttributeDescriptor = Generic.GetBufferAttributeDescriptor();
+                var resultBytes = await Client.GetRequest(getRequest);
                 var stringTo = NormalDataParse.ParsePduData(resultBytes).StringToByte();
                 var splitCountLength = (stringTo.Length - 1) / stringTo[0];
                 var Index = 1;

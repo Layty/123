@@ -5,26 +5,28 @@ using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class DataViewModel : ViewModelBase
     {
-        public DisplayFormatToShow DisplayFormat
+        public Array OctetStringDisplayFormatArray { get; set; } = Enum.GetValues(typeof(OctetStringDisplayFormat));
+        public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
+
+        public DLMSSelfDefineData DlmsSelfDefineData
         {
-            get => _displayFormat;
+            get => _dlmsSelfDefineData;
             set
             {
-                _displayFormat = value;
-
-
+                _dlmsSelfDefineData = value;
                 RaisePropertyChanged();
             }
         }
 
-        private DisplayFormatToShow _displayFormat = DisplayFormatToShow.Original;
-        public Array DisplayArray { get; set; }
+        private DLMSSelfDefineData _dlmsSelfDefineData;
 
         public ObservableCollection<DLMSSelfDefineData> DataCollection
         {
@@ -76,59 +78,60 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public DLMSClient Client { get; set; }
 
-      
-
         public DataViewModel()
         {
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
-            ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
-            var dataTable = excel.GetExcelDataTable("Data$");
+            ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
+            var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
             DataCollection = new ObservableCollection<DLMSSelfDefineData>();
+
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                DataCollection.Add(new DLMSSelfDefineData(dataTable.Rows[i][0].ToString())
+                DataCollection.Add(new DLMSSelfDefineData(dataTable.Rows[i][0].ToString(),
+                        (ObjectType) int.Parse(dataTable.Rows[i][2].ToString()),
+                        byte.Parse(dataTable.Rows[i][3].ToString()))
                     {DataName = dataTable.Rows[i][1].ToString()});
             }
 
             GetLogicNameCommand = new RelayCommand<DLMSSelfDefineData>(async t =>
             {
                 t.Value = new DLMSDataItem();
-                var dataResult = await Client.GetRequest(t.GetLogicName());
-                GetResponse getResponse = new GetResponse();
-                getResponse.GetResponseNormal.PduBytesToConstructor(dataResult);
-//                t.Value.ValueBytes = getResponse.GetResponseNormal.GetDataResult.Data.ValueBytes;
-                t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
-                DisplayFormat = DisplayFormatToShow.OBIS;
-            });
-            GetValueCommand = new RelayCommand<DLMSSelfDefineData>(async t =>
-            {
-                t.LastResult = new ErrorCode();
-                t.Value = new DLMSDataItem();
-                var dataResult = await Client.GetRequest(t.GetValue());
+                GetRequest getRequest = new GetRequest()
+                    {GetRequestNormal = new GetRequestNormal(t.GetLogicNameAttributeDescriptor())};
+
+                var dataResult = await Client.GetRequest(getRequest);
 
                 GetResponse getResponse = new GetResponse();
-
-                if (getResponse.PduBytesToConstructor(dataResult))
+                if (getResponse.GetResponseNormal.PduBytesToConstructor(dataResult))
                 {
-                    t.Value.DataType = getResponse.GetResponseNormal.GetDataResult.Data.DataType;
-                    t.LastResult = getResponse.GetResponseNormal.GetDataResult.DataAccessResult;
-                    t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
-              
-                    if (t.Value.DataType == DataType.OctetString)
-                    {
-                        t.Value.ValueString =
-                            NormalDataParse.HowToDisplayOctetString(t.Value.ValueBytes, DisplayFormat);
-                    }
+                    t.Value.ValueDisplay.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
+                    t.Value = getResponse.GetResponseNormal.Result.Data;
                 }
             });
+            GetValueCommand = new RelayCommand<DLMSSelfDefineData>(async (t) =>
+            {
+                DlmsSelfDefineData = t;
+                t.LastResult = new ErrorCode();
+                t.Value = new DLMSDataItem();
+                GetRequest getRequest = new GetRequest
+                {
+                    GetRequestNormal = new GetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr))
+                };
+                var requestAndWaitResponse = await Client.GetRequestAndWaitResponse(getRequest);
+                if (requestAndWaitResponse != null)
+                {
+                    t.LastResult = requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult;
+                    t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
+                }
+            }, true);
             SetValueCommand = new RelayCommand<DLMSSelfDefineData>(async (t) =>
             {
+                t.Value.UpdateValueBytes();
                 t.LastResult = new ErrorCode();
-       
-                await Client.SetRequest(t.SetValue(t.Value));
+                SetRequest setRequest = new SetRequest();
+                setRequest.SetRequestNormal = new SetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
+                await Client.SetRequest(setRequest);
             });
-
-            DisplayArray = Enum.GetValues(typeof(DisplayFormatToShow));
         }
     }
 }

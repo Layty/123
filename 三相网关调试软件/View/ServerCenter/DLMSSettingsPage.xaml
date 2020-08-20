@@ -66,6 +66,20 @@
                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="ReceiveMaxWindowSize"
                              Text="{Binding  Client.MyDlmsSettings.DlmsInfo.ReceiveMaxWindowSize}" />
+
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="TransmitMaxInfoValueFromMeter"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfoFromMeter.TransmitMaxInfoValue}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="TransmitMaxWindowSizeFromMeter"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfoFromMeter.TransmitMaxWindowSize}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="ReceiveMaxInfoValueFromMeter"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfoFromMeter.ReceiveMaxInfoValue}" />
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             materialDesign:HintAssist.Hint="ReceiveMaxWindowSizeFromMeter"
+                             Text="{Binding  Client.MyDlmsSettings.DlmsInfoFromMeter.ReceiveMaxWindowSize}" />
+
                     <TextBox Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="CurrentSendSequenceNumber" />
@@ -78,6 +92,9 @@
             <GroupBox Header="Application Layer Parameters">
                 <StackPanel>
                     <CheckBox IsChecked="{Binding Client.MyDlmsSettings.UseLogicalNameReferencing}" Content="UseLogicalNameReferencing"></CheckBox>
+                    <TextBox Text="{Binding Client.MyDlmsSettings.SystemTitle}"
+                             materialDesign:HintAssist.Hint="SystemTitle"
+                             materialDesign:HintAssist.IsFloating="True" />
                     <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}"
                              materialDesign:HintAssist.Hint="MaxReceivePduSize"
                              materialDesign:HintAssist.IsFloating="True" />

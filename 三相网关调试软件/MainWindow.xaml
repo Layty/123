@@ -679,6 +679,12 @@
                                 </TabItem.Header>
                                 <myControl:NetLogger />
                             </TabItem>
+                            <TabItem>
+                                <TabItem.Header>
+                                    <materialDesign:PackIcon Kind="Xml" />
+                                </TabItem.Header>
+                                <myControl:XMLLogControl />
+                            </TabItem>
                         </TabControl>
 
 

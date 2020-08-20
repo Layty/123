@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
-    public class Invoke_Id_And_Priority
+    public class InvokeIdAndPriority
     {
         //Invoke-Id-And-Priority::= BIT STRING(SIZE(8))
         //--{
@@ -15,6 +16,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         private byte _invokeId;
 
+        [XmlAttribute]
         public byte InvokeId
         {
             get => _invokeId;
@@ -29,11 +31,27 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             }
         }
 
-        public byte reserved { get; set; } //(4..5)
-        public ServiceClass ServiceClass { get; set; } //0 = Unconfirmed, 1 = Confirmed
-        public Priority Priority { get; set; } //0=normal,1=high
-        public byte InvokeIdAndPriority { get; set; } = 0xC1;
+        [XmlAttribute] public byte Reserved { get; set; } //(4..5)
+        [XmlAttribute] public ServiceClass ServiceClass { get; set; } //0 = Unconfirmed, 1 = Confirmed
+        [XmlAttribute] public Priority Priority { get; set; } //0=normal,1=high
 
+     
+
+        [XmlAttribute]
+        public string OriginalHexValue { get; set; }
+        // public byte Value { get; set; } = 0xC1;
+        [XmlAttribute]
+        public byte Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                OriginalHexValue = value.ToString("X2");
+            }
+        }
+
+        private byte _value = 0xC1;
         /// <summary>
         ///  BIT STRING (SIZE(8))
         /// </summary>
@@ -41,20 +59,24 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         /// <param name="serviceClass">0 = Unconfirmed, 1 = Confirmed</param>
         /// <param name="priority">优先级 0=normal,1=high</param>
         /// <param name="reserved"></param>
-        public Invoke_Id_And_Priority(byte invokeId, ServiceClass serviceClass, Priority priority, byte reserved = 0)
+        public InvokeIdAndPriority(byte invokeId, ServiceClass serviceClass, Priority priority, byte reserved = 0)
         {
             InvokeId = invokeId;
-            this.reserved = reserved;
+            this.Reserved = reserved;
             ServiceClass = serviceClass;
             Priority = priority;
-            InvokeIdAndPriority = GetInvoke_Id_And_Priority();
+            Value = GetInvoke_Id_And_Priority();
         }
 
-        public Invoke_Id_And_Priority()
+        public InvokeIdAndPriority()
         {
-            
         }
-        public  void UpdateInvokeIdAndPriority(byte value)
+        public InvokeIdAndPriority(byte value)
+        {
+            Value = value;
+            UpdateInvokeIdAndPriority(value);
+        }
+        public void UpdateInvokeIdAndPriority(byte value)
         {
             if ((value & 0x80) != 0)
             {
@@ -75,6 +97,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             }
 
             InvokeId = (byte) (value & 0xF);
+            Value = GetInvoke_Id_And_Priority();
         }
 
         public byte GetInvoke_Id_And_Priority()
@@ -94,7 +117,5 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
             return count;
         }
-
-      
     }
 }

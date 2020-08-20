@@ -1,0 +1,6 @@
+﻿BER 
+(Basic Encoding Rules)
+
+BER描述了如何将 ASN.1类型表示和编码成八位字节串。
+T L V
+

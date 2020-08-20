@@ -2,6 +2,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using 三相智慧能源网关调试软件.DLMS;
+using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -55,6 +56,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<ClockViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
+
+                SimpleIoc.Default.Register<DMLSXMLLog>();
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -130,6 +133,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
        
         public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();
+
+        public DMLSXMLLog XmlLog => ServiceLocator.Current.GetInstance<DMLSXMLLog>();
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
         public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
 

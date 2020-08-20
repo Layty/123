@@ -7,33 +7,7 @@ using 三相智慧能源网关调试软件.DLMS.OBIS;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
-    public class SelectiveAccessDescriptor : IToPduBytes
-    {
-        public byte AccessSelector { get; set; }
-        public DLMSDataItem DlmsDataItem { get; set; }
-
-        public byte[] ToPduBytes()
-        {
-            List<byte> list = new List<byte>();
-            list.Add(AccessSelector);
-            list.AddRange(DlmsDataItem.ToPduBytes());
-            return list.ToArray();
-        }
-    }
-
-    public class CosemAttributeDescriptorWithSelection : IToPduBytes
-    {
-        public CosemAttributeDescriptor AttributeDescriptor { get; set; }
-        public SelectiveAccessDescriptor SelectiveAccessDescriptor { get; set; }
-
-        public byte[] ToPduBytes()
-        {
-          //  SelectiveAccessDescriptor.ToPduBytes();
-          return null;
-        }
-    }
-
-    public class CosemAttributeDescriptor : IToPduBytes
+    public class AttributeDescriptor : IToPduBytes, IPduBytesToConstructor
     {
         public ObjectType ClassId { get; set; }
         public string InstanceId { get; set; }
@@ -47,7 +21,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             return 10;
         }
 
-        public CosemAttributeDescriptor(DLMSObject dlmsObject, byte index)
+        public AttributeDescriptor()
+        {
+        }
+
+        public AttributeDescriptor(DLMSObject dlmsObject, byte index)
         {
             ClassId = dlmsObject.ObjectType;
             InstanceId = dlmsObject.LogicalName;
@@ -63,6 +41,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             list.Add(AttributeId); //方法
             list.Add(Version); //版本 
             return list.ToArray();
+        }
+
+        public bool PduBytesToConstructor(byte[] pduBytes)
+        {
+            throw new NotImplementedException();
         }
     }
 }

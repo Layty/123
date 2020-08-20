@@ -1,10 +1,11 @@
-﻿using MySerialPortMaster;
+﻿using System.Xml.Serialization;
+using MySerialPortMaster;
 
-namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
+namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
     public class MechanismName:IToPduBytes
     {
-        public string Value { get; set; } = "LS1";
+        [XmlAttribute] public string Value { get; set; } = "LS1";
 
         public string ToPduStringInHex()
         {

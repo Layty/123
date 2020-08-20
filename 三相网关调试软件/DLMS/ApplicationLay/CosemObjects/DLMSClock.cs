@@ -384,9 +384,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             
         }
 
-        public byte[] GetTime() => GetAttributeData(2);
-        public byte[] GetTimeZone() => GetAttributeData(3);
-        public byte[] GetStatus() => GetAttributeData(4);
+        public AttributeDescriptor GetTimeAttributeDescriptor() => GetCosemAttributeDescriptor(2);
+        public byte[] GetTime() => GetCosemAttributeDescriptor(2).ToPduBytes();
+        public AttributeDescriptor GetTimeZoneAttributeDescriptor() => GetCosemAttributeDescriptor(3);
+        public byte[] GetTimeZone() => GetCosemAttributeDescriptor(3).ToPduBytes();
+        public AttributeDescriptor GetStatusAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+        public byte[] GetStatus() => GetCosemAttributeDescriptor(4).ToPduBytes();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

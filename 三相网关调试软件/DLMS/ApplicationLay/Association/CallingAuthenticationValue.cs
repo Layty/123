@@ -1,19 +1,27 @@
 ﻿using System.Collections.Generic;
 
-namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
+namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
-
     public class CallingAuthenticationValue:IToPduBytes
     {
-        private byte[] passwordHex; 
+        private byte[] passwordHex;
+
+        public CallingAuthenticationValue()
+        {
+            
+        }
         public CallingAuthenticationValue(byte[] passwordHex)
         {
             this.passwordHex = passwordHex;
         }
+        public CallingAuthenticationValue(MyDLMSSettings dlmsSettings)
+        {
+            this.passwordHex = dlmsSettings.PasswordHex;
+        }
         public byte[] ToPduBytes()
         {
             List<byte> appApduContentList = new List<byte>();
-            appApduContentList.Add(0xAC); //标签([12],EXPLICIT, Context-specific)的编码
+            appApduContentList.Add((byte)TranslatorGeneralTags.CallingAuthentication); //标签([12],EXPLICIT, Context-specific)的编码
             appApduContentList.Add(0x0A); //标记组件的值域的长度的编码
             appApduContentList.AddRange(new byte[]
             {

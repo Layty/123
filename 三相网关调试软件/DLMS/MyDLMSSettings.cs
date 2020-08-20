@@ -1,111 +1,19 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using GalaSoft.MvvmLight;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
-using DataType = 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums.DataType;
 
 namespace 三相智慧能源网关调试软件.DLMS
 {
-    public class DLMSCommon
-    {
-        public static DataType GetDLMSDataType(Type type)
-        {
-            if (type == null)
-            {
-                return DataType.NullData;
-            }
-            if (type == typeof(int))
-            {
-                return DataType.Int32;
-            }
-            if (type == typeof(uint))
-            {
-                return DataType.UInt32;
-            }
-            if (type == typeof(string))
-            {
-                return DataType.String;
-            }
-            if (type == typeof(byte))
-            {
-                return DataType.UInt8;
-            }
-            if (type == typeof(sbyte))
-            {
-                return DataType.Int8;
-            }
-            if (type == typeof(short))
-            {
-                return DataType.Int16;
-            }
-            if (type == typeof(ushort))
-            {
-                return DataType.UInt16;
-            }
-            if (type == typeof(long))
-            {
-                return DataType.Int64;
-            }
-            if (type == typeof(ulong))
-            {
-                return DataType.UInt64;
-            }
-            if (type == typeof(float))
-            {
-                return DataType.Float32;
-            }
-            if (type == typeof(double))
-            {
-                return DataType.Float64;
-            }
-            //if (type == typeof(DateTime) || type == typeof(GXDateTime))
-            //{
-            //    return DataType.DateTime;
-            //}
-            //if (type == typeof(GXDate))
-            //{
-            //    return DataType.Date;
-            //}
-            //if (type == typeof(GXTime))
-            //{
-            //    return DataType.Time;
-            //}
-            if (type == typeof(bool))
-            {
-                return DataType.Boolean;
-            }
-            if (type == typeof(byte[]))
-            {
-                return DataType.OctetString;
-            }
-            //if (type == typeof(GXStructure))
-            //{
-            //    return DataType.Structure;
-            //}
-            //if (type == typeof(GXArray) || type == typeof(object[]))
-            //{
-            //    return DataType.Array;
-            //}
-            //if (type == typeof(GXEnum) || type.IsEnum)
-            //{
-            //    return DataType.Enum;
-            //}
-            //if (type == typeof(GXBitString))
-            //{
-            //    return DataType.BitString;
-            //}
-            //if (type == typeof(GXByteBuffer))
-            //{
-            //    return DataType.OctetString;
-            //}
-            throw new Exception("Failed to convert data type to DLMS data type. Unknown data type.");
-        }
-    }
     public class MyDLMSSettings : ViewModelBase
     {
+        public OctetStringDisplayFormat OctetStringDisplayFormat { get; set; }
+
+        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat { get; set; }
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
@@ -115,6 +23,9 @@ namespace 三相智慧能源网关调试软件.DLMS
         public StartProtocolType StartProtocolType { get; set; } 
         public ConnectionState Connected { get; set; }
 
+        /// <summary>
+        /// 物理层通道类型
+        /// </summary>
         public CommunicationType CommunicationType 
         {
             get => _communicationType;
@@ -127,8 +38,10 @@ namespace 三相智慧能源网关调试软件.DLMS
 
         private CommunicationType _communicationType;
 
+        [DefaultValue(6)]
         public byte DlmsVersion { get; set; }
 
+        [DefaultValue(65535)]
         public ushort MaxReceivePduSize
         {
             get => MaxReceiveReceivePduSize;
@@ -144,14 +57,13 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
 
         internal ushort MaxReceiveReceivePduSize;
+
         private const ushort DefaultMaxReceivePduSize = 0xFFFF;
+
+        public ushort NegotiatedMaxPduSize { get; internal set; }
 
         private byte _invokeId = 0x1;
 
-        /// <summary>
-        /// Invoke ID.
-        /// </summary>
-        internal uint LongInvokeId = 0x1;
 
         public byte InvokeId
         {
@@ -177,12 +89,13 @@ namespace 三相智慧能源网关调试软件.DLMS
         /// 当建立连接时，客户端告诉它想要使用什么类型的服务。
         /// </summary>
         public Conformance ProposedConformance { get; set; }
-
-        public Array ProposedConformanceArray { get; set; } = Enum.GetValues(typeof(Conformance));
         /// <summary>
         /// 服务器告诉什么功能是可用的，客户端就会知道
         /// </summary>
         internal Conformance NegotiatedConformance = 0;
+        public Array ProposedConformanceArray { get; set; } = Enum.GetValues(typeof(Conformance));
+      
+
 
         public bool AutoIncreaseInvokeID { get; set; }
 
@@ -244,7 +157,14 @@ namespace 三相智慧能源网关调试软件.DLMS
         }
         public DLMSInfo DlmsInfo { get; set; }
 
+        public DLMSInfo DlmsInfoFromMeter { get; set; }
+
         public int RequestBaud { get; set; }
+
+        public string SystemTitle { get=> _systemTitle;
+            set { _systemTitle = value;RaisePropertyChanged(); }
+        }
+        private string _systemTitle;
         public MyDLMSSettings()
         {
             UseLogicalNameReferencing = true;
@@ -253,16 +173,28 @@ namespace 三相智慧能源网关调试软件.DLMS
             Priority = Priority.High;
             ServiceClass = ServiceClass.Confirmed;
             MaxServerPDUSize = MaxReceivePduSize = DefaultMaxReceivePduSize;
-            ProposedConformance = (Conformance) 0x7E1F;
+           // ProposedConformance = (Conformance) 0x7E1F;
+            ProposedConformance = GetInitialConformance(true);
+
             DlmsInfo = new DLMSInfo();
+            DlmsInfoFromMeter=new DLMSInfo();
+            
             PasswordString = "33333333";
             CommunicationType = CommunicationType.SerialPort;
             InterfaceType = InterfaceType.HDLC;
             StartProtocolType = StartProtocolType.DLMS;
             ClientAddress = 1;
             ServerAddress = 1;
+            SystemTitle = "00000000000000000000";
+        }
+        public static Conformance GetInitialConformance(bool useLogicalNameReferencing)
+        {
+            if (useLogicalNameReferencing)
+            {
+                return Conformance.BlockTransferWithGetOrRead | Conformance.BlockTransferWithSetOrWrite | Conformance.BlockTransferWithAction | Conformance.MultipleReferences | Conformance.Get | Conformance.Set | Conformance.SelectiveAccess | Conformance.Action;
+            }
+            return Conformance.Read | Conformance.Write | Conformance.UnconfirmedWrite | Conformance.MultipleReferences | Conformance.InformationReport | Conformance.ParameterizedAccess;
         }
 
-      
     }
 }

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -19,24 +20,34 @@ namespace 三相智慧能源网关调试软件.ViewModel
             Clock = new DLMSClock(dataTable.Rows[0][0].ToString());
             GetTimeCommand = new RelayCommand(async () =>
             {
-                var dataResult = await Client.GetRequest(Clock.GetTime());
-                var r = new GetResponse();
-                ;
-                if (r.PduBytesToConstructor(dataResult))
+                GetRequest getRequest=new GetRequest();
+                getRequest.GetRequestNormal=new GetRequestNormal(Clock.GetTimeAttributeDescriptor());
+                var dataResult = await Client.GetRequestAndWaitResponse(getRequest);
+                
+                if (dataResult!=null)
                 {
-                    var DisplayFormat = DisplayFormatToShow.DateTime;
+                    var DisplayFormat = OctetStringDisplayFormat.DateTime;
                     Clock.Time =
-                        NormalDataParse.HowToDisplayOctetString(r.GetResponseNormal.GetDataResult.Data.ValueBytes,
-                            DisplayFormat);
-//                   Clock.Time = r.GetResponseNormal.GetDataResult.Data.ValueString;
+                        NormalDataParse.HowToDisplayOctetString(
+                            dataResult.GetResponseNormal.Result.Data.ValueBytes, DisplayFormat);
                 }
+//                if (r.PduBytesToConstructor(dataResult))
+//                {
+//                    var DisplayFormat = OctetStringDisplayFormat.DateTime;
+//                    Clock.Time =
+//                        NormalDataParse.HowToDisplayOctetString(r.GetResponseNormal.Result.Data.ValueBytes,
+//                            DisplayFormat);
+////                   Clock.Time = r.GetResponseNormal.Result.Data.ValueString;
+//                }
             });
             GetTimeZoneCommand = new RelayCommand(async () =>
             {
-                var dataResult = await Client.GetRequest(Clock.GetTimeZone());
+                GetRequest getRequest = new GetRequest();
+                getRequest.GetRequestNormal = new GetRequestNormal(Clock.GetTimeZoneAttributeDescriptor());
+                var dataResult = await Client.GetRequest(getRequest);
                 var r = new GetResponse();
                 r.PduBytesToConstructor(dataResult);
-                Clock.TimeZone = int.Parse(r.GetResponseNormal.GetDataResult.Data.ValueString);
+                Clock.TimeZone = int.Parse(r.GetResponseNormal.Result.Data.ValueDisplay.ValueString);
             });
         }
 

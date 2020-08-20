@@ -37,10 +37,11 @@
                         <TextBox   Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5" 
                                    materialDesign:HintAssist.Hint="超时时间" FontSize="20"
                                    Text="{Binding TcpServerHelper.ResponseTimeOut}" />
-                        <CheckBox IsChecked="{Binding IsAutoResponseHeartBeat}" Content="自动响应心跳帧"></CheckBox>
+                        <CheckBox IsChecked="{Binding IsAutoResponseHeartBeat}" Content="自动识别并响应心跳帧"></CheckBox>
                         <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
                         <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
-                        <TextBox x:Name="TextBlockSendData" Text="{Binding CurrentSendMsg}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="响应心跳帧" />
+                        <TextBox x:Name="TextBlockSendData" TextWrapping="Wrap" Height="150"
+                                 Text="{Binding CurrentSendMsg}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="自定义发送帧" />
                         <Button x:Name="ButtonHeartBit" Margin="3" Content="发送"
                                 Command="{Binding SendDataToServerCommand}" />
                         <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />

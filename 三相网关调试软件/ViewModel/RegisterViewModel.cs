@@ -7,6 +7,8 @@ using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -57,33 +59,29 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public RelayCommand<DLMSRegister> GetLogicNameCommand
         {
-            get => _GetLogicNameCommand;
+            get => _getLogicNameCommand;
             set
             {
-                _GetLogicNameCommand = value;
+                _getLogicNameCommand = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand<DLMSRegister> _GetLogicNameCommand;
+        private RelayCommand<DLMSRegister> _getLogicNameCommand;
 
         public DLMSClient Client { get; set; }
 
 
         public RegisterViewModel()
         {
-            
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
-            //  var sheetName = excel.GetDataFromExcelWithAppointSheetNames();
-            //  var table=  ExcelHelper.ExcelToDataTable("DLMS设备信息.xls", true);
-            var DataTable = excel.GetExcelDataTable("Register$");
+            var dataTable = excel.GetExcelDataTable("Register$");
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
-
             Registers = new ObservableCollection<DLMSSelfDefineRegisterModel>();
-            for (int i = 0; i < DataTable.Rows.Count; i++)
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                Registers.Add(new DLMSSelfDefineRegisterModel(DataTable.Rows[i][0].ToString())
-                    {RegisterName = DataTable.Rows[i][1].ToString()});
+                Registers.Add(new DLMSSelfDefineRegisterModel(dataTable.Rows[i][0].ToString())
+                    {RegisterName = dataTable.Rows[i][1].ToString()});
             }
 
             GetValueCommand = new RelayCommand<DLMSSelfDefineRegisterModel>(
@@ -93,40 +91,44 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     t.Scalar = 1;
                     t.Unit = Unit.None;
                     GetResponse getResponse = new GetResponse();
-                    var dataResult = await Client.GetRequest(t.GetAttributeData(2));
+                    GetRequest getRequest = new GetRequest
+                    {
+                        GetRequestNormal = new GetRequestNormal(t.GetValueAttributeDescriptor())
+                    };
+                    var dataResult = await Client.GetRequest(getRequest.ToPduBytes());
                     if (getResponse.PduBytesToConstructor(dataResult))
                     {
-                        t.LastResult = getResponse.GetResponseNormal.GetDataResult.DataAccessResult;
-                        t.Value = getResponse.GetResponseNormal.GetDataResult.Data;
-                        if (t.Value.DataType == DataType.OctetString)
+                        t.LastResult = getResponse.GetResponseNormal.Result.DataAccessResult;
+                        t.Value = getResponse.GetResponseNormal.Result.Data;
+                        if (t.LastResult!=ErrorCode.Ok)
                         {
-                            t.Value.ValueString =
-                                NormalDataParse.HowToDisplayOctetString(t.Value.ValueBytes, DisplayFormatToShow.Original);
+                            return;
                         }
-                        var scalarUnit = await Client.GetRequest(t.GetAttributeData(3));
+                        getRequest.GetRequestNormal=new GetRequestNormal(t.GetScalar_UnitAttributeDescriptor());
+                           var scalarUnit = await Client.GetRequest(getRequest);
                         var structData = NormalDataParse.ParsePduData(scalarUnit);
-                        var unitbyte = structData.StringToByte();
-                        switch (unitbyte.Take(1).ToArray()[0])
+                        var unitByte = structData.StringToByte();
+                        switch (unitByte.Take(1).ToArray()[0])
                         {
                             case (byte)DataType.Int8:
-                                t.Scalar = (sbyte)unitbyte.Skip(1).Take(1).ToArray()[0];
+                                t.Scalar = (sbyte)unitByte.Skip(1).Take(1).ToArray()[0];
                                 break;
                         }
 
-                        switch (unitbyte.Skip(2).Take(1).ToArray()[0])
+                        switch (unitByte.Skip(2).Take(1).ToArray()[0])
                         {
                             case (byte)DataType.Enum:
-                                t.Unit = (Unit)unitbyte.Skip(3).Take(1).ToArray()[0];
+                                t.Unit = (Unit)unitByte.Skip(3).Take(1).ToArray()[0];
                                 break;
                         }
                     }
-//              
-                   
                 });
             SetValueCommand=new RelayCommand<DLMSSelfDefineRegisterModel>(async(t) =>
             {
-                
-                var dataResult = await Client.SetRequest(t.SetAttributeData(2, t.Value));
+                t.Value.UpdateValueBytes();
+                SetRequest setRequest=new SetRequest();
+                setRequest.SetRequestNormal=new SetRequestNormal(t.GetValueAttributeDescriptor(),t.Value);
+                var dataResult = await Client.SetRequest(setRequest);
             });
         }
     }

@@ -188,18 +188,49 @@
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
-    <Compile Include="DLMS\ApplicationLay\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlState.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ScriptActionType.cs" />
-    <Compile Include="DLMS\ApplicationLay\CallingAuthenticationValue.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\InitiateRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\CallingAPTitle.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ResultSourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\SourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptorWithSelection.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\HeartBeatFrame.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
-    <Compile Include="DLMS\ApplicationLay\GetRequest.cs" />
-    <Compile Include="DLMS\ApplicationLay\GetResponseNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\IPduBytesToConstructor.cs" />
+    <Compile Include="DLMS\ApplicationLay\Result.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\SelectiveAccessDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithFirstDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseLastDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseLastDataBlockWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseWithList.cs" />
+    <Compile Include="DLMS\Axdr\AxdrBoolean.cs" />
+    <Compile Include="DLMS\Ber\BerBitString.cs" />
+    <Compile Include="DLMS\Ber\BerInteger.cs" />
+    <Compile Include="DLMS\Common\MyConvert.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSRegister.cs" />
     <Compile Include="DLMS\ApplicationLay\DataBlockG.cs" />
-    <Compile Include="DLMS\ApplicationLay\GetRequestNext.cs" />
-    <Compile Include="DLMS\ApplicationLay\GetRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestNext.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestWithList.cs" />
+    <Compile Include="DLMS\DLMSCommon.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeExecutor.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrameMaker.cs" />
@@ -214,11 +245,11 @@
     <Compile Include="DLMS\ApplicationLay\CosemObjects\Script.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptAction.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptTable.cs" />
-    <Compile Include="DLMS\ApplicationLay\ActionRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNormal.cs" />
     <Compile Include="DLMS\DLMSClient.cs" />
-    <Compile Include="DLMS\ApplicationLay\GetRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestNormal.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\BerType.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\AttributeDescriptor.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemMethodDescriptor.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Command.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSClock.cs" />
@@ -246,9 +277,10 @@
     <Compile Include="DLMS\HDLC\Enums\HdlcFrameType.cs" />
     <Compile Include="DLMS\HDLC\HDLC_LLC.cs" />
     <Compile Include="DLMS\InterfaceType.cs" />
-    <Compile Include="DLMS\ApplicationLay\Invoke_Id_And_Prority.cs" />
-    <Compile Include="DLMS\ApplicationLay\MechanismName.cs" />
+    <Compile Include="DLMS\ApplicationLay\InvokeIdAndPriority.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\MechanismName.cs" />
     <Compile Include="DLMS\MyDLMSSettings.cs" />
+    <Compile Include="DLMS\Wrapper\NetFrame.cs" />
     <Compile Include="DLMS\Wrapper\NetFrameMaker.cs" />
     <Compile Include="DLMS\ApplicationLay\NormalDataParse.cs" />
     <Compile Include="DLMS\HDLC\DataCheck.cs" />
@@ -265,7 +297,7 @@
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetResponseType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetRequestType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetResponseType.cs" />
-    <Compile Include="DLMS\ApplicationLay\SetRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestNormal.cs" />
     <Compile Include="DLMS\HDLC\Enums\StartProtocolType.cs" />
     <Compile Include="ENetClientHelper.cs" />
     <Compile Include="ExcelHelper.cs" />
@@ -282,11 +314,14 @@
     <Compile Include="Model\IIC\IicDemandData.cs" />
     <Compile Include="Model\IIC\IicHarmonicData.cs" />
     <Compile Include="Model\IIC\IicInstantData.cs" />
-    <Compile Include="MyControl\ClockControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\ClockControl.xaml.cs">
       <DependentUpon>ClockControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyControl\DataControl.xaml.cs">
+    <Compile Include="MyControl\DLMSControl\DataControl.xaml.cs">
       <DependentUpon>DataControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\DisconnecrtControl.xaml.cs">
+      <DependentUpon>DisconnecrtControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
       <DependentUpon>HeartBeatButton.xaml</DependentUpon>
@@ -296,6 +331,9 @@
     </Compile>
     <Compile Include="MyControl\UserControlForMenu.xaml.cs">
       <DependentUpon>UserControlForMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\XMLLogControl.xaml.cs">
+      <DependentUpon>XMLLogControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ClockViewModel.cs" />
     <Compile Include="ViewModel\DataViewModel.cs" />
@@ -426,11 +464,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MyControl\ClockControl.xaml">
+    <Page Include="MyControl\DLMSControl\ClockControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyControl\DataControl.xaml">
+    <Page Include="MyControl\DLMSControl\DataControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\DisconnecrtControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -475,6 +517,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControl\RegisterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\XMLLogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -589,6 +635,7 @@
     <Resource Include="Fonts\3.ico" />
     <Resource Include="Image\伊利斯逐星.jpg" />
     <Resource Include="Image\Image1.jpg" />
+    <Resource Include="DLMS\Axdr\About_Ber.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

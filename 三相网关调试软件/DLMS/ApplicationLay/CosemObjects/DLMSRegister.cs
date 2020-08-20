@@ -1,68 +1,43 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using 三相智慧能源网关调试软件.Annotations;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    /*
-        联系邮箱：694965217@qq.com
-        创建时间：2020/06/04 15:36:53
-        主要用途：
-        更改记录：
-    */
-    public class DLMSRegister : DLMSObject, IDLMSBase, INotifyPropertyChanged
+    public class DLMSRegister :DLMSData,  IDLMSBase
     {
-        
-        public DLMSDataItem Value
-        {
-            get => _value;
-            set { _value = value; OnPropertyChanged(); }
-        }
-        private DLMSDataItem _value;
-
-
-
         public double Scalar
         {
-            get => _Scalar;
+            get => _scalar;
             set
             {
-                _Scalar = value;
+                _scalar = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _Scalar = 1.0;
-
+        private double _scalar = 1.0;
 
         public Unit Unit
         {
-            get => _Unit;
+            get => _unit;
             set
             {
-                _Unit = value;
+                _unit = value;
                 OnPropertyChanged();
             }
         }
 
-    
-
-        private Unit _Unit;
+        private Unit _unit;
 
 
-        public DLMSRegister(string logicName)
+        public DLMSRegister(string logicName) : base(logicName)
         {
             LogicalName = logicName;
             this.ObjectType = ObjectType.Register;
             Version = 0;
         }
-
-        public byte[] GetLogicName() => GetAttributeData(1);
-        public byte[] GetValue() => GetAttributeData(2);
-        public byte[] GetScalar_Unit() => GetAttributeData(3);
-
+        public AttributeDescriptor GetScalar_UnitAttributeDescriptor() => GetCosemAttributeDescriptor(3);
+        public byte[] GetScalar_Unit() => GetCosemAttributeDescriptor(3).ToPduBytes();
 
         public string[] GetNames()
         {
@@ -84,12 +59,5 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             throw new NotImplementedException();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }
