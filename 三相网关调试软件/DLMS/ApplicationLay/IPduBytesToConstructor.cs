@@ -4,4 +4,8 @@
     {
         bool PduBytesToConstructor(byte[] pduBytes);
     }
+    public interface IPduRefBytesToConstructor
+    {
+        bool PduBytesToConstructor(ref byte[] pduBytes);
+    }
 }

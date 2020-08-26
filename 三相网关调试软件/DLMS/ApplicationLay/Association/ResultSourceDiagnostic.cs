@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.Ber;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
-    public class ResultSourceDiagnostic:IToPduBytes,IPduBytesToConstructor
+    public class ResultSourceDiagnostic : IToPduBytes, IPduBytesToConstructor
 
     {
         public BerInteger AcseServiceUser { get; set; }
@@ -50,6 +52,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                         return "Other reason";
                 }
             }
+
             if (AcseServiceProvider != null)
             {
                 switch (Convert.ToInt32(AcseServiceProvider.Value, 16))
@@ -64,24 +67,25 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                         return "Other reason";
                 }
             }
+
             return "";
         }
 
         public byte[] ToPduBytes()
         {
-            List<byte> list=new List<byte>();
-            if (AcseServiceUser!=null)
+            List<byte> list = new List<byte>();
+            if (AcseServiceUser != null)
             {
-                list.AddRange(new byte[]{0xA1,0x03,0x02});
+                list.AddRange(new byte[] {0xA1, 0x03, 0x02});
                 list.AddRange(AcseServiceUser.ToPduBytes());
-                list.Insert(0,(byte)list.Count);
+                list.Insert(0, (byte) list.Count);
             }
 
-            if (AcseServiceProvider!=null)
+            if (AcseServiceProvider != null)
             {
-                list.AddRange(new byte[]{ 0xA2, 0x03, 0x02 });
+                list.AddRange(new byte[] {0xA2, 0x03, 0x02});
                 list.AddRange(AcseServiceProvider.ToPduBytes());
-                list.Insert(0, (byte)list.Count);
+                list.Insert(0, (byte) list.Count);
             }
 
             return list.ToArray();
@@ -89,7 +93,26 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {
-            throw new NotImplementedException();
+            if (pduBytes[0] != 0xA3) return false;
+            if (pduBytes[1] > pduBytes.Length - 2) return false;
+            pduBytes = pduBytes.Skip(2).ToArray();
+            var pdustring = pduBytes.ToArray().ByteToString("");
+            if (pdustring.StartsWith("A10302"))
+            {
+                var data= pduBytes.Skip(3).ToArray();
+                AcseServiceUser=new BerInteger();
+                return AcseServiceUser.PduBytesToConstructor(data);
+            }
+
+            if (pdustring.StartsWith("A20302"))
+            {
+                var data = pduBytes.Skip(3).ToArray();
+                AcseServiceUser = new BerInteger();
+                return AcseServiceProvider.PduBytesToConstructor(data);
+            }
+
+            return false;
         }
+     
     }
 }

@@ -7,7 +7,7 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Ber
 {
-    public class BerInteger : IToPduBytes,IPduBytesToConstructor
+    public class BerInteger : IToPduBytes, IPduBytesToConstructor
     {
         [XmlAttribute] public string Value { get; set; }
 
@@ -45,12 +45,13 @@ namespace 三相智慧能源网关调试软件.DLMS.Ber
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {
-            if (pduBytes.Length<(pduBytes[0]+1))
+            if (pduBytes.Length < (pduBytes[0] + 1))
             {
                 return false;
             }
 
-            Value = pduBytes.Skip(1).ToArray().ByteToString().Trim();
+            Value = pduBytes.Skip(1).ToArray().ByteToString("");
+            pduBytes = pduBytes.Skip(1).ToArray();
             return true;
         }
     }

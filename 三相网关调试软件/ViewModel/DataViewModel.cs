@@ -117,9 +117,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     GetRequestNormal = new GetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr))
                 };
-                var requestAndWaitResponse = await Client.GetRequestAndWaitResponse(getRequest);
+                GetResponse requestAndWaitResponse = await Client.GetRequestAndWaitResponse(getRequest);
                 if (requestAndWaitResponse != null)
                 {
+                    
                     t.LastResult = requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult;
                     t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
                 }

@@ -20,17 +20,25 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             HeartBeatFrameType = new byte[] { 0x00, 0x01, 0x03 };
         }
 
-      
 
+        public void OverturnDestinationSource()
+        {
+            var tm = DestinationAddressBytes;
+            DestinationAddressBytes = SourceAddressBytes;
+            SourceAddressBytes = tm;
+        }
         public byte[] ToPduBytes()
         {
             List<byte> list = new List<byte>();
             list.AddRange(VersionBytes);
-            list.AddRange(DestinationAddressBytes);
             list.AddRange(SourceAddressBytes);
-            list.AddRange(LengthBytes);
+            list.AddRange(DestinationAddressBytes);
+            var len= HeartBeatFrameType.Length + MeterAddressBytes.Length;
+            list.AddRange(BitConverter.GetBytes((ushort)len).Reverse().ToArray());
             list.AddRange(HeartBeatFrameType);
             list.AddRange(MeterAddressBytes);
+
+          
             return list.ToArray();
         }
 

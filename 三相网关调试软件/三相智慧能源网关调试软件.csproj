@@ -196,6 +196,7 @@
     <Compile Include="DLMS\ApplicationLay\Association\AssociationResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\AssociationResult.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\CallingAPTitle.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\InitiateResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\ResultSourceDiagnostic.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\SourceDiagnostic.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptorWithSelection.cs" />
@@ -221,8 +222,15 @@
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseNormal.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseWithList.cs" />
     <Compile Include="DLMS\Axdr\AxdrBoolean.cs" />
+    <Compile Include="DLMS\Axdr\AxdrInteger16.cs" />
+    <Compile Include="DLMS\Axdr\AxdrInteger8.cs" />
+    <Compile Include="DLMS\Axdr\AxdrOctetString.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned16.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned32.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned8.cs" />
     <Compile Include="DLMS\Ber\BerBitString.cs" />
     <Compile Include="DLMS\Ber\BerInteger.cs" />
+    <Compile Include="DLMS\Ber\BerOctetString.cs" />
     <Compile Include="DLMS\Common\MyConvert.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />

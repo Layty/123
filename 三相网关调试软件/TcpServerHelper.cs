@@ -11,15 +11,39 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NLog;
-using NLog.LayoutRenderers.Wrappers;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 
 namespace 三相智慧能源网关调试软件
 {
-    public delegate void NotifyTcpServerMsgEventHandler(string message);
+    public class TcpTranslator
+    {
+        public TcpServerHelper TcpListener { get; set; }
 
-    public delegate void ReceiveDataFromClientEventHandler(Socket clientSocket, byte[] bytes);
+        public string LocalIp { get; set; }
+        public int LocalPort { get; set; }
+        public TcpTranslator()
+        {
+           
+        }
 
-    public delegate void SendDataToClientEventHandler(Socket clientSocket, byte[] bytes);
+        public void StartListenNew()
+        {
+            TcpListener = new TcpServerHelper("192.168.1.155", 8881);
+            TcpListener.SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            TcpListener.IpEndPoint =
+                new IPEndPoint(IPAddress.Parse(TcpListener.ListenIpAddress), TcpListener.ListenPort);
+            TcpListener.SocketServer.Bind(TcpListener.IpEndPoint);
+            TcpListener.SocketServer.Listen(5);
+//            TcpListener.OnNotifyStatusMsg($"监听{IpEndPoint}成功");
+            TcpListener.StartListenServerAsyncNew(TcpListener.SocketServer);
+        }
+    }
+
+    //public delegate void NotifyTcpServerMsgEventHandler(string message);
+
+    //public delegate void ReceiveDataFromClientEventHandler(Socket clientSocket, byte[] bytes);
+
+    //public delegate void SendDataToClientEventHandler(Socket clientSocket, byte[] bytes);
 
     public class TcpServerHelper : ViewModelBase
     {
@@ -107,10 +131,10 @@ namespace 三相智慧能源网关调试软件
         private readonly CancellationTokenSource _sourceServer = new CancellationTokenSource();
 
 
-        public event NotifyTcpServerMsgEventHandler ErrorMsg;
-        public event NotifyTcpServerMsgEventHandler StatusMsg;
-        public event ReceiveDataFromClientEventHandler ReceiveBytes;
-        public event SendDataToClientEventHandler SendBytesToClient;
+        public event Action<string> ErrorMsg;
+        public event Action<string> StatusMsg;
+        public event Action<Socket, byte[]> ReceiveBytes;
+        public event Action<Socket,byte[]> SendBytesToClient;
 
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
@@ -205,6 +229,7 @@ namespace 三相智慧能源网关调试软件
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
+
                         var socket = clientSocket;
 
                         Task.Run(delegate { ClientThread(socket); }, cancellationTokenSource.Token);
@@ -287,7 +312,7 @@ namespace 三相智慧能源网关调试软件
 
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
-            returnBytes = null;
+            _returnBytes = null;
             ReceiveBytes += TcpServerHelper_ReceiveBytes;
             destinationSocket.Send(bytes);
             OnSendBytesToClient(destinationSocket, bytes);
@@ -308,7 +333,7 @@ namespace 三相智慧能源网关调试软件
                         break;
                     }
 
-                    if (returnBytes != null)
+                    if (_returnBytes != null)
                     {
                         stopwatch1.Stop();
                         ResponseTime = stopwatch1.ElapsedMilliseconds.ToString();
@@ -319,16 +344,16 @@ namespace 三相智慧能源网关调试软件
             });
             //  await Task.Delay(2000);
             ReceiveBytes -= TcpServerHelper_ReceiveBytes;
-            return returnBytes;
+            return _returnBytes;
         }
 
         public string ResponseTime { get; set; }
 
-        private byte[] returnBytes;
-        private List<byte> listReturnByteses = new List<byte>();
-        private bool isNeedContinue = false;
-        private int totalLength { get; set; }
-        private int needReceiveLength { get; set; }
+        private byte[] _returnBytes;
+        private readonly List<byte> _listReturnBytes = new List<byte>();
+        private bool _isNeedContinue = false;
+        private int TotalLength { get; set; }
+        private int NeedReceiveLength { get; set; }
 
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
@@ -337,50 +362,50 @@ namespace 三相智慧能源网关调试软件
                 return;
             }
 
-            if (!isNeedContinue)
+            if (!_isNeedContinue)
             {
                 if (bytes.Length < 7)
                 {
                     Logger lgLogger = LogManager.GetCurrentClassLogger();
                     lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
-                    listReturnByteses.AddRange(bytes);
-                    returnBytes = listReturnByteses.ToArray();
-                    listReturnByteses.Clear();
+                    _listReturnBytes.AddRange(bytes);
+                    _returnBytes = _listReturnBytes.ToArray();
+                    _listReturnBytes.Clear();
                 }
                 else
                 {
                     if (bytes[7] == (bytes.Length - 8))
                     {
-                        listReturnByteses.AddRange(bytes);
-                        returnBytes = listReturnByteses.ToArray();
-                        listReturnByteses.Clear();
-                        isNeedContinue = false;
+                        _listReturnBytes.AddRange(bytes);
+                        _returnBytes = _listReturnBytes.ToArray();
+                        _listReturnBytes.Clear();
+                        _isNeedContinue = false;
                     }
 
                     if (bytes[7] > (bytes.Length - 8))
                     {
-                        totalLength = bytes[7];
-                        needReceiveLength = totalLength - (bytes.Length - 8);
-                        listReturnByteses.AddRange(bytes);
-                        isNeedContinue = true;
+                        TotalLength = bytes[7];
+                        NeedReceiveLength = TotalLength - (bytes.Length - 8);
+                        _listReturnBytes.AddRange(bytes);
+                        _isNeedContinue = true;
                     }
                 }
             }
             else
             {
-                if (bytes.Length < needReceiveLength)
+                if (bytes.Length < NeedReceiveLength)
                 {
-                    needReceiveLength = needReceiveLength - bytes.Length;
-                    listReturnByteses.AddRange(bytes);
+                    NeedReceiveLength = NeedReceiveLength - bytes.Length;
+                    _listReturnBytes.AddRange(bytes);
                 }
 
-                if (bytes.Length >= needReceiveLength)
+                if (bytes.Length >= NeedReceiveLength)
                 {
-                    needReceiveLength = 0;
-                    isNeedContinue = false;
-                    listReturnByteses.AddRange(bytes);
-                    returnBytes = listReturnByteses.ToArray();
-                    listReturnByteses.Clear();
+                    NeedReceiveLength = 0;
+                    _isNeedContinue = false;
+                    _listReturnBytes.AddRange(bytes);
+                    _returnBytes = _listReturnBytes.ToArray();
+                    _listReturnBytes.Clear();
                 }
             }
         }
@@ -448,6 +473,191 @@ namespace 三相智慧能源网关调试软件
             //  SocketClientList.RemoveAt(num);
             SocketClientCancellationTokens[num].Cancel();
             SocketClientCancellationTokens.RemoveAt(num);
+        }
+
+        TcpClient clientForTran = new TcpClient();
+        IDictionary<Socket, TcpClient> liiii = new Dictionary<Socket, TcpClient>();
+
+        public void StartListenServerAsyncNew(Socket tcpListenerSocketServer)
+        {
+            Socket clientSocket;
+            Task.Run(delegate
+            {
+                while (true)
+                {
+                    try
+                    {
+                        clientSocket = tcpListenerSocketServer.Accept();
+                        var socket1 = clientSocket;
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            SocketClientList.Add(socket1);
+                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
+                        });
+                        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                        SocketClientCancellationTokens.Add(cancellationTokenSource);
+                        OnNotifyStatusMsg($"{DateTime.Now}有新的转发连接{clientSocket.RemoteEndPoint}");
+                        clientForTran = new TcpClient();
+                        clientForTran.Connect("192.168.1.33", 8881);
+
+                        liiii[socket1] = clientForTran;
+                        var socket = clientSocket;
+
+                        Task.Run(delegate { ClientThreadNew(socket, clientForTran); }, cancellationTokenSource.Token);
+                        Task.Run(() => { ClientThreadFromHostNew(socket, clientForTran); });
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger logger = LogManager.GetCurrentClassLogger();
+                        logger.Error(ex);
+                        OnNotifyStatusMsg("退出服务端监听Task");
+                        // CloseSever();
+                        break;
+                    }
+                }
+            });
+        }
+        /// <summary>
+        /// 接收主站的数据转发至表端
+        /// </summary>
+        /// <param name="sockClient"></param>
+        /// <param name="client"></param>
+        private void ClientThreadFromHostNew(Socket sockClient, TcpClient client)
+        {
+            byte[] array = new byte[1024];
+
+            while (true)
+            {
+                int num;
+                try
+                {
+                    num = client.Client.Receive(array);
+
+                    byte[] bytes = array.Take(num).ToArray();
+                  //  OnReceiveBytes(client.Client, bytes);
+                    var frame = new HeartBeatFrame();
+                    var t = frame.PduBytesToConstructor(bytes);
+                    if (t)
+                    {
+                        var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
+                        if (len == 0x0B)
+                        {// 8位转12位
+                             var list=new List<byte>();
+                            list.AddRange(new byte[] {0x30, 0x30, 0x30, 0x30});
+                            list.AddRange(frame.MeterAddressBytes);
+                            frame.MeterAddressBytes = list.ToArray();
+                            bytes = frame.ToPduBytes();
+                        }
+                    }
+
+                    sockClient.Send(bytes);
+                    OnSendBytesToClient(sockClient, bytes);
+                }
+                catch (Exception ex)
+                {
+                    Logger logger = LogManager.GetCurrentClassLogger();
+                    logger.Error(ex);
+                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                        }
+                    });
+
+                    break;
+                }
+
+                if (num == 0)
+                {
+                    OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                        }
+                    });
+                    break;
+                }
+            }
+        }
+
+        //表端发送数据，后 转发至 主站
+        private void ClientThreadNew(Socket sockClient, TcpClient client)
+        {
+            byte[] array = new byte[1024];
+
+            while (true)
+            {
+                int num;
+                try
+                {
+                    num = sockClient.Receive(array);
+
+                    byte[] bytes = array.Take(num).ToArray();
+                  //  OnReceiveBytes(sockClient, bytes);
+                    var frame = new HeartBeatFrame();
+                    var t = frame.PduBytesToConstructor(bytes);
+                    if (t)
+                    {
+                        var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
+                        if (len == 0x0F)//12位转8位
+                        {
+                            frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
+                            bytes = frame.ToPduBytes();
+                        }
+                    }
+
+                    try
+                    {
+                        client.Client.Send(bytes);
+                        OnSendBytesToClient(client.Client, bytes);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger logger = LogManager.GetCurrentClassLogger();
+                        logger.Error(e);
+                        OnNotifyStatusMsg($"转发至主站 - 线程出现异常{sockClient.RemoteEndPoint}Task");
+                        throw;
+                    }
+                  
+                   
+                }
+                catch (Exception ex)
+                {
+                    Logger logger = LogManager.GetCurrentClassLogger();
+                    logger.Error(ex);
+                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                        }
+                    });
+
+                    break;
+                }
+
+                if (num == 0)
+                {
+                    OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        if (SocketClientList.Contains(sockClient))
+                        {
+                            SocketClientList.Remove(sockClient);
+                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                        }
+                    });
+                    break;
+                }
+            }
+
+            //  sockClient.Close();
         }
     }
 }

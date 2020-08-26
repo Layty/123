@@ -3,8 +3,6 @@ using System.IO;
 using System.Xml.Serialization;
 using CommonServiceLocator;
 using NLog;
-using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association

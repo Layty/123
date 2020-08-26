@@ -5,7 +5,7 @@ using CommonServiceLocator;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.ViewModel;
 
-namespace 三相智慧能源网关调试软件.MyControl
+namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 {
     /// <summary>
     /// DLMSFrontEndProcessorControl.xaml 的交互逻辑

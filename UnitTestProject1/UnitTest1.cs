@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using 三相智慧能源网关调试软件;
 using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
@@ -71,6 +72,15 @@ namespace UnitTestProject1
             ENetMessageBuilder messageMaker = new ENetMessageBuilder(ENetEventType.运行状态字);
             messageMaker.Timestamp = 1593316175641;
             var tRequest = messageMaker.GetRequest();
+        }
+
+        [TestMethod]
+        public void TestAssociationResponse()
+        {
+            string str =
+                "61 29 A1 09 06 07 60 85 74 05 08 01 01 A2 03 02 01 01 A3 05 A1 03 02 01 00 BE 10 04 0E 08 00 06 5F 1F 04 00 00 3E 9D 08 00 00 07 B1 F3 7E";
+            var bytes = str.StringToByte();
+            new AssociationResponse().PduBytesToConstructor(bytes);
         }
     }
 }

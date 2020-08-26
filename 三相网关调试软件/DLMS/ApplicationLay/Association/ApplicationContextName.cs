@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -39,7 +40,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                 return false;
             }
 
-            var text = pduBytes.ByteToString().Trim();
+            if (pduBytes[0] != 0xA1) return false;
+            var text = pduBytes.Skip(1).ToArray().ByteToString("");
             if (text.StartsWith("090607608574050801"))
             {
                 text = text.Substring(18, 2);

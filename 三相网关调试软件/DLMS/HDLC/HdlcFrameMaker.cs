@@ -99,6 +99,8 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
             return arrqListBytes.ToArray();
         }
 
+      
+
         public byte[] ReleaseRequest()
         {
             List<byte> rlrqListBytes = new List<byte>();

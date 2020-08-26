@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Serialization;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
@@ -13,6 +14,7 @@ using NLog;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.DLMS.HDLC;
@@ -46,7 +48,12 @@ namespace 三相智慧能源网关调试软件.DLMS
         public bool IsAuthenticationRequired { get; set; }
         public MyDLMSSettings MyDlmsSettings { get; set; }
 
-        
+
+
+
+       
+
+
         /// <summary>
         /// 如何选择物理通道进行发送数据
         /// </summary>
@@ -67,7 +74,7 @@ namespace 三相智慧能源网关调试软件.DLMS
             return returnBytes;
         }
 
-        private async Task<byte[]> HowToTakeReplyApduData(byte[] parseBytes)
+        private  byte[] HowToTakeReplyApduData(byte[] parseBytes)
         {
             if (parseBytes.Length == 0)
             {
@@ -111,6 +118,12 @@ namespace 三相智慧能源网关调试软件.DLMS
                     bytes = await HowToSendDataNew(HdlcFrameMaker.SNRMRequest());
                     ParseUaResponse(bytes);
                     bytes = await HowToSendDataNew(HdlcFrameMaker.AarqRequest());
+                    bytes = HowToTakeReplyApduData(bytes);
+                    if (bytes!=null)
+                    {
+                        new AssociationResponse().PduBytesToConstructor(bytes);
+                    }
+                  
                 }
             }
             else if (MyDlmsSettings.InterfaceType == InterfaceType.WRAPPER)
@@ -217,6 +230,10 @@ namespace 三相智慧能源网关调试软件.DLMS
                     loggg.XmlLog = stringWriter.ToString();
                 }
             }
+            else
+            {
+                return null;
+            }
 
             return getResponse;
         }
@@ -262,7 +279,7 @@ namespace 三相智慧能源网关调试软件.DLMS
                 Bytes = await HowToSendDataNew(NetFrameMaker.BuildPduRequestBytes(dataBytes));
             }
 
-            Bytes = await HowToTakeReplyApduData(Bytes);
+            Bytes =  HowToTakeReplyApduData(Bytes);
             return Bytes;
         }
 

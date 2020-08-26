@@ -6,6 +6,7 @@
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+      xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DLMSSettingsPage">
@@ -13,18 +14,21 @@
         <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
-        <UniformGrid Margin="3" Columns="5">
-            <GroupBox Header="SerialPort">
+
+        <TabControl>
+            <TabItem Header="SerialPort">
                 <myControl:SerialPortControl />
-            </GroupBox>
-            <GroupBox Header="FrontEndProcessor">
-                <myControl:DLMSFrontEndProcessorControl />
-            </GroupBox>
-            <GroupBox Header="Other Parameters">
+            </TabItem>
+            <TabItem Header="FrontEndProcessor">
+                <dlmsControl:DLMSFrontEndProcessorControl />
+            </TabItem>
+            <TabItem Header="Other Parameters">
+
                 <StackPanel>
-                    <TextBox Text="{Binding  Client.MyDlmsSettings.ClientAddress,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="SourceAddress" />
+                    <TextBox
+                        Text="{Binding  Client.MyDlmsSettings.ClientAddress,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        materialDesign:HintAssist.Hint="SourceAddress" />
                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="DestAddress"
                              Text="{Binding  Client.MyDlmsSettings.ServerAddress,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" />
@@ -50,10 +54,12 @@
                               materialDesign:HintAssist.IsFloating="True" />
 
                 </StackPanel>
-            </GroupBox>
-            <GroupBox Header="HDLC Layer Parameters">
+
+            </TabItem>
+            <TabItem Header="HDLC Layer Parameters">
+
                 <StackPanel>
-                
+
                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="TransmitMaxInfoValue"
                              Text="{Binding  Client.MyDlmsSettings.DlmsInfo.TransmitMaxInfoValue}" />
@@ -87,18 +93,21 @@
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="CurrentReceiveSequenceNumber" />
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox Header="Application Layer Parameters">
+            </TabItem>
+            <TabItem Header="Application Layer Parameters">
+
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding Client.MyDlmsSettings.UseLogicalNameReferencing}" Content="UseLogicalNameReferencing"></CheckBox>
+                    <CheckBox IsChecked="{Binding Client.MyDlmsSettings.UseLogicalNameReferencing}"
+                              Content="UseLogicalNameReferencing" />
                     <TextBox Text="{Binding Client.MyDlmsSettings.SystemTitle}"
                              materialDesign:HintAssist.Hint="SystemTitle"
                              materialDesign:HintAssist.IsFloating="True" />
                     <TextBox Text="{Binding Client.MyDlmsSettings.MaxReceivePduSize}"
                              materialDesign:HintAssist.Hint="MaxReceivePduSize"
                              materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox SelectedItem="{Binding Client.MyDlmsSettings.Priority}" Style="{StaticResource MaterialDesignComboBox}"
+                    <ComboBox SelectedItem="{Binding Client.MyDlmsSettings.Priority}"
+                              Style="{StaticResource MaterialDesignComboBox}"
                               ItemsSource="{Binding Client.MyDlmsSettings.PriorityArray}"
                               materialDesign:HintAssist.Hint="Priority"
                               materialDesign:HintAssist.IsFloating="True" />
@@ -114,10 +123,10 @@
                 </StackPanel>
 
 
-            </GroupBox>
-            
-         
-        </UniformGrid>
+            </TabItem>
+
+
+        </TabControl>
 
 
     </Grid>
