@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.Commom;
@@ -110,6 +111,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         private string _currentSendMsgLast;
+
         public string CurrentSendMsgEarly
         {
             get => _currentSendMsgEarly;
@@ -121,6 +123,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         private string _currentSendMsgEarly;
+
         public string CurrentSendMsgAboutTime
         {
             get => _currentSendMsgAboutTime;
@@ -132,6 +135,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
         private string _currentSendMsgAboutTime;
+
         public RelayCommand<Socket> SelectSocketCommand
         {
             get => _selectSocketCommand;
@@ -170,9 +174,46 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private bool _isAutoResponseHeartBeat;
 
-        private TcpTranslator translator { get; set; }
+        public TcpTranslator Translator
+        {
+            get => translator;
+            set
+            {
+                translator = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private TcpTranslator translator;
+
+        public bool IsNeedTranslator
+        {
+            get => _isNeedTranslator;
+            set
+            {
+                _isNeedTranslator = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isNeedTranslator;
+
+
+        public int HeartBeatDelayTime
+        {
+            get => _heartBeatDelayTime;
+            set
+            {
+                _heartBeatDelayTime = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int _heartBeatDelayTime;
+
         public TcpServerViewModel()
         {
+            HeartBeatDelayTime = 1000;
             TcpServerHelper = new TcpServerHelper(Settings.Default.GatewayIpAddress, 8881);
             IsAutoResponseHeartBeat = true;
             TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
@@ -184,21 +225,32 @@ namespace 三相智慧能源网关调试软件.ViewModel
             CurrentSendMsgAboutTime =
                 "00 01 00 01 00 01 00 21C00140206D0001800000FF0201010202090C07 E4 08 0C 04 10 2E 36 00 80 00 00120001";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
-            translator = new TcpTranslator();
-//              StartListen = new RelayCommand(() => { TcpServerHelper.StartListen(); });
-                  StartListen = new RelayCommand(() => { translator.StartListenNew(); });
+            Translator = new TcpTranslator();
+            StartListen = new RelayCommand(() =>
+            {
+                if (IsNeedTranslator)
+                {
+                    translator.StartListen();
+                }
+                else
+                {
+                    TcpServerHelper.StartListen();
+                }
+            });
+            //                StartListen = new RelayCommand(() => { translator.StartListenNew(); });
             DisConnectServerCommand = new RelayCommand(TcpServerHelper.CloseSever);
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
             SendDataToServerCommand = new RelayCommand(() =>
             {
                 TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
-
-          
         }
 
-    
-
+        /// <summary>
+        /// 根据是否自动回心跳帧，判断是否为心跳帧类型，模拟主站处理心跳帧功能
+        /// </summary>
+        /// <param name="clientSocket"></param>
+        /// <param name="bytes"></param>
         private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             if (!IsAutoResponseHeartBeat)
@@ -213,6 +265,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 if (result)
                 {
                     heart.OverturnDestinationSource();
+                    Thread.Sleep(HeartBeatDelayTime);
                     TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
                 }
             }

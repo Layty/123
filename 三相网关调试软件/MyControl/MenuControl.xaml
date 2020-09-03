@@ -5,65 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+          DataContext="{Binding Source={StaticResource Locator},Path=Menu.MenuModel }" 
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <Storyboard x:Key="MyOpenMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="GridMenu">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="0" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="MyCloseMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="GridMenu">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-250 0 0 0" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OpenCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card1">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.5" Value="3,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OpenCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card2">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="3,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OpenCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card3">
-                <EasingThicknessKeyFrame KeyTime="0:0:0.9" Value="3,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CloseCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card1">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CloseCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card2">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CloseCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
-                                              Storyboard.TargetName="Card3">
-                <EasingThicknessKeyFrame Value="-250,3,3,5" />
-            </ThicknessAnimationUsingKeyFrames>
-        </Storyboard>
-    </UserControl.Resources>
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="Menu.MenuModel" />
-    </UserControl.DataContext>
     <Grid>
-        <!--<materialDesign:Card x:Name="Card2" Margin="0 3 3 5">
-            <Expander Margin="5" Header="{TemplateBinding  MenuName}"
+        <materialDesign:Card x:Name="Card2" Margin="0 3 3 5">
+            <Expander Margin="5" Header="{Binding  MenuName}"
                       materialDesign:ExpanderAssist.DownHeaderPadding="20">
-                
                 <Expander.Content>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <ListBox ItemsSource="{Binding }"
@@ -148,14 +95,14 @@
                                             </RadioButton.IsChecked>
                                             <Border>
                                                 <StackPanel Orientation="Horizontal">
-                                                    --><!-- 图标--><!--
+                                                     <!--图标-->
                                                     <TextBlock Text="{Binding IconFont}"
                                                                FontFamily="/Fonts/#iconfont"
                                                                x:Name="TextBlockIcon"
                                                                Foreground="{Binding Foreground}"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center" />
-                                                    --><!-- 文字--><!--
+                                                     <!--文字-->
                                                     <TextBlock Text="{Binding MenuName}"
                                                                HorizontalAlignment="Center"
                                                                x:Name="TextBlockTitle"
@@ -178,7 +125,7 @@
 
                 </Expander.Content>
             </Expander>
-        </materialDesign:Card>-->
+        </materialDesign:Card>
 
 
     </Grid>

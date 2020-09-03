@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using ENet;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using Org.BouncyCastle.Utilities.Encoders;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件

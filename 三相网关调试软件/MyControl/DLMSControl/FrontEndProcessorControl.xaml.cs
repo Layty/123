@@ -8,11 +8,11 @@ using 三相智慧能源网关调试软件.ViewModel;
 namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 {
     /// <summary>
-    /// DLMSFrontEndProcessorControl.xaml 的交互逻辑
+    /// FrontEndProcessorControl.xaml 的交互逻辑
     /// </summary>
-    public partial class DLMSFrontEndProcessorControl : UserControl
+    public partial class FrontEndProcessorControl : UserControl
     {
-        public DLMSFrontEndProcessorControl()
+        public FrontEndProcessorControl()
         {
             InitializeComponent();
         }

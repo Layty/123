@@ -106,6 +106,19 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
+        public event Action<Socket, byte[]> ReceiveByte;
+        public event Action<Socket, byte[]> SendDataToServerByte;
+        protected virtual void OnReceiveByte(Socket serverSocket,byte[] bytes)
+        {
+            ReceiveByte?.Invoke(serverSocket,bytes);
+            Messenger.Default.Send(bytes, "ReceiveDataEvent");
+        }
+
+        protected virtual void OnSendDataToServerByte(Socket serverSocket, byte[] bytes)
+        {
+            SendDataToServerByte?.Invoke(serverSocket,bytes);
+
+        }
         public TcpClientHelper(string serverIpAddress, int serverPortNum)
         {
             ServerIpAddress = serverIpAddress;
@@ -186,8 +199,8 @@ namespace 三相智慧能源网关调试软件
                     }
 
                     byte[] receiveBytes = _messageByteServer.Take(receiveDataLen).ToArray();
-
-                    Messenger.Default.Send(receiveBytes, "ReceiveDataEvent");
+                    OnReceiveByte(ClientSocket, receiveBytes);
+                   
                 }
             }
             catch (Exception e)
@@ -238,7 +251,27 @@ namespace 三相智慧能源网关调试软件
             try
             {
                 ClientSocket.Send(inputBytesData);
+                OnSendDataToServerByte(ClientSocket, inputBytesData);
                 Messenger.Default.Send(inputBytesData, "SendDataEvent");
+            }
+            catch (Exception ex)
+            {
+                Messenger.Default.Send("异常" + ex.Message, "TelNetErrorEvent");
+            }
+        }
+        public void SendDataToServer(Socket socket,byte[] inputBytesData)
+        {
+            bool flag = inputBytesData.Length == 0;
+            if (flag)
+            {
+                throw new ArgumentNullException("inputBytesData");
+            }
+
+            try
+            {
+                socket.Send(inputBytesData);
+                OnSendDataToServerByte(socket, inputBytesData);
+//                Messenger.Default.Send(inputBytesData, "SendDataEvent");
             }
             catch (Exception ex)
             {

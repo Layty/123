@@ -20,7 +20,7 @@
                 <myControl:SerialPortControl />
             </TabItem>
             <TabItem Header="FrontEndProcessor">
-                <dlmsControl:DLMSFrontEndProcessorControl />
+                <dlmsControl:FrontEndProcessorControl />
             </TabItem>
             <TabItem Header="Other Parameters">
 
