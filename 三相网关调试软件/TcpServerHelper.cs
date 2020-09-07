@@ -17,7 +17,6 @@ namespace 三相智慧能源网关调试软件
 {
     public class TcpTranslator : ViewModelBase
     {
-       
         public TcpServerHelper TcpListener { get; set; }
 
         public int LocalPort
@@ -72,14 +71,29 @@ namespace 三相智慧能源网关调试软件
         public bool IsNeedToConvert12HeartBeatTo8
         {
             get => _isNeedToConvert12HeartBeatTo8;
-            set { _isNeedToConvert12HeartBeatTo8 = value; RaisePropertyChanged(); }
+            set
+            {
+                _isNeedToConvert12HeartBeatTo8 = value;
+                RaisePropertyChanged();
+            }
         }
+
         private bool _isNeedToConvert12HeartBeatTo8;
-        private byte[] heightBytesOfHeartBeatBytes;
+
+        /// <summary>
+        /// 表端Socket 为key====>服务端的socket绑定 value
+        /// </summary>
+        readonly IDictionary<Socket, TcpClientHelper> _socketBindingDictionary =
+            new Dictionary<Socket, TcpClientHelper>();
+        /// <summary>
+        /// 需要12位转8位时，存储 12位表地址的高四位地址
+        /// </summary>
+        private IDictionary<Socket, byte[]> MeterHeight4ByteDictionary = new Dictionary<Socket, byte[]>();
+
         public TcpTranslator()
         {
-            RemoteIp= LocalIp = Properties.Settings.Default.GatewayIpAddress;
-            RemotePort= LocalPort = Properties.Settings.Default.GatewayPort;
+            RemoteIp = LocalIp = Properties.Settings.Default.GatewayIpAddress;
+            RemotePort = LocalPort = Properties.Settings.Default.GatewayPort;
         }
 
         public TcpTranslator(string localIp, int localPort, string remoteIp, int remotePort)
@@ -89,6 +103,10 @@ namespace 三相智慧能源网关调试软件
             RemoteIp = remoteIp;
             RemotePort = remotePort;
         }
+
+        /// <summary>
+        /// 开启转发的监听，当接收到客户端连接，则新建一个socket 连接至远端IP
+        /// </summary>
         public void StartListen()
         {
             TcpListener = new TcpServerHelper(LocalIp, LocalPort);
@@ -96,22 +114,23 @@ namespace 三相智慧能源网关调试软件
             TcpListener.StartListen();
         }
 
-     
         /// <summary>
-        /// 表端Socket 为key====>服务端的socket绑定 value
+        /// 当接收到客户端连接，则新建一个客户端socket   连接至远端IP
+        /// 是用字典进行关联绑定
         /// </summary>
-        IDictionary<Socket, TcpClientHelper> dictionary = new Dictionary<Socket, TcpClientHelper>();
+        /// <param name="obj"></param>
         private void TcpListener_AcceptNewClient(Socket obj)
         {
-            TcpClientHelper tcpClientHelper = new TcpClientHelper(RemoteIp,RemotePort);
+            TcpClientHelper tcpClientHelper = new TcpClientHelper(RemoteIp, RemotePort);
             tcpClientHelper.ConnectToServer();
-            dictionary[obj] = tcpClientHelper;
+            _socketBindingDictionary[obj] = tcpClientHelper;
             TcpListener.ReceiveBytes += TcpListener_ReceiveBytes;
             tcpClientHelper.ReceiveByte += TcpClientHelper_ReceiveByte;
         }
+
         private void TcpListener_ReceiveBytes(Socket meterSocket, byte[] arg2)
         {
-            foreach (var socket in dictionary)
+            foreach (var socket in _socketBindingDictionary)
             {
                 if (meterSocket == socket.Key)
                 {
@@ -122,24 +141,26 @@ namespace 三相智慧能源网关调试软件
                         if (t)
                         {
                             var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
-                            if (len == 0x0F)//12位转8位
+                            if (len == 0x0F) //12位转8位
                             {
-                                heightBytesOfHeartBeatBytes = frame.MeterAddressBytes.Take(4).ToArray();//保留高位4地址后续用于补全
+                                MeterHeight4ByteDictionary[meterSocket] =
+                                    frame.MeterAddressBytes.Take(4).ToArray(); //保留高位4地址后续用于补全
                                 frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
                                 arg2 = frame.ToPduBytes();
                             }
                         }
                     }
-                    socket.Value?.SendDataToServer( arg2);
+
+                    socket.Value?.SendDataToServer(arg2);
                 }
             }
-
         }
+
         private void TcpClientHelper_ReceiveByte(Socket arg1, byte[] arg2)
         {
-            foreach (var socket in dictionary)
+            foreach (var socket in _socketBindingDictionary)
             {
-                if (arg1== socket.Value.ClientSocket)
+                if (arg1 == socket.Value.ClientSocket)
                 {
                     if (IsNeedToConvert12HeartBeatTo8)
                     {
@@ -149,27 +170,27 @@ namespace 三相智慧能源网关调试软件
                         {
                             var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
                             if (len == 0x0B)
-                            {// 8位转12位
+                            {
+                                // 8位转12位
                                 var list = new List<byte>();
-                                list.AddRange(heightBytesOfHeartBeatBytes);//添加原保留的高位地址
+                                list.AddRange(MeterHeight4ByteDictionary[socket.Key]); //添加原保留的高位地址
                                 list.AddRange(frame.MeterAddressBytes);
                                 frame.MeterAddressBytes = list.ToArray();
                                 arg2 = frame.ToPduBytes();
                             }
                         }
-
                     }
+
                     TcpListener.SendDataToClient(socket.Key, arg2);
                 }
             }
-         
         }
 
         public void Stop()
         {
             TcpListener.CloseSever();
-            
-            dictionary.Clear();
+
+            _socketBindingDictionary.Clear();
         }
     }
 
@@ -252,10 +273,6 @@ namespace 三相智慧能源网关调试软件
 
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
-
-        private readonly CancellationTokenSource _sourceServer = new CancellationTokenSource();
-
-
         public event Action<string> ErrorMsg;
         public event Action<string> StatusMsg;
         public event Action<Socket> AcceptNewClient;
@@ -266,6 +283,7 @@ namespace 三相智慧能源网关调试软件
         {
             AcceptNewClient?.Invoke(clientSocket);
         }
+
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             ReceiveBytes?.Invoke(clientSocket, bytes);
@@ -603,201 +621,6 @@ namespace 三相智慧能源网关调试软件
             //  SocketClientList.RemoveAt(num);
             SocketClientCancellationTokens[num].Cancel();
             SocketClientCancellationTokens.RemoveAt(num);
-        }
-
-        TcpClient clientForTran = new TcpClient();
-        IDictionary<Socket, TcpClient> liiii = new Dictionary<Socket, TcpClient>();
-
-        public void StartListenServerAsyncNew(Socket tcpListenerSocketServer,string remoteIp,int remotePort, bool isNeedToConvert12HeartBeatTo8)
-        {
-            Socket clientSocket;
-            Task.Run(delegate
-            {
-                while (true)
-                {
-                    try
-                    {
-                        clientSocket = tcpListenerSocketServer.Accept();
-                        var socket1 = clientSocket;
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            SocketClientList.Add(socket1);
-                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
-                        });
-                        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                        SocketClientCancellationTokens.Add(cancellationTokenSource);
-                        OnNotifyStatusMsg($"{DateTime.Now}有新的转发连接{clientSocket.RemoteEndPoint}");
-                        clientForTran = new TcpClient();
-                        clientForTran.Connect(remoteIp, remotePort);
-                        OnNotifyStatusMsg($"已连接至{remoteIp}{remotePort}");
-                        liiii[socket1] = clientForTran;//绑定
-                        var socket = clientSocket;
-
-                        Task.Run(delegate { ClientThreadNew(socket, clientForTran, isNeedToConvert12HeartBeatTo8); }, cancellationTokenSource.Token);
-                        Task.Run(() => { ClientThreadFromHostNew(socket, clientForTran, isNeedToConvert12HeartBeatTo8); }, cancellationTokenSource.Token);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger logger = LogManager.GetCurrentClassLogger();
-                        logger.Error(ex);
-                        OnNotifyStatusMsg("退出服务端监听Task");
-                        // CloseSever();
-                        break;
-                    }
-                }
-            });
-        }
-
-        private byte[] heightBytesOfHeartBeatBytes;
-        /// <summary>
-        /// 接收主站的数据转发至表端
-        /// </summary>
-        /// <param name="sockClient"></param>
-        /// <param name="client"></param>
-        private void ClientThreadFromHostNew(Socket sockClient, TcpClient client,bool isNeedToConver12HeartBeatTo8)
-        {
-            byte[] array = new byte[1024];
-
-            while (true)
-            {
-                int num;
-                try
-                {
-                    num = client.Client.Receive(array);
-
-                    byte[] bytes = array.Take(num).ToArray();
-                   // OnReceiveBytes(client.Client, bytes);
-                    if (isNeedToConver12HeartBeatTo8)
-                    {
-                        var frame = new HeartBeatFrame();
-                        var t = frame.PduBytesToConstructor(bytes);
-                        if (t)
-                        {
-                            var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
-                            if (len == 0x0B)
-                            {// 8位转12位
-                                var list = new List<byte>();
-                                list.AddRange(heightBytesOfHeartBeatBytes);//添加原保留的高位地址
-                                list.AddRange(frame.MeterAddressBytes);
-                                frame.MeterAddressBytes = list.ToArray();
-                                bytes = frame.ToPduBytes();
-                            }
-                        }
-
-                    }
-
-
-                    sockClient.Send(bytes);
-                    OnSendBytesToClient(sockClient, bytes);
-                }
-                catch (Exception ex)
-                {
-                    Logger logger = LogManager.GetCurrentClassLogger();
-                    logger.Error(ex);
-                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        if (SocketClientList.Contains(sockClient))
-                        {
-                            SocketClientList.Remove(sockClient);
-                        }
-                    });
-
-                    break;
-                }
-
-                if (num == 0)
-                {
-                    OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        if (SocketClientList.Contains(sockClient))
-                        {
-                            SocketClientList.Remove(sockClient);
-                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
-                        }
-                    });
-                    break;
-                }
-            }
-        }
-
-        //表端发送数据，后 转发至 主站
-        private void ClientThreadNew(Socket sockClient, TcpClient client,bool isNeedToConvert12HeartBeatTo8)
-        {
-            byte[] array = new byte[1024];
-
-            while (true)
-            {
-                int num;
-                try
-                {
-                    num = sockClient.Receive(array);
-
-                    byte[] bytes = array.Take(num).ToArray();
-                  //  OnReceiveBytes(sockClient, bytes);
-                    if (isNeedToConvert12HeartBeatTo8)
-                    {
-                        var frame = new HeartBeatFrame();
-                        var t = frame.PduBytesToConstructor(bytes);
-                        if (t)
-                        {
-                            var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
-                            if (len == 0x0F)//12位转8位
-                            {
-                                heightBytesOfHeartBeatBytes = frame.MeterAddressBytes.Take(4).ToArray();//保留高位4地址后续用于补全
-                                frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
-                                bytes = frame.ToPduBytes();
-                            }
-                        }
-                    }
-                 
-
-                    try
-                    {
-                        client.Client.Send(bytes);
-                        OnSendBytesToClient(client.Client, bytes);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger logger = LogManager.GetCurrentClassLogger();
-                        logger.Error(e);
-                        OnNotifyStatusMsg($"转发至主站 - 线程出现异常{sockClient.RemoteEndPoint}Task");
-                        throw;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger logger = LogManager.GetCurrentClassLogger();
-                    logger.Error(ex);
-                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        if (SocketClientList.Contains(sockClient))
-                        {
-                            SocketClientList.Remove(sockClient);
-                        }
-                    });
-
-                    break;
-                }
-
-                if (num == 0)
-                {
-                    OnNotifyStatusMsg($"客户端{sockClient.RemoteEndPoint} 断开了\r\n");
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        if (SocketClientList.Contains(sockClient))
-                        {
-                            SocketClientList.Remove(sockClient);
-                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
-                        }
-                    });
-                    break;
-                }
-            }
-
-            //  sockClient.Close();
         }
     }
 }

@@ -100,15 +100,17 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
             if (pdustring.StartsWith("A10302"))
             {
                 var data= pduBytes.Skip(3).ToArray();
-                AcseServiceUser=new BerInteger();
-                return AcseServiceUser.PduBytesToConstructor(data);
+               var datastring = data.ByteToString("");
+                AcseServiceUser =new BerInteger();
+                return AcseServiceUser.PduStringInHexConstructor(ref datastring);
             }
 
             if (pdustring.StartsWith("A20302"))
             {
                 var data = pduBytes.Skip(3).ToArray();
+                var datastring = data.ByteToString("");
                 AcseServiceUser = new BerInteger();
-                return AcseServiceProvider.PduBytesToConstructor(data);
+                return AcseServiceProvider.PduStringInHexConstructor(ref datastring);
             }
 
             return false;

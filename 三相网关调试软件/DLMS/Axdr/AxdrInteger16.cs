@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrInteger16
+    public class AxdrInteger16:IToPduBytes, IToPduStringInHex, IPduStringInHexConstructor
     {
-        private string value;
-
         [XmlAttribute]
-        public string Value
-        {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-            }
-        }
+        public string Value { get; set; }
 
         public AxdrInteger16()
         {
@@ -30,32 +20,38 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             {
                 throw new ArgumentException("The length not match type");
             }
-            value = s;
+            Value = s;
         }
 
         public string ToPduStringInHex()
         {
-            return value;
+            return Value;
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+
+        public short GetEntityValue()
         {
-            if (pduStringInHex.Equals(null) || pduStringInHex.Length < 4)
+            if (string.IsNullOrEmpty(Value))
+            {
+                throw new InvalidOperationException("Value is null");
+            }
+            return Convert.ToInt16(Value, 16);
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (pduStringInHex.Length < 4)
             {
                 return false;
             }
-            value = pduStringInHex.Substring(0, 4);
+            Value = pduStringInHex.Substring(0, 4);
             pduStringInHex = pduStringInHex.Substring(4);
             return true;
         }
 
-        public short GetEntityValue()
+        public byte[] ToPduBytes()
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new InvalidOperationException("Value is null");
-            }
-            return Convert.ToInt16(value, 16);
+            return ToPduStringInHex().StringToByte();
         }
     }
 }

@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrInteger8
+    public class AxdrInteger8:IToPduBytes,IToPduStringInHex,IPduStringInHexConstructor
     {
-        private string value;
-
         [XmlAttribute]
-        public string Value
-        {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-            }
-        }
+        public string Value { get; set; }
 
         [XmlIgnore]
         public int Length => 1;
@@ -26,7 +16,10 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
         public AxdrInteger8()
         {
         }
-
+        public AxdrInteger8(byte value)
+        {
+            Value = value.ToString("X2");
+        }
         public AxdrInteger8(string s)
         {
             int length = s.Length;
@@ -36,7 +29,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
                 {
                     s = "0" + s;
                 }
-                value = s;
+                Value = s;
                 return;
             }
             throw new ArgumentException("The length not match type");
@@ -44,27 +37,33 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
 
         public string ToPduStringInHex()
         {
-            return value;
+            return Value;
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+
+        public sbyte GetEntityValue()
         {
-            if (pduStringInHex.Equals(null) || pduStringInHex.Length < 2)
+            if (string.IsNullOrEmpty(Value))
+            {
+                throw new InvalidOperationException("Value is null");
+            }
+            return Convert.ToSByte(Value, 16);
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (pduStringInHex.Length < 2)
             {
                 return false;
             }
-            value = pduStringInHex.Substring(0, 2);
+            Value = pduStringInHex.Substring(0, 2);
             pduStringInHex = pduStringInHex.Substring(2);
             return true;
         }
 
-        public sbyte GetEntityValue()
+        public byte[] ToPduBytes()
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new InvalidOperationException("Value is null");
-            }
-            return Convert.ToSByte(value, 16);
+            return ToPduStringInHex().StringToByte();
         }
     }
 }

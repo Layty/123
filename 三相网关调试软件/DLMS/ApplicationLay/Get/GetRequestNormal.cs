@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Markup;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
@@ -8,6 +10,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
         protected GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
         public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
         public AttributeDescriptor AttributeDescriptor { get; set; }
+
+        public CosemAttributeDescriptorWithSelection CosemAttributeDescriptorWithSelection { get; set; }
 
         public GetRequestNormal()
         {
@@ -21,12 +25,17 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             InvokeIdAndPriority = invokeIdAndPriority;
             InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
         }
+
         public GetRequestNormal(AttributeDescriptor attributeDescriptor)
         {
             AttributeDescriptor = attributeDescriptor;
             InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
         }
-
+        public GetRequestNormal(CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
+        {
+            CosemAttributeDescriptorWithSelection = cosemAttributeDescriptorWithSelection;
+            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
+        }
         public byte[] ToPduBytes()
         {
             List<byte> pduBytes = new List<byte>();
@@ -35,8 +44,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             if (AttributeDescriptor != null)
             {
                 pduBytes.AddRange(AttributeDescriptor.ToPduBytes());
+                pduBytes.Add(0x00);
             }
-
+            if (CosemAttributeDescriptorWithSelection!=null)
+            {
+                pduBytes.AddRange(CosemAttributeDescriptorWithSelection.ToPduBytes());
+            }
             return pduBytes.ToArray();
         }
     }

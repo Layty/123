@@ -1,8 +1,10 @@
 ﻿using System;
+using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrBoolean
+    public class AxdrBoolean:IToPduBytes,IToPduStringInHex,IPduStringInHexConstructor
     {
         public string Value { get; set; }
 
@@ -10,7 +12,14 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
         {
             
         }
-
+        public AxdrBoolean(string s)
+        {
+            if (s.Length != 2)
+            {
+                throw new ArgumentException("The length not match type");
+            }
+            Value = s;
+        }
         public AxdrBoolean(byte boolByte)
         {
             Value = boolByte.ToString("X2").PadLeft(2,'0');
@@ -36,5 +45,26 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
             throw new InvalidOperationException("Value is not a Boolean value");
         }
-	}
+
+        public string ToPduStringInHex()
+        {
+            return Value;
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (pduStringInHex.Length < 2)
+            {
+                return false;
+            }
+            Value = pduStringInHex.Substring(0, 2);
+            pduStringInHex = pduStringInHex.Substring(2);
+            return true;
+        }
+
+        public byte[] ToPduBytes()
+        {
+            return ToPduStringInHex().StringToByte();
+        }
+    }
 }

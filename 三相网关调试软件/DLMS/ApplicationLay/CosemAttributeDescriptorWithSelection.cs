@@ -2,7 +2,7 @@
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
-    public class CosemAttributeDescriptorWithSelection : IToPduBytes,IPduBytesToConstructor
+    public class CosemAttributeDescriptorWithSelection : IToPduBytes, IPduBytesToConstructor, IPduStringInHexConstructor
     {
         public AttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor SelectiveAccessDescriptor { get; set; }
@@ -21,19 +21,23 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         public byte[] ToPduBytes()
         {
             List<byte> list = new List<byte>();
-            list.AddRange(new AttributeDescriptor().ToPduBytes());
+            if (AttributeDescriptor != null)
+            {
+                list.AddRange(AttributeDescriptor.ToPduBytes());
+                list.Add(0x01);
+            }
+
             if (SelectiveAccessDescriptor != null)
             {
                 list.AddRange(SelectiveAccessDescriptor.ToPduBytes());
             }
 
-            list.Add(0x00);
             return list.ToArray();
         }
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {
-            AttributeDescriptor=new AttributeDescriptor();
+            AttributeDescriptor = new AttributeDescriptor();
             if (!AttributeDescriptor.PduBytesToConstructor(pduBytes))
             {
                 return false;
@@ -41,9 +45,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
             //if (pduBytes.Skip())
             //{
-                
+
             //}
             return true;
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

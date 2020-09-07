@@ -56,7 +56,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<ClockViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
-
+                SimpleIoc.Default.Register<LoadIdentificationViewModel>();
                 SimpleIoc.Default.Register<DMLSXMLLog>();
                 #region 主程序界面相关
 
@@ -124,6 +124,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
         public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
         public ProfileGenericViewModel ProfileGenericViewModel => ServiceLocator.Current.GetInstance<ProfileGenericViewModel>();
+
+        public LoadIdentificationViewModel LoadIdentificationViewModel =>
+            ServiceLocator.Current.GetInstance<LoadIdentificationViewModel>();
 
         public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
 

@@ -47,6 +47,14 @@
                          Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay}"
                          Margin="3" 
                          BorderThickness="2" />
+                <!--<RichTextBox  Name="TextBoxReceive" >
+                    <FlowDocument   >
+                        <Paragraph>
+                            <Run    Text="{Binding SerialPortMaster.SerialPortLogger.SendAndReceiveDataCollections ,Mode=OneWay}"></Run>
+                        </Paragraph>
+
+                    </FlowDocument>
+                </RichTextBox>-->
                 <x:Code>
                     <![CDATA[
                          private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)

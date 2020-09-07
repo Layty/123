@@ -13,8 +13,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
     public class DLMSClock : DLMSObject ,IDLMSBase,INotifyPropertyChanged
     {
 
-
-
         public int TimeZone
         {
             get => _TimeZone;
@@ -57,9 +55,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
 
         public byte Hundredths { get; set; }
-
-
-       
 
 
         public string  Time
@@ -146,7 +141,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             return list.ToArray();
         }
 
-        // Token: 0x060003E9 RID: 1001 RVA: 0x000230A8 File Offset: 0x000212A8
         public DLMSClock(DateTime dateTime)
         {
             LogicalName = "0.0.1.0.0.255";

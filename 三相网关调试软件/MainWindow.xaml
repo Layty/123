@@ -141,12 +141,12 @@
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
                            
-                                <myControl:HeartBeatButton Content="Hello World" HorizontalContentAlignment="Center"
-                                                           Width="100" Height="30" />
+                                <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="Hello World" HorizontalContentAlignment="Center"
+                                                           Width="100" Height="30" Click="HeartBeatButton_OnClick" />
                                 <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
                                               IsChecked="False"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
-                                              ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
+                                              ToolTip="报文显示" Click="ToggleButtonLog_OnClick" >
                                     <ToggleButton.Content>
                                         <materialDesign:PackIcon
                                             Kind="EyeOff" />

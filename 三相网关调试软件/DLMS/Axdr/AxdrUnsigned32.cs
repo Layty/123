@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrUnsigned32
+    public class AxdrUnsigned32 : IToPduBytes,IToPduStringInHex, IPduStringInHexConstructor
     {
         [XmlAttribute]
         public string Value { get; set; }
@@ -29,16 +31,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             return Value;
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Equals(null) || pduStringInHex.Length < 8)
-            {
-                return false;
-            }
-            Value = pduStringInHex.Substring(0, 8);
-            pduStringInHex = pduStringInHex.Substring(8);
-            return true;
-        }
+       
 
         public uint GetEntityValue()
         {
@@ -47,6 +40,22 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
                 throw new InvalidOperationException("Value is null");
             }
             return Convert.ToUInt32(Value, 16);
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (pduStringInHex.Length < 8)
+            {
+                return false;
+            }
+            Value = pduStringInHex.Substring(0, 8);
+            pduStringInHex = pduStringInHex.Substring(8);
+            return true;
+        }
+
+        public byte[] ToPduBytes()
+        {
+            return ToPduStringInHex().StringToByte();
         }
     }
 }

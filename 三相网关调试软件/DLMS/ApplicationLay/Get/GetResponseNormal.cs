@@ -135,7 +135,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                     case (byte) DataType.Structure:
                         var rangeStruct = GetResponseNormalByte.Skip(4).Take(1).ToArray()[0];
                         result = GetResponseNormalByte.Skip(5).ToArray().ByteToString(); //返回结构体
-                        Result.Data = new DLMSDataItem(DataType.Structure, result);
+                       Result.Data = new DLMSDataItem(DataType.Structure, result);
+                     
                         break;
                     case (byte) DataType.Enum:
                         result = GetResponseNormalByte.Skip(4).Take(1).ToArray()[0].ToString();

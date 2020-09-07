@@ -57,6 +57,11 @@
                     <myControl:ClockControl />
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="LoadIdentification">
+
+                <dlmsControl:LoadIdentificationUserControl />
+
+            </TabItem>
         </TabControl>
 
 

@@ -4,8 +4,14 @@
     {
         bool PduBytesToConstructor(byte[] pduBytes);
     }
-    public interface IPduRefBytesToConstructor
+
+    public interface IToPduStringInHex
     {
-        bool PduBytesToConstructor(ref byte[] pduBytes);
+        string ToPduStringInHex();
     }
+    public interface IPduStringInHexConstructor
+    {
+        bool PduStringInHexConstructor(ref string pduStringInHex);
+    }
+
 }

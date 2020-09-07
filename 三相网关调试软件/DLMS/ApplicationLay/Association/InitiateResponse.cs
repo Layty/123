@@ -34,7 +34,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 
                     NegotiatedDlmsVersionNumber = new AxdrUnsigned8();
                     var pduStringInHex = pdu.Skip(2).ToArray().ByteToString("");
-                    if (!NegotiatedDlmsVersionNumber.PduStringInHexContructor(ref pduStringInHex))
+                    if (!NegotiatedDlmsVersionNumber.PduStringInHexConstructor(ref pduStringInHex))
                     {
                         return false;
                     }
@@ -47,9 +47,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                         NegotiatedConformance = (Conformance) negovalue;
                         pduStringInHex = pduStringInHex.Substring(8);
                         ServerMaxReceivePduSize = new AxdrUnsigned16();
-                        ServerMaxReceivePduSize.PduStringInHexContructor(ref pduStringInHex);
+                        ServerMaxReceivePduSize.PduStringInHexConstructor(ref pduStringInHex);
                         VaaName = new AxdrInteger16();
-                        VaaName.PduStringInHexContructor(ref pduStringInHex);
+                        VaaName.PduStringInHexConstructor(ref pduStringInHex);
                         return true;
                     }
 

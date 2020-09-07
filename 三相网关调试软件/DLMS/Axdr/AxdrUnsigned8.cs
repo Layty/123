@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrUnsigned8:IToPduBytes,IPduBytesToConstructor
+    public class AxdrUnsigned8 : IToPduBytes,IToPduStringInHex, IPduStringInHexConstructor
     {
         [XmlAttribute]
         public string Value { get; set; }
@@ -36,17 +37,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             return Value;
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Equals(null) || pduStringInHex.Length < 2)
-            {
-                return false;
-            }
-            Value = pduStringInHex.Substring(0, 2);
-            pduStringInHex = pduStringInHex.Substring(2);
-            return true;
-        }
-
+       
         public byte GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
@@ -56,14 +47,21 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             return Convert.ToByte(Value, 16);
         }
 
-        public byte[] ToPduBytes()
+        
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            throw new NotImplementedException();
+            if (pduStringInHex.Length < 2)
+            {
+                return false;
+            }
+            Value = pduStringInHex.Substring(0, 2);
+            pduStringInHex = pduStringInHex.Substring(2);
+            return true;
         }
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
+        public byte[] ToPduBytes()
         {
-            throw new NotImplementedException();
+            return ToPduStringInHex().StringToByte();
         }
     }
 }

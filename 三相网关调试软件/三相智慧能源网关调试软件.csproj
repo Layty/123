@@ -204,6 +204,7 @@
     <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSStructure.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithList.cs" />
@@ -331,6 +332,11 @@
     <Compile Include="MyControl\DLMSControl\DisconnecrtControl.xaml.cs">
       <DependentUpon>DisconnecrtControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DlMSLoadIdentification.cs" />
+    <Compile Include="MyControl\DLMSControl\LoadIdentificationUserControl.xaml.cs">
+      <DependentUpon>LoadIdentificationUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\LoadIdentificationViewModel.cs" />
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
       <DependentUpon>HeartBeatButton.xaml</DependentUpon>
     </Compile>
@@ -403,6 +409,9 @@
     </Compile>
     <Compile Include="View\CoverPage.xaml.cs">
       <DependentUpon>CoverPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Management\ENetDataPage.xaml.cs">
       <DependentUpon>ENetDataPage.xaml</DependentUpon>
@@ -484,6 +493,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyControl\DLMSControl\LoadIdentificationUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\HeartBeatButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -545,6 +558,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CoverPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

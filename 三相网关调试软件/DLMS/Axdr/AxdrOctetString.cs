@@ -1,24 +1,24 @@
 ﻿using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrOctetString
+    public class AxdrOctetString :IToPduBytes,IToPduStringInHex, IPduStringInHexConstructor
     {
-        private string value;
+
+
+        private string _value;
 
         [XmlAttribute]
         public string Value
         {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-            }
+            get => _value;
+            set => _value = value;
         }
+
+
 
         [XmlIgnore]
         public int Length => CalculateLength();
@@ -26,9 +26,9 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
         private int CalculateLength()
         {
             int num = 0;
-            if (value != null)
+            if (Value != null)
             {
-                num += value.Length / 2;
+                num += Value.Length / 2;
             }
             return num;
         }
@@ -39,18 +39,23 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
 
         public AxdrOctetString(string s)
         {
-            value = s;
+            Value = s;
         }
 
         public string ToPduStringInHex()
         {
-            int qty = value.Length / 2;
-            return MyConvert.EncodeVarLength(qty) + value;
+            int qty = Value.Length / 2;
+            return MyConvert.EncodeVarLength(qty) + Value;
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            return MyConvert.VarLengthStringConstructor(ref pduStringInHex, out value);
+            return MyConvert.VarLengthStringConstructor(ref pduStringInHex, out _value);
+        }
+
+        public byte[] ToPduBytes()
+        {
+            return ToPduStringInHex().StringToByte();
         }
     }
 }

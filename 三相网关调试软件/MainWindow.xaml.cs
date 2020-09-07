@@ -26,6 +26,7 @@ namespace 三相智慧能源网关调试软件
         public MainWindow()
         {
             InitializeComponent();
+            
             Timer.Interval = new TimeSpan(500);
             Timer.Tick += Timer_Tick;
             Timer.Start();
@@ -35,7 +36,7 @@ namespace 三相智慧能源网关调试软件
                 var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    Close();
+                    Application.Current.Shutdown();
                 }
             }));
             CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,
@@ -186,6 +187,11 @@ namespace 三相智慧能源网关调试软件
             CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
             ColumnLog.Width = new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
             TabControl.Width = Double.NaN;
+        }
+
+        private void HeartBeatButton_OnClick(object sender, RoutedEventArgs e)
+        {
+          new LogWindow(){Owner = this}.Show();
         }
     }
 }
