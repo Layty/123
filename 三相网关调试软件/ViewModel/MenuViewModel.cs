@@ -106,7 +106,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", 
+                        Assembly = "ServerCenter.TelnetPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel
@@ -120,6 +121,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         MenuName = "IICDataAnalysis", FontSize = "20", IconFont = "\xe6ab",
                         Assembly = "ServerCenter.IicDataPage",
                         Foreground = "#6666FF"
+                    },
+                };
+
+                ToolsMenuCollection=new ObservableCollection<MenuModel>()
+                {
+                    new MenuModel
+                    {
+                        MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
+                        Assembly = "ServerCenter.DLMSSettingsPage",
+                        Foreground = "#FF0000"
                     },
                 };
 #endif
@@ -163,6 +174,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+
+        public ObservableCollection<MenuModel> ToolsMenuCollection
+        {
+            get => _toolsMenuCollection;
+            set { _toolsMenuCollection = value; RaisePropertyChanged(); }
+        }
+        private ObservableCollection<MenuModel> _toolsMenuCollection;
 
 
         private MenuModel _menuModel;

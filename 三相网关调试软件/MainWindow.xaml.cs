@@ -186,7 +186,7 @@ namespace 三相智慧能源网关调试软件
         {
             CardLog.Visibility = ToggleButtonLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
             ColumnLog.Width = new GridLength(CardLog.ActualWidth, GridUnitType.Auto);
-            TabControl.Width = Double.NaN;
+            TabControl.Width = double.NaN;
         }
 
         private void HeartBeatButton_OnClick(object sender, RoutedEventArgs e)

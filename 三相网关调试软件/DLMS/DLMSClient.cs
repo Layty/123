@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using NLog;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -190,7 +191,8 @@ namespace 三相智慧能源网关调试软件.DLMS
             var dataResult = await GetRequest(getAttributeBytes);
 
             GetResponse getResponse = new GetResponse();
-            if (getResponse.PduBytesToConstructor(dataResult))
+            var data = dataResult.ByteToString("");
+            if (getResponse.PduStringInHexConstructor(ref data))
             {
                 getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat(MyDlmsSettings.OctetStringDisplayFormat,
                     MyDlmsSettings.UInt32ValueDisplayFormat);
@@ -214,7 +216,8 @@ namespace 三相智慧能源网关调试软件.DLMS
             var dataResult = await GetRequest(getAttributeBytes);
 
             GetResponse getResponse = new GetResponse();
-            if (getResponse.PduBytesToConstructor(dataResult))
+            var data = dataResult.ByteToString("");
+            if (getResponse.PduStringInHexConstructor(ref data))
             {
                 getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat(MyDlmsSettings.OctetStringDisplayFormat,
                     MyDlmsSettings.UInt32ValueDisplayFormat);

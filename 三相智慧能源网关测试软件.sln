@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{31E1DC0B-2A22-4B14-96D9-1692382E2530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myAnimation", "myAnimation\myAnimation.csproj", "{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnimation", "myAnimation\MyAnimation.csproj", "{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

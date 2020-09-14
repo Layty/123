@@ -29,6 +29,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             if (AttributeDescriptor != null)
             {
                 pduBytes.AddRange(AttributeDescriptor.ToPduBytes());
+                pduBytes.Add(0x00);
             }
 
             pduBytes.AddRange(AttributeInvocationParameters.ToPduBytes());

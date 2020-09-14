@@ -8,39 +8,53 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnu
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public class ProfileGeneric : DLMSObject, IDLMSBase,INotifyPropertyChanged
+    public class ProfileGeneric : DLMSObject, IDLMSBase, INotifyPropertyChanged
     {
         public DLMSArray Buffer { get; set; } //2
         public object From { get; set; }
         public object To { get; set; }
         public List<KeyValuePair<DLMSObject, DLMSCaptureObject>> CaptureObjects { get; set; } //3
 
-
         public uint CapturePeriod
         {
-            get => _CapturePeriod;
-            set { _CapturePeriod = value; OnPropertyChanged(); }
+            get => _capturePeriod;
+            set
+            {
+                _capturePeriod = value;
+                OnPropertyChanged();
+            }
         }
-        private uint _CapturePeriod;
+
+        private uint _capturePeriod;
 
 
-         //5
+        //5
 
         [DefaultValue(SortMethod.FiFo)]
         public SortMethod SortMethod
         {
-            get => _SortMethod;
-            set { _SortMethod = value; OnPropertyChanged(); }
+            get => _sortMethod;
+            set
+            {
+                _sortMethod = value;
+                OnPropertyChanged();
+            }
         }
-        private SortMethod _SortMethod;
 
-       //6
-       public DLMSObject SortObject
+        private SortMethod _sortMethod;
+
+        //6
+        public DLMSObject SortObject
         {
-            get => _SortObject;
-            set { _SortObject = value; OnPropertyChanged(); }
+            get => _sortObject;
+            set
+            {
+                _sortObject = value;
+                OnPropertyChanged();
+            }
         }
-        private DLMSObject _SortObject;
+
+        private DLMSObject _sortObject;
 
 
         public int SortAttributeIndex { get; set; }
@@ -54,41 +68,46 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public uint EntriesInUse
         {
-            get => _EntriesInUse;
-            set { _EntriesInUse = value; OnPropertyChanged(); }
+            get => _entriesInUse;
+            set
+            {
+                _entriesInUse = value;
+                OnPropertyChanged();
+            }
         }
-        private uint _EntriesInUse;
+
+        private uint _entriesInUse;
 
 
         /// <summary>
         /// 保持最大条目数   //8
         /// </summary>
-
         public uint ProfileEntries
         {
-            get => _ProfileEntries;
-            set { _ProfileEntries = value; OnPropertyChanged(); }
+            get => _profileEntries;
+            set
+            {
+                _profileEntries = value;
+                OnPropertyChanged();
+            }
         }
-        private uint _ProfileEntries;
 
-
-        //public override byte Version { get; set; } = 1;
+        private uint _profileEntries;
 
         public ProfileGeneric(string logicalName)
         {
             SortMethod = SortMethod.FiFo;
             LogicalName = logicalName;
             ObjectType = ObjectType.ProfileGeneric;
-            //Version = 1;
         }
 
 
-       
         public AttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
         public AttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);
-        
+
         public AttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+
         public byte[] SetCapturePeriod(uint capturePeriod)
         {
             this.CapturePeriod = capturePeriod;
@@ -98,8 +117,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         }
 
         public byte[] GetSortMethod() => GetAttributeData(5);
-        public AttributeDescriptor GetSortMethodAttributeDescriptor() =>GetCosemAttributeDescriptor(5);
-       
+        public AttributeDescriptor GetSortMethodAttributeDescriptor() => GetCosemAttributeDescriptor(5);
+
         public byte[] GetEntriesInUse() => GetCosemAttributeDescriptor(7).ToPduBytes();
         public AttributeDescriptor GetEntriesInUseAttributeDescriptor() => GetCosemAttributeDescriptor(7);
 

@@ -2,7 +2,7 @@
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
-    public class SetResponse:IToPduBytes,IPduBytesToConstructor
+    public class SetResponse:IToPduStringInHex,IPduStringInHexConstructor
     {
         public SetResponseNormal SetResponseNormal { get; set; }
 
@@ -46,7 +46,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             return stringBuilder.ToString();
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+     
+
+        
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             if (string.IsNullOrEmpty(pduStringInHex))
             {
@@ -60,7 +64,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
                     SetResponseNormal = new SetResponseNormal();
-                    return SetResponseNormal.PduStringInHexContructor(ref pduStringInHex);
+                    return SetResponseNormal.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "02")
                 {
@@ -89,16 +93,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 return false;
             }
             return false;
-        }
-
-        public byte[] ToPduBytes()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

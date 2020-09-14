@@ -82,6 +82,9 @@
     <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>packages\CommonServiceLocator.2.0.5\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
     <Reference Include="ENet, Version=1.3.6.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ENet.1.3.6.3\lib\ENet.dll</HintPath>
     </Reference>
@@ -715,9 +718,9 @@
     <Folder Include="View\MyTools\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\myAnimation\myAnimation.csproj">
+    <ProjectReference Include="..\myAnimation\MyAnimation.csproj">
       <Project>{afa4a472-60b0-47b1-b5b5-730f4782eb4f}</Project>
-      <Name>myAnimation</Name>
+      <Name>MyAnimation</Name>
     </ProjectReference>
     <ProjectReference Include="..\SerialPortMaster\MySerialPortMaster.csproj">
       <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>

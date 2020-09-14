@@ -549,4 +549,16 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <LinearGradientBrush x:Key="RainBallLinearGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <!--红 橙 黄 绿 青 蓝 紫-->
+        <GradientStop Color="#FFF0040F" Offset="0"/>
+        <GradientStop Color="White" Offset="1"/>
+        <GradientStop Color="#FFFB6701" Offset="0.149"/>
+        <GradientStop Color="#FFF9EE00" Offset="0.293"/>
+        <GradientStop Color="#FF72F902" Offset="0.44"/>
+        <GradientStop Color="#FE03FBD9" Offset="0.587"/>
+        <GradientStop Color="#FE037FFB" Offset="0.716"/>
+        <GradientStop Color="#FE7203F7" Offset="0.846"/>
+    </LinearGradientBrush>
+
 </ResourceDictionary>

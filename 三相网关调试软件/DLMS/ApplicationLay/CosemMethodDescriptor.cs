@@ -13,8 +13,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         public ObjectType ClassId { get; set; }
         public string InstanceId { get; set; }
         public byte MethodId { get; set; }
-        public byte Version { get; set; }
-
+        
         public int Length => CalculateLength();
         private int CalculateLength()
         {
@@ -25,7 +24,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             ClassId = dlmsObject.ObjectType;
             InstanceId = dlmsObject.LogicalName;
             MethodId = index;
-            Version = dlmsObject.Version;
         }
 
         public byte[] ToPduBytes()
@@ -34,7 +32,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             list.AddRange(BitConverter.GetBytes((ushort) ClassId).Reverse()); //ClassId
             list.AddRange(ObisHelper.ObisStringToBytes(InstanceId));
             list.Add(MethodId); //方法
-            list.Add(Version); //版本 
             return list.ToArray();
         }
     }

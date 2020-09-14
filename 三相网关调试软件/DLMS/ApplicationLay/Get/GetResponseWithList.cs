@@ -1,31 +1,71 @@
-﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+﻿using System.Text;
+using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
+using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
-    public class GetResponseWithList : IPduBytesToConstructor
+    public class GetResponseWithList : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public Command Command { get; set; } = Command.GetResponse;
-        public GetResponseType GetResponseType { get; set; } = GetResponseType.WithList;
-        public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
+        [XmlIgnore] public GetResponseType GetResponseType { get; set; } = GetResponseType.WithList;
+        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
 
         public GetDataResult[] Result;
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
+     
+
+        public string ToPduStringInHex()
         {
-            if (pduBytes[0] != (byte) Command)
+			StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
+            int num = Result.Length;
+            if (num <= 127)
+            {
+                stringBuilder.Append(num.ToString("X2"));
+            }
+            else if (num <= 255)
+            {
+                stringBuilder.Append("81" + num.ToString("X2"));
+            }
+            else
+            {
+                stringBuilder.Append("82" + num.ToString("X4"));
+            }
+            GetDataResult[] array = Result;
+            foreach (GetDataResult getDataResult in array)
+            {
+                stringBuilder.Append(getDataResult.ToPduStringInHex());
+            }
+            return stringBuilder.ToString();
+		}
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (string.IsNullOrEmpty(pduStringInHex))
             {
                 return false;
             }
-
-            if (pduBytes[1] != (byte) GetResponseType)
+         
+            InvokeIdAndPriority = new AxdrUnsigned8();
+            if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
-
-            InvokeIdAndPriority = new InvokeIdAndPriority(pduBytes[2]);
-            InvokeIdAndPriority.Value = InvokeIdAndPriority.GetInvoke_Id_And_Priority();
-
-            Result = new GetDataResult[] { };
+            int num = MyConvert.DecodeVarLength(ref pduStringInHex);
+            Result = new GetDataResult[num];
+            for (int i = 0; i < num; i++)
+            {
+                if (string.IsNullOrEmpty(pduStringInHex))
+                {
+                    return false;
+                }
+                Result[i] = new GetDataResult();
+                if (!Result[i].PduStringInHexConstructor(ref pduStringInHex))
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }

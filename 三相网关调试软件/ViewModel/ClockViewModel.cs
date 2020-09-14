@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
@@ -31,14 +32,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         NormalDataParse.HowToDisplayOctetString(
                             dataResult.GetResponseNormal.Result.Data.ValueBytes, DisplayFormat);
                 }
-//                if (r.PduBytesToConstructor(dataResult))
-//                {
-//                    var DisplayFormat = OctetStringDisplayFormat.DateTime;
-//                    Clock.Time =
-//                        NormalDataParse.HowToDisplayOctetString(r.GetResponseNormal.Result.Data.ValueBytes,
-//                            DisplayFormat);
-////                   Clock.Time = r.GetResponseNormal.Result.Data.ValueString;
-//                }
+
             });
             GetTimeZoneCommand = new RelayCommand(async () =>
             {
@@ -46,8 +40,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 getRequest.GetRequestNormal = new GetRequestNormal(Clock.GetTimeZoneAttributeDescriptor());
                 var dataResult = await Client.GetRequest(getRequest);
                 var r = new GetResponse();
-                r.PduBytesToConstructor(dataResult);
-                Clock.TimeZone = int.Parse(r.GetResponseNormal.Result.Data.ValueDisplay.ValueString);
+                var data = dataResult.ByteToString("");
+                if (r.PduStringInHexConstructor(ref data))
+                {
+                    Clock.TimeZone = int.Parse(r.GetResponseNormal.Result.Data.ValueDisplay.ValueString);
+
+                }
+              
             });
         }
 

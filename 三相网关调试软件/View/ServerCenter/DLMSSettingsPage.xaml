@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
+      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DLMSSettingsPage">
@@ -14,8 +15,8 @@
         <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
     </Page.DataContext>
     <Grid>
-
-        <TabControl>
+       
+            <TabControl >
             <TabItem Header="SerialPort">
                 <myControl:SerialPortControl />
             </TabItem>

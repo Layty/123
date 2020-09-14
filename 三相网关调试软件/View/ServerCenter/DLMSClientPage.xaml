@@ -25,10 +25,67 @@
                 ReleaseRequest
             </Button>
             <StackPanel DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }">
-                <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
+                <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" ToolTip="当前操作客户端" />
                 <ListBox x:Name="ListBox" ItemsSource="{Binding TcpServerHelper.SocketClientList}"
                          SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-                         SelectionChanged="Selector_OnSelectionChanged" />
+                         SelectionChanged="Selector_OnSelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" x:Name="border" BorderThickness="2" Margin="2">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <EventTrigger RoutedEvent="MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetProperty="FontSize"
+                                                            To="20" Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+
+
+                                            <EventTrigger RoutedEvent="MouseLeave">
+
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            Storyboard.TargetProperty="FontSize"
+                                                            BeginTime="0:0:0.2"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Background"
+                                                        Value="{DynamicResource PrimaryHueLightBrush}"
+                                                        TargetName="border" />
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background"
+                                                        TargetName="border"
+                                                        Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                <Setter Property="FontSize" Value="20" />
+                                                <Setter Property="FontWeight"
+                                                        Value="Bold" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
             </StackPanel>
 
         </StackPanel>

@@ -10,6 +10,7 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.Model;
+using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -96,9 +97,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         GetRequestNormal = new GetRequestNormal(t.GetValueAttributeDescriptor())
                     };
                     var dataResult = await Client.GetRequest(getRequest.ToPduBytes());
-                    if (getResponse.PduBytesToConstructor(dataResult))
+                    var data = Common.ByteToString(dataResult, "");
+                    if (getResponse.PduStringInHexConstructor(ref data))
                     {
-                        t.LastResult = getResponse.GetResponseNormal.Result.DataAccessResult;
+                        t.LastResult =(ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                         t.Value = getResponse.GetResponseNormal.Result.Data;
                         if (t.LastResult!=ErrorCode.Ok)
                         {

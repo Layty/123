@@ -17,12 +17,12 @@ namespace 三相智慧能源网关调试软件
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
-        //LierdaCracker cracker = new LierdaCracker();
+       LierdaCracker cracker = new LierdaCracker();
 
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // cracker.Cracker();
+            cracker.Cracker();
             DispatcherHelper.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;

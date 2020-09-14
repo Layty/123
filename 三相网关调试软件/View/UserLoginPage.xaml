@@ -13,6 +13,8 @@
       xmlns:viewModel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
+      xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
       Loaded="UserLoginPage_OnLoaded"
       >
     <Page.Resources>
@@ -80,7 +82,8 @@
                             <RowDefinition Height="150" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <materialDesign:PackIcon Kind="UserCircle" x:Name="PackIcon" Width="80" Height="80"
+                     
+                        <materialDesign:PackIcon Grid.Row="0" Kind="UserCircle" x:Name="PackIcon" Width="80" Height="80"
                                                  HorizontalAlignment="Center" VerticalAlignment="Center">
                             <materialDesign:PackIcon.Triggers>
                                 <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseEnter">

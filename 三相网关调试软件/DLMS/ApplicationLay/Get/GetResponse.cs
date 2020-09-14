@@ -1,45 +1,68 @@
-﻿using System.Linq;
-using System.Xml.Serialization;
+﻿using System.Text;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
-    public class GetResponse : IPduBytesToConstructor
+    public class GetResponse : IToPduStringInHex,IPduStringInHexConstructor
     {
-        [XmlIgnore] public Command Command { get; set; } = Command.GetResponse;
+        public Command Command { get; set; } = Command.GetResponse;
         public GetResponseNormal GetResponseNormal { get; set; }
         public GetResponseWithDataBlock GetResponseWithDataBlock { get; set; }
         public GetResponseWithList GetResponseWithList { get; set; }
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
+        public string ToPduStringInHex()
         {
-            if (pduBytes==null||pduBytes.Length == 0)
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("C4");
+            if (GetResponseNormal != null)
+            {
+                stringBuilder.Append("01");
+                stringBuilder.Append(GetResponseNormal.ToPduStringInHex());
+            }
+            else if (GetResponseWithDataBlock != null)
+            {
+                stringBuilder.Append("02");
+                stringBuilder.Append(GetResponseWithDataBlock.ToPduStringInHex());
+            }
+            else if (GetResponseWithList != null)
+            {
+                stringBuilder.Append("03");
+                stringBuilder.Append(GetResponseWithList.ToPduStringInHex());
+            }
+            return stringBuilder.ToString();
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        { 
+            if (string.IsNullOrEmpty(pduStringInHex))
             {
                 return false;
             }
-
-            if (pduBytes[0] == (byte) Command)
+            string a = pduStringInHex.Substring(0, 2);
+            if (a == "C4")
             {
-                var getResponseType = pduBytes[1];
-                switch (getResponseType)
+                a = pduStringInHex.Substring(2, 2);
+                if (a == "01")
                 {
-                    case (byte) GetResponseType.Normal:
-                        GetResponseNormal = new GetResponseNormal();
-                        return GetResponseNormal.PduBytesToConstructor(pduBytes.Skip(1).ToArray());
-
-                    case (byte) GetResponseType.WithDataBlock:
-                        GetResponseWithDataBlock = new GetResponseWithDataBlock();
-                        return GetResponseWithDataBlock.PduBytesToConstructor(pduBytes);
-                     
-                    case (byte) GetResponseType.WithList:
-                        GetResponseWithList = new GetResponseWithList();
-                        return GetResponseWithList.PduBytesToConstructor(pduBytes);
-                     
+                    pduStringInHex = pduStringInHex.Substring(4);
+                    GetResponseNormal = new GetResponseNormal();
+                    return GetResponseNormal.PduStringInHexConstructor(ref pduStringInHex);
                 }
+                if (a == "02")
+                {
+                    pduStringInHex = pduStringInHex.Substring(4);
+                    GetResponseWithDataBlock = new GetResponseWithDataBlock();
+                    return GetResponseWithDataBlock.PduStringInHexConstructor(ref pduStringInHex);
+                }
+                if (a == "03")
+                {
+                    pduStringInHex = pduStringInHex.Substring(4);
+                    GetResponseWithList = new GetResponseWithList();
+                    return GetResponseWithList.PduStringInHexConstructor(ref pduStringInHex);
+                }
+                return false;
             }
-
             return false;
         }
-
     }
 }

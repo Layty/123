@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -102,7 +103,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 var dataResult = await Client.GetRequest(getRequest);
 
                 GetResponse getResponse = new GetResponse();
-                if (getResponse.GetResponseNormal.PduBytesToConstructor(dataResult))
+                var data = dataResult.ByteToString("");
+                if (getResponse.PduStringInHexConstructor(ref data))
                 {
                     t.Value.ValueDisplay.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
                     t.Value = getResponse.GetResponseNormal.Result.Data;
@@ -120,8 +122,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 GetResponse requestAndWaitResponse = await Client.GetRequestAndWaitResponse(getRequest);
                 if (requestAndWaitResponse != null)
                 {
-                    
-                    t.LastResult = requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult;
+                    t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
+                        .GetEntityValue();
                     t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
                 }
             }, true);
@@ -131,7 +133,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 t.LastResult = new ErrorCode();
                 SetRequest setRequest = new SetRequest();
                 setRequest.SetRequestNormal = new SetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
-                await Client.SetRequest(setRequest);
+              var  dataResult =await Client.SetRequest(setRequest);
+                var data = dataResult.ByteToString("");
+                SetResponse setResponse=new SetResponse();
+                if (setResponse.PduStringInHexConstructor(ref data))
+                {
+                    t.LastResult = (ErrorCode)setResponse.SetResponseNormal.Result
+                        .GetEntityValue();
+                }
             });
         }
     }

@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
     public class GetRequestWithList : IToPduBytes
     {
+        [XmlIgnore]
         protected GetRequestType GetRequestType { get; set; } = GetRequestType.WithList;
-        public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
+        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
 
-        public AttributeDescriptor[] CosemAttributeDescriptors { get; set; }
+        public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
 
-        public GetRequestWithList(AttributeDescriptor[] cosemAttributeDescriptors)
+        public GetRequestWithList(CosemAttributeDescriptorWithSelection[] attributeDescriptorList)
         {
-            CosemAttributeDescriptors = cosemAttributeDescriptors;
-            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
+            AttributeDescriptorList = attributeDescriptorList;
+            InvokeIdAndPriority =new AxdrUnsigned8("C1");
         }
 
         public byte[] ToPduBytes()
@@ -21,10 +26,26 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             List<byte> pduBytes = new List<byte>();
 
             pduBytes.Add((byte) GetRequestType);
-            pduBytes.Add(InvokeIdAndPriority.Value);
-            if (CosemAttributeDescriptors != null)
+            pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
+            int num = AttributeDescriptorList.Length;
+            if (num<127)
             {
-                foreach (var cosemAttributeDescriptor in CosemAttributeDescriptors)
+                pduBytes.Add((byte)num);
+            }else if (num<255)
+            {
+                pduBytes.Add(0x81);
+                pduBytes.Add((byte)num);
+            }
+            else
+            {
+                pduBytes.Add(0x82);
+               
+                pduBytes.AddRange(BitConverter.GetBytes((byte)num).Reverse().ToArray());
+            }
+
+            if (AttributeDescriptorList != null)
+            {
+                foreach (var cosemAttributeDescriptor in AttributeDescriptorList)
                 {
                     pduBytes.AddRange(cosemAttributeDescriptor.ToPduBytes());
                 }

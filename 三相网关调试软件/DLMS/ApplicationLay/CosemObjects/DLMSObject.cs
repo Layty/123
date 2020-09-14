@@ -54,12 +54,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public byte[] GetAttributeData(byte attrId)
         {
-            GetRequest getRequest=new GetRequest();
-            getRequest.GetRequestNormal=new GetRequestNormal(new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High),new AttributeDescriptor(this, attrId));
+            GetRequest getRequest = new GetRequest();
+            getRequest.GetRequestNormal = new GetRequestNormal(
+                new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High),
+                new AttributeDescriptor(this, attrId));
             return getRequest.ToPduBytes();
         }
-
-       
 
 
         public byte[] SetAttributeData(byte attrId, DLMSDataItem dlmsDataItem)
@@ -68,7 +68,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
                 new SetRequestNormal(new AttributeDescriptor(this, attrId), dlmsDataItem);
             return setRequestNormal.ToPduBytes();
         }
-        
 
 
         public byte[] ActionExecute(byte methodIndex, DLMSDataItem dlmsDataItem)
@@ -83,11 +82,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         {
             return new AttributeDescriptor(this, attributeIndex);
         }
+
         public CosemMethodDescriptor GetCosemMethodDescriptor(byte methodIndex)
         {
             return new CosemMethodDescriptor(this, methodIndex);
         }
-
-
     }
 }

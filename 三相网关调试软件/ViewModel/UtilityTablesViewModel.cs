@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using Newtonsoft.Json;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -612,7 +613,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         t.DataForShow = "";
                         var dataResult = await Client.GetRequest(t.GetLogicName());
                         GetResponse getResponse = new GetResponse();
-                        if (getResponse.PduBytesToConstructor(dataResult))
+                        var data = dataResult.ByteToString("");
+
+                        if (getResponse.PduStringInHexConstructor(ref data))
                         {
                             if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
                             {
