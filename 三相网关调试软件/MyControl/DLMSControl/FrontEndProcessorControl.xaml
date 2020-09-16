@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.ServerCenter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
              mc:Ignorable="d"
              DataContext="{Binding  Source={StaticResource Locator} ,Path=TcpServer}">
     <Grid>
@@ -17,7 +18,6 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-               
 
 
                     <StackPanel>
@@ -53,51 +53,58 @@
                                  materialDesign:HintAssist.Hint="自定义发送帧" />
                         <Button x:Name="ButtonHeartBit" Margin="3" Content="发送"
                                 Command="{Binding SendDataToServerCommand}" />
-                 
+
 
                     </StackPanel>
-                    <GroupBox Header="客户端集合" Grid.Row="1"  HorizontalAlignment="Stretch" >
-<StackPanel>
-    <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
-    <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合" materialDesign:HintAssist.IsFloating="True"
-             ItemsSource="{Binding TcpServerHelper.SocketClientList}"
-             BorderThickness="2"
-             SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-             SelectionChanged="Selector_OnSelectionChanged" />
+                    <GroupBox Header="客户端集合" Grid.Row="1" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                            <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
+                            <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合"
+                                     materialDesign:HintAssist.IsFloating="True"
+                                     ItemsSource="{Binding TcpServerHelper.SocketClientList}"
+                                     BorderThickness="2"
+
+                                     SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
+                                     SelectionChanged="Selector_OnSelectionChanged" />
                         </StackPanel>
-                      
+
                     </GroupBox>
-                    <Expander IsExpanded="False"  Grid.Row="2" Header="搬运工">
-                        <GroupBox Header="搬运工"  >
+                    <Expander IsExpanded="False" Grid.Row="2" Header="搬运工">
+                        <GroupBox Header="搬运工">
                             <StackPanel>
                                 <CheckBox x:Name="TranslatorCheckBox"
-                                IsChecked="{Binding IsNeedTranslator,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                          IsChecked="{Binding IsNeedTranslator,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                     搬运使能
                                 </CheckBox>
-                                <StackPanel  IsEnabled="{Binding ElementName=TranslatorCheckBox,Path=IsChecked}">
+                                <StackPanel IsEnabled="{Binding ElementName=TranslatorCheckBox,Path=IsChecked}">
                                     <TextBox Text="{Binding Translator.LocalIp}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         materialDesign:HintAssist.Hint="本地IP" materialDesign:HintAssist.IsFloating="True" />
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             materialDesign:HintAssist.Hint="本地IP"
+                                             materialDesign:HintAssist.IsFloating="True" />
                                     <TextBox Text="{Binding Translator.LocalPort}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         materialDesign:HintAssist.Hint="本地端口" materialDesign:HintAssist.IsFloating="True" />
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             materialDesign:HintAssist.Hint="本地端口"
+                                             materialDesign:HintAssist.IsFloating="True" />
                                     <TextBox Text="{Binding Translator.RemoteIp}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         materialDesign:HintAssist.Hint="远端IP" materialDesign:HintAssist.IsFloating="True" />
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             materialDesign:HintAssist.Hint="远端IP"
+                                             materialDesign:HintAssist.IsFloating="True" />
                                     <TextBox Text="{Binding Translator.RemotePort}"
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                         materialDesign:HintAssist.Hint="远端端口" materialDesign:HintAssist.IsFloating="True" />
-                                    <CheckBox IsChecked="{Binding Translator.IsNeedToConvert12HeartBeatTo8,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ToolTip="是否心跳帧长度12位转8位">偷梁换柱</CheckBox>
-                                    <Button Content="开始" Command="{Binding StartListen}" Style="{StaticResource MaterialDesignFloatingActionButton}"/>
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                             materialDesign:HintAssist.Hint="远端端口"
+                                             materialDesign:HintAssist.IsFloating="True" />
+                                    <CheckBox
+                                        IsChecked="{Binding Translator.IsNeedToConvert12HeartBeatTo8,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="是否心跳帧长度12位转8位">
+                                        偷梁换柱
+                                    </CheckBox>
+                                    <Button Content="开始" Command="{Binding StartListen}"
+                                            Style="{StaticResource MaterialDesignFloatingActionButton}" />
                                 </StackPanel>
 
                             </StackPanel>
                         </GroupBox>
                     </Expander>
-                   
-                  
-
-                 
 
 
                 </Grid>

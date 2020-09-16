@@ -111,13 +111,13 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnReceiveByte(Socket serverSocket,byte[] bytes)
         {
             ReceiveByte?.Invoke(serverSocket,bytes);
-            Messenger.Default.Send(bytes, "ReceiveDataEvent");
+            Messenger.Default.Send((serverSocket,bytes), "ClientReceiveDataEvent");
         }
 
         protected virtual void OnSendDataToServerByte(Socket serverSocket, byte[] bytes)
         {
             SendDataToServerByte?.Invoke(serverSocket,bytes);
-
+            Messenger.Default.Send((serverSocket,bytes), "ClientSendDataEvent");
         }
         public TcpClientHelper(string serverIpAddress, int serverPortNum)
         {
@@ -164,21 +164,21 @@ namespace 三相智慧能源网关调试软件
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
 
                         ConnectResult = true;
-                        Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "Status");
+                        Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "ClientStatus");
                         Task.Run(ReceiveData);
                     }
                     catch (Exception e)
                     {
                         ConnectResult = false;
-                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "Status");
-                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "TelNetErrorEvent");
+                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
+                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
                     }
                 });
             }
             catch (Exception e)
             {
                 ConnectResult = false;
-                Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "TelNetErrorEvent");
+                Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
                 throw;
             }
         }
@@ -194,7 +194,7 @@ namespace 三相智慧能源网关调试软件
                     if (flag2)
                     {
                         string str2 = $"{DateTime.Now}  {ClientSocket.RemoteEndPoint} 服务端主动断开了当前链接..." + "\r\n";
-                        Messenger.Default.Send(str2, "Status");
+                        Messenger.Default.Send(str2, "ClientStatus");
                         break;
                     }
 
@@ -205,7 +205,7 @@ namespace 三相智慧能源网关调试软件
             }
             catch (Exception e)
             {
-                Messenger.Default.Send(e.Message + "from  ReceiveData()", "TelNetErrorEvent");
+                Messenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
             }
             finally
             {
@@ -232,11 +232,11 @@ namespace 三相智慧能源网关调试软件
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData);
                 ClientSocket.Send(sendBytes);
                 MySendMessage += (inputSendData + Environment.NewLine);
-                Messenger.Default.Send(sendBytes, "SendDataEvent");
+                Messenger.Default.Send(sendBytes, "ClientSendDataEvent");
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(ex.Message, "TelNetErrorEvent");
+                Messenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
             }
         }
 
@@ -252,11 +252,11 @@ namespace 三相智慧能源网关调试软件
             {
                 ClientSocket.Send(inputBytesData);
                 OnSendDataToServerByte(ClientSocket, inputBytesData);
-                Messenger.Default.Send(inputBytesData, "SendDataEvent");
+              
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send("异常" + ex.Message, "TelNetErrorEvent");
+                Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
             }
         }
         public void SendDataToServer(Socket socket,byte[] inputBytesData)
@@ -271,11 +271,10 @@ namespace 三相智慧能源网关调试软件
             {
                 socket.Send(inputBytesData);
                 OnSendDataToServerByte(socket, inputBytesData);
-//                Messenger.Default.Send(inputBytesData, "SendDataEvent");
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send("异常" + ex.Message, "TelNetErrorEvent");
+                Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
             }
         }
 
@@ -300,13 +299,12 @@ namespace 三相智慧能源网关调试软件
             {
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
                 ClientSocket.Send(sendBytes);
-
-                MySendMessage += inputSendData + Environment.NewLine;
-                Messenger.Default.Send(sendBytes, "SendDataEvent");
+                OnSendDataToServerByte(ClientSocket,sendBytes);
+               
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(ex.Message, "ENetErrorEvent");
+                Messenger.Default.Send(ex.Message, "ClientErrorEvent");
             }
         }
 
@@ -319,7 +317,7 @@ namespace 三相智慧能源网关调试软件
 
             ClientSocket.Disconnect(false);
             ConnectResult = false;
-            Messenger.Default.Send("关闭连接成功", "Status");
+            Messenger.Default.Send("关闭连接成功", "ClientStatus");
         }
 
         public void CloseAll()
@@ -331,7 +329,7 @@ namespace 三相智慧能源网关调试软件
 
             ClientSocket?.Close();
             ConnectResult = false;
-            Messenger.Default.Send("关闭连接成功", "Status");
+            Messenger.Default.Send("关闭连接成功", "ClientStatus");
         }
 
         public void Dispose()

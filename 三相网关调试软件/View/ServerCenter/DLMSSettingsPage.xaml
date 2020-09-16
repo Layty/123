@@ -42,15 +42,15 @@
                              materialDesign:HintAssist.Hint="DLMSVersion"
                              materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.StartProtocolArray}"
-                              SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType}"
+                              SelectedItem="{Binding Client.MyDlmsSettings.StartProtocolType,Mode=TwoWay}"
                               materialDesign:HintAssist.Hint="StartProtocolType"
                               materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.CommunicationTypeArray}"
-                              SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType}"
+                              SelectedItem="{Binding Client.MyDlmsSettings.CommunicationType,Mode=TwoWay}"
                               materialDesign:HintAssist.Hint="CommunicationType"
                               materialDesign:HintAssist.IsFloating="True" />
                     <ComboBox ItemsSource="{Binding Client.MyDlmsSettings.InterfaceTypeArray}"
-                              SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType}"
+                              SelectedItem="{Binding Client.MyDlmsSettings.InterfaceType,Mode=TwoWay}"
                               materialDesign:HintAssist.Hint="InterfaceType"
                               materialDesign:HintAssist.IsFloating="True" />
 

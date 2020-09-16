@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 namespace 三相智慧能源网关调试软件.Converters
 {
+    public class SocketToEndPointConverter : BaseConverter<SocketToEndPointConverter> {
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((Socket) value)?.RemoteEndPoint;
+        }
+    }
     public class BytesParseToIntConverter : BaseConverter<BytesParseToIntConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)

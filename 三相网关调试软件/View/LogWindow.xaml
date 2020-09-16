@@ -29,6 +29,12 @@
                     </TabItem>
                     <TabItem>
                         <TabItem.Header>
+                            <materialDesign:PackIcon Kind="Ethernet" />
+                        </TabItem.Header>
+                        <myControl:NetClientLogger />
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
                             <materialDesign:PackIcon Kind="Xml" />
                         </TabItem.Header>
                         <myControl:XMLLogControl />

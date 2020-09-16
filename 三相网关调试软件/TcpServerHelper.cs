@@ -85,6 +85,7 @@ namespace 三相智慧能源网关调试软件
         /// </summary>
         readonly IDictionary<Socket, TcpClientHelper> _socketBindingDictionary =
             new Dictionary<Socket, TcpClientHelper>();
+
         /// <summary>
         /// 需要12位转8位时，存储 12位表地址的高四位地址
         /// </summary>
@@ -111,6 +112,7 @@ namespace 三相智慧能源网关调试软件
         {
             TcpListener = new TcpServerHelper(LocalIp, LocalPort);
             TcpListener.AcceptNewClient += TcpListener_AcceptNewClient;
+            TcpListener.ReceiveBytes += TcpListener_ReceiveBytes;
             TcpListener.StartListen();
         }
 
@@ -124,10 +126,15 @@ namespace 三相智慧能源网关调试软件
             TcpClientHelper tcpClientHelper = new TcpClientHelper(RemoteIp, RemotePort);
             tcpClientHelper.ConnectToServer();
             _socketBindingDictionary[obj] = tcpClientHelper;
-            TcpListener.ReceiveBytes += TcpListener_ReceiveBytes;
+
             tcpClientHelper.ReceiveByte += TcpClientHelper_ReceiveByte;
         }
 
+        /// <summary>
+        /// 本地服务器收到表的数据。
+        /// </summary>
+        /// <param name="meterSocket">表的socket</param>
+        /// <param name="arg2"></param>
         private void TcpListener_ReceiveBytes(Socket meterSocket, byte[] arg2)
         {
             foreach (var socket in _socketBindingDictionary)
@@ -235,6 +242,8 @@ namespace 三相智慧能源网关调试软件
 
         public ProtocolType ProtocolType;
 
+        public IDictionary<Socket, EndPoint> Dictionary { get; set; } = new Dictionary<Socket, EndPoint>();
+
         public ObservableCollection<Socket> SocketClientList
         {
             get => _socketClientList;
@@ -273,6 +282,7 @@ namespace 三相智慧能源网关调试软件
 
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
+
         public event Action<string> ErrorMsg;
         public event Action<string> StatusMsg;
         public event Action<Socket> AcceptNewClient;
@@ -287,24 +297,24 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             ReceiveBytes?.Invoke(clientSocket, bytes);
-            Messenger.Default.Send((clientSocket, bytes), "ReceiveDataEvent");
+            Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
         }
 
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
-            Messenger.Default.Send((clientSocket, bytes), "SendDataEvent");
+            Messenger.Default.Send((clientSocket, bytes), "ServerSendDataEvent");
         }
 
         private void OnNotifyErrorMsg(string msg)
         {
             this.ErrorMsg?.Invoke(msg);
-            Messenger.Default.Send(msg, "ErrorEvent");
+            Messenger.Default.Send(msg, "ServerErrorEvent");
         }
 
         protected virtual void OnNotifyStatusMsg(string msg)
         {
-            Messenger.Default.Send(msg, "Status");
+            Messenger.Default.Send(msg, "ServerStatus");
             StatusMsg?.Invoke(msg);
         }
 
@@ -373,6 +383,7 @@ namespace 三相智慧能源网关调试软件
                         {
                             SocketClientList.Add(socket1);
                             SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
+                            Dictionary[socket1] = socket1.RemoteEndPoint;
                         });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
@@ -419,6 +430,11 @@ namespace 三相智慧能源网关调试软件
                         {
                             SocketClientList.Remove(sockClient);
                         }
+
+                        if (Dictionary.ContainsKey(sockClient))
+                        {
+                            Dictionary.Remove(sockClient);
+                        }
                     });
 
                     break;
@@ -433,6 +449,11 @@ namespace 三相智慧能源网关调试软件
                         {
                             SocketClientList.Remove(sockClient);
                             SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+                        }
+
+                        if (Dictionary.ContainsKey(sockClient))
+                        {
+                            Dictionary.Remove(sockClient);
                         }
                     });
                     break;

@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.ServerCenter"
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
+      xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}"
@@ -24,9 +25,11 @@
                     Margin="3">
                 ReleaseRequest
             </Button>
+            <ToggleButton x:Name="ToggleButtonSelectChannel"  IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick"  Width="50" ></ToggleButton>
             <StackPanel DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }">
                 <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" ToolTip="当前操作客户端" />
                 <ListBox x:Name="ListBox" ItemsSource="{Binding TcpServerHelper.SocketClientList}"
+                        DisplayMemberPath="{Binding DLMSClient.CurrentSocket,Converter={converters:SocketToEndPointConverter}}"
                          SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
                          SelectionChanged="Selector_OnSelectionChanged">
                     <ListBox.ItemsPanel>
@@ -39,7 +42,8 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" x:Name="border" BorderThickness="2" Margin="2">
+                                        <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" x:Name="border"
+                                                BorderThickness="2" Margin="2">
                                             <ContentPresenter />
                                         </Border>
                                         <ControlTemplate.Triggers>

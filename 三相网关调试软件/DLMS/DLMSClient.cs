@@ -266,9 +266,9 @@ namespace 三相智慧能源网关调试软件.DLMS
         {
             return await HandlerSendData(actionRequestBytes);
         }
-        public async Task<byte[]> ActionRequest(ActionRequestNormal actionRequestNormal)
+        public async Task<byte[]> ActionRequest(ActionRequest actionRequestNormal)
         {
-            return await HandlerSendData(actionRequestNormal.ToPduBytes());
+            return await HandlerSendData(Commom.Common.StringToByte(actionRequestNormal.ToPduStringInHex()));
         }
         private async Task<byte[]> HandlerSendData(byte[] dataBytes)
         {

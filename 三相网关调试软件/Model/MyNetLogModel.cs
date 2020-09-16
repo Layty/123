@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
 
@@ -105,5 +106,6 @@ namespace 三相智慧能源网关调试软件.Model
             NetLogStringBuilder.Clear();
             Log = string.Empty;
         }
+   
     }
 }

@@ -339,6 +339,9 @@
     <Compile Include="MyControl\DLMSControl\LoadIdentificationUserControl.xaml.cs">
       <DependentUpon>LoadIdentificationUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\NetClientLogger.xaml.cs">
+      <DependentUpon>NetClientLogger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\LoadIdentificationViewModel.cs" />
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
       <DependentUpon>HeartBeatButton.xaml</DependentUpon>
@@ -511,6 +514,10 @@
     <Page Include="MyControl\MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\NetClientLogger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MyControl\NetLogger.xaml">
       <SubType>Designer</SubType>

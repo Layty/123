@@ -10,61 +10,91 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class NetLogViewModel : ViewModelBase
     {
+        private MyNetLogModel _myServerNetLogModel;
+
+        public MyNetLogModel MyServerNetLogModel
+        {
+            get => _myServerNetLogModel;
+            set
+            {
+                _myServerNetLogModel = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        public MyNetLogModel MyClientNetLogModel
+        {
+            get => _MyClientNetLogModel;
+            set
+            {
+                _MyClientNetLogModel = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private MyNetLogModel _MyClientNetLogModel;
+
+
+        public RelayCommand ClearServerBufferCommand
+        {
+            get => _clearServerBufferCommand;
+            set
+            {
+                _clearServerBufferCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _clearServerBufferCommand;
+
+        public RelayCommand ClearClientBufferCommand
+        {
+            get => _clearClientBufferCommand;
+            set
+            {
+                _clearClientBufferCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _clearClientBufferCommand;
+
         public NetLogViewModel()
         {
-            MyNetLog = new MyNetLogModel();
-            ClearBufferCommand = new RelayCommand(() => { MyNetLog.ClearBuffer(); });
-            Messenger.Default.Register<byte[]>(this, "SendDataEvent",
-                sendData =>
+            MyServerNetLogModel = new MyNetLogModel();
+
+
+            MyClientNetLogModel = new MyNetLogModel();
+            ClearServerBufferCommand = new RelayCommand(() => { MyServerNetLogModel.ClearBuffer(); });
+            ClearClientBufferCommand = new RelayCommand(() => { MyClientNetLogModel.ClearBuffer(); });
+
+            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent",
+                (s) => { MyClientNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
+            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent",
+                (s) => { MyClientNetLogModel.HandlerSendData(s.Item1, s.Item2); });
+            Messenger.Default.Register<string>(this, "ClientStatus",
+                status => { MyClientNetLogModel.Log = DateTime.Now + "ClientStatus" + status + Environment.NewLine; });
+            Messenger.Default.Register<string>(this, "ClientErrorEvent",
+                errorMessage =>
                 {
-                    MyNetLog.Log = DateTime.Now + "=>" + Encoding.Default.GetString(sendData) + Environment.NewLine;
+                    MyClientNetLogModel.Log = DateTime.Now + "ClientErrorEvent" + errorMessage + Environment.NewLine;
                 });
-            Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent",
-                receiveData =>
-                {
-                    MyNetLog.Log = DateTime.Now + "<=" + Encoding.Default.GetString(receiveData) + Environment.NewLine;
-                });
-            Messenger.Default.Register<string>(this, "ENetErrorEvent",
-                errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
-            Messenger.Default.Register<string>(this, "TelNetErrorEvent",
-                errorMessage => { MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorMessage + Environment.NewLine; });
-            Messenger.Default.Register<string>(this, "Status",
-                status => { MyNetLog.Log = DateTime.Now + "Status" + status + Environment.NewLine; });
-            Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent",
-                (s) => { MyNetLog.HandlerReceiveData(s.Item1, s.Item2); });
-            Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent",
-                (s) => { MyNetLog.HandlerSendData(s.Item1, s.Item2); });
-            Messenger.Default.Register<string>(this, "ErrorEvent",
+
+     
+
+            Messenger.Default.Register<string>(this, "ServerStatus",
+                status => { MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine; });
+            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent",
+                (s) => { MyServerNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
+            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent",
+                (s) => { MyServerNetLogModel.HandlerSendData(s.Item1, s.Item2); });
+            Messenger.Default.Register<string>(this, "ServerErrorEvent",
                 (errorString) =>
                 {
-                    MyNetLog.Log = DateTime.Now + "ErrorEvent" + errorString +
-                                   Environment.NewLine;
+                    MyServerNetLogModel.Log = DateTime.Now + "ServerErrorEvent" + errorString +
+                                              Environment.NewLine;
                 });
         }
-
-
-        private MyNetLogModel _myNetLog;
-
-        public MyNetLogModel MyNetLog
-        {
-            get => _myNetLog;
-            set
-            {
-                _myNetLog = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public RelayCommand ClearBufferCommand
-        {
-            get => _clearBufferCommand;
-            set
-            {
-                _clearBufferCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _clearBufferCommand;
     }
 }
