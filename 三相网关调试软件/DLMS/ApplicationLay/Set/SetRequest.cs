@@ -4,13 +4,17 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnu
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
-    public class SetRequest : IToPduBytes, IPduBytesToConstructor
+    public class SetRequest : IToPduBytes
     {
         [XmlIgnore] public Command Command { get; set; } = Command.SetRequest;
         public SetRequestNormal SetRequestNormal { get; set; }
         public SetRequestWithFirstDataBlock SetRequestWithFirstDataBlock { get; set; }
         public SetRequestWithDataBlock SetRequestWithDataBlock { get; set; }
-        public SetResponseDataBlock SetResponseDataBlock { get; set; }
+
+        public SetRequestWithList SetRequestWithList { get; set; }
+
+        public SetRequestWithListAndFirstDataBlock SetRequestWithListAndFirstDataBlock { get; set; }
+
 
         public byte[] ToPduBytes()
         {
@@ -20,24 +24,24 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             {
                 list.AddRange(SetRequestNormal.ToPduBytes());
             }
+            else if (SetRequestWithFirstDataBlock != null)
+            {
+                list.AddRange(SetRequestWithFirstDataBlock.ToPduBytes());
+            }
             else if (SetRequestWithDataBlock != null)
             {
                 list.AddRange(SetRequestWithDataBlock.ToPduBytes());
             }
-            else if (SetResponseDataBlock != null)
+            else if (SetRequestWithList != null)
             {
-                list.AddRange(SetResponseDataBlock.ToPduBytes());
+                list.AddRange(SetRequestWithList.ToPduBytes());
+            }
+            else if (SetRequestWithListAndFirstDataBlock != null)
+            {
+                list.AddRange(SetRequestWithListAndFirstDataBlock.ToPduBytes());
             }
 
             return list.ToArray();
-        }
-
-      
-
-
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

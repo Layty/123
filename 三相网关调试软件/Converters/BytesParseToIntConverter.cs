@@ -6,9 +6,29 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
 
 namespace 三相智慧能源网关调试软件.Converters
 {
+    public class UnitConverter : BaseConverter<UnitConverter> 
+    {
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Unit unit)
+            {
+                var date = (byte)unit;
+                var ScalarUnit = new CosemRegister.ScalarUnit() {Unit = date};
+                var Unitestring = ScalarUnit.GetUnitName();
+                return Unitestring;
+            }
+            else
+            {
+                return "";
+            }
+        }
+    }
     public class SocketToEndPointConverter : BaseConverter<SocketToEndPointConverter> {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

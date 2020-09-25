@@ -2,7 +2,7 @@
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
-    public class SetRequestWithDataBlock:IToPduBytes,IPduBytesToConstructor
+    public class SetRequestWithDataBlock:IToPduBytes
     {
         protected Command Command { get; set; } = Command.SetRequest;
         protected SetRequestType SetRequestType { get; set; } = SetRequestType.WithDataBlock;
@@ -13,9 +13,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             throw new System.NotImplementedException();
         }
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 }

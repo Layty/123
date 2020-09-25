@@ -4,12 +4,7 @@ using System.Threading.Tasks;
 
 namespace 三相智慧能源网关调试软件.Model.ENetConfig
 {
-    /*
-        联系邮箱：694965217@qq.com
-        创建时间：2020/06/28 11:51:08
-        主要用途：
-        更改记录：
-    */
+
     public enum ENetEventType
     {
         SortVersion=0,

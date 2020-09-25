@@ -59,10 +59,10 @@ namespace 三相智慧能源网关调试软件
             MaxHeight = SystemParameters.WorkArea.Height;
             Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
             Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
-            Messenger.Default.Register<byte[]>(this, "SendDataEvent", PlayNetSendFlashing);
-            Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "SendDataEvent", PlayNetSendFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "ReceiveDataEvent", PlayNetReceiveFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent", PlayNetSendFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
+            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
         private void PlaySendFlashing(string obj)

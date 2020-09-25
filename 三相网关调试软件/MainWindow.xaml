@@ -229,7 +229,7 @@
                                 <materialDesign:PackIcon Kind="MicrosoftVisualStudio" Width="Auto" Height="Auto" />
                             </TextBlock>
                             <TextBlock
-                                Text="{Binding Title}"
+                                Text="{Binding Title,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"
                                 VerticalAlignment="Center" Foreground="{StaticResource RainBallLinearGradientBrush}" />
                         </StackPanel>

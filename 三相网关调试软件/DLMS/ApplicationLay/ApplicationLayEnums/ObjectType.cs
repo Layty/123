@@ -152,7 +152,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums
         IEC14908Diagnostic = 153,
         [XmlEnum("8192")]
         TariffPlan = 0x2000,
-        RemoteIp=8300
+        RemoteIp=8300,
+        LoadIdentification=8301,
 
     }
 }

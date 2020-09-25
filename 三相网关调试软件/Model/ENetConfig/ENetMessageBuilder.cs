@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Newtonsoft.Json;
-using 三相智慧能源网关调试软件.Annotations;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.Model.ENetConfig
 {

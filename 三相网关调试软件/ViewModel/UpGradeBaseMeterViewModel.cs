@@ -2,10 +2,10 @@
 using System.IO;
 using System.Text;
 using CommonServiceLocator;
+using FileTransmit;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using 三相智慧能源网关调试软件.FileTransmit;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel

@@ -1,8 +1,8 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.MyControl;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -50,14 +50,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<MyDLMSSettings>();
+                SimpleIoc.Default.Register<DLMSSettingsViewModel>();
                 SimpleIoc.Default.Register<DLMSClient>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<ClockViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
                 SimpleIoc.Default.Register<LoadIdentificationViewModel>();
-                SimpleIoc.Default.Register<DMLSXMLLog>();
+             
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -67,33 +67,37 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<GrowlDemoViewModel>();
                 #endregion
 
-                #region 管理芯相关业务
-                SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
-                SimpleIoc.Default.Register<ENetMessageBuilderViewModel>();
-                #endregion
+              
 
                 #region 服务中心相关业务
-             
-            
                 SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TcpServerViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TftpServerViewModel>();
                 SimpleIoc.Default.Register<NetLogViewModel>();
                 SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
-               
-                #endregion
-                #region 计量芯相关业务
+                SimpleIoc.Default.Register<XMLLogViewModel>();
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
+                #endregion
+
+                #region 三相网关特有业务
+
+                #region 三相网关计量芯相关业务
                 SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //DLMS协议
                 SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
                 #endregion
 
-                #region 智能仪表
+                #region 三相网关智能仪表业务
 
                 SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
 
                 #endregion
-                
+                #region 三相网关管理芯相关业务
+                SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
+                SimpleIoc.Default.Register<ENetMessageBuilderViewModel>();
+                #endregion
+
+                #endregion
+
             }
 
         }
@@ -119,7 +123,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         #region 管理芯相关业务
         public DLMSClient DlmsClient => ServiceLocator.Current.GetInstance<DLMSClient>();
-        public MyDLMSSettings DlmsSettings => ServiceLocator.Current.GetInstance<MyDLMSSettings>();
+        public DLMSSettingsViewModel DlmsSettingsViewModel => ServiceLocator.Current.GetInstance<DLMSSettingsViewModel>();
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
         public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
@@ -137,7 +141,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
        
         public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();
 
-        public DMLSXMLLog XmlLog => ServiceLocator.Current.GetInstance<DMLSXMLLog>();
+        public XMLLogViewModel XmlLogViewModel => ServiceLocator.Current.GetInstance<XMLLogViewModel>();
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
         public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
 

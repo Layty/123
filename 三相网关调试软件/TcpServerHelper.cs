@@ -11,7 +11,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NLog;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
+using 三相智慧能源网关调试软件.DLMS.Wrapper;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -359,12 +359,20 @@ namespace 三相智慧能源网关调试软件
 
         public void StartListen()
         {
-            SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
-            SocketServer.Bind(IpEndPoint);
-            SocketServer.Listen(5);
-            OnNotifyStatusMsg($"监听{IpEndPoint}成功");
-            StartListenServerAsync(SocketServer);
+            try
+            {
+                SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
+                SocketServer.Bind(IpEndPoint);
+                SocketServer.Listen(5);
+                OnNotifyStatusMsg($"监听{IpEndPoint}成功");
+                StartListenServerAsync(SocketServer);
+            }
+            catch (Exception exception)
+            {
+                OnNotifyStatusMsg(exception.Message);
+            }
+           
         }
 
 
@@ -564,7 +572,7 @@ namespace 三相智慧能源网关调试软件
             {
                 if (bytes.Length < NeedReceiveLength)
                 {
-                    NeedReceiveLength = NeedReceiveLength - bytes.Length;
+                    NeedReceiveLength -= bytes.Length;
                     _listReturnBytes.AddRange(bytes);
                 }
 

@@ -10,6 +10,7 @@ using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 using 三相智慧能源网关调试软件.Model.IIC;
 using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace UnitTestProject1
 {
@@ -64,7 +65,6 @@ namespace UnitTestProject1
             var table = excel.GetExcelDataTable("Register");
         }
 
-      
 
         [TestMethod]
         public void TestENetEventType()
@@ -81,6 +81,19 @@ namespace UnitTestProject1
                 "61 29 A1 09 06 07 60 85 74 05 08 01 01 A2 03 02 01 01 A3 05 A1 03 02 01 00 BE 10 04 0E 08 00 06 5F 1F 04 00 00 3E 9D 08 00 00 07 B1 F3 7E";
             var bytes = str.StringToByte();
             new AssociationResponse().PduBytesToConstructor(bytes);
+        }
+
+        [TestMethod]
+        public void TestLoadData()
+        {
+            string str =
+                "A0 A0 2E00 18 02 09 2040 00 00 00 02 35 00 00 01 40 00 00 00 00 0E 00 79 0001 00 00 AA 15 00 000113 06 00 00000170 02 0201 00 00AA83 E5";
+            
+            var load = new LoadIdentificationViewModel.LoadDataParse();
+            if (load.Parse(str.Replace(" ","")))
+            {
+                var LoadDataFormat = load.ToString();
+            }
         }
     }
 }

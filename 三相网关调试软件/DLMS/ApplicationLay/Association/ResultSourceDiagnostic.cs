@@ -77,14 +77,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
             if (AcseServiceUser != null)
             {
                 list.AddRange(new byte[] {0xA1, 0x03, 0x02});
-                list.AddRange(AcseServiceUser.ToPduBytes());
+                list.AddRange(AcseServiceUser.ToPduStringInHex().StringToByte());
                 list.Insert(0, (byte) list.Count);
             }
 
             if (AcseServiceProvider != null)
             {
                 list.AddRange(new byte[] {0xA2, 0x03, 0x02});
-                list.AddRange(AcseServiceProvider.ToPduBytes());
+                list.AddRange(AcseServiceProvider.ToPduStringInHex().StringToByte());
                 list.Insert(0, (byte) list.Count);
             }
 

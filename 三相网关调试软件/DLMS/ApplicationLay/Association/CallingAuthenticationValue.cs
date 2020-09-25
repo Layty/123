@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
@@ -14,9 +16,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
         {
             this.passwordHex = passwordHex;
         }
-        public CallingAuthenticationValue(MyDLMSSettings dlmsSettings)
+        public CallingAuthenticationValue(DLMSSettingsViewModel dlmsSettingsViewModel)
         {
-            this.passwordHex = dlmsSettings.PasswordHex;
+            this.passwordHex = dlmsSettingsViewModel.PasswordHex;
         }
         public byte[] ToPduBytes()
         {

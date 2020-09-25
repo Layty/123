@@ -1,8 +1,8 @@
 ﻿namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
-    public class SetResponseWithList
+    public class SetResponseWithList:IToPduStringInHex,IPduStringInHexConstructor
     {
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             throw new System.NotImplementedException();
         }

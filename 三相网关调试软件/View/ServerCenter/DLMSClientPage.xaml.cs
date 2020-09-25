@@ -19,6 +19,7 @@ using NPOI.OpenXmlFormats.Dml;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.View.ServerCenter
 {
@@ -27,12 +28,12 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
     /// </summary>
     public partial class DLMSClientPage : Page
     {
-        private DLMSClient client { get; set; }
+        private DLMSClient Client { get; set; }
 
         public DLMSClientPage()
         {
             InitializeComponent();
-            client = ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = ServiceLocator.Current.GetInstance<DLMSClient>();
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,14 +56,14 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
             if (ToggleButtonSelectChannel.IsChecked == true)
             {
                 ToggleButtonSelectChannel.Content = "WRAPPER";
-                client.MyDlmsSettings.CommunicationType = CommunicationType.FrontEndProcess;
-                client.MyDlmsSettings.InterfaceType = InterfaceType.WRAPPER;
+                Client.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
+                Client.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
             }
             else
             {
                 ToggleButtonSelectChannel.Content = "SerialPort";
-                client.MyDlmsSettings.CommunicationType = CommunicationType.SerialPort;
-                client.MyDlmsSettings.InterfaceType = InterfaceType.HDLC;
+                Client.DlmsSettingsViewModel.CommunicationType = CommunicationType.SerialPort;
+                Client.DlmsSettingsViewModel.InterfaceType = InterfaceType.HDLC;
             }
         }
     }

@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="WpfInstanceValue.SerialPortControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource Locator} ,Path=SerialPortViewModel}">
+
+    <Grid>
+
+        <StackPanel x:Name="StackPanel">
+            <ComboBox x:Name="CmbPortName"
+                      ItemsSource="{Binding PortNamesCollection}"
+                      SelectedValue="{Binding SerialPortMaster.PortName,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" />
+            <ComboBox Name="CmbBaudRate"
+                      ItemsSource="{Binding BaudRatesCollection}"
+
+                      SelectedValue="{Binding  Path= SerialPortMaster.BaudRate,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" />
+            <ComboBox Name="CmbParity"
+                      ItemsSource="{Binding ParityCollection}"
+
+                      SelectedValue="{Binding  Path=SerialPortMaster.Parity,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" />
+            <ComboBox Name="CmbDataBits"
+                      ItemsSource="{Binding DataBitsCollection}"
+                      SelectedValue="{Binding SerialPortMaster.DataBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" />
+            <ComboBox Name="CmbStopBits" HorizontalContentAlignment="Left"
+                      ItemsSource="{Binding StopBitsCollection}"
+                      SelectedValue="{Binding SerialPortMaster.StopBits,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}" />
+            <StackPanel>
+
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged ,StringFormat='接收超时时间\{0}秒 '}" />
+            </StackPanel>
+            <CheckBox Content="以占用的方式使用串口" HorizontalAlignment="Left"
+                      IsChecked="{Binding SerialPortMaster.IsOwnCurrentSerialPort}" />
+
+            <CheckBox Content="实时监控串口数据" HorizontalAlignment="Left"
+                      IsChecked="{Binding SerialPortMaster.IsAutoDataReceived}" />
+            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding OpenCalcCommand}"
+                    Style="{StaticResource ButtonSuccess}" hc:FloatingBlock.Content="计算机管理"
+                    hc:IconElement.Geometry="{StaticResource EyeOpenGeometry}"
+                    />
+            <ToggleButton Width="50" Height="50"
+                          VerticalAlignment="Bottom"
+                          ToolTip="开启或关闭串口"
+                          HorizontalAlignment="Center"
+                          x:Name="BtnOpenSerialPort"
+                          Command="{Binding OpenOrCloseCommand}"
+                          IsChecked="{Binding SerialPortMaster.IsOpen,Mode=OneWay}" 
+                          Style="{StaticResource ToggleButtonSwitch}"
+                          />
+        </StackPanel>
+
+
+    </Grid>
+
+</UserControl>

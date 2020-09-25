@@ -70,7 +70,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
                     SetResponseDataBlock = new SetResponseDataBlock();
-                    return SetResponseDataBlock.PduStringInHexContructor(ref pduStringInHex);
+                    return SetResponseDataBlock.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "03")
                 {
@@ -82,13 +82,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
                     SetResponseLastDataBlockWithList = new SetResponseLastDataBlockWithList();
-                    return SetResponseLastDataBlockWithList.PduStringInHexContructor(ref pduStringInHex);
+                    return SetResponseLastDataBlockWithList.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "05")
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
                     SetResponseWithList = new SetResponseWithList();
-                    return SetResponseWithList.PduStringInHexContructor(ref pduStringInHex);
+                    return SetResponseWithList.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 return false;
             }

@@ -1,4 +1,7 @@
-﻿namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
+﻿using System.Collections.Generic;
+using System.Text;
+
+namespace 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode
 {
     public class EModeFrame
     {
@@ -202,6 +205,21 @@
         {
             DeviceAddress = deviceAddress;
             AckBaudZ = requestBaud;
+        }
+        public byte[] GetRequestFrameBytes()
+        {
+            string s = StartChar.ToString() + RequestChar + DeviceAddress + EndChar +
+                       CompletCr + CompletLf;
+            return Encoding.Default.GetBytes(s);
+        }
+
+        public byte[] GetConfirmFrameBytes()
+        {
+            string s = "2" + _baudZ + "2" + CompletCr + CompletLf;
+            List<byte> list = new List<byte>();
+            list.Add(Ack);
+            list.AddRange(Encoding.Default.GetBytes(s));
+            return list.ToArray();
         }
     }
 }

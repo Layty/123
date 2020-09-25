@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 {

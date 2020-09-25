@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
       mc:Ignorable="d"
   
       Title="CoverPage">
@@ -13,10 +14,11 @@
     <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
     </Page.Resources>
     <Grid>
-        <!--<materialDesign:Card>
-            <Image Source="../Image/伊利斯逐星.jpg"  Stretch="Fill"/>
-        </materialDesign:Card>-->
-         <!--<hc:FlipClock Margin="32"/>--> 
+         <materialDesign:Card> 
+             <!-- <Image Source="../Image/伊利斯逐星.jpg"  Stretch="Fill" Margin="5"/>  -->
+            <myAnimation:TwoBall></myAnimation:TwoBall>
+         </materialDesign:Card> 
+   
         <!-- <hc:CoverFlow x:Name="CoverFlowMain"    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/> -->
     </Grid>
 </Page>

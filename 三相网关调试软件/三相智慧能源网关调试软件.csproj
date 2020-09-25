@@ -191,6 +191,17 @@
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="Converters\Tftp-g-rConverter.cs" />
     <Compile Include="Converters\Tftp-p-rConverter.cs" />
+    <Compile Include="DLMS\ApplicationLay\AccessParameters.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNextBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithFirstBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithListAndFirstBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionResponseWithOptionalData.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlMode.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\RequestTypes.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Security.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\ApplicationContextName.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlState.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ScriptActionType.cs" />
@@ -200,25 +211,37 @@
     <Compile Include="DLMS\ApplicationLay\Association\AssociationResult.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\CallingAPTitle.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\InitiateResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ProposedConformance.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ProposedDlmsVersionNumber.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\ResultSourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\SenderACSERequirements.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\SourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\TranslatorGeneralTags.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptorWithSelection.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\HeartBeatFrame.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemDisconnectControl.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs" />
+    <Compile Include="DLMS\ApplicationLay\DataBlockSA.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSStructure.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\ExceptionResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\Response.cs" />
     <Compile Include="DLMS\ApplicationLay\IPduBytesToConstructor.cs" />
-    <Compile Include="DLMS\ApplicationLay\Result.cs" />
+    <Compile Include="DLMS\IPduStringInHexConstructor.cs" />
+    <Compile Include="DLMS\IToPduStringInHex.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetDataResult.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetRequest.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseNormal.cs" />
     <Compile Include="DLMS\ApplicationLay\SelectiveAccessDescriptor.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetRequest.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithFirstDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithListAndFirstDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponse.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseLastDataBlock.cs" />
@@ -229,42 +252,42 @@
     <Compile Include="DLMS\Axdr\AxdrInteger16.cs" />
     <Compile Include="DLMS\Axdr\AxdrInteger8.cs" />
     <Compile Include="DLMS\Axdr\AxdrOctetString.cs" />
+    <Compile Include="DLMS\Axdr\AxdrOctetStringFixed.cs" />
     <Compile Include="DLMS\Axdr\AxdrUnsigned16.cs" />
     <Compile Include="DLMS\Axdr\AxdrUnsigned32.cs" />
     <Compile Include="DLMS\Axdr\AxdrUnsigned8.cs" />
+    <Compile Include="DLMS\Axdr\AxdrVisibleString.cs" />
     <Compile Include="DLMS\Ber\BerBitString.cs" />
     <Compile Include="DLMS\Ber\BerInteger.cs" />
     <Compile Include="DLMS\Ber\BerOctetString.cs" />
     <Compile Include="DLMS\Common\MyConvert.cs" />
     <Compile Include="DLMS\CommunicationType.cs" />
     <Compile Include="DLMS\ConnectionState.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSRegister.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemRegister.cs" />
     <Compile Include="DLMS\ApplicationLay\DataBlockG.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetRequestNext.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetRequestWithList.cs" />
     <Compile Include="DLMS\DLMSCommon.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
-    <Compile Include="DLMS\HDLC\IEC21EMode\EModeExecutor.cs" />
-    <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrameMaker.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeParser.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSCaptureObject.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSData.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemData.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSDataItem.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSUtilityTables.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\IDLMSBase.cs" />
     <Compile Include="DLMS\ApplicationLay\IToPduBytes.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\ProfileGeneric.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemProfileGeneric.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\Script.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptAction.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptTable.cs" />
     <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNormal.cs" />
-    <Compile Include="DLMS\DLMSClient.cs" />
+    <Compile Include="DLMS\Wrapper\HeartBeatFrame.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\GetRequestNormal.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\BerType.cs" />
-    <Compile Include="DLMS\ApplicationLay\AttributeDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptor.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemMethodDescriptor.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Command.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSClock.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemClock.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResult.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessRange.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ApplicationContextNameType.cs" />
@@ -291,9 +314,9 @@
     <Compile Include="DLMS\InterfaceType.cs" />
     <Compile Include="DLMS\ApplicationLay\InvokeIdAndPriority.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\MechanismName.cs" />
-    <Compile Include="DLMS\MyDLMSSettings.cs" />
     <Compile Include="DLMS\Wrapper\NetFrame.cs" />
-    <Compile Include="DLMS\Wrapper\NetFrameMaker.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\XMLLogViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\NetFrameMaker.cs" />
     <Compile Include="DLMS\ApplicationLay\NormalDataParse.cs" />
     <Compile Include="DLMS\HDLC\DataCheck.cs" />
     <Compile Include="DLMS\HDLC\Enums\Hdlc46CommandType.cs" />
@@ -304,7 +327,7 @@
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionRequestType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResponseType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionSpecification.cs" />
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DLMSObject.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemObject.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetRequestType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetResponseType.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetRequestType.cs" />
@@ -313,11 +336,7 @@
     <Compile Include="DLMS\HDLC\Enums\StartProtocolType.cs" />
     <Compile Include="ENetClientHelper.cs" />
     <Compile Include="ExcelHelper.cs" />
-    <Compile Include="FileTransmit\BinarySend.cs" />
-    <Compile Include="FileTransmit\DataCheck.cs" />
-    <Compile Include="FileTransmit\IFileTransmit.cs" />
-    <Compile Include="FileTransmit\ITransmitUart.cs" />
-    <Compile Include="Model\DLMSSelfDefineRegisterModel.cs" />
+    <Compile Include="Model\CosemSelfDefineRegisterModel.cs" />
     <Compile Include="Model\ENetConfig\ENetEventType.cs" />
     <Compile Include="Model\ENetConfig\ENetMessageBuilder.cs" />
     <Compile Include="Model\IIC\IicDataType.cs" />
@@ -335,14 +354,14 @@
     <Compile Include="MyControl\DLMSControl\DisconnecrtControl.xaml.cs">
       <DependentUpon>DisconnecrtControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DLMS\ApplicationLay\CosemObjects\DlMSLoadIdentification.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemLoadIdentification.cs" />
     <Compile Include="MyControl\DLMSControl\LoadIdentificationUserControl.xaml.cs">
       <DependentUpon>LoadIdentificationUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\NetClientLogger.xaml.cs">
       <DependentUpon>NetClientLogger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\LoadIdentificationViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\LoadIdentificationViewModel.cs" />
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
       <DependentUpon>HeartBeatButton.xaml</DependentUpon>
     </Compile>
@@ -355,8 +374,8 @@
     <Compile Include="MyControl\XMLLogControl.xaml.cs">
       <DependentUpon>XMLLogControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ClockViewModel.cs" />
-    <Compile Include="ViewModel\DataViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\ClockViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\DataViewModel.cs" />
     <Compile Include="MyControl\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
@@ -374,8 +393,9 @@
     </Compile>
     <Compile Include="ViewModel\ENetMessageBuilderViewModel.cs" />
     <Compile Include="ViewModel\GrowlViewModel.cs" />
-    <Compile Include="ViewModel\ProfileGenericViewModel.cs" />
-    <Compile Include="ViewModel\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\DLMSSettingsViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\ProfileGenericViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\RegisterViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
     </Compile>
@@ -391,16 +411,15 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TcpClientHelper.cs" />
     <Compile Include="TcpServerHelper.cs" />
-    <Compile Include="Model\DLMSSelfDefineUtilityTablesModel.cs" />
+    <Compile Include="Model\CosemSelfDefineUtilityTablesModel.cs" />
     <Compile Include="ViewModel\TcpServerViewModel.cs" />
     <Compile Include="ViewModel\TelnetViewModel.cs" />
-    <Compile Include="ViewModel\DlmsBaseMeterViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\DlmsBaseMeterViewModel.cs" />
     <Compile Include="ViewModel\IicDataViewModel.cs" />
     <Compile Include="ViewModel\SkinViewModel.cs" />
-    <Compile Include="ViewModel\UtilityTablesViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\UtilityTablesViewModel.cs" />
     <Compile Include="ViewModel\TftpServerViewModel.cs" />
     <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
-    <Compile Include="FileTransmit\XModem.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\GateWayLoginModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
@@ -408,7 +427,7 @@
     <Compile Include="ValidateModelBase.cs" />
     <Compile Include="ViewModel\SerialPortViewModel.cs" />
     <Compile Include="ViewModel\UserLoginViewModel.cs" />
-    <Compile Include="ViewModel\NetLogViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\NetLogViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="View\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
@@ -474,7 +493,6 @@
     <Compile Include="View\ServerCenter\IicDataPage.xaml.cs">
       <DependentUpon>IicDataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileTransmit\YModem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -671,6 +689,7 @@
     <Resource Include="Image\伊利斯逐星.jpg" />
     <Resource Include="Image\Image1.jpg" />
     <Resource Include="DLMS\Axdr\About_Ber.txt" />
+    <Resource Include="DLMS\Axdr\About_A-XDR.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -697,7 +716,6 @@
     <None Include="ENetX86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="FileTransmit\AboutYModem.txt" />
     <Content Include="UserInfo.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -732,6 +750,10 @@
     <ProjectReference Include="..\SerialPortMaster\MySerialPortMaster.csproj">
       <Project>{04ec206f-7f4b-4c57-acf5-4091d6c78c10}</Project>
       <Name>MySerialPortMaster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YmodernClassLibrary\FileTransmit.csproj">
+      <Project>{08060170-2f0f-4c56-82fd-d93ba6f1a56d}</Project>
+      <Name>FileTransmit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

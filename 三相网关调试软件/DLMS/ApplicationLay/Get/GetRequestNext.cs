@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 
@@ -22,8 +21,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
         {
             List<byte> pduBytes = new List<byte>();
             pduBytes.Add((byte) GetRequestType);
-            pduBytes.AddRange(InvokeIdAndPriority.ToPduBytes());
-            pduBytes.AddRange(BlockNumber.ToPduBytes());
+            pduBytes.AddRange(InvokeIdAndPriority.ToPduStringInHex().StringToByte());
+            pduBytes.AddRange(BlockNumber.ToPduStringInHex().StringToByte());
             return pduBytes.ToArray();
         }
     }

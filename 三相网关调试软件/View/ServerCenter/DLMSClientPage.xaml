@@ -25,7 +25,8 @@
                     Margin="3">
                 ReleaseRequest
             </Button>
-            <ToggleButton x:Name="ToggleButtonSelectChannel"  IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick"  Width="50" ></ToggleButton>
+            <ToggleButton x:Name="ToggleButtonSelectChannel"   Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
+                          IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick"   ></ToggleButton>
             <StackPanel DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }">
                 <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" ToolTip="当前操作客户端" />
                 <ListBox x:Name="ListBox" ItemsSource="{Binding TcpServerHelper.SocketClientList}"
@@ -101,21 +102,21 @@
 
             </TabItem>
             <TabItem Header="Register">
-                <myControl:RegisterControl />
+                <dlmsControl:RegisterControl />
             </TabItem>
             <TabItem Header="UtilityTables">
 
-                <myControl:TaiAngControl />
+                <dlmsControl:TaiAngControl />
 
             </TabItem>
             <TabItem Header="ProfileGeneric">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <myControl:ProfileGenericUserControl />
+                    <dlmsControl:ProfileGenericUserControl />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Clock">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <myControl:ClockControl />
+                    <dlmsControl:ClockControl />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="LoadIdentification">

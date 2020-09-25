@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Source={StaticResource Locator},Path=XmlLog}">
+             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Source={StaticResource Locator},Path=XmlLogViewModel}">
     <Grid>
         <TextBox x:Name="TextBoxXML" Text="{Binding XmlLog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  TextWrapping="Wrap" 

@@ -10,6 +10,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
         public GetResponseWithDataBlock GetResponseWithDataBlock { get; set; }
         public GetResponseWithList GetResponseWithList { get; set; }
 
+      
         public string ToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -38,10 +39,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             {
                 return false;
             }
-            string a = pduStringInHex.Substring(0, 2);
-            if (a == "C4")
-            {
-                a = pduStringInHex.Substring(2, 2);
+            //            string a = pduStringInHex.Substring(0, 2);
+            //            if (a == "C4")
+            //            {
+            string a = pduStringInHex.Substring(2, 2);
                 if (a == "01")
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
@@ -60,9 +61,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                     GetResponseWithList = new GetResponseWithList();
                     return GetResponseWithList.PduStringInHexConstructor(ref pduStringInHex);
                 }
+
+                
                 return false;
-            }
-            return false;
+//            }
+//            return false;
         }
     }
 }

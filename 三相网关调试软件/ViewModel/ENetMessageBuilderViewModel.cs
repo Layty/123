@@ -11,12 +11,6 @@ using 三相智慧能源网关调试软件.Model.ENetConfig;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    /*
-        联系邮箱：694965217@qq.com
-        创建时间：2020/06/28 14:20:13
-        主要用途：
-        更改记录：
-    */
     public class ENetMessageBuilderViewModel : ViewModelBase
     {
         public ENetMessageBuilder ENetMessageMaker

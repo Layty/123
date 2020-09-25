@@ -87,15 +87,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                 }
             }
 
-            using (StringWriter stringWriter = new StringWriter())
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(AssociationResponse));
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                ns.Add("", "");
-                xmlSerializer.Serialize(stringWriter, this, ns);
-                var loggg = ServiceLocator.Current.GetInstance<DMLSXMLLog>();
-                loggg.XmlLog = stringWriter.ToString();
-            }
+//            using (StringWriter stringWriter = new StringWriter())
+//            {
+//                XmlSerializer xmlSerializer = new XmlSerializer(typeof(AssociationResponse));
+//                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+//                ns.Add("", "");
+//                xmlSerializer.Serialize(stringWriter, this, ns);
+//                var loggg = ServiceLocator.Current.GetInstance<DMLSXMLLog>();
+//                loggg.XmlLog = stringWriter.ToString();
+//            }
             return true;
         }
     }

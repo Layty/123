@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using NLog;
 
 namespace MySerialPortMaster
 {

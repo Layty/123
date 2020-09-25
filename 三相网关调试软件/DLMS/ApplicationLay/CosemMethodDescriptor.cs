@@ -1,38 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
-using 三相智慧能源网关调试软件.DLMS.OBIS;
+﻿using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
-
-    public class CosemMethodDescriptor : IToPduBytes
+    public class CosemMethodDescriptor : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public ObjectType ClassId { get; set; }
-        public string InstanceId { get; set; }
-        public byte MethodId { get; set; }
-        
+        public AxdrUnsigned16 CosemClassId { get; set; }
+
+        public AxdrOctetStringFixed CosemObjectInstanceId { get; set; }
+        public AxdrInteger8 CosemObjectMethodId { get; set; }
+
         public int Length => CalculateLength();
+
         private int CalculateLength()
         {
-            return 10;
-        }
-        public CosemMethodDescriptor(DLMSObject dlmsObject, byte index)
-        {
-            ClassId = dlmsObject.ObjectType;
-            InstanceId = dlmsObject.LogicalName;
-            MethodId = index;
+            int num = 0;
+            if (CosemClassId != null)
+            {
+                num += CosemClassId.Length;
+            }
+
+            if (CosemObjectInstanceId != null)
+            {
+                num += CosemObjectInstanceId.Length;
+            }
+
+            if (CosemObjectMethodId != null)
+            {
+                num += CosemObjectMethodId.Length;
+            }
+
+            return num;
         }
 
-        public byte[] ToPduBytes()
+        public CosemMethodDescriptor()
         {
-            List<byte> list = new List<byte>();
-            list.AddRange(BitConverter.GetBytes((ushort) ClassId).Reverse()); //ClassId
-            list.AddRange(ObisHelper.ObisStringToBytes(InstanceId));
-            list.Add(MethodId); //方法
-            return list.ToArray();
+        }
+
+        public CosemMethodDescriptor(AxdrUnsigned16 cosemClassId, AxdrOctetStringFixed cosemObjectInstanceId,
+            AxdrInteger8 cosemObjectMethodId)
+        {
+            CosemClassId = cosemClassId;
+            CosemObjectInstanceId = cosemObjectInstanceId;
+            CosemObjectMethodId = cosemObjectMethodId;
+        }
+
+        public string ToPduStringInHex()
+        {
+            return CosemClassId.ToPduStringInHex() + CosemObjectInstanceId.ToPduStringInHex() +
+                   CosemObjectMethodId.ToPduStringInHex();
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            CosemClassId = new AxdrUnsigned16();
+            if (!CosemClassId.PduStringInHexConstructor(ref pduStringInHex))
+            {
+                return false;
+            }
+
+            CosemObjectInstanceId = new AxdrOctetStringFixed(6);
+            if (!CosemObjectInstanceId.PduStringInHexConstructor(ref pduStringInHex))
+            {
+                return false;
+            }
+
+            CosemObjectMethodId = new AxdrInteger8();
+            if (!CosemObjectMethodId.PduStringInHexConstructor(ref pduStringInHex))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

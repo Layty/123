@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Ber
 {
-    public class BerBitString:IToPduBytes,IToPduStringInHex,IPduStringInHexConstructor
+    public class BerBitString:IToPduStringInHex,IPduStringInHexConstructor
     {
         [XmlAttribute] public string Value { get; set; }
 
@@ -154,11 +153,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Ber
                 pduStringInHex = text;
                 return false;
             }
-        }
-
-        public byte[] ToPduBytes()
-        {
-            return ToPduStringInHex().StringToByte();
         }
 
       

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public sealed class ScriptTable : DLMSObject, IDLMSBase
+    public sealed class ScriptTable : CosemObject, IDLMSBase
     {
 
         public List<Script> Scripts { get; set; }
@@ -15,11 +16,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             Scripts = new List<Script>();
             LogicalName = "0.0.10.0.0.255";
             Version = 1;
-            ObjectType = ObjectType.ScriptTable;
+            ClassId = new AxdrUnsigned16(ObjectType.ScriptTable.ToString("X4"));
         }
 
-        public byte[] GetScripts() => GetAttributeData(2);
+       
+        public CosemAttributeDescriptor GetScriptsAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
+        public CosemMethodDescriptor GetCosemMethodDescriptor() => GetCosemMethodDescriptor(1);
         public byte[] ScriptExecute(ushort scriptId)
         {
             DLMSDataItem dlmsData =

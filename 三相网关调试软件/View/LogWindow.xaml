@@ -23,13 +23,20 @@
                     </TabItem>
                     <TabItem>
                         <TabItem.Header>
-                            <materialDesign:PackIcon Kind="Ethernet" />
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Ethernet" />
+                                <materialDesign:PackIcon Kind ="Server"></materialDesign:PackIcon>
+                            </StackPanel>
+                           
                         </TabItem.Header>
                         <myControl:NetLogger />
                     </TabItem>
                     <TabItem>
                         <TabItem.Header>
-                            <materialDesign:PackIcon Kind="Ethernet" />
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Ethernet" />
+                                <materialDesign:PackIcon Kind ="Computer"></materialDesign:PackIcon>
+                            </StackPanel>
                         </TabItem.Header>
                         <myControl:NetClientLogger />
                     </TabItem>

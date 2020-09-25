@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Xml.Serialization;
-using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Ber
 {
-    public class BerInteger :IToPduBytes, IToPduStringInHex,IPduStringInHexConstructor
+    public class BerInteger : IToPduStringInHex, IPduStringInHexConstructor
     {
         [XmlAttribute] public string Value { get; set; }
 
@@ -20,11 +17,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Ber
             return (Value.Length / 2).ToString("X2") + Value;
         }
 
-  
-        public byte[] ToPduBytes()
-        {
-          return  ToPduStringInHex().StringToByte();
-        }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {

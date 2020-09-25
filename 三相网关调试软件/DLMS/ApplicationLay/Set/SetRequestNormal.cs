@@ -1,23 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
-    public class SetRequestNormal : IToPduBytes,IPduBytesToConstructor
+    public class SetRequestNormal : IToPduBytes
     {
         [XmlIgnore] protected SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
         public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
-        protected AttributeDescriptor AttributeDescriptor { get; set; }
+        protected CosemAttributeDescriptor CosemAttributeDescriptor { get; set; }
 
-        public DLMSDataItem AttributeInvocationParameters { get; set; }
+        public SelectiveAccessDescriptor AccessSelection { get; set; }
 
-        public SetRequestNormal(AttributeDescriptor attributeDescriptor, DLMSDataItem attributeInvocationParameters
+        public DLMSDataItem Value { get; set; }
+
+        public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor,
+            SelectiveAccessDescriptor accessSelection
         )
         {
-            AttributeDescriptor = attributeDescriptor;
-            AttributeInvocationParameters = attributeInvocationParameters;
+            CosemAttributeDescriptor = cosemAttributeDescriptor;
+            AccessSelection = accessSelection;
+            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
+        }
 
+        public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor, DLMSDataItem value)
+        {
+            CosemAttributeDescriptor = cosemAttributeDescriptor;
+            Value = value;
             InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
         }
 
@@ -26,19 +36,27 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             List<byte> pduBytes = new List<byte>();
             pduBytes.Add((byte) SetRequestType);
             pduBytes.Add(InvokeIdAndPriority.Value);
-            if (AttributeDescriptor != null)
+            if (CosemAttributeDescriptor != null)
             {
-                pduBytes.AddRange(AttributeDescriptor.ToPduBytes());
+                pduBytes.AddRange(CosemAttributeDescriptor.ToPduStringInHex().StringToByte());
+            }
+
+            if (AccessSelection != null)
+            {
+                pduBytes.Add(0x01);
+                pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
+            }
+            else
+            {
                 pduBytes.Add(0x00);
             }
 
-            pduBytes.AddRange(AttributeInvocationParameters.ToPduBytes());
-            return pduBytes.ToArray();
-        }
+            if (Value != null)
+            {
+                pduBytes.AddRange(Value.ToPduBytes());
+            }
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            throw new System.NotImplementedException();
+            return pduBytes.ToArray();
         }
     }
 }

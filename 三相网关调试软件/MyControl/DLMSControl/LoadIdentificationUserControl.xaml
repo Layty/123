@@ -1,26 +1,53 @@
 ﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.DLMSControl.LoadIdentificationUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=LoadIdentificationViewModel}"
              d:DesignHeight="450" d:DesignWidth="500">
     <Grid>
-            <StackPanel Margin="5">
-                <DatePicker Name="DatePicker" materialDesign:HintAssist.Hint="Pick Date" Margin="5"
-                            SelectedDateChanged="DatePicker_OnSelectedDateChanged"
-                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+        <StackPanel Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="给定时间和块数的访问" Grid.Column="0" Margin="2">
+                    <StackPanel>
+                        <DatePicker Name="DatePicker" materialDesign:HintAssist.Hint="Pick Date" Margin="5"
+                                    SelectedDateChanged="DatePicker_OnSelectedDateChanged"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
-            <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}" Margin="5"
-                                           SelectedTimeChanged="TimePicker_OnSelectedTimeChanged"
-                                           Name="TimePicker" IsInvalidTextAllowed="False" Is24Hours="True"
-                                           WithSeconds="True" />
-            <TextBlock Name="TextBlockShowTheDateTimeToBeSet" Text="SelectDateTime" Margin="5" />
-            <Button Margin="5" Command="{Binding GetGivenTimeCommand}" CommandParameter="{Binding ElementName=TextBlockShowTheDateTimeToBeSet,Path=Text}">给定时间和块数的访问</Button>
-                <Button  Margin="5" Command="{Binding GetLatestCommand }" >检索最近记录</Button>
-                <Button Margin="5" Command="{Binding GetEarliestCommand}">检索最早记录</Button>
+                        <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                   Margin="5"
+                                                   SelectedTimeChanged="TimePicker_OnSelectedTimeChanged"
+                                                   Name="TimePicker" IsInvalidTextAllowed="False" Is24Hours="True"
+                                                   WithSeconds="True" />
+                        <TextBlock Name="TextBlockShowTheDateTimeToBeSet" Text="SelectDateTime" Margin="5" />
+                        <TextBlock Text="检索条数固定为1" Margin="5" />
+                        <Button Margin="5" Command="{Binding GetGivenTimeCommand}"
+                                CommandParameter="{Binding ElementName=TextBlockShowTheDateTimeToBeSet,Path=Text}">
+                            给定时间和块数的访问
+                        </Button>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="给定块数的访问" Grid.Column="1" Margin="2">
+                    <StackPanel>
+                        <TextBlock Text="检索条数固定为1" Margin="5" />
+                        <Button Margin="5" Command="{Binding GetLatestCommand }">检索最近记录</Button>
+                        <Button Margin="5" Command="{Binding GetEarliestCommand}">检索最早记录</Button>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+
+            <TextBox TextWrapping="Wrap" Height="50" Text="{Binding LoadOriginalDataHex}" BorderThickness="2"
+                     Margin="4" />
+            <TextBox TextWrapping="Wrap" Height="150" Text="{Binding LoadDataFormat}" BorderThickness="2" Margin="4" />
+
+
         </StackPanel>
     </Grid>
 </UserControl>

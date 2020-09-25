@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
+using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
@@ -47,7 +48,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             {
                 foreach (var cosemAttributeDescriptor in AttributeDescriptorList)
                 {
-                    pduBytes.AddRange(cosemAttributeDescriptor.ToPduBytes());
+                    pduBytes.AddRange( MyConvert.OctetStringToByteArray(cosemAttributeDescriptor.ToPduStringInHex()));
                 }
             }
 

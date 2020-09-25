@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using MySerialPortMaster;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
@@ -38,48 +38,41 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
     //        throw new System.NotImplementedException();
     //    }
     //}
-    public class DLMSArray:IToPduBytes,IToPduStringInHex,IPduStringInHexConstructor
+    public class DLMSArray : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public DLMSDataItem[] items { get; set; }
+        private DataType DataType { get; set; } = DataType.Array;
+        public DLMSDataItem[] Items { get; set; }
 
-        public byte[] ToPduBytes()
-        {
-            string str = "01";
-            string str2 = (items.Length <= 127) ? items.Length.ToString("X2") : ((items.Length > 255) ? ("82" + items.Length.ToString("X4")) : ("81" + items.Length.ToString("X2")));
-            StringBuilder stringBuilder = new StringBuilder();
-            DLMSDataItem[] array = items;
-            foreach (DLMSDataItem dlmsDataItem in array)
-            {
-                stringBuilder.Append(dlmsDataItem.ToPduBytes());
-            }
-            return (str + str2 + stringBuilder.ToString()).StringToByte();
-        }
 
         public string ToPduStringInHex()
         {
             string str = "01";
-            string str2 = (items.Length <= 127) ? items.Length.ToString("X2") : ((items.Length > 255) ? ("82" + items.Length.ToString("X4")) : ("81" + items.Length.ToString("X2")));
+            string str2 = (Items.Length <= 127)
+                ? Items.Length.ToString("X2")
+                : ((Items.Length > 255) ? ("82" + Items.Length.ToString("X4")) : ("81" + Items.Length.ToString("X2")));
             StringBuilder stringBuilder = new StringBuilder();
-            DLMSDataItem[] array = items;
+            DLMSDataItem[] array = Items;
             foreach (DLMSDataItem dlmsDataItem in array)
             {
-                stringBuilder.Append(dlmsDataItem.ToPduBytes());
+                stringBuilder.Append(dlmsDataItem.ToPduStringInHex());
             }
-            return (str + str2 + stringBuilder.ToString());
+
+            return str + str2 + stringBuilder;
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);
-            items = new DLMSDataItem[num];
+            Items = new DLMSDataItem[num];
             for (int i = 0; i < num; i++)
             {
-                items[i] = new DLMSDataItem();
-                if (!items[i].PduStringInHexConstructor(ref pduStringInHex))
+                Items[i] = new DLMSDataItem();
+                if (!Items[i].PduStringInHexConstructor(ref pduStringInHex))
                 {
                     return false;
                 }
             }
+
             return true;
         }
     }

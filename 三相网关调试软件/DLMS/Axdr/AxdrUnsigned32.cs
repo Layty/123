@@ -1,17 +1,28 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
-using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
+
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrUnsigned32 : IToPduBytes,IToPduStringInHex, IPduStringInHexConstructor
+    public class AxdrUnsigned32 : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
     {
-        [XmlAttribute]
-        public string Value { get; set; }
+        [XmlIgnore] public int Length => 4;
 
-        [XmlIgnore]
-        public int Length => 4;
+        [XmlAttribute]
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _value;
+
 
         public AxdrUnsigned32()
         {
@@ -23,6 +34,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             {
                 throw new ArgumentException("The length not match type");
             }
+
             Value = s;
         }
 
@@ -31,7 +43,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             return Value;
         }
 
-       
 
         public uint GetEntityValue()
         {
@@ -39,6 +50,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             {
                 throw new InvalidOperationException("Value is null");
             }
+
             return Convert.ToUInt32(Value, 16);
         }
 
@@ -48,14 +60,18 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             {
                 return false;
             }
+
             Value = pduStringInHex.Substring(0, 8);
             pduStringInHex = pduStringInHex.Substring(8);
             return true;
         }
 
-        public byte[] ToPduBytes()
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            return ToPduStringInHex().StringToByte();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
