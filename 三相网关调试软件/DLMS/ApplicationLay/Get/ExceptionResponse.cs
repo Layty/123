@@ -53,7 +53,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                     break;
                 default:
                    return false;
-                    break;
+                  
             }
 
             Data = Data.Substring(2);
@@ -100,7 +100,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                     break;
                 default:
                     return false;
-                    break;
+                    
             }
             Data = Data.Substring(2);
             return true;

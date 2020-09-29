@@ -12,17 +12,11 @@
             <converters:tftp_p_rConverter x:Key="Tftp_p_rConverter" />
             <converters:tftp_g_rConverter x:Key="Tftp_g_rConverter" />
       
-            <LinearGradientBrush StartPoint="0 0" EndPoint="1 1" x:Key="LinearGradientBrush">
-                <GradientStop Offset="0" Color="Brown" />
-                <GradientStop Offset="0.3" Color='Red' />
-                <GradientStop Offset="0.6" Color="Orange" />
-                <GradientStop Offset="1" Color="Yellow" />
-            </LinearGradientBrush>
+           
             <Style  TargetType="Path" BasedOn="{x:Null}"></Style>
             <ResourceDictionary.MergedDictionaries>
-            
-               
                 <ResourceDictionary Source="ResourceDictionary/MyDictionary.xaml" />
+                <ResourceDictionary Source="ResourceDictionary/BrushDictionary.xaml" />
                 <!--HandyControl -->
                 <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 --><!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/> -->

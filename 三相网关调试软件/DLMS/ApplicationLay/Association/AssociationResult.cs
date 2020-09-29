@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
     public class AssociationResult : IPduBytesToConstructor
     {
-        public string Value { get; set; }
+        [XmlAttribute] public string Value { get; set; }
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {

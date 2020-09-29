@@ -16,6 +16,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 
         public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
 
+        public GetRequestWithList()
+        {
+            
+        }
         public GetRequestWithList(CosemAttributeDescriptorWithSelection[] attributeDescriptorList)
         {
             AttributeDescriptorList = attributeDescriptorList;

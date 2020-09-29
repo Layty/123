@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using NLog;
-using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 
@@ -40,7 +39,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
             InitiateRequest = new InitiateRequest(dlmsSettingsViewModel);
         }
 
-        private Logger Logger = LogManager.GetLogger("XML");
+    
 
         public byte[] ToPduBytes()
         {
@@ -71,7 +70,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
             {
                 appApduAssociationRequest.AddRange(InitiateRequest.ToPduBytes());
             }
-
+            appApduAssociationRequest.InsertRange(0, new byte[] { (byte)Command.Aarq, (byte)appApduAssociationRequest.Count });
             return appApduAssociationRequest.ToArray();
         }
     }

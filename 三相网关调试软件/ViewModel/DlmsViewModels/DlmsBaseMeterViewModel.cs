@@ -3,11 +3,13 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -47,13 +49,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         #endregion
 
-       
+
         public DLMSClient Client { get; set; }
         public EModeViewModel EModeViewModel { get; set; }
 
-        public SerialPortViewModel SerialPortViewModel { get; set; }
-
-      
+        private SerialPortViewModel SerialPortViewModel { get; set; }
 
 
         public DlmsBaseMeterViewModel()
@@ -64,14 +64,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             Client = ServiceLocator.Current.GetInstance<DLMSClient>();
             EModeViewModel = Client.EModeViewModel;
-            InitCommand = new RelayCommand(async () => { await Client.InitRequest();});
+            InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
             DisconnectCommand = new RelayCommand(async () => { await Client.DisconnectRequest(true); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
-                GetRequest getRequest=new GetRequest();
-                getRequest.GetRequestNormal = new GetRequestNormal(cosem.GetValueAttributeDescriptor());
-                var value = await Client.GetRequest(getRequest);
+                var value = await Client.GetRequest(cosem.GetValueAttributeDescriptor());
                 if (value != null && value.Length != 0)
                 {
                     var data = NormalDataParse.ParsePduData(value);
@@ -81,9 +79,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             ReadFactoryCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                GetRequest getRequest = new GetRequest();
-                getRequest.GetRequestNormal = new GetRequestNormal(cosem.GetValueAttributeDescriptor());
-                var value = await Client.GetRequest(getRequest);
+                var value = await Client.GetRequest(cosem.GetValueAttributeDescriptor());
                 if (value != null && value.Length != 0)
                 {
                     FactoryStatus = NormalDataParse.ParsePduData(value);
@@ -93,17 +89,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt16, "8192");
-                SetRequest setRequest = new SetRequest();
-                setRequest.SetRequestNormal = new SetRequestNormal(cosem.GetCosemAttributeDescriptor(2), dataItem);
-                await Client.SetRequest(setRequest);
+                await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 var dataItem = new DLMSDataItem(DataType.UInt16, "0");
-                SetRequest setRequest = new SetRequest();
-                setRequest.SetRequestNormal = new SetRequestNormal(cosem.GetValueAttributeDescriptor(), dataItem);
-                await Client.SetRequest(setRequest);
+                await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
             {
@@ -113,12 +105,21 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             SetCapturePeriodCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemProfileGeneric("1.0.99.1.0.255");
-                await Client.SetRequest(cosem.SetCapturePeriod(60));
+                cosem.CapturePeriod1 = new AxdrUnsigned32("00000060");
+                var dlmsData = new DLMSDataItem(DataType.UInt32, cosem.CapturePeriod1.Value);
+
+                await Client.SetRequestAndWaitResponse(cosem.GetCapturePeriodAttributeDescriptor(), dlmsData);
             });
             ClearAllCommand = new RelayCommand(async () =>
             {
                 var cosem = new ScriptTable();
-                await Client.ActionRequest(cosem.ScriptExecute(1));
+                Client.actionRequest = new ActionRequest()
+                {
+                    ActionRequestNormal = new ActionRequestNormal(cosem.GetScriptExecuteCosemMethodDescriptor(),
+                        new DLMSDataItem(DataType.UInt16, "0001")
+                    )
+                };
+                await Client.ActionRequest(Client.actionRequest);
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 
@@ -38,10 +39,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             }
             else
             {
-                Result = (DataAccessResult)_result.GetEntityValue();
+                Result = (DataAccessResult) _result.GetEntityValue();
             }
 
-          
+
             return true;
         }
     }

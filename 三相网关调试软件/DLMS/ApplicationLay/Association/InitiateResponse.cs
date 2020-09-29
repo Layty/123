@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
@@ -13,7 +14,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
     public class InitiateResponse : IPduBytesToConstructor
     {
         public AxdrUnsigned8 NegotiatedDlmsVersionNumber { get; set; }
-        public Conformance NegotiatedConformance { get; set; }
+       public Conformance NegotiatedConformance { get; set; }
 
         public AxdrUnsigned16 ServerMaxReceivePduSize { get; set; }
         public AxdrInteger16 VaaName { get; set; }

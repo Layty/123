@@ -1,12 +1,10 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage
 {
-    public class CosemData : CosemObject, IDLMSBase, INotifyPropertyChanged
+    public class CosemData : CosemObject, IDlmsBase
     {
         public DLMSDataItem Value
         {
@@ -14,8 +12,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             set
             {
                 _value = value;
-               
-
                 OnPropertyChanged();
             }
         }
@@ -23,54 +19,45 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         private DLMSDataItem _value;
 
 
-        public CosemData(string logicalName)
+        public CosemData(string logicalName) : this(logicalName, ObjectType.Data)
         {
             LogicalName = logicalName;
-
-            ClassId = MyConvert.GetClassIdByObjectType(ObjectType.Data);
         }
-        public CosemData(string logicalName,ObjectType objectType)
+
+        public CosemData(string logicalName, ObjectType objectType)
         {
             LogicalName = logicalName;
             ClassId = MyConvert.GetClassIdByObjectType(objectType);
         }
+
         public CosemAttributeDescriptor GetLogicNameAttributeDescriptor() => GetCosemAttributeDescriptor(1);
         public CosemAttributeDescriptor GetValueAttributeDescriptor() => GetCosemAttributeDescriptor(2);
+
        
-        
+       
+        public string[] GetNames() => new[] {LogicalName, "Value"};
 
-        string[] IDLMSBase.GetNames() => new[] {LogicalName, "Value"};
-
-        int IDLMSBase.GetAttributeCount() => 2;
-        int IDLMSBase.GetMethodCount() => 0;
+        public int GetAttributeCount() => 2;
+        public int GetMethodCount() => 0;
 
         public DataType GetDataType(int index)
         {
-            return new DataType();
-            //switch (index)
-            //{
-            //    case 1:
-            //        return DataType.OctetString;
-            //    case 2:
-            //        {
-            //            DataType dataType = base.GetDataType(index);
-            //            if (dataType == DataType.None && Value != null)
-            //            {
-            //                dataType = GXCommon.GetDLMSDataType(Value.GetType());
-            //            }
-            //            return dataType;
-            //        }
-            //    default: break;
+            DataType dataType = new DataType();
+            switch (index)
+            {
+                case 1:
+                    dataType = DataType.OctetString;
+                    break;
+                case 2:
+                    dataType = Value.DataType;
+                    break;
 
-            //}
+                default: break;
+            }
+
+            return dataType;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-      
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }

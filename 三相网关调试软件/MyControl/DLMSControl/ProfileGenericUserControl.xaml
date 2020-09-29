@@ -4,32 +4,60 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=ProfileGenericViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel>
+     
             <TabControl>
                 <TabItem Header="Profile Params">
-                    <StackPanel>
-                        <TextBlock Text="Capture Objects" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition ></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0"  Margin="5">
                         <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding Generic.CaptureObjects}" >
-                     
-                        </DataGrid>
-                
-                        <Button Content="GetCaptureObjects" Command="{Binding GetCaptureObjectsCommand}"></Button>
-                        <Button>write</Button>
-
-                        <TextBox Text="{Binding Generic.CapturePeriod1.Value,UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Content="GetCapturePeriodCommand" Command="{Binding GetCapturePeriodCommand}" />
-                        <Button Content="SetCapturePeriodCommand" Command="{Binding SetCapturePeriodCommand}" />
-                        <TextBox Text="{Binding Generic.EntriesInUse,UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Content="GetEntriesInUseCommand" Command="{Binding GetEntriesInUseCommand}" />
-                        <TextBox Text="{Binding Generic.ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Content="GetProfileEntriesCommand" Command="{Binding GetProfileEntriesCommand}" />
-                        <TextBox Text="{Binding Generic.SortMethod,UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Content="GetSortMethodCommand" Command="{Binding GetSortMethodCommand}" />
-                    </StackPanel>
+                            </DataGrid>
+                        </Grid >
+                    <StackPanel Grid.Column="1"  Margin="5">
+                        <TextBlock Text="{Binding  Generic.LogicalName}"></TextBlock>
+                        <UniformGrid Grid.Row="0" Rows="0" Columns="2" Margin="2">
+                            <Button Content="GetCaptureObjects" Command="{Binding GetCaptureObjectsCommand}" Margin="2"></Button>
+                            <Button Content="SetCaptureObjects" Margin="2" ></Button>
+                        </UniformGrid>
+                        <UniformGrid Columns="3">
+                               <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         materialDesign:HintAssist.Hint="CapturePeriod"
+                                   Text="{Binding Generic.CapturePeriod1.Value,UpdateSourceTrigger=PropertyChanged}" />
+                               <Button Content="Get" Command="{Binding GetCapturePeriodCommand}" />
+                               <Button Content="Set" Command="{Binding SetCapturePeriodCommand}" />
+                            </UniformGrid>
+                           <UniformGrid Columns="3">
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         materialDesign:HintAssist.Hint="EntriesInUse" Text="{Binding Generic.EntriesInUse,UpdateSourceTrigger=PropertyChanged}" />
+                               <Button Content="Get" Command="{Binding GetEntriesInUseCommand}" />
+                            </UniformGrid>
+                           <UniformGrid Columns="3">
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         materialDesign:HintAssist.Hint="ProfileEntries" Text="{Binding Generic.ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
+                               <Button Content="Get" Command="{Binding GetProfileEntriesCommand}" />
+                            </UniformGrid>
+                            <UniformGrid Columns="3">
+                                <TextBox  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                          materialDesign:HintAssist.IsFloating="True"
+                                          materialDesign:HintAssist.Hint="SortMethod" Text="{Binding Generic.SortMethod,UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Content="Get" Command="{Binding GetSortMethodCommand}" />
+                            </UniformGrid>
+                           
+              
+                        </StackPanel>
+                    </Grid>
+                   
                 </TabItem>
                 <TabItem Header="Buffer">
                     <StackPanel>
@@ -40,7 +68,7 @@
                 </TabItem>
             </TabControl>
 
-        </StackPanel>
+       
 
     </Grid>
 </UserControl>

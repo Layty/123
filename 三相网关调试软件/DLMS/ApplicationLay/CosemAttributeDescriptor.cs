@@ -8,7 +8,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         public AxdrOctetStringFixed CosemObjectInstanceId { get; set; }
         public AxdrInteger8 CosemObjectAttributeId { get; set; }
 
-
         public int Length => CalculateLength();
 
         private int CalculateLength()

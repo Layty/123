@@ -88,48 +88,41 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 async t =>
                 {
                     t.Value = new DLMSDataItem();
-                    t.Scalar = 1;
-                    t.Unit = Unit.None;
-                    GetResponse getResponse = new GetResponse();
-                    GetRequest getRequest = new GetRequest
+                    t.ScalarUnit = new ScalarUnit() ;
+                    var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
+                 
+                    if (getResponse!=null)
                     {
-                        GetRequestNormal = new GetRequestNormal(t.GetValueAttributeDescriptor())
-                    };
-                    var dataResult = await Client.GetRequest(getRequest);
-                    var data = Common.ByteToString(dataResult, "");
-                    if (getResponse.PduStringInHexConstructor(ref data))
-                    {
-                        t.LastResult =(ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                        t.LastResult =
+                            (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                         t.Value = getResponse.GetResponseNormal.Result.Data;
-                        if (t.LastResult!=ErrorCode.Ok)
+                        if (t.LastResult != ErrorCode.Ok)
                         {
                             return;
                         }
-                        getRequest.GetRequestNormal=new GetRequestNormal(t.GetScalar_UnitAttributeDescriptor());
-                           var scalarUnit = await Client.GetRequest(getRequest);
+
+                        var scalarUnit = await Client.GetRequest(t.GetScalar_UnitAttributeDescriptor());
                         var structData = NormalDataParse.ParsePduData(scalarUnit);
                         var unitByte = structData.StringToByte();
                         switch (unitByte.Take(1).ToArray()[0])
                         {
-                            case (byte)DataType.Int8:
-                                t.Scalar = (sbyte)unitByte.Skip(1).Take(1).ToArray()[0];
+                            case (byte) DataType.Int8:
+                                t.ScalarUnit.Scalar = (sbyte) unitByte.Skip(1).Take(1).ToArray()[0];
                                 break;
                         }
 
                         switch (unitByte.Skip(2).Take(1).ToArray()[0])
                         {
-                            case (byte)DataType.Enum:
-                                t.Unit = (Unit)unitByte.Skip(3).Take(1).ToArray()[0];
+                            case (byte) DataType.Enum:
+                                t.ScalarUnit.Unit = (Unit) unitByte.Skip(3).Take(1).ToArray()[0];
                                 break;
                         }
                     }
                 });
-            SetValueCommand=new RelayCommand<CosemSelfDefineRegisterModel>(async(t) =>
+            SetValueCommand = new RelayCommand<CosemSelfDefineRegisterModel>(async (t) =>
             {
                 t.Value.UpdateValueBytes();
-                SetRequest setRequest=new SetRequest();
-                setRequest.SetRequestNormal=new SetRequestNormal(t.GetValueAttributeDescriptor(),t.Value);
-                var dataResult = await Client.SetRequest(setRequest);
+                var dataResult = await Client.SetRequestAndWaitResponse(t.GetValueAttributeDescriptor(), t.Value);
             });
         }
     }

@@ -5,7 +5,7 @@ using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage
 {
-    public class CosemUtilityTables : CosemObject, IDLMSBase
+    public class CosemUtilityTables : CosemObject, IDlmsBase
     {
         public ushort TableId { get; set; }
         public byte[] Buffer { get; set; }
@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public CosemAttributeDescriptor GetLengthAttributeDescriptor() => GetCosemAttributeDescriptor(3);
         public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(4);
 
-        string[] IDLMSBase.GetNames() => new[]
+        string[] IDlmsBase.GetNames() => new[]
         {
             LogicalName,
             "Table Id",
@@ -33,11 +33,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         };
 
 
-        int IDLMSBase.GetAttributeCount() => 4;
+        int IDlmsBase.GetAttributeCount() => 4;
 
-        int IDLMSBase.GetMethodCount() => 0;
+        int IDlmsBase.GetMethodCount() => 0;
 
-        DataType IDLMSBase.GetDataType(int attrIndex)
+        DataType IDlmsBase.GetDataType(int attrIndex)
         {
             switch (attrIndex)
             {

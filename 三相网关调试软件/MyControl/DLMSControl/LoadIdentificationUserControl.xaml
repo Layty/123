@@ -8,46 +8,51 @@
              mc:Ignorable="d" DataContext="{Binding Source={StaticResource Locator},Path=LoadIdentificationViewModel}"
              d:DesignHeight="450" d:DesignWidth="500">
     <Grid>
-        <StackPanel Margin="5">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <GroupBox Header="给定时间和块数的访问" Grid.Column="0" Margin="2">
-                    <StackPanel>
-                        <DatePicker Name="DatePicker" materialDesign:HintAssist.Hint="Pick Date" Margin="5"
-                                    SelectedDateChanged="DatePicker_OnSelectedDateChanged"
-                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+        <materialDesign:Card>
+            <StackPanel Margin="5">
 
-                        <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                                   Margin="5"
-                                                   SelectedTimeChanged="TimePicker_OnSelectedTimeChanged"
-                                                   Name="TimePicker" IsInvalidTextAllowed="False" Is24Hours="True"
-                                                   WithSeconds="True" />
-                        <TextBlock Name="TextBlockShowTheDateTimeToBeSet" Text="SelectDateTime" Margin="5" />
-                        <TextBlock Text="检索条数固定为1" Margin="5" />
-                        <Button Margin="5" Command="{Binding GetGivenTimeCommand}"
-                                CommandParameter="{Binding ElementName=TextBlockShowTheDateTimeToBeSet,Path=Text}">
-                            给定时间和块数的访问
-                        </Button>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Header="给定块数的访问" Grid.Column="1" Margin="2">
-                    <StackPanel>
-                        <TextBlock Text="检索条数固定为1" Margin="5" />
-                        <Button Margin="5" Command="{Binding GetLatestCommand }">检索最近记录</Button>
-                        <Button Margin="5" Command="{Binding GetEarliestCommand}">检索最早记录</Button>
-                    </StackPanel>
-                </GroupBox>
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="给定时间和块数的访问" Grid.Column="0" Margin="2">
+                        <StackPanel>
+                            <DatePicker Name="DatePicker" materialDesign:HintAssist.Hint="Pick Date" Margin="5"
+                                        SelectedDateChanged="DatePicker_OnSelectedDateChanged"
+                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
-
-            <TextBox TextWrapping="Wrap" Height="50" Text="{Binding LoadOriginalDataHex}" BorderThickness="2"
-                     Margin="4" />
-            <TextBox TextWrapping="Wrap" Height="150" Text="{Binding LoadDataFormat}" BorderThickness="2" Margin="4" />
+                            <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                       Margin="5"
+                                                       SelectedTimeChanged="TimePicker_OnSelectedTimeChanged"
+                                                       Name="TimePicker" IsInvalidTextAllowed="False" Is24Hours="True"
+                                                       WithSeconds="True" />
+                            <TextBlock Name="TextBlockShowTheDateTimeToBeSet" Text="SelectDateTime" Margin="5" />
+                            <TextBlock Text="检索条数固定为1" Margin="5" />
+                            <Button Margin="5" Command="{Binding GetGivenTimeCommand}"
+                                    CommandParameter="{Binding ElementName=TextBlockShowTheDateTimeToBeSet,Path=Text}">
+                                给定时间和块数的访问
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="给定块数的访问" Grid.Column="1" Margin="2">
+                        <StackPanel>
+                            <TextBlock Text="检索条数固定为1" Margin="5" />
+                            <Button Margin="5" Command="{Binding GetLatestCommand }">检索最近记录</Button>
+                            <Button Margin="5" Command="{Binding GetEarliestCommand}">检索最早记录</Button>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
 
 
-        </StackPanel>
+                <TextBox TextWrapping="Wrap" Height="50" Text="{Binding LoadOriginalDataHex}" BorderThickness="2"
+                         Margin="4" />
+                <TextBox TextWrapping="Wrap" Height="150" Text="{Binding LoadDataFormat}" BorderThickness="2"
+                         Margin="4" />
+
+
+            </StackPanel>
+        </materialDesign:Card>
+
     </Grid>
 </UserControl>

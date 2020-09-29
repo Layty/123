@@ -85,7 +85,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private ObservableCollection<byte[]> _listObservableCollection;
-        public GetRequest GetRequest = new GetRequest();
+
         public SetRequest SetRequest = new SetRequest();
 
         public ProfileGenericViewModel()
@@ -93,20 +93,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
             Generic = new DlmsSelfDefineCosemProfileGeneric("1.0.99.1.0.255");
             Generic.CaptureObjects = new ObservableCollection<CaptureObjectDefinition>();
-            GetRequest.GetRequestNormal = new GetRequestNormal();
+
             GetCaptureObjectsCommand = new RelayCommand(async () =>
             {
-                var responese = await Client.GetRequestAndWaitResponse(new GetRequest()
-                    {
-                        GetRequestNormal = new GetRequestNormal(Generic.GetCaptureObjectsAttributeDescriptor())
-                    }
+                var responese = await Client.GetRequestAndWaitResponse(Generic.GetCaptureObjectsAttributeDescriptor()
                 );
                 if (responese != null)
                 {
                     if (responese.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
                         var Array = new DLMSArray();
-
                         var ar = responese.GetResponseNormal.Result.Data.ToPduStringInHex();
                         ar = ar.Substring(2);
                         if (Array.PduStringInHexConstructor(ref ar))
@@ -114,7 +110,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             Generic.CaptureObjects.Clear();
                             for (int i = 0; i < Array.Items.Length; i++)
                             {
-                                var captureObjectDefinition = CaptureObjectDefinition.CreateFromDlmsData(Array.Items[i]);
+                                var captureObjectDefinition =
+                                    CaptureObjectDefinition.CreateFromDlmsData(Array.Items[i]);
                                 if (captureObjectDefinition != null)
                                 {
                                     Generic.CaptureObjects.Add(captureObjectDefinition);
@@ -128,11 +125,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetCapturePeriodCommand = new RelayCommand(async
                 () =>
             {
-                GetRequest.GetRequestNormal.CosemAttributeDescriptor = Generic.GetCosemAttributeDescriptor(4);
-                var resultBytes = await Client.GetRequest(GetRequest);
-                GetResponse response = new GetResponse();
-                var resultString = Common.ByteToString(resultBytes, "");
-                if (response.PduStringInHexConstructor(ref resultString))
+                var response = await Client.GetRequestAndWaitResponse(Generic.GetCosemAttributeDescriptor(4));
+                if (response != null)
                 {
                     response.GetResponseNormal.Result.Data.ValueDisplay.UInt32ValueDisplayFormat =
                         UInt32ValueDisplayFormat.IntValue;
@@ -141,38 +135,32 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
             SetCapturePeriodCommand = new RelayCommand(async () =>
             {
-                SetRequest.SetRequestNormal = new SetRequestNormal(Generic.GetCapturePeriodAttributeDescriptor(),
+                await Client.SetRequestAndWaitResponse(Generic.GetCapturePeriodAttributeDescriptor(),
                     new DLMSDataItem(DataType.UInt32, Generic.CapturePeriod1.Value));
-
-                await Client.SetRequest(SetRequest);
             });
             GetEntriesInUseCommand = new RelayCommand(async
                 () =>
             {
-                GetRequest.GetRequestNormal = new GetRequestNormal(Generic.GetEntriesInUseAttributeDescriptor());
-                var resultBytes = await Client.GetRequest(GetRequest);
+                var resultBytes = await Client.GetRequest(Generic.GetEntriesInUseAttributeDescriptor());
                 Generic.EntriesInUse = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
             GetProfileEntriesCommand = new RelayCommand(async
                 () =>
             {
-                GetRequest.GetRequestNormal.CosemAttributeDescriptor = Generic.GetProfileEntriesAttributeDescriptor();
-                var resultBytes = await Client.GetRequest(GetRequest);
+                var resultBytes = await Client.GetRequest(Generic.GetProfileEntriesAttributeDescriptor());
                 Generic.ProfileEntries = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
             GetSortMethodCommand = new RelayCommand(async
                 () =>
             {
-                GetRequest.GetRequestNormal.CosemAttributeDescriptor = Generic.GetSortMethodAttributeDescriptor();
-                var resultBytes = await Client.GetRequest(GetRequest);
+                var resultBytes = await Client.GetRequest(Generic.GetSortMethodAttributeDescriptor());
                 Generic.SortMethod = (SortMethod) ushort.Parse(NormalDataParse.ParsePduData(resultBytes));
             });
 
             GetBufferCommand = new RelayCommand(async
                 () =>
             {
-                GetRequest.GetRequestNormal.CosemAttributeDescriptor = Generic.GetBufferAttributeDescriptor();
-                var resultBytes = await Client.GetRequest(GetRequest);
+                var resultBytes = await Client.GetRequest(Generic.GetBufferAttributeDescriptor());
                 var stringTo = NormalDataParse.ParsePduData(resultBytes).StringToByte();
                 var splitCountLength = (stringTo.Length - 1) / stringTo[0];
                 var Index = 1;

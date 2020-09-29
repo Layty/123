@@ -4,7 +4,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
     public class SetRequestWithDataBlock:IToPduBytes
     {
-        protected Command Command { get; set; } = Command.SetRequest;
         protected SetRequestType SetRequestType { get; set; } = SetRequestType.WithDataBlock;
         public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
 

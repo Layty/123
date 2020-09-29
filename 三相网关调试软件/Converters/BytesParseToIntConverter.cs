@@ -18,8 +18,7 @@ namespace 三相智慧能源网关调试软件.Converters
         {
             if (value is Unit unit)
             {
-                var date = (byte)unit;
-                var ScalarUnit = new CosemRegister.ScalarUnit() {Unit = date};
+                var ScalarUnit =new ScalarUnit(){Unit = unit};
                 var Unitestring = ScalarUnit.GetUnitName();
                 return Unitestring;
             }

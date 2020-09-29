@@ -8,24 +8,27 @@ using 三相智慧能源网关调试软件.DLMS.Wrapper;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-
-
-    public class NetFrameMaker:ViewModelBase
+    public class NetFrameMaker : ViewModelBase
     {
         private DLMSSettingsViewModel DlmsSettingsViewModel { get; set; }
 
         public NetFrame NetFrame
         {
             get => _netFrame;
-            set { _netFrame = value; RaisePropertyChanged(); }
+            set
+            {
+                _netFrame = value;
+                RaisePropertyChanged();
+            }
         }
+
         private NetFrame _netFrame;
 
 
         public NetFrameMaker(DLMSSettingsViewModel settingsViewModel)
         {
             DlmsSettingsViewModel = settingsViewModel;
-          
+
             _netFrame = new NetFrame()
             {
                 Version = new byte[] {0x00, 0x01},
@@ -33,7 +36,23 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
             };
         }
+        private void PackingWrapperHeader()
+        {
+            _netFrame = new NetFrame()
+            {
+                Version = new byte[] { 0x00, 0x01 },
+                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
+                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
+            };
 
+        }
+
+        public byte[] Invoke(byte[] apduBytes)
+        {
+            PackingWrapperHeader();
+            _netFrame.DLMSApduDataBytes = apduBytes;
+            return _netFrame.ToPduBytes();
+        }
 
         public byte[] AarqRequest()
         {
@@ -42,7 +61,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             aarq.InsertRange(0, new byte[] {(byte) Command.Aarq, (byte) aarq.Count});
             _netFrame = new NetFrame()
             {
-                Version = new byte[] { 0x00, 0x01 },
+                Version = new byte[] {0x00, 0x01},
                 SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
                 DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
             };
@@ -55,7 +74,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             _netFrame = new NetFrame()
             {
-                Version = new byte[] { 0x00, 0x01 },
+                Version = new byte[] {0x00, 0x01},
                 SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
                 DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
             };
@@ -70,7 +89,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             alrq.InsertRange(0, new byte[] {(byte) Command.ReleaseRequest, (byte) alrq.Count});
             _netFrame = new NetFrame()
             {
-                Version = new byte[] { 0x00, 0x01 },
+                Version = new byte[] {0x00, 0x01},
                 SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
                 DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
             };

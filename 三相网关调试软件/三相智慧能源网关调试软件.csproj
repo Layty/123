@@ -199,6 +199,7 @@
     <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithList.cs" />
     <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithListAndFirstBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Action\ActionResponseWithOptionalData.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessMode.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlMode.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\RequestTypes.cs" />
     <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Security.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="DLMS\ApplicationLay\Association\TranslatorGeneralTags.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptorWithSelection.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemDisconnectControl.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CaptureObjectDefinition.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs" />
     <Compile Include="DLMS\ApplicationLay\DataBlockSA.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
@@ -570,6 +572,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControl\XMLLogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionary\BrushDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

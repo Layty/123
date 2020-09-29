@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums
 {
     [Flags]
+    
     public enum Conformance : uint
     {
         ReservedZero = 0x800000,

@@ -165,6 +165,20 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         private DataType _dataType;
 
+
+        public int Length
+        {
+            get => _length;
+            set
+            {
+                _length = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _length;
+
+
         /// <summary>
         /// ValueByte ==Length+Value
         /// </summary>
@@ -459,14 +473,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                         DataType = DataType.OctetString;
                         var oct = new AxdrOctetString();
                         pduStringInHex = pduStringInHex.Substring(2);
-                        
+
                         if (!oct.PduStringInHexConstructor(ref pduStringInHex))
                         {
                             return false;
                         }
+
                         ValueBytes = oct.ToPduStringInHex().StringToByte();
                         ValueDisplay.ValueString = oct.Value;
-                      
+
                         break;
                     case "0A":
                         DataType = DataType.VisibleString;
@@ -603,32 +618,32 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             switch (DataType)
             {
                 case DataType.Boolean:
-                    return "03" + ValueBytes.ByteToString("");
+                    return "03" + ValueBytes.ByteToString();
                 case DataType.BitString:
-                    return "04" + GetBitStringValue(ValueBytes.ByteToString(""));
+                    return "04" + GetBitStringValue(ValueBytes.ByteToString());
                 case DataType.Int32:
-                    return "05" + ValueBytes.ByteToString("");
+                    return "05" + ValueBytes.ByteToString();
                 case DataType.UInt32:
-                    return "06" + ValueBytes.ByteToString("");
+                    return "06" + ValueBytes.ByteToString();
                 case DataType.OctetString:
-                    return "09" + ValueBytes.ByteToString("");
+                    return "09" + ValueBytes.ByteToString();
                 case DataType.VisibleString:
                     return "0A" + Encoding.Default.GetString(ValueBytes).Length.ToString("X2") +
-                           ValueBytes.ByteToString("");
+                           ValueBytes.ByteToString();
                 case DataType.Int8:
-                    return "0F" + ValueBytes.ByteToString("");
+                    return "0F" + ValueBytes.ByteToString();
                 case DataType.Int16:
-                    return "10" + ValueBytes.ByteToString("");
+                    return "10" + ValueBytes.ByteToString();
                 case DataType.UInt8:
-                    return "11" + ValueBytes.ByteToString("");
+                    return "11" + ValueBytes.ByteToString();
                 case DataType.UInt16:
-                    return "12" + ValueBytes.ByteToString("");
+                    return "12" + ValueBytes.ByteToString();
                 case DataType.Int64:
-                    return "14" + ValueBytes.ByteToString("");
+                    return "14" + ValueBytes.ByteToString();
                 case DataType.UInt64:
-                    return "15" + ValueBytes.ByteToString("");
+                    return "15" + ValueBytes.ByteToString();
                 case DataType.Enum:
-                    return "16" + ValueBytes.ByteToString("");
+                    return "16" + ValueBytes.ByteToString();
                 case DataType.Float32:
                     return "17" + ValueBytes.ByteToString();
                 case DataType.Float64:
@@ -642,10 +657,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 case DataType.Structure:
                     return "02" + ValueBytes.ByteToString();
                 case DataType.Array:
-                {
-                    var str = ValueBytes.ByteToString("");
                     return "01" + ValueBytes.ByteToString();
-                }
+
                 //                case "COMPACTARRAY":
                 //                {
                 //                    DlmsCompactArray dlmsCompactArray = (DlmsCompactArray)value;

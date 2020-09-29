@@ -576,7 +576,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private ObservableCollection<DiYaGuiDataModel> _DiYaGuiDataModels;
-        private GetRequest getRequest = new GetRequest();
+  
 
         public UtilityTablesViewModel()
         {
@@ -609,9 +609,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     async t =>
                     {
                         t.DataForShow = "";
-                        getRequest = new GetRequest()
-                            {GetRequestNormal = new GetRequestNormal(t.GetLogicNameAttributeDescriptor())};
-                        var dataResult = await Client.GetRequest(getRequest);
+                        var dataResult = await Client.GetRequest(t.GetLogicNameAttributeDescriptor());
                         GetResponse getResponse = new GetResponse();
                         var data = dataResult.ByteToString("");
 
@@ -628,24 +626,23 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 GetMeterAddressData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        getRequest.GetRequestNormal.CosemAttributeDescriptor = t.GetTableIdAttributeDescriptor();
-                        var dataResult = await Client.GetRequest(getRequest);
+                      
+                        var dataResult = await Client.GetRequest(t.GetTableIdAttributeDescriptor());
                         t.DataForShow = NormalDataParse.ParsePduData(dataResult);
                     }
                 );
                 GetDataLengthData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        getRequest.GetRequestNormal.CosemAttributeDescriptor = t.GetLengthAttributeDescriptor();
-                        var dataResult = await Client.GetRequest(getRequest);
+                        var dataResult = await Client.GetRequest(t.GetLengthAttributeDescriptor());
                         t.DataForShow = NormalDataParse.ParsePduData(dataResult);
                     }
                 );
                 GetBuffData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        getRequest.GetRequestNormal.CosemAttributeDescriptor = t.GetBufferAttributeDescriptor();
-                        var dataResult = await Client.GetRequest(getRequest);
+                   
+                        var dataResult = await Client.GetRequest(t.GetBufferAttributeDescriptor());
                         t.DataForShow =
                             NormalDataParse.ParsePduData(dataResult);
                         var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));

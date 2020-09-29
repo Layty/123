@@ -42,7 +42,7 @@
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="操作区" Width="Auto" CanUserReorder="False" >
+                <DataGridTemplateColumn Header="操作区" Width="Auto" CanUserReorder="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -50,10 +50,14 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Content="Get" Margin="2 0" Grid.Column="0" x:Name="ButtonGet"
+                                <Button Content="Get" Margin="2 0" Grid.Column="0" x:Name="ButtonGet" Height="40"
+                                        Width="40"
+                                        Style="{StaticResource MaterialDesignFloatingActionButton}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                         CommandParameter="{Binding }" />
-                                <Button Content="Set" Margin="2 0" Grid.Column="1" x:Name="ButtonSet"
+                                <Button Content="Set" Margin="2 0" Grid.Column="1" x:Name="ButtonSet" Height="40"
+                                        Width="40"
+                                        Style="{StaticResource MaterialDesignFloatingActionButton}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
                                         CommandParameter="{Binding }" />
                             </Grid>
@@ -62,15 +66,14 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Binding="{Binding DataName }"
                                     Header="DataName" Width="150" />
-                <!--<DataGridTextColumn Binding="{Binding ObjectType}" Header="ObjectType"  />-->
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
-                                    Binding="{Binding ObjectType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="Class" />
+                                    Binding="{Binding ClassId.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Header="ClassId" />
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding LogicalName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                     Header="LogicName" />
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
-                                    Binding="{Binding Attr,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Binding="{Binding Attr.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="Attr" />
 
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Binding="{Binding LastResult}"
@@ -91,26 +94,24 @@
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding Value.ValueDisplay.UInt32ValueDisplayFormat,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="UInt32Format" />
-                <DataGridComboBoxColumn Header="DisplayFormat" 
+                <DataGridComboBoxColumn Header="DisplayFormat"
                                         SelectedValueBinding="{Binding  Value.ValueDisplay.UInt32ValueDisplayFormat ,UpdateSourceTrigger=PropertyChanged}">
-                   <DataGridComboBoxColumn.CellStyle>
-                       <Style>
-                           
-                       </Style>
-                   </DataGridComboBoxColumn.CellStyle>
+                    <DataGridComboBoxColumn.CellStyle>
+                        <Style />
+                    </DataGridComboBoxColumn.CellStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource"
                                     Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.UInt32ValueDisplayFormatArray }" />
                             <!-- <Setter Property="SelectedValue" -->
                             <!--         Value="{Binding  DlmsSelfDefineData.Value.ValueDisplay.OctetStringDisplayFormat}" /> -->
-                            
+
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="ItemsSource"
                                     Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.UInt32ValueDisplayFormatArray }" />
                             <!-- <Setter Property="SelectedValue" -->

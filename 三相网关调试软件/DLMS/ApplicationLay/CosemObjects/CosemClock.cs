@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
-using 三相智慧能源网关调试软件.Properties;
+
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public class CosemClock : CosemObject, IDLMSBase, INotifyPropertyChanged
+    public class CosemClock : CosemObject, IDlmsBase
     {
         public int TimeZone
         {
@@ -64,15 +61,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public string Time
         {
-            get => _Time;
+            get => _time;
             set
             {
-                _Time = value;
+                _time = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _Time;
+        private string _time;
 
         public override string ToString()
         {
@@ -119,7 +116,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public byte[] GetDateTimeBytes()
         {
-            byte[] yearbyte = BitConverter.GetBytes(this.Year).Reverse<byte>().ToArray<byte>();
+            byte[] yearbyte = BitConverter.GetBytes(Year).Reverse().ToArray();
             byte monthbyte = this.Month;
             byte daybyte = Convert.ToByte(this.Day);
             bool flag = this.DayOfWeek == 0;
@@ -169,7 +166,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             bool result = false;
             try
             {
-                byte[] yearstr = dateTimeBytes.Take(2).ToArray<byte>();
+                byte[] yearstr = dateTimeBytes.Take(2).ToArray();
                 this.Year = BitConverter.ToInt16(yearstr.Reverse<byte>().ToArray<byte>(), 0);
                 this.Month = dateTimeBytes[2];
                 this.Day = (int) dateTimeBytes[3];
@@ -376,13 +373,5 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public CosemAttributeDescriptor GetStatusAttributeDescriptor() => GetCosemAttributeDescriptor(4);
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

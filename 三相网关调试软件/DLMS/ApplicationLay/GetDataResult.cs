@@ -1,13 +1,19 @@
-﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+﻿using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
-    
-    public class GetDataResult:IToPduStringInHex,IPduStringInHexConstructor
+    public class DataAccessError
+    {
+        [XmlAttribute] public string Value { get; set; }
+    }
+
+    public class GetDataResult : IToPduStringInHex, IPduStringInHexConstructor
     {
         public DLMSDataItem Data { get; set; }
-        public AxdrUnsigned8 DataAccessResult { get; set; }
+        [XmlIgnore] public AxdrUnsigned8 DataAccessResult { get; set; }
+        public DataAccessError DataAccessError { get; set; }
 
         public string ToPduStringInHex()
         {
@@ -25,6 +31,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             {
                 return false;
             }
+
             string a = pduStringInHex.Substring(0, 2);
             if (a == "00")
             {
@@ -34,12 +41,21 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 DataAccessResult.Value = "00";
                 return Data.PduStringInHexConstructor(ref pduStringInHex);
             }
+
             if (a == "01")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
                 DataAccessResult = new AxdrUnsigned8();
-                return DataAccessResult.PduStringInHexConstructor(ref pduStringInHex);
+                var b1 = DataAccessResult.PduStringInHexConstructor(ref pduStringInHex);
+                if (b1)
+                {
+                    DataAccessError = new DataAccessError();
+                    DataAccessError.Value = ((DataAccessResult) DataAccessResult.GetEntityValue()).ToString();
+                }
+
+                return b1;
             }
+
             return false;
         }
     }

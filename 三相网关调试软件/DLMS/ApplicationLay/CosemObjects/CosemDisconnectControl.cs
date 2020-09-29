@@ -1,14 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public class CosemDisconnectControl : CosemObject, IDLMSBase, INotifyPropertyChanged
+    public class CosemDisconnectControl : CosemObject, IDlmsBase
     {
         public bool OutputState
         {
@@ -56,11 +54,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             throw new NotImplementedException();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+       
     }
 }

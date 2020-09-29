@@ -2,13 +2,10 @@
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
-using 三相智慧能源网关调试软件.DLMS.Common;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -98,14 +95,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetLogicNameCommand = new RelayCommand<CosemSelfDefineData>(async t =>
             {
                 t.Value = new DLMSDataItem();
-                GetRequest getRequest = new GetRequest()
-                    {GetRequestNormal = new GetRequestNormal(t.GetLogicNameAttributeDescriptor())};
-
-                var dataResult = await Client.GetRequest(getRequest);
-
-                GetResponse getResponse = new GetResponse();
-                var data = dataResult.ByteToString("");
-                if (getResponse.PduStringInHexConstructor(ref data))
+                var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
+                if (getResponse!=null)
                 {
                     t.Value.ValueDisplay.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
                     t.Value = getResponse.GetResponseNormal.Result.Data;
@@ -116,15 +107,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 CosemSelfDefineData = t;
                 t.LastResult = new ErrorCode();
                 t.Value = new DLMSDataItem();
-                GetRequest getRequest = new GetRequest
-                {
-                    GetRequestNormal = new GetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr))
-                };
-//                Response response = await Client.GetRequestAndWaitIncludErrResponse(getRequest);
-               
-                GetResponse requestAndWaitResponse = await Client.GetRequestAndWaitResponse(getRequest);
+                GetResponse requestAndWaitResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
                 if (requestAndWaitResponse != null)
                 {
+                    t.Value.UpdateDisplayFormat(Client.DlmsSettingsViewModel.OctetStringDisplayFormat, Client.DlmsSettingsViewModel.UInt32ValueDisplayFormat);
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
                     t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
@@ -134,12 +120,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 t.Value.UpdateValueBytes();
                 t.LastResult = new ErrorCode();
-                SetRequest setRequest = new SetRequest();
-                setRequest.SetRequestNormal = new SetRequestNormal(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
-                var dataResult = await Client.SetRequest(setRequest);
-                var data = dataResult.ByteToString("");
-                SetResponse setResponse = new SetResponse();
-                if (setResponse.PduStringInHexConstructor(ref data))
+            
+                var setResponse = await Client.SetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
+             
+                if (setResponse!=null)
                 {
                     t.LastResult = (ErrorCode) setResponse.SetResponseNormal.Result;
                 }

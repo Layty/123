@@ -6,7 +6,7 @@ using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    public sealed class ScriptTable : CosemObject, IDLMSBase
+    public sealed class ScriptTable : CosemObject, IDlmsBase
     {
 
         public List<Script> Scripts { get; set; }
@@ -19,18 +19,24 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             ClassId = new AxdrUnsigned16(ObjectType.ScriptTable.ToString("X4"));
         }
 
+        public ScriptTable(string logicalName,ObjectType objectType)
+        {
+            
+        }
+
+        public CosemAttributeDescriptor GetLogicalAttributeDescriptor() => GetCosemAttributeDescriptor(1);
        
         public CosemAttributeDescriptor GetScriptsAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
-        public CosemMethodDescriptor GetCosemMethodDescriptor() => GetCosemMethodDescriptor(1);
-        public byte[] ScriptExecute(ushort scriptId)
-        {
-            DLMSDataItem dlmsData =
-                new DLMSDataItem(DataType.UInt16, BitConverter.GetBytes(scriptId).Reverse().ToArray());
-            return ActionExecute(1, dlmsData);
-        }
+        public CosemMethodDescriptor GetScriptExecuteCosemMethodDescriptor() => GetCosemMethodDescriptor(1);
+//        public byte[] ScriptExecute(ushort scriptId)
+//        {
+//            DLMSDataItem dlmsData =
+//                new DLMSDataItem(DataType.UInt16, BitConverter.GetBytes(scriptId).Reverse().ToArray());
+//            return ActionExecute(1, dlmsData);
+//        }
 
-        string[] IDLMSBase.GetNames()
+        string[] IDlmsBase.GetNames()
         {
             return new string[2]
             {
@@ -39,11 +45,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             };
         }
 
-        int IDLMSBase.GetAttributeCount() => 2;
+        int IDlmsBase.GetAttributeCount() => 2;
 
-        int IDLMSBase.GetMethodCount() => 1;
+        int IDlmsBase.GetMethodCount() => 1;
 
-        DataType IDLMSBase.GetDataType(int index)
+        DataType IDlmsBase.GetDataType(int index)
         {
             switch (index)
             {
