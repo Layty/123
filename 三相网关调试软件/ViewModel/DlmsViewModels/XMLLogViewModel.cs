@@ -1,25 +1,46 @@
 ﻿using System.Text;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using NLog;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class XMLLogViewModel : ObservableObject
     {
-        public Logger Logger = LogManager.GetCurrentClassLogger();
-        private StringBuilder _xmlLog = new StringBuilder();
-        public string XmlLogAppend  
-        {
-            get => _xmlLog.ToString();
-            set { _xmlLog.Append(value); RaisePropertyChanged(); }
-        }
+        public Logger Logger = LogManager.GetLogger("XML");
+
+        private StringBuilder _xmlLogStringBuilder = new StringBuilder();
+//        public string XmlLogAppend  
+//        {
+//            get => _xmlLogStringBuilder.ToString();
+//            set { _xmlLogStringBuilder.Append(value); RaisePropertyChanged(); }
+//        }
 
         public string XmlLog
         {
-            get => _XmlLog;
-            set { _XmlLog = value; RaisePropertyChanged(); }
+            get
+            {
+//                return _XmlLogString;
+                return _xmlLogStringBuilder.ToString();
+            }
+            set
+            {
+                if (_xmlLogStringBuilder.Length > _keepMaxSendAndReceiveDataLength)
+                {
+                    _xmlLogStringBuilder.Clear();
+                }
+
+                if (IsEnableWriteLogToFile)
+                {
+                    Logger.Trace(value);
+                }
+                //                _XmlLogString = value;
+                _xmlLogStringBuilder.Append(value);
+                RaisePropertyChanged();
+            }
         }
-        private string _XmlLog;
+
+//        private string _XmlLogString;
 
         private int _keepMaxSendAndReceiveDataLength = 5000;
 
@@ -31,19 +52,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             get => _keepMaxSendAndReceiveDataLength;
             set
             {
-                if (_xmlLog.Length > _keepMaxSendAndReceiveDataLength)
-                {
-                    _xmlLog.Clear();
-                }
-
-                if (IsEnableWriteLogToFile)
-                {
-                    Logger.Trace(value);
-                }
                 _keepMaxSendAndReceiveDataLength = value;
                 RaisePropertyChanged();
             }
         }
+
         public bool IsEnableWriteLogToFile
         {
             get => _isEnableWriteLogToFile;
@@ -55,5 +68,27 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private bool _isEnableWriteLogToFile;
+
+
+        public RelayCommand ClearAllDataCommand
+        {
+            get => _ClearAllDataCommand;
+            set
+            {
+                _ClearAllDataCommand = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private RelayCommand _ClearAllDataCommand;
+
+        public XMLLogViewModel()
+        {
+            ClearAllDataCommand = new RelayCommand(() =>
+            {
+                _xmlLogStringBuilder.Clear();
+                XmlLog = "";
+            });
+        }
     }
 }

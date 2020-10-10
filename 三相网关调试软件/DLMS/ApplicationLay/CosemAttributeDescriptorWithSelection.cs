@@ -2,25 +2,25 @@
 {
     public class CosemAttributeDescriptorWithSelection :IToPduStringInHex, IPduStringInHexConstructor
     {
-        public CosemAttributeDescriptor CosemAttributeDescriptor { get; set; }
+        public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor SelectiveAccessDescriptor { get; set; }
 
         public CosemAttributeDescriptorWithSelection()
         {
         }
 
-        public CosemAttributeDescriptorWithSelection(CosemAttributeDescriptor cosemAttributeDescriptor,
+        public CosemAttributeDescriptorWithSelection(CosemAttributeDescriptor attributeDescriptor,
             SelectiveAccessDescriptor selectiveAccessDescriptor)
         {
-            CosemAttributeDescriptor = cosemAttributeDescriptor;
+            AttributeDescriptor = attributeDescriptor;
             SelectiveAccessDescriptor = selectiveAccessDescriptor;
         }
 
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            CosemAttributeDescriptor = new CosemAttributeDescriptor();
-            if (!CosemAttributeDescriptor.PduStringInHexConstructor(ref pduStringInHex))
+            AttributeDescriptor = new CosemAttributeDescriptor();
+            if (!AttributeDescriptor.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
@@ -42,7 +42,7 @@
 
         public string ToPduStringInHex()
         {
-            string str = CosemAttributeDescriptor.ToPduStringInHex();
+            string str = AttributeDescriptor.ToPduStringInHex();
             if (SelectiveAccessDescriptor != null)
             {
                 return str + "01" + SelectiveAccessDescriptor.ToPduStringInHex();

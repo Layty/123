@@ -5,6 +5,8 @@ using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 {
+   
+
     public class HeartBeatFrame:IToPduBytes,IPduBytesToConstructor
     {
         public byte[] VersionBytes { get; set; }

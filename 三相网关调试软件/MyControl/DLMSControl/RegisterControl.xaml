@@ -11,7 +11,7 @@
 
     <Grid>
         <materialDesign:Card>
-            <DataGrid ItemsSource="{Binding Registers}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto"
+            <DataGrid ItemsSource="{Binding Registers}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto" CanUserSortColumns="False"
                   VerticalScrollBarVisibility="Auto" FrozenColumnCount="2">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">

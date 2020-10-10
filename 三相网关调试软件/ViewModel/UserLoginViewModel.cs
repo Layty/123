@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Data.OleDb;
+using System.ServiceModel.Description;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.LoginServiceReference;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class UserLoginViewModel : ViewModelBase
-    { 
+    {
         public UserLoginViewModel()
         {
             if (IsInDesignModeStatic)
@@ -22,12 +25,39 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 LoginModel = new UserLoginModel();
 
                 ReadUserInfoFromResource();
-               
-                LoginCommand = new RelayCommand(Login);
 
+                //                LoginCommand = new RelayCommand(Login);
+
+                LoginCommand = new RelayCommand(LoginFormWcfServer);
                 ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
-                
+
                 SaveUserInfoToResourceCommand = new RelayCommand(SaveUserInfoToResource);
+            }
+        }
+
+        private async void LoginFormWcfServer()
+        {
+            LoginClient loginClient = new LoginClient();
+            try
+            {
+                var b = await loginClient.LoginAsync(LoginModel.UserName, LoginModel.Password);
+                if (b)
+                {
+                    LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                    LoginModel.LoginResult = true;
+                    Messenger.Default.Send(true, "LoginResult");
+                    LoginModel.Report = "登录成功";
+                }
+                else
+                {
+                    LoginModel.LoginResult = false;
+                    Messenger.Default.Send("用户名或密码错误！！！");
+                    LoginModel.Report = "用户名或密码错误";
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -116,19 +146,20 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 Settings.Default.CurrentPassword = CEncoder.Encode(LoginModel.Password);
             }
+
             Settings.Default.CurrentUser = LoginModel.UserName;
             Settings.Default.PasswordSave = LoginModel.KeepPassword;
             Settings.Default.Save();
         }
 
-        private string ConnectionStr = Settings.Default.AccessConnectionStr +
-                                       "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
+        private readonly string _connectionStr = Settings.Default.AccessConnectionStr +
+                                                 "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
 
         public void Login()
         {
             LoginModel.Report = "";
             int result;
-            using (OleDbConnection dbConnection = new OleDbConnection(ConnectionStr))
+            using (OleDbConnection dbConnection = new OleDbConnection(_connectionStr))
             {
                 dbConnection.Open();
 
@@ -144,10 +175,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                 LoginModel.LoginResult = true;
-                Messenger.Default.Send(true,"LoginResult");
+                Messenger.Default.Send(true, "LoginResult");
                 LoginModel.Report = "登录成功";
                 //SaveUserInfoToResource();
-
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
@@ -13,7 +14,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 
         public SetRequestWithList SetRequestWithList { get; set; }
 
-        public SetRequestWithListAndFirstDataBlock SetRequestWithListAndFirstDataBlock { get; set; }
+        public SetRequestWithListAndFirstDatablock SetRequestWithListAndFirstDatablock { get; set; }
 
 
         public byte[] ToPduBytes()
@@ -34,11 +35,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             }
             else if (SetRequestWithList != null)
             {
-                list.AddRange(SetRequestWithList.ToPduBytes());
+                list.AddRange(SetRequestWithList.ToPduStringInHex().StringToByte());
             }
-            else if (SetRequestWithListAndFirstDataBlock != null)
+            else if (SetRequestWithListAndFirstDatablock != null)
             {
-                list.AddRange(SetRequestWithListAndFirstDataBlock.ToPduBytes());
+                list.AddRange(SetRequestWithListAndFirstDatablock.ToPduStringInHex().StringToByte());
             }
 
             return list.ToArray();

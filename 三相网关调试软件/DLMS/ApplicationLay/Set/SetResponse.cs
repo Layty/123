@@ -6,11 +6,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
     {
         public SetResponseNormal SetResponseNormal { get; set; }
 
-        public SetResponseDataBlock SetResponseDataBlock { get; set; }
+        public SetResponseForDataBlock SetResponseForDataBlock { get; set; }
 
-        public SetResponseLastDataBlock SetResponseLastDataBlock { get; set; }
+        public SetResponseForLastDataBlock SetResponseForLastDataBlock { get; set; }
 
-        public SetResponseLastDataBlockWithList SetResponseLastDataBlockWithList { get; set; }
+        public SetResponseForLastDataBlockWithList SetResponseForLastDataBlockWithList { get; set; }
 
         public SetResponseWithList SetResponseWithList { get; set; }
 
@@ -23,20 +23,20 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 stringBuilder.Append("01");
                 stringBuilder.Append(SetResponseNormal.ToPduStringInHex());
             }
-            else if (SetResponseDataBlock != null)
+            else if (SetResponseForDataBlock != null)
             {
                 stringBuilder.Append("02");
-                stringBuilder.Append(SetResponseDataBlock.ToPduStringInHex());
+                stringBuilder.Append(SetResponseForDataBlock.ToPduStringInHex());
             }
-            else if (SetResponseLastDataBlock != null)
+            else if (SetResponseForLastDataBlock != null)
             {
                 stringBuilder.Append("03");
-                stringBuilder.Append(SetResponseLastDataBlock.ToPduStringInHex());
+                stringBuilder.Append(SetResponseForLastDataBlock.ToPduStringInHex());
             }
-            else if (SetResponseLastDataBlockWithList != null)
+            else if (SetResponseForLastDataBlockWithList != null)
             {
                 stringBuilder.Append("04");
-                stringBuilder.Append(SetResponseLastDataBlockWithList.ToPduStringInHex());
+                stringBuilder.Append(SetResponseForLastDataBlockWithList.ToPduStringInHex());
             }
             else if (SetResponseWithList != null)
             {
@@ -69,20 +69,20 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 if (a == "02")
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
-                    SetResponseDataBlock = new SetResponseDataBlock();
-                    return SetResponseDataBlock.PduStringInHexConstructor(ref pduStringInHex);
+                    SetResponseForDataBlock = new SetResponseForDataBlock();
+                    return SetResponseForDataBlock.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "03")
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
-                    SetResponseLastDataBlock = new SetResponseLastDataBlock();
-                    return SetResponseLastDataBlock.PduStringInHexContructor(ref pduStringInHex);
+                    SetResponseForLastDataBlock = new SetResponseForLastDataBlock();
+                    return SetResponseForLastDataBlock.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "04")
                 {
                     pduStringInHex = pduStringInHex.Substring(4);
-                    SetResponseLastDataBlockWithList = new SetResponseLastDataBlockWithList();
-                    return SetResponseLastDataBlockWithList.PduStringInHexConstructor(ref pduStringInHex);
+                    SetResponseForLastDataBlockWithList = new SetResponseForLastDataBlockWithList();
+                    return SetResponseForLastDataBlockWithList.PduStringInHexConstructor(ref pduStringInHex);
                 }
                 if (a == "05")
                 {

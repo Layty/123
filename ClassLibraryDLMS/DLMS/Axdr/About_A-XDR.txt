@@ -1,0 +1,3 @@
+﻿
+
+A-XDR 自适应扩展数据表示(AdaptedExtendedDataRepresentation(DL/T790.6))

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
@@ -17,10 +15,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
         {
             
         }
-        public InitiateRequest(ushort MaxReceivePduSize, byte ProposedDlmsVersionNumber)
+        public InitiateRequest(ushort maxReceivePduSize, byte proposedDlmsVersionNumber)
         {
-            this.ProposedDlmsVersionNumber.Value = ProposedDlmsVersionNumber;
-            this.MaxReceivePduSize = MaxReceivePduSize;
+            this.ProposedDlmsVersionNumber.Value = proposedDlmsVersionNumber;
+            this.MaxReceivePduSize = maxReceivePduSize;
            
         }
 

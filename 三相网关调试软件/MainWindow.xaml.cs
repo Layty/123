@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Media;
 using System.Net.Sockets;
+using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -10,6 +12,7 @@ using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
+
 
 namespace 三相智慧能源网关调试软件
 {
@@ -22,20 +25,25 @@ namespace 三相智慧能源网关调试软件
 
         public readonly ColorAnimation ColorAnimation = new ColorAnimation
             {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
-
+        SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         public MainWindow()
         {
             InitializeComponent();
-            
+          
+            string speech = Properties.Settings.Default.OpenSound;
+            //speechSynthesizer.SpeakAsync(speech);
+        
             Timer.Interval = new TimeSpan(500);
             Timer.Tick += Timer_Tick;
-            Timer.Start();
+//            Timer.Start();
 
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (send, e) =>
             {
                 var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
+//                    speechSynthesizer.Speak("后会有期");
+
                     Application.Current.Shutdown();
                 }
             }));
@@ -82,14 +90,7 @@ namespace 三相智慧能源网关调试软件
         }
 
 
-        private void PlayNetSendFlashing(byte[] obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
+     
         private void PlayNetSendFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -98,14 +99,7 @@ namespace 三相智慧能源网关调试软件
             });
         }
 
-        private void PlayNetReceiveFlashing(byte[] obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
+      
         private void PlayNetReceiveFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -193,5 +187,9 @@ namespace 三相智慧能源网关调试软件
         {
           new LogWindow(){Owner = this}.Show();
         }
+
+       
+
+       
     }
 }

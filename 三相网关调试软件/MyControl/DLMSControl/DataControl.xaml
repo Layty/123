@@ -31,7 +31,8 @@
         </Grid>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False" FrozenColumnCount="2"
-                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanUserSortColumns="False"
+                  materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                   HorizontalGridLinesBrush="{DynamicResource PrimaryHueDarkBrush}" GridLinesVisibility="Horizontal">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
@@ -65,28 +66,36 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Binding="{Binding DataName }"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Header="DataName" Width="150" />
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding ClassId.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Header="ClassId" />
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Binding="{Binding LogicalName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                     Header="LogicName" />
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Binding="{Binding Attr.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="Attr" />
 
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Binding="{Binding LastResult}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Header="Result" />
 
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="DataType" />
 
 
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding Value.ValueDisplay.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="ValueDisplay.ValueString" />
+                                    Header="ValueDisplay.ValueString" >
+                  
+                </DataGridTextColumn>
                 <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding Value.LengthAndValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="Value.LengthAndValue" />

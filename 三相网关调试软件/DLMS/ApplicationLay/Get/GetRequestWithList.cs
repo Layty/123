@@ -10,20 +10,19 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
     public class GetRequestWithList : IToPduBytes
     {
-        [XmlIgnore]
-        protected GetRequestType GetRequestType { get; set; } = GetRequestType.WithList;
+        [XmlIgnore] protected GetRequestType GetRequestType { get; set; } = GetRequestType.WithList;
         public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
 
         public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
 
         public GetRequestWithList()
         {
-            
         }
+
         public GetRequestWithList(CosemAttributeDescriptorWithSelection[] attributeDescriptorList)
         {
             AttributeDescriptorList = attributeDescriptorList;
-            InvokeIdAndPriority =new AxdrUnsigned8("C1");
+            InvokeIdAndPriority = new AxdrUnsigned8("C1");
         }
 
         public byte[] ToPduBytes()
@@ -33,26 +32,27 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             pduBytes.Add((byte) GetRequestType);
             pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
             int num = AttributeDescriptorList.Length;
-            if (num<127)
+            if (num < 127)
             {
-                pduBytes.Add((byte)num);
-            }else if (num<255)
+                pduBytes.Add((byte) num);
+            }
+            else if (num < 255)
             {
                 pduBytes.Add(0x81);
-                pduBytes.Add((byte)num);
+                pduBytes.Add((byte) num);
             }
             else
             {
                 pduBytes.Add(0x82);
-               
-                pduBytes.AddRange(BitConverter.GetBytes((byte)num).Reverse().ToArray());
+
+                pduBytes.AddRange(BitConverter.GetBytes((byte) num).Reverse().ToArray());
             }
 
             if (AttributeDescriptorList != null)
             {
                 foreach (var cosemAttributeDescriptor in AttributeDescriptorList)
                 {
-                    pduBytes.AddRange( MyConvert.OctetStringToByteArray(cosemAttributeDescriptor.ToPduStringInHex()));
+                    pduBytes.AddRange(MyConvert.OctetStringToByteArray(cosemAttributeDescriptor.ToPduStringInHex()));
                 }
             }
 

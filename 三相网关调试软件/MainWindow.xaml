@@ -10,7 +10,7 @@
         xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         DataContext="{Binding Source={StaticResource Locator }, Path=Main}"
-        mc:Ignorable="d" WindowState="Normal"
+        mc:Ignorable="d" WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         Loaded="MainWindow_OnLoaded" ResizeMode="CanMinimize"
         WindowStyle="None" AllowsTransparency="True"
@@ -232,6 +232,7 @@
                                 Text="{Binding Title,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"
                                 VerticalAlignment="Center" Foreground="{StaticResource RainBallLinearGradientBrush}" />
+                           
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -242,7 +243,14 @@
                         <!-- 窗口操作区-->
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
-
+                             
+                                <materialDesign:Chip Content="{Binding Source={StaticResource Locator },Path=Login.LoginModel.UserName}"
+                                                     Click="ButtonUserLogin_OnClick">
+                                    <materialDesign:Chip.Icon>
+                                        <Image
+                                            Source="Image/dimi.jpg" />
+                                    </materialDesign:Chip.Icon>
+                                </materialDesign:Chip>
                                 <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="Hello World"
                                                            HorizontalContentAlignment="Center"
                                                            Width="100" Height="30" Click="HeartBeatButton_OnClick" />
@@ -261,7 +269,6 @@
                                 </ToggleButton>
                                 <materialDesign:PopupBox Margin="2 0" PopupMode="Click">
                                     <ListBox>
-                                        <Button x:Name="ButtonUserLogin" Click="ButtonUserLogin_OnClick">登录</Button>
                                         <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="PaletteOutline" />
@@ -486,7 +493,7 @@
             <!-- 状态栏 -->
             <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid" x:Name="ColorZoneStatus">
                 <Grid>
-                    <hc:LoadingLine Foreground="{DynamicResource PrimaryHueLightBrush}" Width="Auto"  />
+                    <!-- <hc:LoadingLine Foreground="{DynamicResource PrimaryHueLightBrush}" Width="Auto"  /> -->
                     <StackPanel Orientation="Horizontal"
                                 DataContext="{Binding Source={StaticResource Locator} ,Path=Login}">
                         <TextBlock x:Name="TextBlockTime" Text="DateTime" Margin="15 0" Width="150"
@@ -551,7 +558,7 @@
                         <TextBlock Text="O(∩_∩)O   (#^.^#)" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         
                        
-                        <myAnimation:TwoBall Height="15"></myAnimation:TwoBall>
+                        <!-- <myAnimation:TwoBall Height="15"></myAnimation:TwoBall> -->
                     </StackPanel>
                     <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                            DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">

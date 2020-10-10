@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class NetFrameMaker : ViewModelBase
     {
-        private DLMSSettingsViewModel DlmsSettingsViewModel { get; set; }
+        private DLMSSettingsViewModel DlmsSettingsViewModel { get; }
 
         public NetFrame NetFrame
         {
@@ -28,73 +28,23 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public NetFrameMaker(DLMSSettingsViewModel settingsViewModel)
         {
             DlmsSettingsViewModel = settingsViewModel;
-
-            _netFrame = new NetFrame()
-            {
-                Version = new byte[] {0x00, 0x01},
-                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
-                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
-            };
-        }
-        private void PackingWrapperHeader()
-        {
-            _netFrame = new NetFrame()
-            {
-                Version = new byte[] { 0x00, 0x01 },
-                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
-                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
-            };
-
         }
 
-        public byte[] Invoke(byte[] apduBytes)
+        private void InitWrapperHeader()
         {
-            PackingWrapperHeader();
-            _netFrame.DLMSApduDataBytes = apduBytes;
-            return _netFrame.ToPduBytes();
+            NetFrame = new NetFrame()
+            {
+                Version = new AxdrUnsigned16("1"),
+                SourceAddress = new AxdrUnsigned16((DlmsSettingsViewModel.ClientAddress.ToString("X4"))),
+                DestAddress = new AxdrUnsigned16((DlmsSettingsViewModel.ServerAddress.ToString("X4"))),
+            };
         }
 
-        public byte[] AarqRequest()
+        public byte[] InvokeApdu(byte[] apduBytes)
         {
-            List<byte> aarq = new List<byte>();
-            aarq.AddRange(new AssociationRequest(DlmsSettingsViewModel).ToPduBytes());
-            aarq.InsertRange(0, new byte[] {(byte) Command.Aarq, (byte) aarq.Count});
-            _netFrame = new NetFrame()
-            {
-                Version = new byte[] {0x00, 0x01},
-                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
-                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
-            };
-            _netFrame.DLMSApduDataBytes = aarq.ToArray();
-            return _netFrame.ToPduBytes();
-        }
-
-
-        public byte[] BuildPduRequestBytes(byte[] pduBytes)
-        {
-            _netFrame = new NetFrame()
-            {
-                Version = new byte[] {0x00, 0x01},
-                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
-                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
-            };
-            _netFrame.DLMSApduDataBytes = pduBytes;
-            return _netFrame.ToPduBytes();
-        }
-
-
-        public byte[] ReleaseRequest()
-        {
-            List<byte> alrq = new List<byte>();
-            alrq.InsertRange(0, new byte[] {(byte) Command.ReleaseRequest, (byte) alrq.Count});
-            _netFrame = new NetFrame()
-            {
-                Version = new byte[] {0x00, 0x01},
-                SourceAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ClientAddress).Reverse().ToArray(),
-                DestAddress = BitConverter.GetBytes(DlmsSettingsViewModel.ServerAddress).Reverse().ToArray(),
-            };
-            _netFrame.DLMSApduDataBytes = alrq.ToArray();
-            return _netFrame.ToPduBytes();
+            InitWrapperHeader();
+            NetFrame.DLMSApduDataBytes = apduBytes;
+            return NetFrame.ToPduBytes();
         }
     }
 }

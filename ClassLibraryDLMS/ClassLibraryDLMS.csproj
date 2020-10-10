@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68CB2ECB-979B-4926-9B0A-28EFD632D437}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClassLibraryDLMS</RootNamespace>
+    <AssemblyName>ClassLibraryDLMS</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Common\Common.cs" />
+    <Compile Include="DLMS\ApplicationLay\AccessParameters.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNextBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithFirstBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionRequestWithListAndFirstBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Action\ActionResponseWithOptionalData.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessMode.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\AccessRange.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ActionSpecification.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ApplicationContextNameType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\BerType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ClockStatus.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Command.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Conformance.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlMode.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ControlState.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataAccessResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\DataType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ErrorCode.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\GetResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ObjectType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\PduType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Priority.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ReleaseRequestReason.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ReleaseResponseReason.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\RequestTypes.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ScriptActionType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Security.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\ServiceClass.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetRequestType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SetResponseType.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\SortMethod.cs" />
+    <Compile Include="DLMS\ApplicationLay\ApplicationLayEnums\Unit.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ApplicationContextName.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\AssociationResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\CallingAPTitle.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\CallingAuthenticationValue.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\InitiateRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\InitiateResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\MechanismName.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ProposedConformance.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ProposedDlmsVersionNumber.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\ResultSourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\SenderACSERequirements.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\SourceDiagnostic.cs" />
+    <Compile Include="DLMS\ApplicationLay\Association\TranslatorGeneralTags.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemAttributeDescriptorWithSelection.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemMethodDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemClock.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemDisconnectControl.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemLoadIdentification.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemObject.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CaptureObjectDefinition.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemData.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemProfileGeneric.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemRegister.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\IDLMSBase.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\Script.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptAction.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\ScriptTable.cs" />
+    <Compile Include="DLMS\ApplicationLay\DataBlockG.cs" />
+    <Compile Include="DLMS\ApplicationLay\DataBlockSA.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSDataItem.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSInfo.cs" />
+    <Compile Include="DLMS\ApplicationLay\DLMSStructure.cs" />
+    <Compile Include="DLMS\ApplicationLay\GetDataResult.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\ExceptionResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestNext.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Get\Response.cs" />
+    <Compile Include="DLMS\ApplicationLay\InvokeIdAndPriority.cs" />
+    <Compile Include="DLMS\ApplicationLay\IPduBytesToConstructor.cs" />
+    <Compile Include="DLMS\ApplicationLay\IToPduBytes.cs" />
+    <Compile Include="DLMS\ApplicationLay\NormalDataParse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Release\ReleaseRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Release\ReleaseResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\SelectiveAccessDescriptor.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithFirstDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithListAndFirstDatablock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponse.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForLastDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForLastDataBlockWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseNormal.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseWithList.cs" />
+    <Compile Include="DLMS\Axdr\AxdrBoolean.cs" />
+    <Compile Include="DLMS\Axdr\AxdrInteger16.cs" />
+    <Compile Include="DLMS\Axdr\AxdrInteger8.cs" />
+    <Compile Include="DLMS\Axdr\AxdrOctetString.cs" />
+    <Compile Include="DLMS\Axdr\AxdrOctetStringFixed.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned16.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned32.cs" />
+    <Compile Include="DLMS\Axdr\AxdrUnsigned8.cs" />
+    <Compile Include="DLMS\Axdr\AxdrVisibleString.cs" />
+    <Compile Include="DLMS\Ber\BerBitString.cs" />
+    <Compile Include="DLMS\Ber\BerInteger.cs" />
+    <Compile Include="DLMS\Ber\BerOctetString.cs" />
+    <Compile Include="DLMS\Common\MyConvert.cs" />
+    <Compile Include="DLMS\CommunicationType.cs" />
+    <Compile Include="DLMS\ConnectionState.cs" />
+    <Compile Include="DLMS\DLMSCommon.cs" />
+    <Compile Include="DLMS\HDLC\DataCheck.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46CommandType.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46ControlTypes.cs" />
+    <Compile Include="DLMS\HDLC\Enums\Hdlc46ResponseType.cs" />
+    <Compile Include="DLMS\HDLC\Enums\HdlcControlFrame.cs" />
+    <Compile Include="DLMS\HDLC\Enums\HdlcFrameType.cs" />
+    <Compile Include="DLMS\HDLC\Enums\StartProtocolType.cs" />
+    <Compile Include="DLMS\HDLC\Hdlc46Frame.cs" />
+    <Compile Include="DLMS\HDLC\HdlcFrameMaker.cs" />
+    <Compile Include="DLMS\HDLC\HdlcFrameParser.cs" />
+    <Compile Include="DLMS\HDLC\HDLC_LLC.cs" />
+    <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
+    <Compile Include="DLMS\HDLC\IEC21EMode\EModeParser.cs" />
+    <Compile Include="DLMS\InterfaceType.cs" />
+    <Compile Include="DLMS\IPduStringInHexConstructor.cs" />
+    <Compile Include="DLMS\IToPduStringInHex.cs" />
+    <Compile Include="DLMS\OBIS\AbstractObisClass.cs" />
+    <Compile Include="DLMS\OBIS\ObisHelper.cs" />
+    <Compile Include="DLMS\Wrapper\HeartBeatFrame.cs" />
+    <Compile Include="DLMS\Wrapper\NetFrame.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DLMS\Axdr\About_A-XDR.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DLMS\Axdr\About_Ber.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

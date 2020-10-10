@@ -56,5 +56,8 @@
     <Setting Name="DlmsDataSheetName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data$</Value>
     </Setting>
+    <Setting Name="OpenSound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">欢迎使用我的软件！</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -92,7 +92,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         }
 
 
-        public void UpdateDisplayFormat(byte[] ValueBytes, DataType dataType, OctetStringDisplayFormat octetString,
+        public void UpdateDisplayFormat(byte[] valueBytes, DataType dataType, OctetStringDisplayFormat octetString,
             UInt32ValueDisplayFormat uInt32Value)
         {
             OctetStringDisplayFormat = octetString;
@@ -102,7 +102,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 DisplayEnum = SelfDisplayEnum.OctetString;
                 if (DisplayEnum == SelfDisplayEnum.OctetString)
                 {
-                    ValueString = NormalDataParse.HowToDisplayOctetString(ValueBytes, OctetStringDisplayFormat);
+                    ValueString = NormalDataParse.HowToDisplayOctetString(valueBytes, OctetStringDisplayFormat);
                 }
             }
             else if (dataType == DataType.UInt32)
@@ -110,7 +110,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 DisplayEnum = SelfDisplayEnum.UInt32;
                 if (DisplayEnum == SelfDisplayEnum.UInt32)
                 {
-                    ValueString = NormalDataParse.HowToDisplayIntValue(ValueBytes, UInt32ValueDisplayFormat);
+                    ValueString = NormalDataParse.HowToDisplayIntValue(valueBytes, UInt32ValueDisplayFormat);
                 }
             }
         }
@@ -213,7 +213,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         public void UpdateValueBytes()
         {
-            setValueByte(DataType, ValueDisplay.ValueString);
+            SetValueByte(DataType, ValueDisplay.ValueString);
         }
 
 
@@ -240,7 +240,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             ParseDLMSDataItem(DataType, hexString);
         }
 
-        private void setValueByte(DataType dataType, string valueString)
+        private void SetValueByte(DataType dataType, string valueString)
         {
             switch (dataType)
             {

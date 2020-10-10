@@ -32,7 +32,7 @@
                                         <TextBlock x:Name="TextBlockTaiAngName" HorizontalAlignment="Center"
                                                    VerticalAlignment="Center" Text="{Binding Name}" />
                                         <TextBlock x:Name="TextBlockClass" HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center" Text="{Binding  ObjectType}" />
+                                                   VerticalAlignment="Center" Text="{Binding  ClassId.Value}" />
                                         <TextBlock x:Name="TextBlockLogicName" HorizontalAlignment="Center"
                                                    VerticalAlignment="Center" Text="{Binding LogicalName}" />
                                     </StackPanel>

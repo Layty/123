@@ -12,7 +12,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
         public SenderACSERequirements SenderACSERequirements { get; set; }
         public MechanismName MechanismName { get; set; }
         public CallingAuthenticationValue CallingAuthenticationValue { get; set; }
-
         public InitiateRequest InitiateRequest { get; set; }
 
         public AssociationRequest()
@@ -39,7 +38,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
             InitiateRequest = new InitiateRequest(dlmsSettingsViewModel);
         }
 
-    
+        /// <summary>
+        /// Application Association Request 应用连接请求    
+        ///对应 Application Association Response 应用连接响应
+        /// </summary>
+        /// <returns>Application Association Request报文字节</returns>
 
         public byte[] ToPduBytes()
         {

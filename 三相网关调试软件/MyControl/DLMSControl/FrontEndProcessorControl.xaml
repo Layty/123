@@ -17,6 +17,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
 
@@ -69,7 +70,37 @@
                         </StackPanel>
 
                     </GroupBox>
-                    <Expander IsExpanded="False" Grid.Row="2" Header="搬运工">
+
+                    <GroupBox Header="主动上报" Grid.Row="2">
+                        <StackPanel>
+
+                            <ItemsControl ItemsSource="{Binding Alarms}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Card UniformCornerRadius="2">
+                                            <StackPanel Orientation="Horizontal" Margin="3">
+                                                <TextBox Text="{Binding DateTime}" materialDesign:HintAssist.Hint="DateTime" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding AlarmClockTime}" materialDesign:HintAssist.Hint="AlarmClockTime" materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding PushId.Value}" materialDesign:HintAssist.Hint="PushId" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding CosemLogicalDeviceName.Value}" materialDesign:HintAssist.Hint="CosemLogicalDeviceName" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding AlarmDescriptor1.Value}" materialDesign:HintAssist.Hint="AlarmDescriptor1" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding AlarmDescriptor2.Value}" materialDesign:HintAssist.Hint="AlarmDescriptor2" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                            </StackPanel>
+                                        </materialDesign:Card>
+                                      
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+
+                        </StackPanel>
+
+                    </GroupBox>
+                    <Expander IsExpanded="False" Grid.Row="3" Header="搬运工">
                         <GroupBox Header="搬运工">
                             <StackPanel>
                                 <CheckBox x:Name="TranslatorCheckBox"

@@ -207,7 +207,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public static DateTime FirstDayOfMonth(DateTime datetime)
         {
-            return datetime.AddDays((double) (1 - datetime.Day));
+            return datetime.AddDays(1 - datetime.Day);
         }
 
 
@@ -232,13 +232,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public static DateTime FirstDayOfPreviousMonth(DateTime datetime)
         {
-            return datetime.AddDays((double) (1 - datetime.Day)).AddMonths(-1);
+            return datetime.AddDays(1 - datetime.Day).AddMonths(-1);
         }
 
 
         public static DateTime LastDayOfPreviousMonth(DateTime datetime)
         {
-            return datetime.AddDays((double) (1 - datetime.Day)).AddDays(-1.0);
+            return datetime.AddDays(1 - datetime.Day).AddDays(-1.0);
         }
 
 
@@ -317,7 +317,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         }
 
         public string[] GetNames1 =>
-            new string[9]
+            new string[]
             {
                 LogicalName,
                 "Time",
@@ -330,15 +330,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
                 "Clock Base"
             };
 
-        public int GetAttributeCount()
-        {
-            return 9;
-        }
+        public int GetAttributeCount() => 9;
 
-        public int GetMethodCount()
-        {
-            return 6;
-        }
+
+        public int GetMethodCount() => 6;
+       
 
         public DataType GetDataType(int index)
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
@@ -7,34 +8,35 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
     public class GetRequestNormal : IToPduBytes
     {
-        protected GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
+        [XmlIgnore] public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
+
         public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
-       =new AxdrUnsigned8("C1");
-        public CosemAttributeDescriptor CosemAttributeDescriptor { get; set; }
+            = new AxdrUnsigned8("C1");
+
+        public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor AccessSelection { get; set; }
-        public CosemAttributeDescriptorWithSelection CosemAttributeDescriptorWithSelection { get; set; }
+        public CosemAttributeDescriptorWithSelection AttributeDescriptorWithSelection { get; set; }
 
         public GetRequestNormal()
         {
         }
 
-        public GetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor)
+        public GetRequestNormal(CosemAttributeDescriptor attributeDescriptor)
         {
-            CosemAttributeDescriptor = cosemAttributeDescriptor;
+            AttributeDescriptor = attributeDescriptor;
         }
 
 
-        public GetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor,
+        public GetRequestNormal(CosemAttributeDescriptor attributeDescriptor,
             SelectiveAccessDescriptor accessSelection)
         {
-            CosemAttributeDescriptor = cosemAttributeDescriptor;
+            AttributeDescriptor = attributeDescriptor;
             AccessSelection = accessSelection;
-         
         }
 
-        public GetRequestNormal(CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
+        public GetRequestNormal(CosemAttributeDescriptorWithSelection attributeDescriptorWithSelection)
         {
-            CosemAttributeDescriptorWithSelection = cosemAttributeDescriptorWithSelection;
+            AttributeDescriptorWithSelection = attributeDescriptorWithSelection;
         }
 
         public byte[] ToPduBytes()
@@ -42,9 +44,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             List<byte> pduBytes = new List<byte>();
             pduBytes.Add((byte) GetRequestType);
             pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
-            if (CosemAttributeDescriptor != null)
+            if (AttributeDescriptor != null)
             {
-                pduBytes.AddRange(CosemAttributeDescriptor.ToPduStringInHex().StringToByte());
+                pduBytes.AddRange(AttributeDescriptor.ToPduStringInHex().StringToByte());
                 pduBytes.Add(0x00);
             }
 
@@ -54,9 +56,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                 pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
             }
 
-            if (CosemAttributeDescriptorWithSelection != null)
+            if (AttributeDescriptorWithSelection != null)
             {
-                pduBytes.AddRange(CosemAttributeDescriptorWithSelection.ToPduStringInHex().StringToByte());
+                pduBytes.AddRange(AttributeDescriptorWithSelection.ToPduStringInHex().StringToByte());
             }
 
             return pduBytes.ToArray();

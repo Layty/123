@@ -6,7 +6,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
 {
     public class GetRequest : IToPduBytes
     {
-       [XmlIgnore] protected Command Command { get; set; } = Command.GetRequest;
+        [XmlIgnore] protected Command Command { get; set; } = Command.GetRequest;
         public GetRequestNormal GetRequestNormal { get; set; }
         public GetRequestNext GetRequestNext { get; set; }
         public GetRequestWithList GetRequestWithList { get; set; }

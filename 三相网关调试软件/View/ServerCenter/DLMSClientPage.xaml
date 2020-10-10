@@ -19,11 +19,11 @@
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Command="{Binding InitRequestCommand }"
                     Margin="3">
-                InitRequest
+                Init
             </Button>
             <Button Command="{Binding ReleaseRequestCommand }"
                     Margin="3">
-                ReleaseRequest
+                Release
             </Button>
             <ToggleButton x:Name="ToggleButtonSelectChannel"   Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
                           IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick"   ></ToggleButton>
@@ -97,9 +97,7 @@
 
         <TabControl Grid.Row="1">
             <TabItem Header="Data">
-
                 <dlmsControl:DataControl />
-
             </TabItem>
             <TabItem Header="Register">
                 <dlmsControl:RegisterControl />

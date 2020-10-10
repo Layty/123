@@ -15,9 +15,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class TftpServerViewModel : ViewModelBase
     {
-        private TftpServer TftpServer;
-        private OpenFileDialog openFileDialog;
-        private FolderBrowserDialog folderBrowserDialog1;
+        private TftpServer _tftpServer;
+        private readonly OpenFileDialog _openFileDialog;
+        private readonly FolderBrowserDialog _folderBrowserDialog1;
         private bool _isStarted;
 
         public bool IsStarted
@@ -65,31 +65,31 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             TftpServerDirectory = Settings.Default.TftpServerDirectory;
             DirectoryCollection =new ObservableCollection<string>();
-            folderBrowserDialog1 = new FolderBrowserDialog {SelectedPath = TftpServerDirectory};
+            _folderBrowserDialog1 = new FolderBrowserDialog {SelectedPath = TftpServerDirectory};
             BrowseCommand = new RelayCommand(BrowseDialog);
 
-            openFileDialog = new OpenFileDialog();
+            _openFileDialog = new OpenFileDialog();
             OpenDialogCommand = new RelayCommand(OpenFileDialog);
 
             StartServerCommand = new RelayCommand(() =>
             {
                 if (GetServerDirectory())
                 {
-                    TftpServer = new TftpServer();
-                    TftpServer?.Start();
-                    TftpServer.OnReadRequest += TftpServer_OnReadRequest;
-                    TftpServer.OnWriteRequest += TftpServer_OnWriteRequest;
-                    TftpServer.OnError += TftpServer_OnError;
+                    _tftpServer = new TftpServer();
+                    _tftpServer?.Start();
+                    _tftpServer.OnReadRequest += TftpServer_OnReadRequest;
+                    _tftpServer.OnWriteRequest += TftpServer_OnWriteRequest;
+                    _tftpServer.OnError += TftpServer_OnError;
                     IsStarted = true;
                 }
                
             });
             StopServerCommand = new RelayCommand(() =>
             {
-                TftpServer.OnReadRequest -= TftpServer_OnReadRequest;
-                TftpServer.OnWriteRequest -= TftpServer_OnWriteRequest;
-                TftpServer.OnError -= TftpServer_OnError;
-                TftpServer?.Dispose();
+                _tftpServer.OnReadRequest -= TftpServer_OnReadRequest;
+                _tftpServer.OnWriteRequest -= TftpServer_OnWriteRequest;
+                _tftpServer.OnError -= TftpServer_OnError;
+                _tftpServer?.Dispose();
                 DirectoryCollection.Clear();
                 IsStarted = false;
             });
@@ -97,8 +97,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public void OpenFileDialog()
         {
-            openFileDialog.InitialDirectory = Environment.CurrentDirectory;
-            openFileDialog.ShowDialog();
+            _openFileDialog.InitialDirectory = Environment.CurrentDirectory;
+            _openFileDialog.ShowDialog();
         }
 
 
@@ -153,10 +153,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void BrowseDialog()
         {
-          DialogResult result=  folderBrowserDialog1.ShowDialog();
+          DialogResult result=  _folderBrowserDialog1.ShowDialog();
           if (result==DialogResult.OK)
           {
-              TftpServerDirectory = folderBrowserDialog1.SelectedPath;
+              TftpServerDirectory = _folderBrowserDialog1.SelectedPath;
           }
 
         }

@@ -15,7 +15,13 @@
                               ItemsSource="{Binding PortNamesCollection}"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               SelectedValue="{Binding SerialPortMaster.PortName,UpdateSourceTrigger=PropertyChanged ,Mode=TwoWay}"
-                              materialDesign:HintAssist.Hint="串口号" />
+                              materialDesign:HintAssist.Hint="串口号" >
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
                     <ComboBox Name="CmbBaudRate"
                               ItemsSource="{Binding BaudRatesCollection}"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"

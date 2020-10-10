@@ -4,11 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Source={StaticResource Locator},Path=XmlLogViewModel}">
     <Grid>
-        <TextBox x:Name="TextBoxXML" Text="{Binding XmlLog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                 TextWrapping="Wrap" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding KeepMaxSendAndReceiveDataLength}"
+                     materialDesign:HintAssist.Hint="最大缓存字符数" />
+            <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
+                      IsChecked="True" />
+            <CheckBox Name="CheckBoxWriteLogToFile" Content="自动捕获日志并写入文件"
+                      IsChecked="{Binding IsEnableWriteLogToFile}" />
+            <Button Name="ButtonClearData" VerticalAlignment="Center"
+                    Command="{Binding ClearAllDataCommand}"
+                    Margin="5"
+                    materialDesign:RippleAssist.Feedback="#DD000000">
+                清空缓存(_C)
+            </Button>
+        </StackPanel>
+        <Grid Grid.Row="1">
+
+       
+        <TextBox VerticalScrollBarVisibility="Auto"  TextChanged="TextBoxBase_OnTextChanged" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+            x:Name="TextBoxReceive" Text="{Binding XmlLog}" 
+            materialDesign:HintAssist.Hint="XmlLog" 
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                 TextWrapping="Wrap"   BorderThickness="2"  Margin="5"
                  ></TextBox>
+        <x:Code>
+            <![CDATA[
+                         private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+                            {
+                                if (CheckBoxScrollToEnd.IsChecked == true)
+                                {
+                                    TextBoxReceive.ScrollToEnd();
+                                }
+                            }
+                        ]]>
+        </x:Code>
+        </Grid>
     </Grid>
 </UserControl>

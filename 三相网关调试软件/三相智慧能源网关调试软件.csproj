@@ -152,6 +152,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -183,6 +184,11 @@
     </ApplicationDefinition>
     <Compile Include="Commom\CEncorder.cs" />
     <Compile Include="Commom\Common.cs" />
+    <Compile Include="Connected Services\LoginServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
     <Compile Include="Converters\BytesParseToIntConverter.cs" />
     <Compile Include="Converters\FactoryConverter.cs" />
@@ -223,6 +229,7 @@
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CaptureObjectDefinition.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs" />
     <Compile Include="DLMS\ApplicationLay\DataBlockSA.cs" />
+    <Compile Include="DLMS\ApplicationLay\DataNotification\DataNotification.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSBitString.cs" />
     <Compile Include="DLMS\ApplicationLay\Association\CallingAuthenticationValue.cs" />
     <Compile Include="DLMS\ApplicationLay\DLMSArray.cs" />
@@ -233,6 +240,8 @@
     <Compile Include="DLMS\ApplicationLay\Get\GetResponseWithList.cs" />
     <Compile Include="DLMS\ApplicationLay\Get\Response.cs" />
     <Compile Include="DLMS\ApplicationLay\IPduBytesToConstructor.cs" />
+    <Compile Include="DLMS\ApplicationLay\Release\ReleaseRequest.cs" />
+    <Compile Include="DLMS\ApplicationLay\Release\ReleaseResponse.cs" />
     <Compile Include="DLMS\IPduStringInHexConstructor.cs" />
     <Compile Include="DLMS\IToPduStringInHex.cs" />
     <Compile Include="DLMS\ApplicationLay\GetDataResult.cs" />
@@ -243,11 +252,11 @@
     <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithFirstDataBlock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithList.cs" />
-    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithListAndFirstDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetRequestWithListAndFirstDatablock.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponse.cs" />
-    <Compile Include="DLMS\ApplicationLay\Set\SetResponseDataBlock.cs" />
-    <Compile Include="DLMS\ApplicationLay\Set\SetResponseLastDataBlock.cs" />
-    <Compile Include="DLMS\ApplicationLay\Set\SetResponseLastDataBlockWithList.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForLastDataBlock.cs" />
+    <Compile Include="DLMS\ApplicationLay\Set\SetResponseForLastDataBlockWithList.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseNormal.cs" />
     <Compile Include="DLMS\ApplicationLay\Set\SetResponseWithList.cs" />
     <Compile Include="DLMS\Axdr\AxdrBoolean.cs" />
@@ -271,6 +280,7 @@
     <Compile Include="DLMS\ApplicationLay\Get\GetRequestWithList.cs" />
     <Compile Include="DLMS\DLMSCommon.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeFrame.cs" />
+    <Compile Include="TcpTranslator.cs" />
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="DLMS\HDLC\IEC21EMode\EModeParser.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemData.cs" />
@@ -696,9 +706,25 @@
     <Resource Include="Image\Image1.jpg" />
     <Resource Include="DLMS\Axdr\About_Ber.txt" />
     <Resource Include="DLMS\Axdr\About_A-XDR.txt" />
+    <Resource Include="Image\曾雄威.jpg" />
+    <Resource Include="Image\dimi.jpg" />
+    <None Include="Connected Services\LoginServiceReference\item.disco" />
+    <None Include="Connected Services\LoginServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\LoginServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\LoginServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Connected Services\LoginServiceReference\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LoginServiceReference\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\LoginServiceReference\UserLoginModel.wsdl" />
     <None Include="DLMS设备信息.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -761,6 +787,12 @@
       <Project>{08060170-2f0f-4c56-82fd-d93ba6f1a56d}</Project>
       <Name>FileTransmit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\LoginServiceReference\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" />

@@ -65,7 +65,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Client = ServiceLocator.Current.GetInstance<DLMSClient>();
             EModeViewModel = Client.EModeViewModel;
             InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
-            DisconnectCommand = new RelayCommand(async () => { await Client.DisconnectRequest(true); });
+            DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(true); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");

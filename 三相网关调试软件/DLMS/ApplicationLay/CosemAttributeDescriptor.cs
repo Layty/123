@@ -4,26 +4,26 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public class CosemAttributeDescriptor : IPduStringInHexConstructor, IToPduStringInHex
     {
-        public AxdrUnsigned16 CosemClassId { get; set; }
-        public AxdrOctetStringFixed CosemObjectInstanceId { get; set; }
-        public AxdrInteger8 CosemObjectAttributeId { get; set; }
+        public AxdrUnsigned16 ClassId { get; set; }
+        public AxdrOctetStringFixed InstanceId { get; set; }
+        public AxdrInteger8 AttributeId { get; set; }
 
         public int Length => CalculateLength();
 
         private int CalculateLength()
         {
             int num = 0;
-            if (CosemClassId != null)
+            if (ClassId != null)
             {
-                num += CosemClassId.Length;
+                num += ClassId.Length;
             }
-            if (CosemObjectInstanceId != null)
+            if (InstanceId != null)
             {
-                num += CosemObjectInstanceId.Length;
+                num += InstanceId.Length;
             }
-            if (CosemObjectAttributeId != null)
+            if (AttributeId != null)
             {
-                num += CosemObjectAttributeId.Length;
+                num += AttributeId.Length;
             }
             return num;
         }
@@ -32,19 +32,19 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
         }
 
-        public CosemAttributeDescriptor(AxdrUnsigned16 cosemClassId, AxdrOctetStringFixed cosemObjectInstanceId, AxdrInteger8 cosemObjectAttributeId)
+        public CosemAttributeDescriptor(AxdrUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrInteger8 attributeId)
         {
-            CosemClassId = cosemClassId;
-            CosemObjectInstanceId = cosemObjectInstanceId;
-            CosemObjectAttributeId = cosemObjectAttributeId;
+            ClassId = classId;
+            InstanceId = instanceId;
+            AttributeId = attributeId;
         }
    
 
 
         public string ToPduStringInHex()
         {
-            return CosemClassId.ToPduStringInHex() + CosemObjectInstanceId.ToPduStringInHex() +
-                   CosemObjectAttributeId.ToPduStringInHex();
+            return ClassId.ToPduStringInHex() + InstanceId.ToPduStringInHex() +
+                   AttributeId.ToPduStringInHex();
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)

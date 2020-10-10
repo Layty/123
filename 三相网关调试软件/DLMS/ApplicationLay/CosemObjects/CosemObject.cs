@@ -15,6 +15,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         public string LogicalName { get; set; }
     }
 
+   
     public abstract class CosemObject : CosemBase, INotifyPropertyChanged
     {
         public AxdrUnsigned16 ClassId
@@ -81,7 +82,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 //        public byte[] SetAttributeData(sbyte attrId, DLMSDataItem dlmsDataItem)
 //        {
 //            SetRequestNormal setRequestNormal =
-//                new SetRequestNormal(new CosemAttributeDescriptor(
+//                new SetRequestNormal(new AttributeDescriptor(
 //                        ClassId, new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
 //                        new AxdrInteger8(attrId))
 //                    , dlmsDataItem);

@@ -92,7 +92,7 @@ namespace 三相智慧能源网关调试软件.DLMS.HDLC
         }
 
         public byte ControlField { get; set; }
-        public Hdlc46Frame(byte destAddress,  byte sourceAddress)
+        public Hdlc46Frame(ushort destAddress, byte sourceAddress)
         {
             CurrentReceiveSequenceNumber = 0;
             CurrentSendSequenceNumber = 0;

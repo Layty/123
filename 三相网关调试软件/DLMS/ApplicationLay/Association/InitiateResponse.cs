@@ -9,6 +9,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 {
     public class UserInformation
     {
+        public InitiateRequest InitiateRequest { get; set; }
+
+        public byte[] ToPduBytes()
+        {
+            return InitiateRequest.ToPduBytes();
+        }
     }
 
     public class InitiateResponse : IPduBytesToConstructor

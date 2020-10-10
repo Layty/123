@@ -73,7 +73,7 @@
         <Grid>
             <materialDesign:Card x:Name="RootBorder"
                                  materialDesign:ShadowAssist.ShadowDepth="Depth5"
-                                 UniformCornerRadius="8"
+                                 UniformCornerRadius="20"
                                  Background="{DynamicResource PrimaryHueDarkBrush}"
                                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                 <Grid>
@@ -85,16 +85,16 @@
                      
                         <materialDesign:PackIcon Grid.Row="0" Kind="UserCircle" x:Name="PackIcon" Width="80" Height="80"
                                                  HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <materialDesign:PackIcon.Triggers>
-                                <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseEnter">
-                                    <BeginStoryboard Storyboard="{StaticResource ChangeBigWidthStoryboard}" />
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseLeave">
-                                    <BeginStoryboard Storyboard="{StaticResource ChangeNormalWidthStoryboard}" />
-                                </EventTrigger>
-                            </materialDesign:PackIcon.Triggers>
+                            <!-- <materialDesign:PackIcon.Triggers> -->
+                            <!--     <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseEnter"> -->
+                            <!--         <BeginStoryboard Storyboard="{StaticResource ChangeBigWidthStoryboard}" /> -->
+                            <!--     </EventTrigger> -->
+                            <!--     <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseLeave"> -->
+                            <!--         <BeginStoryboard Storyboard="{StaticResource ChangeNormalWidthStoryboard}" /> -->
+                            <!--     </EventTrigger> -->
+                            <!-- </materialDesign:PackIcon.Triggers> -->
                         </materialDesign:PackIcon>
-
+                    
                         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -110,7 +110,7 @@
                                                      HorizontalAlignment="Center"
                                                      Height="Auto" Width="Auto"
                                                      VerticalAlignment="Center" />
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5" 
                                      FontSize="20"
                                      Grid.Row="0" Grid.Column="1"
                                      materialDesign:HintAssist.Hint="UserName"
@@ -120,7 +120,7 @@
 
                             <materialDesign:PackIcon Kind="Key" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                      Grid.Row="1" Grid.Column="0" Height="Auto" Width="Auto" />
-                            <PasswordBox Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="5"
+                            <PasswordBox Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="5" materialDesign:ShadowAssist.ShadowDepth="Depth5"
                                          PasswordChar="*"
                                          Grid.Row="1" Grid.Column="1"
                                          CaretBrush="Black"
@@ -155,7 +155,17 @@
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Login" ToolTip="登录" />
                     <TextBlock>登录</TextBlock>
+                    
                 </StackPanel>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource ChangeBigWidthStoryboard}" />
+                        </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource ChangeNormalWidthStoryboard}" />
+                        </EventTrigger>
+                  
+                </Button.Triggers>
             </Button>
             <TextBlock Text="{Binding LoginModel.Report}" Margin="0 0 0 -40"
                        HorizontalAlignment="Center" VerticalAlignment="Bottom" />
