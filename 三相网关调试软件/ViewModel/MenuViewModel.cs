@@ -100,9 +100,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        MenuName = "DLMSClient", FontSize = "20", IconFont = "\xe6ee",
+                        MenuName = "DLMSClient", FontSize = "20", IconFont = "\xe63a",
                         Assembly = "ServerCenter.DLMSClientPage",
-                        Foreground = "#FF0000"
+                        Foreground = "#FFFF00"
                     },
                     new MenuModel
                     {

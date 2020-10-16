@@ -31,7 +31,7 @@ namespace 三相智慧能源网关调试软件.Converters
     public class SocketToEndPointConverter : BaseConverter<SocketToEndPointConverter> {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((Socket) value)?.RemoteEndPoint;
+            return ((Socket) value)?.RemoteEndPoint.ToString();
         }
     }
     public class BytesParseToIntConverter : BaseConverter<BytesParseToIntConverter>

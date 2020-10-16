@@ -8,44 +8,44 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace 三相智慧能源网关调试软件.LoginServiceReference {
+namespace 三相智慧能源网关调试软件.UserLoginServiceReference {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="LoginServiceReference.ILogin")]
-    public interface ILogin {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserLoginServiceReference.IUserLogin")]
+    public interface IUserLogin {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILogin/Login", ReplyAction="http://tempuri.org/ILogin/LoginResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserLogin/Login", ReplyAction="http://tempuri.org/IUserLogin/LoginResponse")]
         bool Login(string userName, string password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILogin/Login", ReplyAction="http://tempuri.org/ILogin/LoginResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserLogin/Login", ReplyAction="http://tempuri.org/IUserLogin/LoginResponse")]
         System.Threading.Tasks.Task<bool> LoginAsync(string userName, string password);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ILoginChannel : 三相智慧能源网关调试软件.LoginServiceReference.ILogin, System.ServiceModel.IClientChannel {
+    public interface IUserLoginChannel : 三相智慧能源网关调试软件.UserLoginServiceReference.IUserLogin, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LoginClient : System.ServiceModel.ClientBase<三相智慧能源网关调试软件.LoginServiceReference.ILogin>, 三相智慧能源网关调试软件.LoginServiceReference.ILogin {
+    public partial class UserLoginClient : System.ServiceModel.ClientBase<三相智慧能源网关调试软件.UserLoginServiceReference.IUserLogin>, 三相智慧能源网关调试软件.UserLoginServiceReference.IUserLogin {
         
-        public LoginClient() {
+        public UserLoginClient() {
         }
         
-        public LoginClient(string endpointConfigurationName) : 
+        public UserLoginClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public LoginClient(string endpointConfigurationName, string remoteAddress) : 
+        public UserLoginClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public LoginClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public UserLoginClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public LoginClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public UserLoginClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         

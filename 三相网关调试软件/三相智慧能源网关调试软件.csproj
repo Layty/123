@@ -184,7 +184,7 @@
     </ApplicationDefinition>
     <Compile Include="Commom\CEncorder.cs" />
     <Compile Include="Commom\Common.cs" />
-    <Compile Include="Connected Services\LoginServiceReference\Reference.cs">
+    <Compile Include="Connected Services\UserLoginServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -708,23 +708,23 @@
     <Resource Include="DLMS\Axdr\About_A-XDR.txt" />
     <Resource Include="Image\曾雄威.jpg" />
     <Resource Include="Image\dimi.jpg" />
-    <None Include="Connected Services\LoginServiceReference\item.disco" />
-    <None Include="Connected Services\LoginServiceReference\configuration91.svcinfo" />
-    <None Include="Connected Services\LoginServiceReference\configuration.svcinfo" />
-    <None Include="Connected Services\LoginServiceReference\Reference.svcmap">
+    <None Include="Connected Services\UserLoginServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\UserLoginServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\UserLoginServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Connected Services\UserLoginServiceReference\UserLogin1.disco" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Connected Services\LoginServiceReference\item.xsd">
+    <None Include="Connected Services\UserLoginServiceReference\UserLogin1.wsdl" />
+    <None Include="Connected Services\UserLoginServiceReference\UserLogin2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\LoginServiceReference\item1.xsd">
+    <None Include="Connected Services\UserLoginServiceReference\UserLogin21.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\LoginServiceReference\UserLoginModel.wsdl" />
     <None Include="DLMS设备信息.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -792,7 +792,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\LoginServiceReference\" />
+    <WCFMetadataStorage Include="Connected Services\UserLoginServiceReference\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.3.1.0\build\MaterialDesignThemes.targets')" />

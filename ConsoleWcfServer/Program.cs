@@ -16,7 +16,7 @@ namespace ConsoleWcfServer
         {
             Uri baseUri = new Uri("http://localhost:9001/");
 
-            using (ServiceHost host = new ServiceHost(typeof(UserLoginModel), baseUri))
+            using (ServiceHost host = new ServiceHost(typeof(UserLogin), baseUri))
             {
                 host.AddServiceEndpoint(typeof(ILogin), new WSHttpBinding(), "Login");
 

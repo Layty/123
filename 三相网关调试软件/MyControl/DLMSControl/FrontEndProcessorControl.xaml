@@ -57,21 +57,31 @@
 
 
                     </StackPanel>
-                    <GroupBox Header="客户端集合" Grid.Row="1" HorizontalAlignment="Stretch">
+                    <GroupBox Header="客户端集合" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3">
                         <StackPanel>
                             <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" />
                             <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合"
                                      materialDesign:HintAssist.IsFloating="True"
                                      ItemsSource="{Binding TcpServerHelper.SocketClientList}"
                                      BorderThickness="2"
-
                                      SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-                                     SelectionChanged="Selector_OnSelectionChanged" />
+                                     SelectionChanged="Selector_OnSelectionChanged" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding RemoteEndPoint}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
                         </StackPanel>
 
                     </GroupBox>
 
-                    <GroupBox Header="主动上报" Grid.Row="2">
+                    <GroupBox Header="主动上报" Grid.Row="2" Margin="3">
                         <StackPanel>
 
                             <ItemsControl ItemsSource="{Binding Alarms}">
@@ -80,6 +90,7 @@
                                         <materialDesign:Card UniformCornerRadius="2">
                                             <StackPanel Orientation="Horizontal" Margin="3">
                                                 <TextBox Text="{Binding DateTime}" materialDesign:HintAssist.Hint="DateTime" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding IpAddress}" materialDesign:HintAssist.Hint="IpAddress" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
                                                 <TextBox Text="{Binding AlarmClockTime}" materialDesign:HintAssist.Hint="AlarmClockTime" materialDesign:HintAssist.IsFloating="True" Margin="3" />
                                                 <TextBox Text="{Binding PushId.Value}" materialDesign:HintAssist.Hint="PushId" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
                                                 <TextBox Text="{Binding CosemLogicalDeviceName.Value}" materialDesign:HintAssist.Hint="CosemLogicalDeviceName" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
@@ -100,7 +111,7 @@
                         </StackPanel>
 
                     </GroupBox>
-                    <Expander IsExpanded="False" Grid.Row="3" Header="搬运工">
+                    <Expander IsExpanded="False" Grid.Row="3" Header="搬运工" Margin="3">
                         <GroupBox Header="搬运工">
                             <StackPanel>
                                 <CheckBox x:Name="TranslatorCheckBox"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fccc11e0-4255-46f2-b83a-da82e86a3224" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="19636b55-8ee5-400c-9a99-1177429a3323" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,13 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:9001/" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:9001/WcfService/UserLogin.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="2e57307a-955b-4a5e-906c-032fdb6dff3f" SourceId="1" SourceUrl="http://localhost:9001/?xsd=xsd1" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="6e91b08c-542c-4fb3-bea4-97f9ef5e9b3c" SourceId="1" SourceUrl="http://localhost:9001/?xsd=xsd0" />
-    <MetadataFile FileName="UserLoginModel.wsdl" MetadataType="Wsdl" ID="1902bfe2-2d89-4d1f-9501-87567419a22b" SourceId="1" SourceUrl="http://localhost:9001/?wsdl" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="0c6dc01b-10cd-4357-a9fd-9119183dbda6" SourceId="1" SourceUrl="http://localhost:9001/?disco" />
+    <MetadataFile FileName="UserLogin2.xsd" MetadataType="Schema" ID="8011f535-a46b-45cc-be8f-6387fc8aa7b6" SourceId="1" SourceUrl="http://localhost:9001/WcfService/UserLogin.svc?xsd=xsd1" />
+    <MetadataFile FileName="UserLogin1.disco" MetadataType="Disco" ID="c169cefd-5072-4564-bd76-5efd600f234d" SourceId="1" SourceUrl="http://localhost:9001/WcfService/UserLogin.svc?disco" />
+    <MetadataFile FileName="UserLogin21.xsd" MetadataType="Schema" ID="08250bae-e3a8-4a77-ae3a-ae1c5167e406" SourceId="1" SourceUrl="http://localhost:9001/WcfService/UserLogin.svc?xsd=xsd0" />
+    <MetadataFile FileName="UserLogin1.wsdl" MetadataType="Wsdl" ID="85cd4ada-a21d-4379-ae23-09a267a454d2" SourceId="1" SourceUrl="http://localhost:9001/WcfService/UserLogin.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

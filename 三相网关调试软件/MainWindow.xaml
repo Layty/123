@@ -28,7 +28,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border Name="border">
+                        <Border Name="border"  CornerRadius="10"  >
                             <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -66,6 +66,7 @@
                                         TargetName="border"
                                         Value="{DynamicResource PrimaryHueMidBrush}" />
                                 <Setter Property="FontSize" Value="20" />
+                            
                                 <Setter Property="FontWeight"
                                         Value="ExtraBlack" />
                             </Trigger>
@@ -75,15 +76,16 @@
             </Setter>
         </Style>
         <DataTemplate x:Key="MenuListBoxItemDataTemplate" DataType="model:MenuModel">
-            <Border>
+            <Border >
                 <RadioButton
-                    Style="{DynamicResource MaterialDesignTabRadioButton}"
+                    Style="{DynamicResource RadioButtonStyle}"
                     x:Name="RadioButton"
                     Height="50" Margin="0"
                     FontSize="{TemplateBinding ListBoxItem.FontSize}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
                     materialDesign:ShadowAssist.ShadowDepth="Depth3"
                     Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.SelectCommand,Mode=TwoWay}"
                     CommandParameter="{Binding}">
@@ -92,7 +94,7 @@
                                  RelativeSource="{RelativeSource AncestorType=ListBoxItem }"
                                  Mode="TwoWay" />
                     </RadioButton.IsChecked>
-                    <Border>
+                  
                         <StackPanel Orientation="Horizontal">
                             <!-- 图标 -->
                             <TextBlock Text="{Binding IconFont}"
@@ -107,11 +109,9 @@
                                        HorizontalAlignment="Center"
                                        x:Name="TextBlockTitle"
                                        VerticalAlignment="Center"
-                                       Margin="15 0 0 0" />
-
+                                       Margin="1 0 0 0" />
                         </StackPanel>
-                    </Border>
-
+                 
 
                 </RadioButton>
             </Border>
@@ -202,12 +202,10 @@
                     <Grid>
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton x:Name="ExpandMenu" Cursor="Hand" HorizontalAlignment="Left"
+                                          DataContext="{Binding Source={StaticResource Locator},Path=Login }" 
                                           IsEnabled="{Binding LoginModel.LoginResult}" Margin="5 0"
                                           IsEnabledChanged="ExpandMenu_OnIsEnabledChanged"
                                           Style="{DynamicResource MaterialDesignHamburgerToggleButton}">
-                                <ToggleButton.DataContext>
-                                    <Binding Path="Login" Source="{StaticResource Locator}" />
-                                </ToggleButton.DataContext>
                                 <ToggleButton.Triggers>
                                     <EventTrigger RoutedEvent="ToggleButton.Checked">
                                         <BeginStoryboard Storyboard="{StaticResource MyOpenMenuStoryboard}" />
@@ -235,9 +233,11 @@
                            
                         </StackPanel>
 
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <TextBlock 
+                            DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Text="{Binding MenuModel.MenuName}"
-                                   DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
+                                  
                                    Foreground="{Binding MenuModel.Foreground}"
                                    FontSize="20" />
                         <!-- 窗口操作区-->
@@ -338,7 +338,7 @@
 
 
                 <!-- 左侧菜单栏 -->
-                <materialDesign:Card DockPanel.Dock="Left">
+                <materialDesign:Card DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource Locator},Path=Login}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
                               Width="200" Margin="-200 0 0 0" RenderTransformOrigin="0.5,0.5">
@@ -356,12 +356,9 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid.DataContext>
-                                <Binding Source="{StaticResource Locator}" Path="Login" />
-                            </Grid.DataContext>
-
+                           
                             <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 0 0 0">
-                                <Expander ExpandDirection="Down" IsExpanded="False" Margin="5"
+                                <Expander ExpandDirection="Down" IsExpanded="False" Margin="5" 
                                           IsEnabled="{Binding LoginModel.LoginResult}"
                                           materialDesign:ExpanderAssist.DownHeaderPadding="20">
                                     <Expander.Header>管理芯</Expander.Header>
@@ -387,13 +384,13 @@
                                                 </StackPanel>
                                             </Button>
                                             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                                                <ListBox ItemsSource="{Binding ManagementMenuCollection}"
+                                                <ListBox 
+                                                    DataContext="{Binding Source={StaticResource Locator},Path=Menu }"
+                                                    ItemsSource="{Binding ManagementMenuCollection}"
                                                          Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid},Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                          SelectedItem="{Binding MenuModel}"
                                                          ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                                    <ListBox.DataContext>
-                                                        <Binding Source="{StaticResource Locator}" Path="Menu" />
-                                                    </ListBox.DataContext>
+                                                   
                                                 </ListBox>
                                             </ScrollViewer>
 
@@ -409,12 +406,12 @@
                                     <Expander.Header>计量芯</Expander.Header>
                                     <Expander.Content>
                                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ListBox ItemsSource="{Binding BaseMeterMenuCollection}"
+                                            <ListBox 
+                                                DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
+                                                ItemsSource="{Binding BaseMeterMenuCollection}"
                                                      SelectedItem="{Binding MenuModel}"
                                                      ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                                <ListBox.DataContext>
-                                                    <Binding Source="{StaticResource Locator}" Path="Menu" />
-                                                </ListBox.DataContext>
+                                                
                                             </ListBox>
                                         </ScrollViewer>
 
@@ -428,13 +425,13 @@
                                     <Expander.Header>服务中心</Expander.Header>
                                     <Expander.Content>
                                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ListBox ItemsSource="{Binding ServicesMenuCollection}" 
+                                            <ListBox 
+                                                DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
+                                                ItemsSource="{Binding ServicesMenuCollection}" 
                                                      SelectedItem="{Binding MenuModel}"
                                                      Style="{DynamicResource ListBoxStyle311}"
                                                      ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                                <ListBox.DataContext>
-                                                    <Binding Source="{StaticResource Locator}" Path="Menu" />
-                                                </ListBox.DataContext>
+                                               
                                             </ListBox>
                                         </ScrollViewer>
 

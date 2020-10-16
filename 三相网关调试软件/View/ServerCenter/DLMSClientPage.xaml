@@ -7,6 +7,8 @@
       xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
       xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
       xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:三相智慧能源网关调试软件="clr-namespace:三相智慧能源网关调试软件"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding Source={StaticResource Locator },Path=DlmsClient}"
@@ -19,20 +21,31 @@
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Command="{Binding InitRequestCommand }"
                     Margin="3">
-                Init
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe610;" FontFamily="/Fonts/#iconfont" ></TextBlock>
+                    <TextBlock Text="Init"></TextBlock>
+                </StackPanel>
             </Button>
             <Button Command="{Binding ReleaseRequestCommand }"
                     Margin="3">
-                Release
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe718;"  FontFamily="/Fonts/#iconfont"></TextBlock>
+                    <TextBlock Text="Release" ></TextBlock>
+                </StackPanel>
+              
             </Button>
-            <ToggleButton x:Name="ToggleButtonSelectChannel"   Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
-                          IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick"   ></ToggleButton>
-            <StackPanel DataContext="{Binding Source={StaticResource Locator },Path=TcpServer }">
-                <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint}" ToolTip="当前操作客户端" />
-                <ListBox x:Name="ListBox" ItemsSource="{Binding TcpServerHelper.SocketClientList}"
-                        DisplayMemberPath="{Binding DLMSClient.CurrentSocket,Converter={converters:SocketToEndPointConverter}}"
+            <ToggleButton x:Name="ToggleButtonSelectChannel"
+                          Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
+                          IsChecked="False" Content="Serial" Click="ToggleButtonSelectChannel_OnClick" />
+            <WrapPanel>
+                <WrapPanel.DataContext>
+                    <Binding Source="{StaticResource Locator}" Path="TcpServer"></Binding>
+                </WrapPanel.DataContext>
+                <ListBox x:Name="ListBox" ItemsSource="{ Binding TcpServerHelper.SocketClientList}"
+                         FontSize="20"
                          SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
                          SelectionChanged="Selector_OnSelectionChanged">
+                 
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -44,32 +57,33 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                         <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" x:Name="border"
-                                                BorderThickness="2" Margin="2">
+                                                CornerRadius="50 0 0 50"
+                                                BorderThickness="2" Margin="10" materialDesign:ShadowAssist.ShadowDepth="Depth5">
                                             <ContentPresenter />
                                         </Border>
                                         <ControlTemplate.Triggers>
-                                            <EventTrigger RoutedEvent="MouseEnter">
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetProperty="FontSize"
-                                                            To="20" Duration="0:0:0.2" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger>
-
-
-                                            <EventTrigger RoutedEvent="MouseLeave">
-
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetProperty="FontSize"
-                                                            BeginTime="0:0:0.2"
-                                                            Duration="0:0:0.2" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger>
+                                            <!-- <EventTrigger RoutedEvent="MouseEnter"> -->
+                                            <!--     <BeginStoryboard> -->
+                                            <!--         <Storyboard> -->
+                                            <!--             <DoubleAnimation -->
+                                            <!--                 Storyboard.TargetProperty="FontSize" -->
+                                            <!--                 To="20" Duration="0:0:0.2" /> -->
+                                            <!--         </Storyboard> -->
+                                            <!--     </BeginStoryboard> -->
+                                            <!-- </EventTrigger> -->
+                                            <!-- -->
+                                            <!-- -->
+                                            <!-- <EventTrigger RoutedEvent="MouseLeave"> -->
+                                            <!-- -->
+                                            <!--     <BeginStoryboard> -->
+                                            <!--         <Storyboard> -->
+                                            <!--             <DoubleAnimation -->
+                                            <!--                 Storyboard.TargetProperty="FontSize" -->
+                                            <!--                 BeginTime="0:0:0.2" -->
+                                            <!--                 Duration="0:0:0.2" /> -->
+                                            <!--         </Storyboard> -->
+                                            <!--     </BeginStoryboard> -->
+                                            <!-- </EventTrigger> -->
                                             <Trigger Property="IsMouseOver"
                                                      Value="True">
                                                 <Setter Property="Background"
@@ -90,8 +104,19 @@
                             </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  >
+                                <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding RemoteEndPoint}" />
+                            </StackPanel>
+
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
+            </WrapPanel>
 
         </StackPanel>
 

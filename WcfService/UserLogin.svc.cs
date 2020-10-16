@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.OleDb;
-using ConsoleWcfServer.Properties;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+using WcfService.Properties;
 
-namespace ConsoleWcfServer
+namespace WcfService
 {
-    public class UserLoginModel:ILogin
+    // 注意: 使用“重构”菜单上的“重命名”命令，可以同时更改代码、svc 和配置文件中的类名“UserLogin”。
+    // 注意: 为了启动 WCF 测试客户端以测试此服务，请在解决方案资源管理器中选择 UserLogin.svc 或 UserLogin.svc.cs，然后开始调试。
+    public class UserLogin : IUserLogin
     {
-        public string UserName { get; set; }
 
-        public string Password { get; set; }
-
-        public bool KeepPassword { get; set; }
 
         /// <summary>
         /// 进度报告
@@ -19,17 +22,12 @@ namespace ConsoleWcfServer
 
         public bool LoginResult { get; set; }
 
-      
-
         public string SucceedLoginTime { get; set; }
-
-        public byte LoginErrorCounts { get; set; }
-
 
         private string ConnectionStr = Settings.Default.AccessConnectionStr +
                                        "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
 
-        public bool Login(string UserName,string Password)
+        public bool Login(string userName, string password)
         {
             Report = "";
             int result;
@@ -37,23 +35,21 @@ namespace ConsoleWcfServer
             {
                 dbConnection.Open();
 
-                string sqlSel = "select count(*) from UserInfo where userName = '" + UserName +
-                                "' and password = '" + Password + "'";
+                string sqlSel = "select count(*) from UserInfo where userName = '" + userName +
+                                "' and password = '" + password + "'";
                 using (OleDbCommand cmd = new OleDbCommand(sqlSel, dbConnection))
                 {
                     result = Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
+          
 
             if (result > 0)
             {
                 SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                 LoginResult = true;
-
                 Report = "登录成功";
                 return true;
-                
-                //SaveUserInfoToResource();
             }
             else
             {

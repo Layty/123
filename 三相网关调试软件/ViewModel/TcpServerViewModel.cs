@@ -230,6 +230,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public class Alarm : IPduStringInHexConstructor
         {
             public string DateTime { get; set; }
+            public string IpAddress { get; set; }
             public string AlarmClockTime { get; set; }
             public AxdrOctetStringFixed PushId { get; set; }
 
@@ -305,6 +306,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             AlarmObject.AlarmDescriptor1 = new AxdrUnsigned32(uint.Parse(itemstring[2]).ToString("X8"));
                             AlarmObject.AlarmDescriptor2 = new AxdrUnsigned32(uint.Parse(itemstring[3]).ToString("X8"));
                             AlarmObject.DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                            AlarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(AlarmObject); });
                         }
                     }

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调试软件", "三相网关调试软件\三相智慧能源网关调试软件.csproj", "{A885422F-B044-41AE-9139-1C384FC2367D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8823B49-FBE2-47A4-9A74-1B6336D1E018} = {A8823B49-FBE2-47A4-9A74-1B6336D1E018}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{31E1DC0B-2A22-4B14-96D9-1692382E2530}"
 EndProject
@@ -20,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{592142EF-CB63-4500-8984-48B9A1AB603B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppLight", "WpfAppLight\WpfAppLight.csproj", "{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\WcfService.csproj", "{A8823B49-FBE2-47A4-9A74-1B6336D1E018}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +68,10 @@ Global
 		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

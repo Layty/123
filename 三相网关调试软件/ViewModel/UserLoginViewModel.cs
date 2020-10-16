@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Data.OleDb;
-using System.ServiceModel.Description;
-using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.LoginServiceReference;
+using 三相智慧能源网关调试软件.UserLoginServiceReference;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
 
@@ -37,27 +35,29 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private async void LoginFormWcfServer()
         {
-            LoginClient loginClient = new LoginClient();
-            try
+            using (UserLoginClient loginClient = new UserLoginClient())
             {
-                var b = await loginClient.LoginAsync(LoginModel.UserName, LoginModel.Password);
-                if (b)
+                try
                 {
-                    LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
-                    LoginModel.LoginResult = true;
-                    Messenger.Default.Send(true, "LoginResult");
-                    LoginModel.Report = "登录成功";
+                    var b = await loginClient.LoginAsync(LoginModel.UserName, LoginModel.Password);
+                    if (b)
+                    {
+                        LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                        LoginModel.LoginResult = true;
+                        Messenger.Default.Send(true, "LoginResult");
+                        LoginModel.Report = "登录成功";
+                    }
+                    else
+                    {
+                        LoginModel.LoginResult = false;
+                        Messenger.Default.Send("用户名或密码错误！！！");
+                        LoginModel.Report = "用户名或密码错误";
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    LoginModel.LoginResult = false;
-                    Messenger.Default.Send("用户名或密码错误！！！");
-                    LoginModel.Report = "用户名或密码错误";
+                    LoginModel.Report = e.Message;
                 }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
             }
         }
 

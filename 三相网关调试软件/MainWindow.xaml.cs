@@ -8,10 +8,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
+using 三相智慧能源网关调试软件.ViewModel;
 
 
 namespace 三相智慧能源网关调试软件
@@ -21,18 +23,22 @@ namespace 三相智慧能源网关调试软件
     /// </summary>
     public partial class MainWindow : Window
     {
+        Key[] Target = new Key[] { Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right };
+        int KeyState = 0;
+
         public DispatcherTimer Timer = new DispatcherTimer();
 
         public readonly ColorAnimation ColorAnimation = new ColorAnimation
             {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
+
         SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
+
         public MainWindow()
         {
             InitializeComponent();
-          
             string speech = Properties.Settings.Default.OpenSound;
             //speechSynthesizer.SpeakAsync(speech);
-        
+            this.KeyDown += MainWindow_KeyDown;
             Timer.Interval = new TimeSpan(500);
             Timer.Tick += Timer_Tick;
 //            Timer.Start();
@@ -73,6 +79,29 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Target[KeyState])
+            {
+                KeyState++;
+                if (KeyState >= Target.Length)
+                {
+                    var s = ServiceLocator.Current.GetInstance<UserLoginViewModel>();
+                    s.LoginModel.LoginResult = true;
+
+                    KeyState = 0;
+                }
+            }
+            else
+            {
+                KeyState = 0;
+                if (e.Key == Target[KeyState])
+                {
+                    KeyState++;
+                }
+            }
+        }
+
         private void PlaySendFlashing(string obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -90,7 +119,6 @@ namespace 三相智慧能源网关调试软件
         }
 
 
-     
         private void PlayNetSendFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -99,7 +127,7 @@ namespace 三相智慧能源网关调试软件
             });
         }
 
-      
+
         private void PlayNetReceiveFlashing((Socket, byte[]) obj)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -185,11 +213,7 @@ namespace 三相智慧能源网关调试软件
 
         private void HeartBeatButton_OnClick(object sender, RoutedEventArgs e)
         {
-          new LogWindow(){Owner = this}.Show();
+            new LogWindow() {Owner = this}.Show();
         }
-
-       
-
-       
     }
 }

@@ -100,7 +100,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 串口参数资源集合
 
         public string[] PortNamesCollection => SerialPort.GetPortNames();
-        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400};
+        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400,115200};
         public Array ParityCollection => Enum.GetValues(typeof(Parity));
         public StopBits[] StopBitsCollection => new[] {StopBits.One, StopBits.OnePointFive, StopBits.Two};
         public int[] DataBitsCollection => new[] {6, 7, 8};

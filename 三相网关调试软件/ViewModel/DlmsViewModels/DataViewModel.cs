@@ -96,14 +96,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 t.LastResult = new ErrorCode();
                 t.Value = new DLMSDataItem();
                 GetResponse requestAndWaitResponse =
-                    await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
+                    await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
                 if (requestAndWaitResponse != null)
                 {
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
                     t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
-                    //t.Value.UpdateDisplayFormat(Client.DlmsSettingsViewModel.OctetStringDisplayFormat,
-                    //    Client.DlmsSettingsViewModel.UInt32ValueDisplayFormat);
                 }
             }, true);
             SetValueCommand = new RelayCommand<CosemSelfDefineData>(async (t) =>
