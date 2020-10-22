@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.Model;
+using Microsoft.Toolkit.Mvvm;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class DataViewModel : ViewModelBase
+    public class DataViewModel :ObservableObject
     {
         public Array OctetStringDisplayFormatArray { get; set; } = Enum.GetValues(typeof(OctetStringDisplayFormat));
         public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
@@ -22,7 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _dataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -34,7 +36,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getLogicNameCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -46,7 +48,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getValueCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -58,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _setValueCommand = value;
-                RaisePropertyChanged();
+             OnPropertyChanged();
             }
         }
 
@@ -103,7 +105,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         .GetEntityValue();
                     t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
                 }
-            }, true);
+            });
             SetValueCommand = new RelayCommand<CosemSelfDefineData>(async (t) =>
             {
                 t.Value.UpdateValueBytes();

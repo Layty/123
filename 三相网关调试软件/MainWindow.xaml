@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
         xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
         xmlns:hc="https://handyorg.github.io/handycontrol"
@@ -25,10 +24,11 @@
                     Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
             <Setter Property="Padding" Value="8" />
             <Setter Property="FontSize" Value="15" />
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border Name="border"  CornerRadius="10"  >
+                        <Border Name="border" CornerRadius="10" Margin="1">
                             <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -43,6 +43,7 @@
                                     </BeginStoryboard>
                                 </EventTrigger.Actions>
                             </EventTrigger>
+
                             <EventTrigger RoutedEvent="MouseLeave">
                                 <EventTrigger.Actions>
                                     <BeginStoryboard>
@@ -66,17 +67,31 @@
                                         TargetName="border"
                                         Value="{DynamicResource PrimaryHueMidBrush}" />
                                 <Setter Property="FontSize" Value="20" />
-                            
+
                                 <Setter Property="FontWeight"
                                         Value="ExtraBlack" />
                             </Trigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+
+                <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Width" To="10"
+                                             Duration="0:0:2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+
+            </Style.Triggers>
         </Style>
         <DataTemplate x:Key="MenuListBoxItemDataTemplate" DataType="model:MenuModel">
-            <Border >
+            <Border x:Name="Border1" BorderThickness="2,0">
                 <RadioButton
                     Style="{DynamicResource RadioButtonStyle}"
                     x:Name="RadioButton"
@@ -94,27 +109,28 @@
                                  RelativeSource="{RelativeSource AncestorType=ListBoxItem }"
                                  Mode="TwoWay" />
                     </RadioButton.IsChecked>
-                  
-                        <StackPanel Orientation="Horizontal">
-                            <!-- 图标 -->
-                            <TextBlock Text="{Binding IconFont}"
-                                       FontFamily="/Fonts/#iconfont"
-                                       x:Name="TextBlockIcon"
-                                       Foreground="{Binding Foreground}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
 
-                            <!-- 文字 -->
-                            <TextBlock Text="{Binding MenuName}"
-                                       HorizontalAlignment="Center"
-                                       x:Name="TextBlockTitle"
-                                       VerticalAlignment="Center"
-                                       Margin="1 0 0 0" />
-                        </StackPanel>
-                 
+                    <StackPanel Orientation="Horizontal">
+                        <!-- 图标 -->
+                        <TextBlock Text="{Binding IconFont}"
+                                   FontFamily="/Fonts/#iconfont"
+                                   x:Name="TextBlockIcon"
+                                   Foreground="{Binding Foreground}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+
+                        <!-- 文字 -->
+                        <TextBlock Text="{Binding MenuName}"
+                                   HorizontalAlignment="Center"
+                                   x:Name="TextBlockTitle"
+                                   VerticalAlignment="Center"
+                                   Margin="1 0 0 0" />
+                    </StackPanel>
+
 
                 </RadioButton>
             </Border>
+          
         </DataTemplate>
         <Storyboard x:Key="MyOpenMenuStoryboard">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)"
@@ -183,395 +199,405 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <materialDesign:DialogHost IsOpen="False">
+    <materialDesign:DialogHost IsOpen="False" >
         <materialDesign:DialogHost.DialogContent>
             <myControl:SkinView />
         </materialDesign:DialogHost.DialogContent>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <!-- 标题栏-->
-            <Grid Grid.Row="0">
-                <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
+      
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- 标题栏-->
+                <Grid Grid.Row="0">
+                    <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
                                           MouseDown="ColorZone_OnMouseDown"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth3"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <ToggleButton x:Name="ExpandMenu" Cursor="Hand" HorizontalAlignment="Left"
-                                          DataContext="{Binding Source={StaticResource Locator},Path=Login }" 
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="ExpandMenu" Cursor="Hand" HorizontalAlignment="Left"
+                                          DataContext="{Binding Source={StaticResource Locator},Path=Login }"
                                           IsEnabled="{Binding LoginModel.LoginResult}" Margin="5 0"
                                           IsEnabledChanged="ExpandMenu_OnIsEnabledChanged"
                                           Style="{DynamicResource MaterialDesignHamburgerToggleButton}">
-                                <ToggleButton.Triggers>
-                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                        <BeginStoryboard Storyboard="{StaticResource MyOpenMenuStoryboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  OpenCard1Storyboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  OpenCard2Storyboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  OpenCard3Storyboard}" />
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                        <BeginStoryboard Storyboard="{StaticResource MyCloseMenuStoryboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  CloseCard1Storyboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  CloseCard2Storyboard}" />
-                                        <BeginStoryboard Storyboard="{StaticResource  CloseCard3Storyboard}" />
-                                    </EventTrigger>
-                                </ToggleButton.Triggers>
+                                    <ToggleButton.Triggers>
+                                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                            <BeginStoryboard Storyboard="{StaticResource MyOpenMenuStoryboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  OpenCard1Storyboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  OpenCard2Storyboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  OpenCard3Storyboard}" />
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                            <BeginStoryboard Storyboard="{StaticResource MyCloseMenuStoryboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  CloseCard1Storyboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  CloseCard2Storyboard}" />
+                                            <BeginStoryboard Storyboard="{StaticResource  CloseCard3Storyboard}" />
+                                        </EventTrigger>
+                                    </ToggleButton.Triggers>
 
-                            </ToggleButton>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                </ToggleButton>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Foreground="{StaticResource RainBallLinearGradientBrush}">
                                 <materialDesign:PackIcon Kind="MicrosoftVisualStudio" Width="Auto" Height="Auto" />
-                            </TextBlock>
+                                </TextBlock>
                             <TextBlock
                                 Text="{Binding Title,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}" HorizontalAlignment="Center"
-                                VerticalAlignment="Center" Foreground="{StaticResource RainBallLinearGradientBrush}" />
-                           
-                        </StackPanel>
+                                VerticalAlignment="Center" Foreground="{StaticResource RainBallLinearGradientBrush}"
+                                
+                                >
+                              
+                            </TextBlock>
 
-                        <TextBlock 
+                            </StackPanel>
+
+                        <TextBlock
                             DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="{Binding MenuModel.MenuName}"
-                                  
-                                   Foreground="{Binding MenuModel.Foreground}"
-                                   FontSize="20" />
-                        <!-- 窗口操作区-->
-                        <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
-                            <StackPanel Orientation="Horizontal">
-                             
-                                <materialDesign:Chip Content="{Binding Source={StaticResource Locator },Path=Login.LoginModel.UserName}"
-                                                     Click="ButtonUserLogin_OnClick">
-                                    <materialDesign:Chip.Icon>
-                                        <Image
+                            Text="{Binding MenuModel.MenuName}"
+
+                            Foreground="{Binding MenuModel.Foreground}"
+                            FontSize="20" >
+                            <TextBlock.Effect>
+                                <DropShadowEffect Direction="0" Color="{DynamicResource MaterialDesignShadow}" BlurRadius="1" Opacity="0.5"
+                                                   RenderingBias="Performance" ShadowDepth="20"
+                                                  ></DropShadowEffect>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                            <!-- 窗口操作区-->
+                            <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal">
+
+                                    <materialDesign:Chip
+                                    Content="{Binding Source={StaticResource Locator },Path=Login.LoginModel.UserName}"
+                                    Click="ButtonUserLogin_OnClick">
+                                        <materialDesign:Chip.Icon>
+                                            <Image
                                             Source="Image/dimi.jpg" />
-                                    </materialDesign:Chip.Icon>
-                                </materialDesign:Chip>
-                                <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="Hello World"
+                                        </materialDesign:Chip.Icon>
+                                    </materialDesign:Chip>
+                                    <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="HelLog"
                                                            HorizontalContentAlignment="Center"
-                                                           Width="100" Height="30" Click="HeartBeatButton_OnClick" />
-                                <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
+                                                           Height="30" Click="HeartBeatButton_OnClick" />
+                                    <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
                                               IsChecked="False"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
                                               ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
-                                    <ToggleButton.Content>
-                                        <materialDesign:PackIcon
+                                        <ToggleButton.Content>
+                                            <materialDesign:PackIcon
                                             Kind="EyeOff" />
-                                    </ToggleButton.Content>
-                                    <materialDesign:ToggleButtonAssist.OnContent>
-                                        <materialDesign:PackIcon
+                                        </ToggleButton.Content>
+                                        <materialDesign:ToggleButtonAssist.OnContent>
+                                            <materialDesign:PackIcon
                                             Kind="Eye" />
-                                    </materialDesign:ToggleButtonAssist.OnContent>
-                                </ToggleButton>
-                                <materialDesign:PopupBox Margin="2 0" PopupMode="Click">
-                                    <ListBox>
-                                        <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="PaletteOutline" />
-                                                <TextBlock>主题</TextBlock>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
-                                    </ListBox>
-                                </materialDesign:PopupBox>
-                                <ToggleButton x:Name="ToggleButtonTopMost" Margin="2 0"
+                                        </materialDesign:ToggleButtonAssist.OnContent>
+                                    </ToggleButton>
+                                    <materialDesign:PopupBox Margin="2 0" PopupMode="Click">
+                                        <ListBox>
+                                            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="PaletteOutline" />
+                                                    <TextBlock>主题</TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
+                                        </ListBox>
+                                    </materialDesign:PopupBox>
+                                    <ToggleButton x:Name="ToggleButtonTopMost" Margin="2 0"
                                               Style="{StaticResource MaterialDesignSwitchAccentToggleButton}">
-                                    <materialDesign:PackIcon
+                                        <materialDesign:PackIcon
                                         Kind="Pin"
                                         RenderTransformOrigin=".5,.5">
-                                        <materialDesign:PackIcon.RenderTransform>
-                                            <RotateTransform
+                                            <materialDesign:PackIcon.RenderTransform>
+                                                <RotateTransform
                                                 Angle="45" />
-                                        </materialDesign:PackIcon.RenderTransform>
-                                    </materialDesign:PackIcon>
-                                    <materialDesign:ToggleButtonAssist.OnContent>
-                                        <materialDesign:PackIcon
+                                            </materialDesign:PackIcon.RenderTransform>
+                                        </materialDesign:PackIcon>
+                                        <materialDesign:ToggleButtonAssist.OnContent>
+                                            <materialDesign:PackIcon
                                             Kind="Pin" />
-                                    </materialDesign:ToggleButtonAssist.OnContent>
+                                        </materialDesign:ToggleButtonAssist.OnContent>
 
-                                </ToggleButton>
-                                <Button x:Name="Minus" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
+                                    </ToggleButton>
+                                    <Button x:Name="Minus" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
                                         Command="SystemCommands.MinimizeWindowCommand">
-                                    <TextBlock Style="{StaticResource MinTextBlockTransformY}">
+                                        <TextBlock Style="{StaticResource MinTextBlockTransformY}">
                                         <materialDesign:PackIcon Kind="Minus" />
-                                    </TextBlock>
+                                        </TextBlock>
 
-                                </Button>
-                                <Button x:Name="ButtonRestore" Margin="2" Background="Transparent"
+                                    </Button>
+                                    <Button x:Name="ButtonRestore" Margin="2" Background="Transparent"
                                         BorderBrush="{x:Null}"
                                         Command="SystemCommands.RestoreWindowCommand"
                                         Visibility="Collapsed">
-                                    <materialDesign:PackIcon Kind="WindowRestore" />
-                                </Button>
-                                <Button x:Name="ButtonMaximize" Margin="2" Background="Transparent"
+                                        <materialDesign:PackIcon Kind="WindowRestore" />
+                                    </Button>
+                                    <Button x:Name="ButtonMaximize" Margin="2" Background="Transparent"
                                         BorderBrush="{x:Null}"
                                         Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}">
-                                    <TextBlock>
+                                        <TextBlock>
                                         <materialDesign:PackIcon Kind="WindowMaximize" />
-                                    </TextBlock>
-                                </Button>
-                                <Button x:Name="ButtonClose" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
+                                        </TextBlock>
+                                    </Button>
+                                    <Button x:Name="ButtonClose" Margin="2" Background="Transparent" BorderBrush="{x:Null}"
                                         Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">
-                                    <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}">
+                                        <TextBlock Style="{StaticResource CloseTextBlockRotateAngle}">
                                         <materialDesign:PackIcon Kind="WindowClose" />
-                                    </TextBlock>
+                                        </TextBlock>
 
-                                </Button>
-                            </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+
+
                         </Grid>
+                    </materialDesign:ColorZone>
+                </Grid>
+                <Border Grid.Row="1" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource PrimaryHueDarkBrush}">
+                <Grid Grid.Row="1" ShowGridLines="False">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="250" />
+                    </Grid.ColumnDefinitions>
 
 
-                    </Grid>
-                </materialDesign:ColorZone>
-            </Grid>
-
-            <Grid Grid.Row="1" ShowGridLines="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" x:Name="ColumnLog" MaxWidth="250" />
-                </Grid.ColumnDefinitions>
-
-
-                <!-- 左侧菜单栏 -->
-                <materialDesign:Card DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource Locator},Path=Login}">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                    <!-- 左侧菜单栏 -->
+                    <materialDesign:Card DockPanel.Dock="Left"
+                                     DataContext="{Binding Source={StaticResource Locator},Path=Login}">
+                    
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <Grid x:Name="GridMenu" HorizontalAlignment="Left" VerticalAlignment="Stretch"
                               Width="200" Margin="-200 0 0 0" RenderTransformOrigin="0.5,0.5">
-                            <Grid.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </Grid.RenderTransform>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                           
-                            <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 0 0 0">
-                                <Expander ExpandDirection="Down" IsExpanded="False" Margin="5" 
+                                <Grid.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Grid.RenderTransform>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <materialDesign:Card x:Name="Card1" Grid.Row="0" Margin="-200 0 0 0">
+                                    <Expander ExpandDirection="Down" IsExpanded="False" Margin="5"
                                           IsEnabled="{Binding LoginModel.LoginResult}"
-                                          materialDesign:ExpanderAssist.DownHeaderPadding="20">
-                                    <Expander.Header>管理芯</Expander.Header>
-                                    <Expander.Content>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.DataContext>
-                                                <Binding Source="{StaticResource Locator}" Path="ENetClient" />
-                                            </Grid.DataContext>
-                                            <Button Grid.Row="0"
+                                          materialDesign:ExpanderAssist.VerticalHeaderPadding="20">
+                                        <Expander.Header>管理芯</Expander.Header>
+                                        <Expander.Content>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.DataContext>
+                                                    <Binding Source="{StaticResource Locator}" Path="ENetClient" />
+                                                </Grid.DataContext>
+                                                <Button Grid.Row="0"
                                                     Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                                                     HorizontalAlignment="Center" VerticalAlignment="Center"
                                                     x:Name="ButtonGateWayLogin" Click="ButtonGateWayLogin_OnClick">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <materialDesign:PackIcon Kind="Ethernet"
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon Kind="Ethernet"
                                                                              HorizontalAlignment="Center"
                                                                              VerticalAlignment="Center" />
-                                                    <TextBlock Text="登录" HorizontalAlignment="Center"
+                                                        <TextBlock Text="登录" HorizontalAlignment="Center"
                                                                VerticalAlignment="Center" />
-                                                </StackPanel>
-                                            </Button>
-                                            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                                                <ListBox 
+                                                    </StackPanel>
+                                                </Button>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                                                    <ListBox
                                                     DataContext="{Binding Source={StaticResource Locator},Path=Menu }"
                                                     ItemsSource="{Binding ManagementMenuCollection}"
-                                                         Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid},Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                         SelectedItem="{Binding MenuModel}"
-                                                         ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                                   
-                                                </ListBox>
-                                            </ScrollViewer>
+                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid},Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    SelectedItem="{Binding MenuModel}"
+                                                    ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}" />
+                                                </ScrollViewer>
 
-                                        </Grid>
+                                            </Grid>
 
-                                    </Expander.Content>
-                                </Expander>
-                            </materialDesign:Card>
+                                        </Expander.Content>
+                                    </Expander>
+                                </materialDesign:Card>
 
-                            <materialDesign:Card x:Name="Card2" Margin="-200 0 0 0" Grid.Row="1">
-                                <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
-                                          materialDesign:ExpanderAssist.DownHeaderPadding="20">
-                                    <Expander.Header>计量芯</Expander.Header>
-                                    <Expander.Content>
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ListBox 
+                                <materialDesign:Card x:Name="Card2" Margin="-200 0 0 0" Grid.Row="1">
+                                    <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
+                                          materialDesign:ExpanderAssist.VerticalHeaderPadding="20">
+                                        <Expander.Header>计量芯</Expander.Header>
+                                        <Expander.Content>
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <ListBox
                                                 DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
                                                 ItemsSource="{Binding BaseMeterMenuCollection}"
-                                                     SelectedItem="{Binding MenuModel}"
-                                                     ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                                
-                                            </ListBox>
-                                        </ScrollViewer>
+                                                SelectedItem="{Binding MenuModel}"
+                                                ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}" />
+                                            </ScrollViewer>
 
-                                    </Expander.Content>
-                                </Expander>
-                            </materialDesign:Card>
+                                        </Expander.Content>
+                                    </Expander>
+                                </materialDesign:Card>
 
-                            <materialDesign:Card x:Name="Card3" Margin="-200 0 0 0" Grid.Row="2">
-                                <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
-                                          materialDesign:ExpanderAssist.DownHeaderPadding="20">
-                                    <Expander.Header>服务中心</Expander.Header>
-                                    <Expander.Content>
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ListBox 
+                                <materialDesign:Card x:Name="Card3" Margin="-200 0 0 0" Grid.Row="2">
+                                    <Expander IsEnabled="{Binding LoginModel.LoginResult}" Margin="5"
+                                          materialDesign:ExpanderAssist.VerticalHeaderPadding="20">
+                                        <Expander.Header>服务中心</Expander.Header>
+                                        <Expander.Content>
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <ListBox
                                                 DataContext="{Binding Source={StaticResource Locator},Path=Menu}"
-                                                ItemsSource="{Binding ServicesMenuCollection}" 
-                                                     SelectedItem="{Binding MenuModel}"
-                                                     Style="{DynamicResource ListBoxStyle311}"
-                                                     ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
-                                               
-                                            </ListBox>
-                                        </ScrollViewer>
+                                                ItemsSource="{Binding ServicesMenuCollection}"
+                                                SelectedItem="{Binding MenuModel}"
+                                                Style="{DynamicResource ListBoxStyle311}"
+                                                ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}" />
+                                            </ScrollViewer>
 
-                                    </Expander.Content>
-                                </Expander>
-                            </materialDesign:Card>
+                                        </Expander.Content>
+                                    </Expander>
+                                </materialDesign:Card>
 
-                        </Grid>
-                    </ScrollViewer>
-                </materialDesign:Card>
+                            </Grid>
+                        </ScrollViewer>
+                    </materialDesign:Card>
 
-                <!-- 导航页面区 -->
-                <materialDesign:Card Grid.Column="1" Width="Auto" HorizontalAlignment="Stretch">
-                    <Frame x:Name="Frame"
+                    <!-- 导航页面区 -->
+                    <materialDesign:Card Grid.Column="1" Width="Auto" HorizontalAlignment="Stretch">
+                        <Frame x:Name="Frame"
                            NavigationUIVisibility="Hidden"
                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                            Content="{Binding CurrentPage,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
-                </materialDesign:Card>
-
-                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch"
-                              ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
-                              ResizeDirection="Columns" />
-                <!-- 右侧日志区 -->
-                <Grid Grid.Column="2" x:Name="CardLog" Width="250" Visibility="Collapsed">
-                    <materialDesign:Card>
-                        <TabControl x:Name="TabControl">
-                            <TabItem>
-                                <TabItem.Header>
-                                    <materialDesign:PackIcon Kind="SerialPort" />
-                                </TabItem.Header>
-
-                                <myControl:SerialPortLogger />
-                            </TabItem>
-                            <TabItem>
-                                <TabItem.Header>
-                                    <materialDesign:PackIcon Kind="Ethernet" />
-                                </TabItem.Header>
-                                <myControl:NetLogger />
-                            </TabItem>
-                            <TabItem>
-                                <TabItem.Header>
-                                    <materialDesign:PackIcon Kind="Xml" />
-                                </TabItem.Header>
-                                <myControl:XMLLogControl />
-                            </TabItem>
-                        </TabControl>
-
-
                     </materialDesign:Card>
 
+                    <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                              ShowsPreview="False" Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
+                              ResizeDirection="Columns" />
+                    <!-- 右侧日志区 -->
+                    <Grid Grid.Column="2" x:Name="CardLog" Width="250" Visibility="Collapsed">
+                        <materialDesign:Card>
+                            <TabControl x:Name="TabControl">
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <materialDesign:PackIcon Kind="SerialPort" />
+                                    </TabItem.Header>
+
+                                    <myControl:SerialPortLogger />
+                                </TabItem>
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <materialDesign:PackIcon Kind="Ethernet" />
+                                    </TabItem.Header>
+                                    <myControl:NetLogger />
+                                </TabItem>
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <materialDesign:PackIcon Kind="Xml" />
+                                    </TabItem.Header>
+                                    <myControl:XMLLogControl />
+                                </TabItem>
+                            </TabControl>
+
+
+                        </materialDesign:Card>
+
+                    </Grid>
+
+
                 </Grid>
+                </Border>
+            <!-- 状态栏 -->
+                <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid" x:Name="ColorZoneStatus">
+                    <Grid>
+                        <!-- <hc:LoadingLine Foreground="{DynamicResource PrimaryHueLightBrush}" Width="Auto"  /> -->
+                        <StackPanel Orientation="Horizontal"
+                                DataContext="{Binding Source={StaticResource Locator} ,Path=Login}">
+                            <TextBlock x:Name="TextBlockTime" Text="DateTime" Margin="15 0" Width="150"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding LoginModel.UserName,StringFormat='用户\{0}'}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock
+                            Text="{Binding LoginModel.SucceedLoginTime,StringFormat='\{0}'}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock
+                            Text="{Binding LoginModel.Report,StringFormat='\{0}'}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <UniformGrid Columns="2" Margin="5 0">
+                                <StackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="Ethernet" />
+                                    <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
+                                           Margin="5 0">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="-45" />
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+
+                                    </TextBlock>
+                                    <TextBlock x:Name="BlkNetReceive" Foreground="#FFFFFFFF"
+                                           RenderTransformOrigin="0.5,0.5">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="145" />
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" Margin="5 0">
+                                    <materialDesign:PackIcon Kind="SerialPort" />
+                                    <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
+                                           Margin="5 0">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="-45" />
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+
+                                    </TextBlock>
+                                    <TextBlock x:Name="BlkReceive" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="145" />
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    <materialDesign:PackIcon Kind="Send" />
+                                    </TextBlock>
+                                    <StackPanel />
+                                </StackPanel>
+
+                            </UniformGrid>
+                            <TextBlock Text="O(∩_∩)O   (#^.^#)" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+
+                            <!-- <myAnimation:TwoBall Height="15"></myAnimation:TwoBall> -->
+                        </StackPanel>
+                        <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                           DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <materialDesign:PackIcon Kind="ResizeBottomRight" Height="{TemplateBinding Height}"
+                                                         Width="{TemplateBinding Width}" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+
+                </materialDesign:ColorZone>
 
 
             </Grid>
-
-            <!-- 状态栏 -->
-            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid" x:Name="ColorZoneStatus">
-                <Grid>
-                    <!-- <hc:LoadingLine Foreground="{DynamicResource PrimaryHueLightBrush}" Width="Auto"  /> -->
-                    <StackPanel Orientation="Horizontal"
-                                DataContext="{Binding Source={StaticResource Locator} ,Path=Login}">
-                        <TextBlock x:Name="TextBlockTime" Text="DateTime" Margin="15 0" Width="150"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding LoginModel.UserName,StringFormat='用户\{0}'}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock
-                            Text="{Binding LoginModel.SucceedLoginTime,StringFormat='\{0}'}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock
-                            Text="{Binding LoginModel.Report,StringFormat='\{0}'}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <UniformGrid Columns="2" Margin="5 0">
-                            <StackPanel Orientation="Horizontal" Margin="5 0" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Ethernet" />
-                                <TextBlock Name="BlkNetSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
-                                           Margin="5 0">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="-45" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-
-                                </TextBlock>
-                                <TextBlock x:Name="BlkNetReceive" Foreground="#FFFFFFFF"
-                                           RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="145" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-                                </TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center" Margin="5 0">
-                                <materialDesign:PackIcon Kind="SerialPort" />
-                                <TextBlock Name="BlkSend" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5"
-                                           Margin="5 0">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="-45" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-
-                                </TextBlock>
-                                <TextBlock x:Name="BlkReceive" Foreground="#FFFFFFFF" RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="145" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-                                </TextBlock>
-                                <StackPanel />
-                            </StackPanel>
-
-                        </UniformGrid>
-                        <TextBlock Text="O(∩_∩)O   (#^.^#)" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        
-                       
-                        <!-- <myAnimation:TwoBall Height="15"></myAnimation:TwoBall> -->
-                    </StackPanel>
-                    <Thumb Cursor="SizeNWSE" x:Name="RaiseThumb" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                           DragDelta="RaiseThumb_OnDragDelta" Width="20" Height="20">
-                        <Thumb.Template>
-                            <ControlTemplate TargetType="Thumb">
-                                <materialDesign:PackIcon Kind="ResizeBottomRight" Height="{TemplateBinding Height}"
-                                                         Width="{TemplateBinding Width}" />
-                            </ControlTemplate>
-                        </Thumb.Template>
-                    </Thumb>
-                </Grid>
-
-            </materialDesign:ColorZone>
-
-
-        </Grid>
+      
+       
     </materialDesign:DialogHost>
 
 

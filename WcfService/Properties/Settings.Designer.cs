@@ -25,7 +25,8 @@ namespace WcfService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\\UserInfo.mdb;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Administrator\\source\\repos" +
+            "\\123\\WcfService\\UserInfo.mdb;")]
         public string AccessConnectionStr {
             get {
                 return ((string)(this["AccessConnectionStr"]));

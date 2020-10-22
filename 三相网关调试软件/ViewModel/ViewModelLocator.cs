@@ -74,7 +74,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<TcpServerViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TftpServerViewModel>();
                 SimpleIoc.Default.Register<NetLogViewModel>();
-                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
+//                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
                 SimpleIoc.Default.Register<XMLLogViewModel>();
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
                 #endregion
@@ -169,8 +169,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// <summary>
         /// IIC数据视图模型
         /// </summary>
-        public IicDataViewModel IicDataViewModel =>
-            ServiceLocator.Current.GetInstance<IicDataViewModel>();
+//        public IicDataViewModel IicDataViewModel =>
+//            ServiceLocator.Current.GetInstance<IicDataViewModel>();
 
 
         #endregion

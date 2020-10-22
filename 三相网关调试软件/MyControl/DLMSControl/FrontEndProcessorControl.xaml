@@ -65,7 +65,7 @@
                                      ItemsSource="{Binding TcpServerHelper.SocketClientList}"
                                      BorderThickness="2"
                                      SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-                                     SelectionChanged="Selector_OnSelectionChanged" >
+                                     SelectionChanged="Selector_OnSelectionChanged">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -89,16 +89,30 @@
                                     <DataTemplate>
                                         <materialDesign:Card UniformCornerRadius="2">
                                             <StackPanel Orientation="Horizontal" Margin="3">
-                                                <TextBox Text="{Binding DateTime}" materialDesign:HintAssist.Hint="DateTime" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
-                                                <TextBox Text="{Binding IpAddress}" materialDesign:HintAssist.Hint="IpAddress" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
-                                                <TextBox Text="{Binding AlarmClockTime}" materialDesign:HintAssist.Hint="AlarmClockTime" materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding PushId.Value}" materialDesign:HintAssist.Hint="PushId" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
-                                                <TextBox Text="{Binding CosemLogicalDeviceName.Value}" materialDesign:HintAssist.Hint="CosemLogicalDeviceName" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
-                                                <TextBox Text="{Binding AlarmDescriptor1.Value}" materialDesign:HintAssist.Hint="AlarmDescriptor1" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
-                                                <TextBox Text="{Binding AlarmDescriptor2.Value}" materialDesign:HintAssist.Hint="AlarmDescriptor2" materialDesign:HintAssist.IsFloating="True" Margin="3"/>
+                                                <TextBox Text="{Binding DateTime}"
+                                                         materialDesign:HintAssist.Hint="DateTime"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding IpAddress}"
+                                                         materialDesign:HintAssist.Hint="IpAddress"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding AlarmClockTime}"
+                                                         materialDesign:HintAssist.Hint="AlarmClockTime"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding PushId.Value}"
+                                                         materialDesign:HintAssist.Hint="PushId"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding CosemLogicalDeviceName.Value}"
+                                                         materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding AlarmDescriptor1.Value}"
+                                                         materialDesign:HintAssist.Hint="AlarmDescriptor1"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
+                                                <TextBox Text="{Binding AlarmDescriptor2.Value}"
+                                                         materialDesign:HintAssist.Hint="AlarmDescriptor2"
+                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
                                             </StackPanel>
                                         </materialDesign:Card>
-                                      
+
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                                 <ItemsControl.ItemsPanel>
@@ -135,6 +149,24 @@
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              materialDesign:HintAssist.Hint="远端端口"
                                              materialDesign:HintAssist.IsFloating="True" />
+                                    <ItemsControl
+                                        ItemsSource="{Binding Translator._socketBindingDictionary,UpdateSourceTrigger=PropertyChanged}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel ></StackPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="10"
+                                                               Text="{Binding Key.RemoteEndPoint,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" />
+                                                    <TextBlock Margin="10"
+                                                               Text="{Binding Value.ClientSocket.RemoteEndPoint,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                     <CheckBox
                                         IsChecked="{Binding Translator.IsNeedToConvert12HeartBeatTo8,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                         ToolTip="是否心跳帧长度12位转8位">
