@@ -95,15 +95,14 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-
+          
         </StackPanel>
 
         <TabControl Grid.Row="1">
             <TabItem Header="Data">
                 <dlmsControl:DataControl />
             </TabItem>
-            <TabItem Header="Register"  >
+            <TabItem Header="Register">
                 <dlmsControl:RegisterControl />
             </TabItem>
             <TabItem Header="UtilityTables">

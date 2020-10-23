@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
@@ -81,17 +82,17 @@ namespace 三相智慧能源网关调试软件
 
         private ObservableCollection<Socket> _socketClientList;
 
-        public ObservableCollection<EndPoint> SocketClientListEndPoint
-        {
-            get => _socketClientListEndPoint;
-            set
-            {
-                _socketClientListEndPoint = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private ObservableCollection<EndPoint> _socketClientListEndPoint = new ObservableCollection<EndPoint>();
+//        public ObservableCollection<EndPoint> SocketClientListEndPoint
+//        {
+//            get => _socketClientListEndPoint;
+//            set
+//            {
+//                _socketClientListEndPoint = value;
+//                RaisePropertyChanged();
+//            }
+//        }
+//
+//        private ObservableCollection<EndPoint> _socketClientListEndPoint = new ObservableCollection<EndPoint>();
 
         public int ResponseTimeOut
         {
@@ -205,7 +206,7 @@ namespace 三相智慧能源网关调试软件
                 OnNotifyStatusMsg(exception.Message);
             }
         }
-
+        SpeechSynthesizer speech=new SpeechSynthesizer();
 
         private void StartListenServerAsync(Socket serverSocket)
         {
@@ -222,9 +223,10 @@ namespace 三相智慧能源网关调试软件
                         var socket1 = clientSocket;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
+                            speech.SpeakAsync("有新的连接");
                             SocketClientList.Add(socket1);
-                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
-                            Dictionary[socket1] = socket1.RemoteEndPoint;
+//                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
+//                            Dictionary[socket1] = socket1.RemoteEndPoint;
                         });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
@@ -272,10 +274,10 @@ namespace 三相智慧能源网关调试软件
                             SocketClientList.Remove(sockClient);
                         }
 
-                        if (Dictionary.ContainsKey(sockClient))
-                        {
-                            Dictionary.Remove(sockClient);
-                        }
+//                        if (Dictionary.ContainsKey(sockClient))
+//                        {
+//                            Dictionary.Remove(sockClient);
+//                        }
                     });
 
                     break;
@@ -289,13 +291,13 @@ namespace 三相智慧能源网关调试软件
                         if (SocketClientList.Contains(sockClient))
                         {
                             SocketClientList.Remove(sockClient);
-                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
+//                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
                         }
 
-                        if (Dictionary.ContainsKey(sockClient))
-                        {
-                            Dictionary.Remove(sockClient);
-                        }
+//                        if (Dictionary.ContainsKey(sockClient))
+//                        {
+//                            Dictionary.Remove(sockClient);
+//                        }
                     });
                     break;
                 }

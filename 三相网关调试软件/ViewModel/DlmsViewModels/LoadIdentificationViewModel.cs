@@ -172,19 +172,22 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             CosemLoadIdentification = new CosemLoadIdentification();
             GetEarliestCommand = new RelayCommand(async () =>
             {
-                var LoadDataBytes = await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetEarliestLoadIdentification());
+                var LoadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetEarliestLoadIdentification());
                 ParseData(LoadDataBytes);
             });
             GetLatestCommand = new RelayCommand(async () =>
             {
-                var LoadDataBytes = await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLatestLoadIdentification());
+                var LoadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLatestLoadIdentification());
                 ParseData(LoadDataBytes);
             });
             GetGivenTimeCommand = new RelayCommand<string>(async (t) =>
             {
                 DateTime.TryParse(t, out var setDateTime);
                 CosemClock dt = new CosemClock(setDateTime);
-                var LoadDataBytes = await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLoadIdentificationWithTime(dt));
+                var LoadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLoadIdentificationWithTime(dt));
                 ParseData(LoadDataBytes);
             });
         }

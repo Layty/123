@@ -19,43 +19,57 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-
-
                     <StackPanel>
-                        <ComboBox Margin="3" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                  IsEditable="True"
-                                  materialDesign:HintAssist.Hint="Server IP(editable)"
-                                  materialDesign:HintAssist.FloatingScale="0.50"
-                                  Height="50" FontSize="20"
-                                  Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
-                            <ComboBoxItem>192.168.1.155</ComboBoxItem>
-                            <ComboBoxItem>127.0.0.1</ComboBoxItem>
-                        </ComboBox>
-                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
-                                 Height="50"
-                                 materialDesign:HintAssist.FloatingScale="0.50"
-                                 materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
-                                 materialDesign:HintAssist.Hint="Listen Port" FontSize="20"
-                                 Text="{Binding TcpServerHelper.ListenPort}" />
-                        <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
-                                 materialDesign:HintAssist.Hint="超时时间" FontSize="20"
-                                 Text="{Binding TcpServerHelper.ResponseTimeOut}" />
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Margin="3" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      IsEditable="True"
+                                      materialDesign:HintAssist.Hint="Server IP(editable)"
+                                      materialDesign:HintAssist.IsFloating="True"
+                                      materialDesign:HintAssist.FloatingScale="0.50"
+                                      Height="50" FontSize="20"
+                                      Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
+                                <ComboBoxItem>192.168.1.155</ComboBoxItem>
+                                <ComboBoxItem>127.0.0.1</ComboBoxItem>
+                            </ComboBox>
+                            <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
+                                     Height="50"
+                                     materialDesign:HintAssist.FloatingScale="0.50"
+                                     materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                                     materialDesign:HintAssist.Hint="Listen Port" FontSize="20"
+                                     Text="{Binding TcpServerHelper.ListenPort}" />
+                            <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
+                                     materialDesign:HintAssist.FloatingScale="0.50"
+                                     materialDesign:HintAssist.Hint="超时时间" FontSize="20"
+                                     materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                                     Text="{Binding TcpServerHelper.ResponseTimeOut}" />
+                            <TextBox
+                                Text="{Binding HeartBeatDelayTime ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                materialDesign:HintAssist.FloatingScale="0.50"
+                                materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                                materialDesign:HintAssist.Hint="心跳帧延时响应(ms)" Margin="5" FontSize="20"
+                                materialDesign:HintAssist.IsFloating="True" />
+                        </StackPanel>
 
-                        <TextBox Text="{Binding HeartBeatDelayTime ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 materialDesign:HintAssist.Hint="心跳帧延时响应(ms)"
-                                 materialDesign:HintAssist.IsFloating="True" />
                         <CheckBox IsChecked="{Binding IsAutoResponseHeartBeat}" Content="自动识别并响应心跳帧" />
-                        <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
-                        <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
-                        <TextBox x:Name="TextBlockSendData" TextWrapping="Wrap" Height="50"
-                                 Text="{Binding CurrentSendMsg}"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 materialDesign:HintAssist.Hint="自定义发送帧" />
-                        <Button x:Name="ButtonHeartBit" Margin="3" Content="发送"
-                                Command="{Binding SendDataToServerCommand}" />
-
-
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
+                            <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                              
+                            </Grid.ColumnDefinitions>
+                            <Button  x:Name="ButtonHeartBit" Margin="3" Content="发送"
+                                    Command="{Binding SendDataToServerCommand}" />
+                            <TextBox x:Name="TextBlockSendData" Grid.Column="1" TextWrapping="Wrap" Height="50"
+                                     Text="{Binding CurrentSendMsg}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     materialDesign:HintAssist.Hint="自定义发送帧" />
+                           
+                        </Grid>
                     </StackPanel>
                     <GroupBox Header="客户端集合" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3">
                         <StackPanel>
@@ -76,11 +90,12 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+                         
 
                         </StackPanel>
 
                     </GroupBox>
-
+              
                     <GroupBox Header="主动上报" Grid.Row="2" Margin="3">
                         <StackPanel>
 
@@ -153,7 +168,7 @@
                                         ItemsSource="{Binding Translator._socketBindingDictionary,UpdateSourceTrigger=PropertyChanged}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel ></StackPanel>
+                                                <StackPanel />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>

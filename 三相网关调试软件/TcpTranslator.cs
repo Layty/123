@@ -75,7 +75,7 @@ namespace 三相智慧能源网关调试软件
         /// <summary>
         /// 表端Socket 为key====>服务端的socket绑定 value
         /// </summary>
-        readonly IDictionary<Socket, TcpClientHelper> _socketBindingDictionary =
+  public       IDictionary<Socket, TcpClientHelper> _socketBindingDictionary { get;set; }=
             new Dictionary<Socket, TcpClientHelper>();
 
         /// <summary>

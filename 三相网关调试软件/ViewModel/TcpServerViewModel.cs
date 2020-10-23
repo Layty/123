@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -225,6 +227,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
             Alarms = new ObservableCollection<Alarm>();
+            SocketAndAddressCollection=new ConcurrentDictionary<Socket, string>();
         }
 
         public class Alarm : IPduStringInHexConstructor
@@ -323,6 +326,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
+
+
+        public IDictionary<Socket,string> SocketAndAddressCollection    
+        {
+            get => _socketAndAddressCollection;
+            set { _socketAndAddressCollection = value; RaisePropertyChanged(); }
+        }
+        private IDictionary<Socket, string> _socketAndAddressCollection;
+
+
         /// <summary>
         /// 根据是否自动回心跳帧，判断是否为心跳帧类型，模拟主站处理心跳帧功能
         /// </summary>
@@ -343,6 +356,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     heart.OverturnDestinationSource();
                     Thread.Sleep(HeartBeatDelayTime);
+//                   var stringaddr= Encoding.Default.GetString(heart.MeterAddressBytes);
+//                    if (!SocketAndAddressCollection.ContainsKey(clientSocket))
+//                    {
+//                        SocketAndAddressCollection[clientSocket] = stringaddr;
+//                    }
+                   
                     TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
                 }
             }
