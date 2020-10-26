@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <WrapPanel Orientation="Horizontal" Grid.Row="0">
             <Button Command="{Binding InitRequestCommand }"
                     Margin="3">
                 <StackPanel Orientation="Horizontal">
@@ -96,7 +96,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
           
-        </StackPanel>
+        </WrapPanel>
 
         <TabControl Grid.Row="1">
             <TabItem Header="Data">

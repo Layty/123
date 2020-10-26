@@ -1,6 +1,8 @@
+using System.Windows.Navigation;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
@@ -11,47 +13,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            
-            if (ViewModelBase.IsInDesignModeStatic)
-            {
-                //// Create design time view services and models
-                //SimpleIoc.Default.Register<IDataService, DesignDataService>();
-               
-                #region 主程序界面相关
-
-                SimpleIoc.Default.Register<MainViewModel>(); //主窗体
-                SimpleIoc.Default.Register<MenuViewModel>(); //菜单
-                SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
-                SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
-               
-                #endregion
-
-                #region 管理芯相关业务
-
-                SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
-                SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
-              
-                SimpleIoc.Default.Register<NetLogViewModel>();
-                SimpleIoc.Default.Register<TftpServerViewModel>();
-                #endregion
-
-                #region 计量芯相关业务
-
-                SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
-                SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //DLMS协议
-                SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
-                #endregion
-
-                #region 智能仪表
-
-                SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
-
-                #endregion
-            }
-            else
+            //注册服务
             {
                 SimpleIoc.Default.Register<DLMSSettingsViewModel>();
                 SimpleIoc.Default.Register<DLMSClient>();
+              
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<ClockViewModel>();
@@ -98,17 +64,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #endregion
 
+             
             }
 
         }
-        //public INavigationService InitNavigationService()
-        //{
-        //    NavigationService navigationService = new NavigationService();
-
-        //    navigationService.Configure("Login", typeof(UserLoginPage));
-        //    navigationService.Configure("Main", typeof(MainWindow));
-        //    return navigationService;
-        //}
+      
 
         #region 主程序界面相关
 

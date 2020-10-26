@@ -75,13 +75,13 @@ namespace 三相智慧能源网关调试软件
         /// <summary>
         /// 表端Socket 为key====>服务端的socket绑定 value
         /// </summary>
-  public       IDictionary<Socket, TcpClientHelper> _socketBindingDictionary { get;set; }=
+        public IDictionary<Socket, TcpClientHelper> SocketBindingDictionary { get; set; } =
             new Dictionary<Socket, TcpClientHelper>();
 
         /// <summary>
         /// 需要12位转8位时，存储 12位表地址的高四位地址
         /// </summary>
-        private IDictionary<Socket, byte[]> MeterHeight4ByteDictionary = new Dictionary<Socket, byte[]>();
+        private readonly IDictionary<Socket, byte[]> MeterHeight4ByteDictionary = new Dictionary<Socket, byte[]>();
 
         public TcpTranslator()
         {
@@ -117,7 +117,7 @@ namespace 三相智慧能源网关调试软件
         {
             TcpClientHelper tcpClientHelper = new TcpClientHelper(RemoteIp, RemotePort);
             tcpClientHelper.ConnectToServer();
-            _socketBindingDictionary[obj] = tcpClientHelper;
+            SocketBindingDictionary[obj] = tcpClientHelper;
 
             tcpClientHelper.ReceiveByte += TcpClientHelper_ReceiveByte;
         }
@@ -129,7 +129,7 @@ namespace 三相智慧能源网关调试软件
         /// <param name="arg2"></param>
         private void TcpListener_ReceiveBytes(Socket meterSocket, byte[] arg2)
         {
-            foreach (var socket in _socketBindingDictionary)
+            foreach (var socket in SocketBindingDictionary)
             {
                 if (meterSocket == socket.Key)
                 {
@@ -157,7 +157,7 @@ namespace 三相智慧能源网关调试软件
 
         private void TcpClientHelper_ReceiveByte(Socket arg1, byte[] arg2)
         {
-            foreach (var socket in _socketBindingDictionary)
+            foreach (var socket in SocketBindingDictionary)
             {
                 if (arg1 == socket.Value.ClientSocket)
                 {
@@ -189,7 +189,7 @@ namespace 三相智慧能源网关调试软件
         {
             TcpListener.CloseSever();
 
-            _socketBindingDictionary.Clear();
+            SocketBindingDictionary.Clear();
         }
     }
 }

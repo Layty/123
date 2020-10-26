@@ -82,17 +82,6 @@ namespace 三相智慧能源网关调试软件
 
         private ObservableCollection<Socket> _socketClientList;
 
-//        public ObservableCollection<EndPoint> SocketClientListEndPoint
-//        {
-//            get => _socketClientListEndPoint;
-//            set
-//            {
-//                _socketClientListEndPoint = value;
-//                RaisePropertyChanged();
-//            }
-//        }
-//
-//        private ObservableCollection<EndPoint> _socketClientListEndPoint = new ObservableCollection<EndPoint>();
 
         public int ResponseTimeOut
         {

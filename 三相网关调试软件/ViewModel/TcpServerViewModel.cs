@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -230,6 +229,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SocketAndAddressCollection=new ConcurrentDictionary<Socket, string>();
         }
 
+        public enum AlarmType
+        {
+            None,
+            PowerOff,
+            ByPass,
+           
+        }
         public class Alarm : IPduStringInHexConstructor
         {
             public string DateTime { get; set; }
@@ -241,7 +247,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             public AxdrUnsigned32 AlarmDescriptor1 { get; set; }
             public AxdrUnsigned32 AlarmDescriptor2 { get; set; }
 
-
+            public AlarmType AlarmType { get; set; }
             public bool PduStringInHexConstructor(ref string pduStringInHex)
             {
                 PushId = new AxdrOctetStringFixed(6);
@@ -267,7 +273,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     return false;
                 }
-
+                
+              
                 return true;
             }
         }
@@ -297,7 +304,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         var dlmsStructure = new DlmsStructure();
                         if (dlmsStructure.PduStringInHexConstructor(ref value))
                         {
-                            var itemstring = new List<string> { };
+                            var itemstring = new List<string>();
                             foreach (var dlmsStructureItem in dlmsStructure.Items)
                             {
                                 itemstring.Add(dlmsStructureItem.ValueDisplay.ValueString);
@@ -310,6 +317,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             AlarmObject.AlarmDescriptor2 = new AxdrUnsigned32(uint.Parse(itemstring[3]).ToString("X8"));
                             AlarmObject.DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                             AlarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
+                            switch (AlarmObject.AlarmDescriptor2.Value)
+                            {
+                                case "02000000": AlarmObject.AlarmType = AlarmType.ByPass; break;
+                                case "00000001": AlarmObject.AlarmType = AlarmType.PowerOff; break;
+                                default:
+                                    AlarmObject.AlarmType = AlarmType.None; break;
+                            }
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(AlarmObject); });
                         }
                     }
