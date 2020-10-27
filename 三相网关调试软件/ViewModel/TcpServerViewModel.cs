@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
@@ -206,7 +207,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             IsAutoResponseHeartBeat = true;
 //            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
             TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes1;
-        
+
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
             Translator = new TcpTranslator();
@@ -228,13 +229,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
             Alarms = new ObservableCollection<Alarm>();
-            SocketAndAddressCollection=new ConcurrentDictionary<Socket, string>();
+            SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
         }
 
         private void TcpServerHelper_ReceiveBytes1(Socket arg1, byte[] arg2)
         {
             CalcTcpServerHelper_ReceiveBytes(arg1, arg2);
-           
         }
 
         public enum AlarmType
@@ -242,8 +242,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             None,
             PowerOff,
             ByPass,
-           
         }
+
         public class Alarm : IPduStringInHexConstructor
         {
             public string DateTime { get; set; }
@@ -256,6 +256,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             public AxdrUnsigned32 AlarmDescriptor2 { get; set; }
 
             public AlarmType AlarmType { get; set; }
+
             public bool PduStringInHexConstructor(ref string pduStringInHex)
             {
                 PushId = new AxdrOctetStringFixed(6);
@@ -281,8 +282,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     return false;
                 }
-                
-              
+
+
                 return true;
             }
         }
@@ -327,11 +328,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             AlarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
                             switch (AlarmObject.AlarmDescriptor2.Value)
                             {
-                                case "02000000": AlarmObject.AlarmType = AlarmType.ByPass; break;
-                                case "00000001": AlarmObject.AlarmType = AlarmType.PowerOff; break;
+                                case "02000000":
+                                    AlarmObject.AlarmType = AlarmType.ByPass;
+                                    break;
+                                case "00000001":
+                                    AlarmObject.AlarmType = AlarmType.PowerOff;
+                                    break;
                                 default:
-                                    AlarmObject.AlarmType = AlarmType.None; break;
+                                    AlarmObject.AlarmType = AlarmType.None;
+                                    break;
                             }
+
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(AlarmObject); });
                         }
                     }
@@ -347,11 +354,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 //                throw;
             }
         }
+
         private byte[] _returnBytes;
         private readonly List<byte> _listReturnBytes = new List<byte>();
         private bool _isNeedContinue = false;
         private int TotalLength { get; set; }
         private int NeedReceiveLength { get; set; }
+
         private void CalcTcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             if (bytes == null)
@@ -413,11 +422,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        public IDictionary<Socket,string> SocketAndAddressCollection    
+        public IDictionary<Socket, string> SocketAndAddressCollection
         {
             get => _socketAndAddressCollection;
-            set { _socketAndAddressCollection = value; RaisePropertyChanged(); }
+            set
+            {
+                _socketAndAddressCollection = value;
+                RaisePropertyChanged();
+            }
         }
+
         private IDictionary<Socket, string> _socketAndAddressCollection;
 
 
@@ -426,7 +440,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         /// <param name="clientSocket"></param>
         /// <param name="bytes"></param>
-        private void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
+        private async void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             if (!IsAutoResponseHeartBeat)
             {
@@ -440,9 +454,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 if (result)
                 {
                     heart.OverturnDestinationSource();
-                    Thread.Sleep(HeartBeatDelayTime);
 
-                   
+                    await Task.Delay(HeartBeatDelayTime);
+
                     TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
                 }
             }

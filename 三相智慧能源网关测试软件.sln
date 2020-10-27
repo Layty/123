@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\Wc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{521F3528-4C45-4EC6-8D64-F2CF4E9B1980}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoWebApi", "ToDoWebApi\ToDoWebApi.csproj", "{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{521F3528-4C45-4EC6-8D64-F2CF4E9B1980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{521F3528-4C45-4EC6-8D64-F2CF4E9B1980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{521F3528-4C45-4EC6-8D64-F2CF4E9B1980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
