@@ -7,6 +7,7 @@ using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
+using NLog;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
@@ -203,8 +204,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             HeartBeatDelayTime = 1000;
             TcpServerHelper = new TcpServerHelper(Settings.Default.GatewayIpAddress, 8881);
             IsAutoResponseHeartBeat = true;
-            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
-            TcpServerHelper.ReceiveBytes += Socket_ReceiveBytes_Notify;
+//            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
+            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes1;
+        
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
             Translator = new TcpTranslator();
@@ -227,6 +229,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             Alarms = new ObservableCollection<Alarm>();
             SocketAndAddressCollection=new ConcurrentDictionary<Socket, string>();
+        }
+
+        private void TcpServerHelper_ReceiveBytes1(Socket arg1, byte[] arg2)
+        {
+            CalcTcpServerHelper_ReceiveBytes(arg1, arg2);
+           
         }
 
         public enum AlarmType
@@ -339,8 +347,71 @@ namespace 三相智慧能源网关调试软件.ViewModel
 //                throw;
             }
         }
+        private byte[] _returnBytes;
+        private readonly List<byte> _listReturnBytes = new List<byte>();
+        private bool _isNeedContinue = false;
+        private int TotalLength { get; set; }
+        private int NeedReceiveLength { get; set; }
+        private void CalcTcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
+        {
+            if (bytes == null)
+            {
+                return;
+            }
 
+            if (!_isNeedContinue)
+            {
+                if (bytes.Length < 7)
+                {
+                    Logger lgLogger = LogManager.GetCurrentClassLogger();
+                    lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
+                    _listReturnBytes.AddRange(bytes);
+                    _returnBytes = _listReturnBytes.ToArray();
 
+                    _listReturnBytes.Clear();
+                }
+                else
+                {
+                    if (bytes[7] == (bytes.Length - 8))
+                    {
+                        _listReturnBytes.AddRange(bytes);
+                        _returnBytes = _listReturnBytes.ToArray();
+                        Socket_ReceiveBytes_Notify(clientSocket, _returnBytes);
+                        TcpServerHelper_ReceiveBytes(clientSocket, _returnBytes);
+                        _listReturnBytes.Clear();
+                        _isNeedContinue = false;
+                    }
+
+                    if (bytes[7] > (bytes.Length - 8))
+                    {
+                        TotalLength = bytes[7];
+                        NeedReceiveLength = TotalLength - (bytes.Length - 8);
+                        _listReturnBytes.AddRange(bytes);
+                        _isNeedContinue = true;
+                    }
+                }
+            }
+            else
+            {
+                if (bytes.Length < NeedReceiveLength)
+                {
+                    NeedReceiveLength -= bytes.Length;
+                    _listReturnBytes.AddRange(bytes);
+                }
+
+                if (bytes.Length >= NeedReceiveLength)
+                {
+                    NeedReceiveLength = 0;
+                    _isNeedContinue = false;
+
+                    _listReturnBytes.AddRange(bytes);
+                    _returnBytes = _listReturnBytes.ToArray();
+                    TcpServerHelper_ReceiveBytes(clientSocket, _returnBytes);
+                    Socket_ReceiveBytes_Notify(clientSocket, _returnBytes);
+                    _listReturnBytes.Clear();
+                }
+            }
+        }
 
         public IDictionary<Socket,string> SocketAndAddressCollection    
         {
@@ -370,11 +441,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     heart.OverturnDestinationSource();
                     Thread.Sleep(HeartBeatDelayTime);
-//                   var stringaddr= Encoding.Default.GetString(heart.MeterAddressBytes);
-//                    if (!SocketAndAddressCollection.ContainsKey(clientSocket))
-//                    {
-//                        SocketAndAddressCollection[clientSocket] = stringaddr;
-//                    }
+
                    
                     TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
                 }

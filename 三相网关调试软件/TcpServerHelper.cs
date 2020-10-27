@@ -104,6 +104,8 @@ namespace 三相智慧能源网关调试软件
         public event Action<Socket, byte[]> ReceiveBytes;
         public event Action<Socket, byte[]> SendBytesToClient;
 
+        public event Action<Socket, byte[]> ReceiveAllBytes;
+
         protected virtual void OnNotifyNewClient(Socket clientSocket)
         {
             AcceptNewClient?.Invoke(clientSocket);
@@ -115,6 +117,10 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
         }
 
+        protected virtual void OnReceiveAllBytes(Socket clientSocket, byte[] bytes)
+        {
+            ReceiveAllBytes?.Invoke(clientSocket, bytes);
+        }
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
@@ -241,7 +247,7 @@ namespace 三相智慧能源网关调试软件
         private void ClientThread(Socket sockClient)
         {
             byte[] array = new byte[1024];
-
+            string remoteEndPoint = sockClient.RemoteEndPoint.ToString();
             while (true)
             {
                 int num;
@@ -255,7 +261,7 @@ namespace 三相智慧能源网关调试软件
                 {
                     Logger logger = LogManager.GetCurrentClassLogger();
                     logger.Error(ex);
-                    OnNotifyStatusMsg($"退出客户端{sockClient.RemoteEndPoint}Task");
+                    OnNotifyStatusMsg($"退出客户端{remoteEndPoint}Task");
                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
                         if (SocketClientList.Contains(sockClient))
@@ -263,10 +269,6 @@ namespace 三相智慧能源网关调试软件
                             SocketClientList.Remove(sockClient);
                         }
 
-//                        if (Dictionary.ContainsKey(sockClient))
-//                        {
-//                            Dictionary.Remove(sockClient);
-//                        }
                     });
 
                     break;
@@ -371,6 +373,7 @@ namespace 三相智慧能源网关调试软件
                     lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
                     _listReturnBytes.AddRange(bytes);
                     _returnBytes = _listReturnBytes.ToArray();
+                  
                     _listReturnBytes.Clear();
                 }
                 else
@@ -379,6 +382,7 @@ namespace 三相智慧能源网关调试软件
                     {
                         _listReturnBytes.AddRange(bytes);
                         _returnBytes = _listReturnBytes.ToArray();
+                     
                         _listReturnBytes.Clear();
                         _isNeedContinue = false;
                     }
@@ -404,8 +408,10 @@ namespace 三相智慧能源网关调试软件
                 {
                     NeedReceiveLength = 0;
                     _isNeedContinue = false;
+                  
                     _listReturnBytes.AddRange(bytes);
                     _returnBytes = _listReturnBytes.ToArray();
+                   
                     _listReturnBytes.Clear();
                 }
             }

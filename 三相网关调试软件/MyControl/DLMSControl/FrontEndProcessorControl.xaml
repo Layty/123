@@ -60,15 +60,15 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
-                              
+
                             </Grid.ColumnDefinitions>
-                            <Button  x:Name="ButtonHeartBit" Margin="3" Content="发送"
+                            <Button x:Name="ButtonHeartBit" Margin="3" Content="发送"
                                     Command="{Binding SendDataToServerCommand}" />
                             <TextBox x:Name="TextBlockSendData" Grid.Column="1" TextWrapping="Wrap" Height="50"
                                      Text="{Binding CurrentSendMsg}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      materialDesign:HintAssist.Hint="自定义发送帧" />
-                           
+
                         </Grid>
                     </StackPanel>
                     <GroupBox Header="客户端集合" Grid.Row="1" HorizontalAlignment="Stretch" Margin="3">
@@ -90,57 +90,58 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                         
+
 
                         </StackPanel>
 
                     </GroupBox>
-              
-                    <GroupBox Header="主动上报" Grid.Row="2" Margin="3">
-                        <StackPanel>
 
-                            <ItemsControl ItemsSource="{Binding Alarms}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <materialDesign:Card UniformCornerRadius="2">
-                                            <StackPanel Orientation="Horizontal" Margin="3">
-                                              
-                                                <TextBox Text="{Binding DateTime}"
-                                                         materialDesign:HintAssist.Hint="DateTime"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding IpAddress}"
-                                                         materialDesign:HintAssist.Hint="IpAddress"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding AlarmClockTime}"
-                                                         materialDesign:HintAssist.Hint="AlarmClockTime"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding PushId.Value}"
-                                                         materialDesign:HintAssist.Hint="PushId"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding CosemLogicalDeviceName.Value}"
-                                                         materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding AlarmDescriptor1.Value}"
-                                                         materialDesign:HintAssist.Hint="AlarmDescriptor1"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding AlarmDescriptor2.Value}"
-                                                         materialDesign:HintAssist.Hint="AlarmDescriptor2"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" />
-                                                <TextBox Text="{Binding AlarmType}"  materialDesign:HintAssist.Hint="AlarmType" Background="{DynamicResource PrimaryHueDarkBrush}"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="3" ></TextBox>
-                                            </StackPanel>
-                                        </materialDesign:Card>
+                    <GroupBox Header="主动上报" Grid.Row="2" Margin="2">
+                        <ItemsControl ItemsSource="{Binding Alarms}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card UniformCornerRadius="2" Margin="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="NotificationsActive"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center" Foreground="Red" />
+                                            <TextBox Text="{Binding DateTime}"
+                                                     materialDesign:HintAssist.Hint="DateTime"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding IpAddress}"
+                                                     materialDesign:HintAssist.Hint="IpAddress"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding AlarmClockTime}"
+                                                     materialDesign:HintAssist.Hint="AlarmClockTime"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding PushId.Value}"
+                                                     materialDesign:HintAssist.Hint="PushId"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding CosemLogicalDeviceName.Value}"
+                                                     materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding AlarmDescriptor1.Value}"
+                                                     materialDesign:HintAssist.Hint="AlarmDescriptor1"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding AlarmDescriptor2.Value}"
+                                                     materialDesign:HintAssist.Hint="AlarmDescriptor2"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                            <TextBox Text="{Binding AlarmType}"
+                                                     materialDesign:HintAssist.Hint="AlarmType"
+                                                     Background="{DynamicResource PrimaryHueLightBrush}"
+                                                     materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                        </StackPanel>
+                                    </materialDesign:Card>
 
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
 
-                        </StackPanel>
 
                     </GroupBox>
                     <Expander IsExpanded="False" Grid.Row="3" Header="搬运工" Margin="3">
