@@ -11,7 +11,9 @@
         DataContext="{Binding Source={StaticResource Locator }, Path=Main}"
         mc:Ignorable="d" WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        Loaded="MainWindow_OnLoaded" ResizeMode="CanMinimize"
+        Loaded="MainWindow_OnLoaded"
+        Closing="MainWindow_OnClosing"
+        ResizeMode="CanMinimize"
         WindowStyle="None" AllowsTransparency="True"
         x:Name="ThisWindow" Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
         Title="三相智慧能源网关测试软件" Height="650" Width="1024" d:DesignWidth="120">

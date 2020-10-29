@@ -1,5 +1,4 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,7 +7,7 @@
       "sslPort": 44316
     }
   },
-
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "ToDoWebApi": {
     "commandName": "Project",
     "launchBrowser": true,
@@ -17,6 +16,13 @@
     "environmentVariables": {
       "ASPNETCORE_ENVIRONMENT": "Development"
     }
+  },
+  "profiles": {
+    "ToDoWebApi": {
+      "commandName": "Project"
+    },
+    "IISExpress": {
+      "commandName": "IISExpress"
+    }
   }
-  
 }

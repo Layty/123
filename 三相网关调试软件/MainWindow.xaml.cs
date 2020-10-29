@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Media;
 using System.Net.Sockets;
 using System.Speech.Synthesis;
@@ -23,7 +24,7 @@ namespace 三相智慧能源网关调试软件
     /// </summary>
     public partial class MainWindow : Window
     {
-        Key[] Target = new Key[] { Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right };
+        Key[] Target = new Key[] {Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right};
         int KeyState = 0;
 
         public DispatcherTimer Timer = new DispatcherTimer();
@@ -49,8 +50,8 @@ namespace 三相智慧能源网关调试软件
                 if (result == MessageBoxResult.Yes)
                 {
 //                    speechSynthesizer.Speak("后会有期");
-
-                    Application.Current.Shutdown();
+                 this.Close();   
+//                    Application.Current.Shutdown();
                 }
             }));
             CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,
@@ -154,6 +155,8 @@ namespace 三相智慧能源网关调试软件
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(new UserLoginPage());
+            var notify = new Win10NotifyMessage {NotifyText = "早安，打工人！"};
+            notify.Show();
         }
 
 
@@ -214,6 +217,12 @@ namespace 三相智慧能源网关调试软件
         private void HeartBeatButton_OnClick(object sender, RoutedEventArgs e)
         {
             new LogWindow() {Owner = this}.Show();
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            var notify = new Win10NotifyMessage {NotifyText = "Goodbye"};
+            notify.Show();
         }
     }
 }

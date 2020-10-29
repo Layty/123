@@ -521,6 +521,9 @@
     <Compile Include="View\ServerCenter\IicDataPage.xaml.cs">
       <DependentUpon>IicDataPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Win10NotifyMessage.xaml.cs">
+      <DependentUpon>Win10NotifyMessage.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -692,6 +695,10 @@
     <Page Include="View\ServerCenter\IicDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Win10NotifyMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
