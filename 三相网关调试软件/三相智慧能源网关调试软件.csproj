@@ -521,9 +521,6 @@
     <Compile Include="View\ServerCenter\IicDataPage.xaml.cs">
       <DependentUpon>IicDataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowTestWebApi.xaml.cs">
-      <DependentUpon>WindowTestWebApi.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -693,10 +690,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ServerCenter\IicDataPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\WindowTestWebApi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
