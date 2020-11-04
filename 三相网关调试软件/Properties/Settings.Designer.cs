@@ -250,5 +250,17 @@ namespace 三相智慧能源网关调试软件.Properties {
                 this["OpenSound"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ProfileGeneric$")]
+        public string DlmsProfileGenericSheetName {
+            get {
+                return ((string)(this["DlmsProfileGenericSheetName"]));
+            }
+            set {
+                this["DlmsProfileGenericSheetName"] = value;
+            }
+        }
     }
 }

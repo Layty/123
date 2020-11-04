@@ -22,7 +22,12 @@
       "commandName": "Project"
     },
     "IISExpress": {
-      "commandName": "IISExpress"
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "Swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

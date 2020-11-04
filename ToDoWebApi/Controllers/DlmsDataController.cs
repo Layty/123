@@ -1,76 +1,86 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DlmsWebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ToDoWebApi.Core;
 
-namespace ToDoWebApi.Controllers
+namespace DlmsWebApi.Controllers
 {
     [Route("api/[controller]/[action]"), ApiController]
     public class DlmsDataController : ControllerBase
     {
-        private readonly DlmsDataContext context;
+        private readonly DlmsDataContext _context;
 
         public DlmsDataController(DlmsDataContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         [HttpGet]
         public IEnumerable<DlmsData> GetDlmsDataList()
         {
-            return context.DlmsDatas.ToList();
+            return _context.DlmsDataItems.ToList();
         }
 
         [HttpGet]
         public async Task<DlmsData> GetDlmsDataById(int id)
         {
-            return await context.DlmsDatas.FirstOrDefaultAsync(t => Equals(t.Id, id));
+            return await _context.DlmsDataItems.FirstOrDefaultAsync(t => Equals(t.Id, id));
         }
 
         [HttpPost]
-        public async Task<bool> Add([FromBody] DlmsData dlmsData)
+        public async Task<IActionResult> Add([FromBody] DlmsData dlmsData)
         {
-            if (dlmsData != null)
+            if (dlmsData == null)
             {
-//                var d = await context.DlmsDatas.FirstOrDefaultAsync(t => Equals(t.LogicName, dlmsData.LogicName));
-//                var b = context.DlmsDatas.FindAsync(dlmsData.LogicName);
-//
-
-                await context.AddAsync(dlmsData);
-                return await context.SaveChangesAsync() > 0;
+                return BadRequest();
             }
-
-            return false;
+            else
+            {
+                await _context.AddAsync(dlmsData);
+                await _context.SaveChangesAsync();
+                return Ok(dlmsData);
+            }
         }
 
-        [HttpPost]
-        public async Task<bool> Update(DlmsData dlmsData)
+        [HttpPut]
+        public async Task<IActionResult> Update(DlmsData dlmsData)
         {
-            var newDlmsData = await context.DlmsDatas.FirstOrDefaultAsync(t => Equals(t.Id, dlmsData.Id));
-            if (newDlmsData != null)
+            if (dlmsData == null)
             {
-                newDlmsData = dlmsData;
-                return await context.SaveChangesAsync() > 0;
+                return BadRequest();
             }
-
-            return false;
+            else
+            {
+                var newDlmsData = await _context.DlmsDataItems.SingleOrDefaultAsync(t => Equals(t.Id, dlmsData.Id));
+                if (newDlmsData == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _context.DlmsDataItems.Update(newDlmsData);
+                    await _context.SaveChangesAsync();
+                    return Ok(newDlmsData);
+                }
+            }
         }
 
         [HttpDelete]
-        public async Task<bool> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var newDlmsData = await context.DlmsDatas.FirstOrDefaultAsync(t => Equals(t.Id, id));
-            if (newDlmsData != null)
+            var newDlmsData = await _context.DlmsDataItems.SingleOrDefaultAsync(t => Equals(t.Id, id));
+            if (newDlmsData == null)
             {
-                context.DlmsDatas.Remove(newDlmsData);
-                return await context.SaveChangesAsync() > 0;
+                return NotFound();
             }
-
-            return false;
+            else
+            {
+                _context.DlmsDataItems.Remove(newDlmsData);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
         }
     }
 }

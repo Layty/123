@@ -9,66 +9,90 @@
              DataContext="{Binding Source={StaticResource Locator},Path=ProfileGenericViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-     
-            <TabControl>
-                <TabItem Header="Profile Params">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition ></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0"  Margin="5">
-                        <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding Generic.CaptureObjects}" >
-                            </DataGrid>
-                        </Grid >
-                    <StackPanel Grid.Column="1"  Margin="5">
-                        <TextBlock Text="{Binding  Generic.LogicalName}"></TextBlock>
-                        <UniformGrid Grid.Row="0" Rows="0" Columns="2" Margin="2">
-                            <Button Content="GetCaptureObjects" Command="{Binding GetCaptureObjectsCommand}" Margin="2"></Button>
-                            <Button Content="SetCaptureObjects" Margin="2" ></Button>
-                        </UniformGrid>
-                        <UniformGrid Columns="3">
-                               <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         materialDesign:HintAssist.Hint="CapturePeriod"
-                                   Text="{Binding Generic.CapturePeriod1.Value,UpdateSourceTrigger=PropertyChanged}" />
-                               <Button Content="Get" Command="{Binding GetCapturePeriodCommand}" />
-                               <Button Content="Set" Command="{Binding SetCapturePeriodCommand}" />
-                            </UniformGrid>
-                           <UniformGrid Columns="3">
-                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         materialDesign:HintAssist.Hint="EntriesInUse" Text="{Binding Generic.EntriesInUse,UpdateSourceTrigger=PropertyChanged}" />
-                               <Button Content="Get" Command="{Binding GetEntriesInUseCommand}" />
-                            </UniformGrid>
-                           <UniformGrid Columns="3">
-                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         materialDesign:HintAssist.Hint="ProfileEntries" Text="{Binding Generic.ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
-                               <Button Content="Get" Command="{Binding GetProfileEntriesCommand}" />
-                            </UniformGrid>
-                            <UniformGrid Columns="3">
-                                <TextBox  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                          materialDesign:HintAssist.IsFloating="True"
-                                          materialDesign:HintAssist.Hint="SortMethod" Text="{Binding Generic.SortMethod,UpdateSourceTrigger=PropertyChanged}" />
-                                <Button Content="Get" Command="{Binding GetSortMethodCommand}" />
-                            </UniformGrid>
-                           
-              
-                        </StackPanel>
-                    </Grid>
-                   
-                </TabItem>
-                <TabItem Header="Buffer">
-                    <StackPanel>
-                        <Button Command="{Binding GetBufferCommand}" />
-                        <DataGrid ItemsSource="{Binding ListObservableCollection}"></DataGrid>
-                    </StackPanel>
-                  
-                </TabItem>
-            </TabControl>
+        <ItemsControl ItemsSource="{ Binding ProfileGenericCollection}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TabControl>
+                        <TabItem Header="Profile Params">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Margin="5">
+                                    <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding CaptureObjects}" />
+                                </Grid>
+                                <StackPanel Grid.Column="1" Margin="5">
+                                    <TextBlock Text="{Binding  LogicalName}" />
+                                    <UniformGrid Rows="0" Columns="2" Margin="2">
+                                        <Button Content="GetCaptureObjects"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetCaptureObjectsCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                        <Button Content="SetCaptureObjects" Margin="2" />
+                                    </UniformGrid>
+                                    <UniformGrid Columns="3">
+                                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 materialDesign:HintAssist.IsFloating="True"
+                                                 materialDesign:HintAssist.Hint="CapturePeriod"
+                                                 Text="{Binding CapturePeriod1.Value,UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Content="Get"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetCapturePeriodCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                        <Button Content="Set"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetCapturePeriodCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                    </UniformGrid>
+                                    <UniformGrid Columns="3">
+                                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 materialDesign:HintAssist.IsFloating="True"
+                                                 materialDesign:HintAssist.Hint="EntriesInUse"
+                                                 Text="{Binding EntriesInUse.Value,UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Content="Get"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetEntriesInUseCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                    </UniformGrid>
+                                    <UniformGrid Columns="3">
+                                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 materialDesign:HintAssist.IsFloating="True"
+                                                 materialDesign:HintAssist.Hint="ProfileEntries"
+                                                 Text="{Binding ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Content="Get"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetProfileEntriesCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                    </UniformGrid>
+                                    <UniformGrid Columns="3">
+                                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                 materialDesign:HintAssist.IsFloating="True"
+                                                 materialDesign:HintAssist.Hint="SortMethod"
+                                                 Text="{Binding SortMethod,UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Content="Get"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetSortMethodCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                    </UniformGrid>
 
-       
+
+                                </StackPanel>
+                            </Grid>
+
+                        </TabItem>
+                        <TabItem Header="Buffer">
+                            <StackPanel>
+                                <Button Content="先获取捕获对象" Margin="5" />
+                                <Button Content="获取Buffer" Margin="5"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBufferCommand ,Mode=TwoWay}"
+                                        CommandParameter="{Binding }" />
+                                <ComboBox />
+                                <DataGrid
+                                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}, Path=DataContext.ListObservableCollection}" />
+
+                            </StackPanel>
+
+                        </TabItem>
+                    </TabControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
 
     </Grid>
 </UserControl>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ToDoWebApi.Core
+namespace DlmsWebApi.Models
 {
     public class DlmsDataContext : DbContext
     {
@@ -10,6 +10,6 @@ namespace ToDoWebApi.Core
             
         }
 
-        public DbSet<DlmsData> DlmsDatas { get; set; }
+        public DbSet<DlmsData> DlmsDataItems { get; set; }
     }
 }

@@ -76,7 +76,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public DLMSArray Buffer { get; set; } //2
 
 
-        public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } //3
+        public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
+            new ObservableCollection<CaptureObjectDefinition>();//3
 
         public uint CapturePeriod
         {
@@ -140,7 +141,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         /// 加载的条目数 //7
         /// </summary>
 
-        public uint EntriesInUse
+        public AxdrUnsigned32 EntriesInUse
         {
             get => _entriesInUse;
             set
@@ -150,7 +151,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private uint _entriesInUse;
+        private AxdrUnsigned32 _entriesInUse = new AxdrUnsigned32();
 
 
         /// <summary>

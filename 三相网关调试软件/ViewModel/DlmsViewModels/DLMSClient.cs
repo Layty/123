@@ -29,6 +29,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class DLMSClient : ViewModelBase
     {
+        public Array OctetStringDisplayFormatArray { get; set; } = Enum.GetValues(typeof(OctetStringDisplayFormat));
+        public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
         #region 协议层资源
 
         public EModeViewModel EModeViewModel { get; set; }

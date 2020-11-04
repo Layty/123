@@ -26,7 +26,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\Wc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{521F3528-4C45-4EC6-8D64-F2CF4E9B1980}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoWebApi", "ToDoWebApi\ToDoWebApi.csproj", "{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DlmsWebApi", "ToDoWebApi\DlmsWebApi.csproj", "{EDCE3E14-E0DD-4592-9D8C-504B9D406BBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

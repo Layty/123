@@ -152,12 +152,7 @@ namespace 三相智慧能源网关调试软件
         }
 
 
-        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(new UserLoginPage());
-            var notify = new Win10NotifyMessage {NotifyText = "早安，打工人！"};
-            notify.Show();
-        }
+      
 
 
         private void ColorZone_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -218,7 +213,12 @@ namespace 三相智慧能源网关调试软件
         {
             new LogWindow() {Owner = this}.Show();
         }
-
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(new UserLoginPage());
+            var notify = new Win10NotifyMessage { NotifyText = "Hi" };
+            notify.Show();
+        }
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             var notify = new Win10NotifyMessage {NotifyText = "Goodbye"};

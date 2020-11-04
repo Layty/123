@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace ToDoWebApi.Core
+namespace DlmsWebApi.Models
 {
     public class DlmsHelper
     {
@@ -20,9 +20,9 @@ namespace ToDoWebApi.Core
 
         async Task InitDefaultDataAsync()
         {
-            if (!this.DlmsDataContext.DlmsDatas.Any())
+            if (!this.DlmsDataContext.DlmsDataItems.Any())
             {
-                DlmsDataContext.DlmsDatas.Add(new DlmsData()
+                DlmsDataContext.DlmsDataItems.Add(new DlmsData()
                     {Id = 1, Attr = 1, ClassId = "0001", DataName = "ShuJu", LogicName = "123"});
             }
 

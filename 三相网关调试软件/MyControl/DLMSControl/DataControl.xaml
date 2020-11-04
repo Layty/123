@@ -16,20 +16,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                      materialDesign:HintAssist.Hint="OctetStringDisplayFormat"
-                      ItemsSource="{Binding   OctetStringDisplayFormatArray}"
-                      SelectedValue="{Binding Client.DlmsSettingsViewModel.OctetStringDisplayFormat }" />
-                <ComboBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                      materialDesign:HintAssist.Hint="UInt32ValueDisplayFormat"
-                      ItemsSource="{Binding UInt32ValueDisplayFormatArray}"
-                      SelectedValue="{Binding Client.DlmsSettingsViewModel.UInt32ValueDisplayFormat }" />
-            </Grid>
+         
 
             <DataGrid Grid.Row="1" ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False" FrozenColumnCount="2"
                   HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanUserSortColumns="False"

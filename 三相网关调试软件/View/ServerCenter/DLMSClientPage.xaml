@@ -19,8 +19,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+                <RowDefinition   Height="Auto"/>
             <RowDefinition />
-        </Grid.RowDefinitions>
+            </Grid.RowDefinitions>
         <WrapPanel Orientation="Horizontal" Grid.Row="0">
             <Button Command="{Binding InitRequestCommand }"
                     Margin="3">
@@ -100,8 +101,21 @@
             </ListBox>
           
         </WrapPanel>
-
-        <TabControl Grid.Row="1">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="OctetStringDisplayFormat"
+                      ItemsSource="{Binding   OctetStringDisplayFormatArray}"
+                      SelectedValue="{Binding DlmsSettingsViewModel.OctetStringDisplayFormat }" />
+            <ComboBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="UInt32ValueDisplayFormat"
+                      ItemsSource="{Binding UInt32ValueDisplayFormatArray}"
+                      SelectedValue="{Binding DlmsSettingsViewModel.UInt32ValueDisplayFormat }" />
+        </Grid>
+            <TabControl Grid.Row="2">
             <TabItem Header="Data">
                 <dlmsControl:DataControl />
             </TabItem>

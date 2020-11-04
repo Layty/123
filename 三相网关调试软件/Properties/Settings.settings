@@ -59,5 +59,8 @@
     <Setting Name="OpenSound" Type="System.String" Scope="User">
       <Value Profile="(Default)">欢迎使用我的软件！</Value>
     </Setting>
+    <Setting Name="DlmsProfileGenericSheetName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ProfileGeneric$</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
