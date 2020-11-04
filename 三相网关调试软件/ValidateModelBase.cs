@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件
 {
     public class ValidateModelBase : ObservableObject, IDataErrorInfo
     {
-        public ValidateModelBase()
-        {
-
-        }
-
         #region 属性 
         /// <summary>
         /// 表当验证错误集合
         /// </summary>
-        private Dictionary<String, String> dataErrors = new Dictionary<String, String>();
+        private readonly Dictionary<string, string> _dataErrors = new Dictionary<string, string>();
 
         /// <summary>
         /// 是否验证通过
@@ -27,7 +22,7 @@ namespace 三相智慧能源网关调试软件
         {
             get
             {
-                if (dataErrors != null && dataErrors.Count > 0)
+                if (_dataErrors != null && _dataErrors.Count > 0)
                 {
                     return false;
                 }
@@ -43,13 +38,13 @@ namespace 三相智慧能源网关调试软件
                 ValidationContext vc = new ValidationContext(this, null, null);
                 vc.MemberName = columnName;
                 var res = new List<ValidationResult>();
-                var result = Validator.TryValidateProperty(this.GetType().GetProperty(columnName).GetValue(this, null), vc, res);
+                var result = Validator.TryValidateProperty(this.GetType().GetProperty(columnName)?.GetValue(this, null), vc, res);
                 if (res.Count > 0)
                 {
-                    AddDic(dataErrors, vc.MemberName);
+                    AddDic(_dataErrors, vc.MemberName);
                     return string.Join(Environment.NewLine, res.Select(r => r.ErrorMessage).ToArray());
                 }
-                RemoveDic(dataErrors, vc.MemberName);
+                RemoveDic(_dataErrors, vc.MemberName);
                 return null;
             }
         }

@@ -60,7 +60,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     _transmitMaxInfoFrameLength = 2;
                 }
 
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -83,7 +83,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     _receiveMaxInfoFrameLength = 2;
                 }
 
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -100,7 +100,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 if (flag)
                 {
                     _transmitMaxWindowSize = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 if (flag)
                 {
                     _receiveMaxWindowSize = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }

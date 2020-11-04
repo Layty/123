@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class TcpClientHelper : ObservableObject, IDataErrorInfo
+    public class TcpClientHelper : ValidateModelBase
     {
         public Socket ClientSocket { get; set; }
         private readonly byte[] _messageByteServer = new byte[1024];
-        private string _localIp;
 
+        [Required(ErrorMessage = "不能为空！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string LocalIp
         {
             get => _localIp;
             set
             {
                 _localIp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
+        private string _localIp;
 
-        private string _serverIpAddress;
 
         [Required(ErrorMessage = "不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
@@ -41,11 +39,12 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _serverIpAddress = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        private int _serverPortNum;
+        private string _serverIpAddress;
+
 
         [Required(ErrorMessage = "不能为空！")]
         public int ServerPortNum
@@ -54,10 +53,11 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _serverPortNum = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
+        private int _serverPortNum;
         private IPEndPoint _ipEndPoint;
 
         public IPEndPoint IpEndPoint
@@ -66,7 +66,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _ipEndPoint = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -78,7 +78,7 @@ namespace 三相智慧能源网关调试软件
             private set
             {
                 _connectResult = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -90,7 +90,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _sendMsg = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -102,23 +102,25 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _receiveMsg = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         public event Action<Socket, byte[]> ReceiveByte;
         public event Action<Socket, byte[]> SendDataToServerByte;
-        protected virtual void OnReceiveByte(Socket serverSocket,byte[] bytes)
+
+        protected virtual void OnReceiveByte(Socket serverSocket, byte[] bytes)
         {
-            ReceiveByte?.Invoke(serverSocket,bytes);
-            Messenger.Default.Send((serverSocket,bytes), "ClientReceiveDataEvent");
+            ReceiveByte?.Invoke(serverSocket, bytes);
+            Messenger.Default.Send((serverSocket, bytes), "ClientReceiveDataEvent");
         }
 
         protected virtual void OnSendDataToServerByte(Socket serverSocket, byte[] bytes)
         {
-            SendDataToServerByte?.Invoke(serverSocket,bytes);
-            Messenger.Default.Send((serverSocket,bytes), "ClientSendDataEvent");
+            SendDataToServerByte?.Invoke(serverSocket, bytes);
+            Messenger.Default.Send((serverSocket, bytes), "ClientSendDataEvent");
         }
+
         public TcpClientHelper(string serverIpAddress, int serverPortNum)
         {
             ServerIpAddress = serverIpAddress;
@@ -200,7 +202,6 @@ namespace 三相智慧能源网关调试软件
 
                     byte[] receiveBytes = _messageByteServer.Take(receiveDataLen).ToArray();
                     OnReceiveByte(ClientSocket, receiveBytes);
-                   
                 }
             }
             catch (Exception e)
@@ -252,14 +253,14 @@ namespace 三相智慧能源网关调试软件
             {
                 ClientSocket.Send(inputBytesData);
                 OnSendDataToServerByte(ClientSocket, inputBytesData);
-              
             }
             catch (Exception ex)
             {
                 Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
             }
         }
-        public void SendDataToServer(Socket socket,byte[] inputBytesData)
+
+        public void SendDataToServer(Socket socket, byte[] inputBytesData)
         {
             bool flag = inputBytesData.Length == 0;
             if (flag)
@@ -299,8 +300,7 @@ namespace 三相智慧能源网关调试软件
             {
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
                 ClientSocket.Send(sendBytes);
-                OnSendDataToServerByte(ClientSocket,sendBytes);
-               
+                OnSendDataToServerByte(ClientSocket, sendBytes);
             }
             catch (Exception ex)
             {
@@ -335,54 +335,6 @@ namespace 三相智慧能源网关调试软件
         public void Dispose()
         {
             ((IDisposable) ClientSocket).Dispose();
-        }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                ValidationContext vc = new ValidationContext(this, null, null);
-                vc.MemberName = columnName;
-                var res = new List<ValidationResult>();
-                var result = Validator.TryValidateProperty(this.GetType().GetProperty(columnName).GetValue(this, null),
-                    vc, res);
-                if (res.Count > 0)
-                {
-                    AddDic(_dataErrors, vc.MemberName);
-                    return string.Join(Environment.NewLine, res.Select(r => r.ErrorMessage).ToArray());
-                }
-
-                RemoveDic(_dataErrors, vc.MemberName);
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// 表当验证错误集合
-        /// </summary>
-        private readonly Dictionary<string, string> _dataErrors = new Dictionary<string, string>();
-
-        public string Error { get; }
-
-        /// <summary>
-        /// 移除字典
-        /// </summary>
-        /// <param name="dics"></param>
-        /// <param name="dicKey"></param>
-        private void RemoveDic(Dictionary<string, string> dics, string dicKey)
-        {
-            dics.Remove(dicKey);
-        }
-
-        /// <summary>
-        /// 添加字典
-        /// </summary>
-        /// <param name="dics"></param>
-        /// <param name="dicKey"></param>
-        private void AddDic(Dictionary<string, string> dics, string dicKey)
-        {
-            if (!dics.ContainsKey(dicKey)) dics.Add(dicKey, "");
         }
     }
 }

@@ -1,59 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
-using GalaSoft.MvvmLight;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class TcpTranslator : ViewModelBase
+    public class TcpTranslator : ValidateModelBase
     {
         public TcpServerHelper TcpListener { get; set; }
 
+        [Required(ErrorMessage = "不能为空！")]
         public int LocalPort
         {
             get => _localPort;
             set
             {
                 _localPort = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private int _localPort;
-
+        [Required(ErrorMessage = "不能为空！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string LocalIp
         {
             get => _localIp;
             set
             {
                 _localIp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private string _localIp;
-
+        [Required(ErrorMessage = "不能为空！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string RemoteIp
         {
             get => _remoteIp;
             set
             {
                 _remoteIp = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private string _remoteIp;
-
+        [Required(ErrorMessage = "不能为空！")]
         public int RemotePort
         {
             get => _remotePort;
             set
             {
                 _remotePort = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -66,7 +71,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _isNeedToConvert12HeartBeatTo8 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

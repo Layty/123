@@ -37,7 +37,7 @@
                                      materialDesign:HintAssist.FloatingScale="0.50"
                                      materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
                                      materialDesign:HintAssist.Hint="Listen Port" FontSize="20"
-                                     Text="{Binding TcpServerHelper.ListenPort}" />
+                                     Text="{Binding TcpServerHelper.ListenPort,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
                             <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5"
                                      materialDesign:HintAssist.FloatingScale="0.50" Height="60"
                                      materialDesign:HintAssist.Hint="超时时间" FontSize="20"
@@ -160,19 +160,19 @@
                                     搬运使能
                                 </CheckBox>
                                 <StackPanel IsEnabled="{Binding ElementName=TranslatorCheckBox,Path=IsChecked}">
-                                    <TextBox Text="{Binding Translator.LocalIp}"
+                                    <TextBox Text="{Binding Translator.LocalIp,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              materialDesign:HintAssist.Hint="本地IP"
                                              materialDesign:HintAssist.IsFloating="True" />
-                                    <TextBox Text="{Binding Translator.LocalPort}"
+                                    <TextBox Text="{Binding Translator.LocalPort,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              materialDesign:HintAssist.Hint="本地端口"
                                              materialDesign:HintAssist.IsFloating="True" />
-                                    <TextBox Text="{Binding Translator.RemoteIp}"
+                                    <TextBox Text="{Binding Translator.RemoteIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              materialDesign:HintAssist.Hint="远端IP"
                                              materialDesign:HintAssist.IsFloating="True" />
-                                    <TextBox Text="{Binding Translator.RemotePort}"
+                                    <TextBox Text="{Binding Translator.RemotePort,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              materialDesign:HintAssist.Hint="远端端口"
                                              materialDesign:HintAssist.IsFloating="True" />

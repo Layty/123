@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -8,14 +9,13 @@ using System.Net.Sockets;
 using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using NLog;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class TcpServerHelper : ViewModelBase
+    public class TcpServerHelper : ValidateModelBase
     {
         public bool IsStarted
         {
@@ -23,31 +23,35 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _isStarted = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private bool _isStarted;
 
+        [Required(ErrorMessage = "不能为空！")]
+        [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
+            ErrorMessage = "请输入正确的IP地址！")]
         public string ListenIpAddress
         {
             get => _listenIpAddress;
             set
             {
                 _listenIpAddress = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private string _listenIpAddress;
 
+        [Required(ErrorMessage = "不能为空！")]
         public int ListenPort
         {
             get => _listenPort;
             set
             {
                 _listenPort = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -60,7 +64,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _ipEndPoint = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -68,15 +72,13 @@ namespace 三相智慧能源网关调试软件
 
         public ProtocolType ProtocolType;
 
-        public IDictionary<Socket, EndPoint> Dictionary { get; set; } = new Dictionary<Socket, EndPoint>();
-
         public ObservableCollection<Socket> SocketClientList
         {
             get => _socketClientList;
             set
             {
                 _socketClientList = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -89,7 +91,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _responseTimeOut = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -121,6 +123,7 @@ namespace 三相智慧能源网关调试软件
         {
             ReceiveAllBytes?.Invoke(clientSocket, bytes);
         }
+
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
@@ -201,7 +204,7 @@ namespace 三相智慧能源网关调试软件
                 OnNotifyStatusMsg(exception.Message);
             }
         }
-        
+
 
         private void StartListenServerAsync(Socket serverSocket)
         {
@@ -269,7 +272,6 @@ namespace 三相智慧能源网关调试软件
                         {
                             SocketClientList.Remove(sockClient);
                         }
-
                     });
 
                     break;
@@ -283,13 +285,7 @@ namespace 三相智慧能源网关调试软件
                         if (SocketClientList.Contains(sockClient))
                         {
                             SocketClientList.Remove(sockClient);
-//                            SocketClientListEndPoint.Remove(sockClient.RemoteEndPoint);
                         }
-
-//                        if (Dictionary.ContainsKey(sockClient))
-//                        {
-//                            Dictionary.Remove(sockClient);
-//                        }
                     });
                     break;
                 }
@@ -346,7 +342,7 @@ namespace 三相智慧能源网关调试软件
                     }
                 }
             });
-            //  await Task.Delay(2000);
+        
             ReceiveBytes -= TcpServerHelper_ReceiveBytes;
             return _returnBytes;
         }
@@ -374,7 +370,7 @@ namespace 三相智慧能源网关调试软件
                     lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
                     _listReturnBytes.AddRange(bytes);
                     _returnBytes = _listReturnBytes.ToArray();
-                  
+
                     _listReturnBytes.Clear();
                 }
                 else
@@ -383,7 +379,7 @@ namespace 三相智慧能源网关调试软件
                     {
                         _listReturnBytes.AddRange(bytes);
                         _returnBytes = _listReturnBytes.ToArray();
-                     
+
                         _listReturnBytes.Clear();
                         _isNeedContinue = false;
                     }
@@ -409,10 +405,10 @@ namespace 三相智慧能源网关调试软件
                 {
                     NeedReceiveLength = 0;
                     _isNeedContinue = false;
-                  
+
                     _listReturnBytes.AddRange(bytes);
                     _returnBytes = _listReturnBytes.ToArray();
-                   
+
                     _listReturnBytes.Clear();
                 }
             }
