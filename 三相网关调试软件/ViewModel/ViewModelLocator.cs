@@ -1,9 +1,5 @@
-using System.Windows.Navigation;
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Views;
-using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel

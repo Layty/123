@@ -201,7 +201,7 @@ namespace 三相智慧能源网关调试软件
                 OnNotifyStatusMsg(exception.Message);
             }
         }
-        SpeechSynthesizer speech=new SpeechSynthesizer();
+        
 
         private void StartListenServerAsync(Socket serverSocket)
         {
@@ -218,6 +218,7 @@ namespace 三相智慧能源网关调试软件
                         var socket1 = clientSocket;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
+                            SpeechSynthesizer speech = new SpeechSynthesizer();
                             speech.SpeakAsync("有新的连接");
                             SocketClientList.Add(socket1);
 //                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);

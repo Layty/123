@@ -25,9 +25,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
     public enum UInt32ValueDisplayFormat
     {
+        IntValue,
         Original,
         IpAddress,
-        IntValue,
+     
     }
 
     public enum SelfDisplayEnum

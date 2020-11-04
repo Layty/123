@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class NetLogViewModel : ViewModelBase
+    public class NetLogViewModel : ObservableObject
     {
         private MyNetLogModel _myServerNetLogModel;
 
@@ -17,7 +18,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _myServerNetLogModel = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -28,7 +29,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _myClientNetLogModel = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +42,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _clearServerBufferCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -53,7 +54,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _clearClientBufferCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

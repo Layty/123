@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class LoadIdentificationViewModel : ViewModelBase
+    public class LoadIdentificationViewModel : ObservableObject
     {
         public DLMSClient Client { get; set; }
         public CosemLoadIdentification CosemLoadIdentification { get; set; }
-
-
         public string LoadOriginalDataHex
         {
             get => _loadOriginalDataHex;
             set
             {
                 _loadOriginalDataHex = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private string _loadOriginalDataHex;
-
 
         public string LoadDataFormat
         {
@@ -34,7 +31,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _loadDataFormat = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -199,7 +196,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getEarliestCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -207,26 +204,26 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public RelayCommand GetLatestCommand
         {
-            get => _GetLatestCommand;
+            get => _getLatestCommand;
             set
             {
-                _GetLatestCommand = value;
-                RaisePropertyChanged();
+                _getLatestCommand = value;
+                OnPropertyChanged();
             }
         }
 
-        private RelayCommand _GetLatestCommand;
+        private RelayCommand _getLatestCommand;
 
         public RelayCommand<string> GetGivenTimeCommand
         {
-            get => _GetGivenTimeCommand;
+            get => _getGivenTimeCommand;
             set
             {
-                _GetGivenTimeCommand = value;
-                RaisePropertyChanged();
+                _getGivenTimeCommand = value;
+                OnPropertyChanged();
             }
         }
 
-        private RelayCommand<string> _GetGivenTimeCommand;
+        private RelayCommand<string> _getGivenTimeCommand;
     }
 }

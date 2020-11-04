@@ -1,37 +1,53 @@
 ﻿using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.HDLC.IEC21EMode;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class EModeViewModel:ViewModelBase
+    public class EModeViewModel : ObservableObject
     {
         private readonly SerialPortMaster _opticalPortMaster;
 
-        private  EModeFrame _eModeFrame;
+        private EModeFrame _eModeFrame;
 
         public int NegotiateBaud
         {
             get => _negotiateBaud;
-            set { _negotiateBaud = value; RaisePropertyChanged(); }
+            set
+            {
+                _negotiateBaud = value;
+                OnPropertyChanged();
+            }
         }
+
         private int _negotiateBaud;
+
         public int StartBaud
         {
             get => _startBaud;
-            set { _startBaud = value; RaisePropertyChanged(); }
+            set
+            {
+                _startBaud = value;
+                OnPropertyChanged();
+            }
         }
-        private int _startBaud=300;
+
+        private int _startBaud = 300;
 
         public string MeterAddress
         {
             get => _meterAddress;
-            set { _meterAddress = value; RaisePropertyChanged(); }
+            set
+            {
+                _meterAddress = value;
+                OnPropertyChanged();
+            }
         }
-        private string _meterAddress="";
+
+        private string _meterAddress = "";
 
         private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
 
@@ -40,28 +56,30 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             StartBaud = settings.StartBaud;
             NegotiateBaud = settings.NegotiateBaud;
         }
-        public EModeViewModel(SerialPortMaster serialOpticalPortMaster, string addr="")
+
+        public EModeViewModel(SerialPortMaster serialOpticalPortMaster)
         {
             _opticalPortMaster = serialOpticalPortMaster;
-         
         }
+
         public EModeViewModel(SerialPortMaster serialOpticalPortMaster, EModeFrame eModeFrame)
         {
             _opticalPortMaster = serialOpticalPortMaster;
             _eModeFrame = eModeFrame;
         }
+
         /// <summary>
         /// 执行21e协商
         /// </summary>
         /// <returns></returns>
-
         public Task<bool> Execute21ENegotiateAsync()
         {
             return Task.Run(async () =>
             {
                 BackupPortPara();
                 Init21ESerialPort();
-                byte[] array = await _opticalPortMaster.SendAndReceiveReturnDataAsync(_eModeFrame.GetRequestFrameBytes());
+                byte[] array =
+                    await _opticalPortMaster.SendAndReceiveReturnDataAsync(_eModeFrame.GetRequestFrameBytes());
                 if (array.Length != 0 && EModeParser.CheckServerFrameWisEquals2(array))
                 {
                     _opticalPortMaster.Send(_eModeFrame.GetConfirmFrameBytes());
@@ -78,16 +96,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     {
                         return false;
                     }
-
                 }
                 else
                 {
                     LoadBackupPortPara();
                     return false;
                 }
-
-
-
             });
         }
 

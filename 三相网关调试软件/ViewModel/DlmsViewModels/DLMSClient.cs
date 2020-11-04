@@ -149,7 +149,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public async Task<bool> Execute21ENegotiate()
         {
-            EModeViewModel = new EModeViewModel(PortMaster, "");
+            EModeViewModel = new EModeViewModel(PortMaster);
             var keepAutoDataReceived = false;
             if (PortMaster.IsAutoDataReceived)
             {
@@ -350,7 +350,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel);
             NetFrameMaker = new NetFrameMaker(DlmsSettingsViewModel);
-            EModeViewModel = new EModeViewModel(PortMaster, "");
+            EModeViewModel = new EModeViewModel(PortMaster);
 
             InitSerialPortParams(PortMaster);
 
@@ -363,9 +363,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
       
 
-      
-
-      
+        
 
         public Task<byte[]> SetEnterUpGradeMode()
         {

@@ -7,9 +7,6 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
-    <UserControl.Resources>
-
-    </UserControl.Resources>
     <materialDesign:Card>
         <Grid>
             <Grid.RowDefinitions>
@@ -55,7 +52,7 @@
                     </DataGridTemplateColumn>
                     <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Binding="{Binding DataName }"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Header="DataName" Width="150" />
+                                    Header="ProfileGenericName" Width="150" />
                     <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
                                     Binding="{Binding ClassId.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"

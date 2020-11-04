@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -303,10 +302,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 DataNotification dataNotification = new DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
-                    var AlarmObject = new Alarm();
+                    var alarmObject = new Alarm();
                     CosemClock cosemClock = new CosemClock();
                     cosemClock.DlmsClockParse(dataNotification.DateTime.Value.StringToByte());
-                    AlarmObject.AlarmClockTime = cosemClock.ToDateTime().ToString();
+                    alarmObject.AlarmClockTime = cosemClock.ToDateTime().ToString();
                     if (dataNotification.NotificationBody.DataType == DataType.Structure)
                     {
                         string value = dataNotification.NotificationBody.ValueBytes.ByteToString();
@@ -319,27 +318,27 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                 itemstring.Add(dlmsStructureItem.ValueDisplay.ValueString);
                             }
 
-                            AlarmObject.PushId = new AxdrOctetStringFixed(itemstring[0], 6);
-                            AlarmObject.CosemLogicalDeviceName = new AxdrOctetString(itemstring[1]);
+                            alarmObject.PushId = new AxdrOctetStringFixed(itemstring[0], 6);
+                            alarmObject.CosemLogicalDeviceName = new AxdrOctetString(itemstring[1]);
 
-                            AlarmObject.AlarmDescriptor1 = new AxdrUnsigned32(uint.Parse(itemstring[2]).ToString("X8"));
-                            AlarmObject.AlarmDescriptor2 = new AxdrUnsigned32(uint.Parse(itemstring[3]).ToString("X8"));
-                            AlarmObject.DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
-                            AlarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
-                            switch (AlarmObject.AlarmDescriptor2.Value)
+                            alarmObject.AlarmDescriptor1 = new AxdrUnsigned32(uint.Parse(itemstring[2]).ToString("X8"));
+                            alarmObject.AlarmDescriptor2 = new AxdrUnsigned32(uint.Parse(itemstring[3]).ToString("X8"));
+                            alarmObject.DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                            alarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
+                            switch (alarmObject.AlarmDescriptor2.Value)
                             {
                                 case "02000000":
-                                    AlarmObject.AlarmType = AlarmType.ByPass;
+                                    alarmObject.AlarmType = AlarmType.ByPass;
                                     break;
                                 case "00000001":
-                                    AlarmObject.AlarmType = AlarmType.PowerOff;
+                                    alarmObject.AlarmType = AlarmType.PowerOff;
                                     break;
                                 default:
-                                    AlarmObject.AlarmType = AlarmType.None;
+                                    alarmObject.AlarmType = AlarmType.None;
                                     break;
                             }
 
-                            DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(AlarmObject); });
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmObject); });
                         }
                     }
                 }

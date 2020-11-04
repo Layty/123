@@ -6,7 +6,7 @@ namespace 三相智慧能源网关调试软件.Model
 {
     public class DlmsSelfDefineCosemProfileGeneric : CosemProfileGeneric
     {
-        public string DataName { get; set; }
+        public string ProfileGenericName { get; set; }
         public DlmsSelfDefineCosemProfileGeneric(string logicalName) : base(logicalName)
         {
         }

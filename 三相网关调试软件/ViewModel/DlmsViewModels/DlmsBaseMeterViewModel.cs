@@ -1,19 +1,17 @@
 ﻿using System.Threading.Tasks;
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class DlmsBaseMeterViewModel : ViewModelBase
+    public class DlmsBaseMeterViewModel : ObservableObject
     {
         #region 属性
 
@@ -28,7 +26,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _factoryStatus = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -43,7 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _softVersion = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -60,12 +58,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
-            EModeViewModel = new EModeViewModel(SerialPortViewModel.SerialPortMaster, ""); //近红外
+            EModeViewModel = new EModeViewModel(SerialPortViewModel.SerialPortMaster); //近红外
 
             Client = ServiceLocator.Current.GetInstance<DLMSClient>();
             EModeViewModel = Client.EModeViewModel;
             InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
-            DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(true); });
+            DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
@@ -208,7 +206,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _initCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -223,7 +221,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _disconnectCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -238,7 +236,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getSoftVersionCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -253,7 +251,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _readFactoryCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -268,7 +266,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _enterFactoryCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -283,7 +281,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _quitFactoryCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -298,7 +296,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _setCapturePeriodCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -314,7 +312,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _clearAllCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -329,7 +327,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _enterUpgradeModeCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -344,7 +342,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _oneKeyStartCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -359,7 +357,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _oneKeyLeaveCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

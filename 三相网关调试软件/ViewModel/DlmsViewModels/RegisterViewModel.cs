@@ -1,15 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
 using 三相智慧能源网关调试软件.Model;
-using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -19,7 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         主要用途：
         更改记录：
     */
-    public class RegisterViewModel : ViewModelBase
+    public class RegisterViewModel : ObservableObject
     {
         public ObservableCollection<CosemSelfDefineRegisterModel> Registers
         {
@@ -27,7 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _registers = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -39,7 +36,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getValueCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -51,7 +48,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _setValueCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -63,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getLogicNameCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

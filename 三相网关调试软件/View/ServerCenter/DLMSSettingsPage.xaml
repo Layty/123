@@ -122,7 +122,7 @@
                               materialDesign:HintAssist.IsFloating="True" />
                     <TextBox Text="{Binding Client.DlmsSettingsViewModel.ProposedConformance}" />
 
-                    <ListBox SelectionMode="Multiple" materialDesign:CheckBoxAssist.CheckBoxSize="2"
+                    <ListBox SelectionMode="Multiple"
                              ItemsSource="{Binding Client.DlmsSettingsViewModel.ProposedConformanceArray}" />
                     <ListBox />
                 </StackPanel>

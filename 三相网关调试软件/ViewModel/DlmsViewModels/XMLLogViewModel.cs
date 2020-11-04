@@ -34,6 +34,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     Logger.Trace(value);
                 }
+
                 //                _XmlLogString = value;
                 _xmlLogStringBuilder.Append(value);
                 RaisePropertyChanged();
@@ -72,15 +73,15 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public RelayCommand ClearAllDataCommand
         {
-            get => _ClearAllDataCommand;
+            get => _clearAllDataCommand;
             set
             {
-                _ClearAllDataCommand = value;
+                _clearAllDataCommand = value;
                 RaisePropertyChanged();
             }
         }
 
-        private RelayCommand _ClearAllDataCommand;
+        private RelayCommand _clearAllDataCommand;
 
         public XMLLogViewModel()
         {

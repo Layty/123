@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
@@ -10,7 +10,7 @@ using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class UtilityTablesViewModel : ViewModelBase
+    public class UtilityTablesViewModel : ObservableObject
     {
         public class DiYaGuiDataModel : ObservableObject
         {
@@ -20,7 +20,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _meterId = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -33,7 +33,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ua = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ub = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Uc = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -70,7 +70,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ia = value;
-                    RaisePropertyChanged();
+               
+                    OnPropertyChanged();
                 }
             }
 
@@ -82,7 +83,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ib = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -95,7 +96,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ic = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -108,7 +109,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _remain = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -121,7 +122,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PPTotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -133,7 +134,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PPA = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -146,7 +147,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PPB = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -158,7 +159,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PPC = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -171,7 +172,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PQTotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -184,7 +185,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PQA = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -196,7 +197,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PQB = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -209,7 +210,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PQC = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -221,7 +222,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _DemandP = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -233,7 +234,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _DemandQ = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -246,7 +247,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _PTotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -258,7 +259,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Pa = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -270,7 +271,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Pb = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -282,7 +283,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Pc = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -295,7 +296,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _QTotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -307,7 +308,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Qa = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -319,7 +320,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Qb = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -331,7 +332,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Qc = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -343,7 +344,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _STotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -355,7 +356,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Sa = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -367,7 +368,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Sb = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -380,7 +381,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Sc = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -393,7 +394,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _CosTotal = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -406,7 +407,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Cosa = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -419,7 +420,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Cosb = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -431,7 +432,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Cosc = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -443,7 +444,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _TempA = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -456,7 +457,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _TempB = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -469,7 +470,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _TempC = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -482,7 +483,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Breaker = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -494,7 +495,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _AlarmStatus = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -507,7 +508,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _ThresholdP = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -519,7 +520,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _ThresholdI = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -531,7 +532,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _threshold_temp = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -543,7 +544,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _NominalI = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
 
@@ -560,7 +561,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _utilityTablesCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -571,7 +572,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _DiYaGuiDataModels = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -580,17 +581,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public UtilityTablesViewModel()
         {
-            if (IsInDesignMode)
-            {
-                UtilityTablesCollection = new ObservableCollection<CosemSelfDefineUtilityTablesModel>
-                {
-                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.1.98.0.128.255"},
-                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.2.98.0.128.255"},
-                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.3.98.0.128.255"},
-                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.4.98.0.128.255"}
-                };
-            }
-            else
+//            if (IsInDesignMode)
+//            {
+//                UtilityTablesCollection = new ObservableCollection<CosemSelfDefineUtilityTablesModel>
+//                {
+//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.1.98.0.128.255"},
+//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.2.98.0.128.255"},
+//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.3.98.0.128.255"},
+//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.4.98.0.128.255"}
+//                };
+//            }
+//            else
             {
                 DiYaGuiDataModels = new ObservableCollection<DiYaGuiDataModel>();
                 Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
@@ -666,7 +667,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getLogicNameDataCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -678,7 +679,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _etMeterAddressData = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -690,7 +691,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getDataLengthData = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -702,7 +703,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getBuffData = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
     }

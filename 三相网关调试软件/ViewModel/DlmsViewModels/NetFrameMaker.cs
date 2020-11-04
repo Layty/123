@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GalaSoft.MvvmLight;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class NetFrameMaker : ViewModelBase
+    public class NetFrameMaker : ObservableObject
     {
         private DLMSSettingsViewModel DlmsSettingsViewModel { get; }
 
@@ -18,7 +14,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _netFrame = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

@@ -1,8 +1,8 @@
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ObservableObject
     {
         public string Title
         {
@@ -10,7 +10,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _title = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -18,14 +18,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public MainViewModel()
         {
-            if (IsInDesignMode)
-            {
-                Title = "曾雄威";
-            }
-            else
-            {
-                Title = Properties.Settings.Default.Title;
-            }
+            Title = Properties.Settings.Default.Title;
         }
     }
 }

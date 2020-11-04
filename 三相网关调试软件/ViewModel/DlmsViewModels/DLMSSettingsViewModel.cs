@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
@@ -10,10 +10,10 @@ using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class DLMSSettingsViewModel : ViewModelBase
+    public class DLMSSettingsViewModel : ObservableObject
     {
-        public OctetStringDisplayFormat OctetStringDisplayFormat { get; set; }
-        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat { get; set; }
+        public OctetStringDisplayFormat OctetStringDisplayFormat { get; set; } = OctetStringDisplayFormat.Original;
+        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat { get; set; } = UInt32ValueDisplayFormat.IntValue;
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
@@ -32,7 +32,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _communicationType = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -112,7 +112,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 _passwordString = value;
                 PasswordHex = Encoding.Default.GetBytes(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -124,7 +124,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public ushort ClientAddress
         {
             get => _clientAddress;
-            set { _clientAddress = value; RaisePropertyChanged(); }
+            set { _clientAddress = value; OnPropertyChanged(); }
         }
         private ushort _clientAddress;
 
@@ -134,7 +134,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public ushort ServerAddress
         {
             get => _serverAddress;
-            set { _serverAddress = value; RaisePropertyChanged(); }
+            set { _serverAddress = value; OnPropertyChanged(); }
         }
         private ushort _serverAddress;
 
@@ -161,7 +161,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
 
         public string SystemTitle { get=> _systemTitle;
-            set { _systemTitle = value;RaisePropertyChanged(); }
+            set { _systemTitle = value; OnPropertyChanged(); }
         }
         private string _systemTitle;
         public DLMSSettingsViewModel()
@@ -199,13 +199,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public int NegotiateBaud
         {
             get => _negotiateBaud;
-            set { _negotiateBaud = value; RaisePropertyChanged(); }
+            set { _negotiateBaud = value; OnPropertyChanged(); }
         }
         private int _negotiateBaud;
         public int StartBaud
         {
             get => _startBaud;
-            set { _startBaud = value; RaisePropertyChanged(); }
+            set { _startBaud = value; OnPropertyChanged(); }
         }
         private int _startBaud ;
     }

@@ -348,11 +348,11 @@ namespace 三相智慧能源网关调试软件
                     vc, res);
                 if (res.Count > 0)
                 {
-                    AddDic(dataErrors, vc.MemberName);
+                    AddDic(_dataErrors, vc.MemberName);
                     return string.Join(Environment.NewLine, res.Select(r => r.ErrorMessage).ToArray());
                 }
 
-                RemoveDic(dataErrors, vc.MemberName);
+                RemoveDic(_dataErrors, vc.MemberName);
                 return null;
             }
         }
@@ -361,7 +361,7 @@ namespace 三相智慧能源网关调试软件
         /// <summary>
         /// 表当验证错误集合
         /// </summary>
-        private Dictionary<string, string> dataErrors = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _dataErrors = new Dictionary<string, string>();
 
         public string Error { get; }
 

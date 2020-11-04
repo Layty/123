@@ -1,17 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 
-
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class ClockViewModel : ViewModelBase
+    public class ClockViewModel : ObservableObject
     {
         public DLMSClient Client { get; set; }
         public CosemClock Clock { get; set; }
-
-      
 
 
         public RelayCommand GetTimeCommand
@@ -20,7 +17,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getTimeCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -33,7 +30,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _getTimeZoneCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
