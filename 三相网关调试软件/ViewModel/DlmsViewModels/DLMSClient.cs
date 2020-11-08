@@ -216,14 +216,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 //            Logger.Trace(dataResult.ByteToString);
             if (getResponse.PduStringInHexConstructor(ref data))
             {
+                XmlCommon(getResponse);
                 if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
                 {
-                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat(
-                        DlmsSettingsViewModel.OctetStringDisplayFormat,
-                        DlmsSettingsViewModel.UInt32ValueDisplayFormat);
+                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
                 }
 
-                XmlCommon(getResponse);
+             
             }
             else
             {
@@ -251,7 +250,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         public async Task<SetResponse> SetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
-            DLMSDataItem value)
+            DlmsDataItem value)
         {
             setRequest = new SetRequest {SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value)};
             var dataResult = await HandlerSendData(setRequest.ToPduBytes());

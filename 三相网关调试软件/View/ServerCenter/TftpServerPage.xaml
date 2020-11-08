@@ -13,44 +13,111 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="TftpServerPage">
     <materialDesign:Card>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="0">
-                <hc:TextBox Text="{Binding TftpServerDirectory ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="10 5 5 10"/>
-                <UniformGrid Columns="2">
-                    <Button x:Name="ButtonBrowse" Content="Browse" Margin="5" Command="{Binding BrowseCommand}" />
-                    <Button x:Name="ButtonOpen" Content="Open" Margin="5" Command="{Binding OpenDialogCommand}" />
-                </UniformGrid>
-                <UniformGrid Columns="2">
-                   
-                    <Button x:Name="ButtonStart" Content="Start" Margin="5" Command="{Binding StartServerCommand}"
-                            IsEnabled="{Binding IsStarted ,Converter={ converters:InverseBooleanConverter}}" />
-                    <Button x:Name="ButtonStop" Content="Stop" Margin="5" Command="{Binding StopServerCommand}"
-                            IsEnabled="{Binding IsStarted }" />
-                   
-                </UniformGrid>
+        <TabControl>
+            <TabItem Header="Server">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <UniformGrid Columns="2" Rows="2">
+                                <Button x:Name="ButtonBrowse" Content="Browse" Margin="5"
+                                        Command="{Binding BrowseCommand}" />
+                                <Button x:Name="ButtonOpen" Content="Open" Margin="5"
+                                        Command="{Binding OpenDialogCommand}" />
+                                <Button x:Name="ButtonStart" Content="Start" Margin="5"
+                                        Command="{Binding StartServerCommand}"
+                                        IsEnabled="{Binding IsStarted ,Converter={ converters:InverseBooleanConverter}}" />
+                                <Button x:Name="ButtonStop" Content="Stop" Margin="5"
+                                        Command="{Binding StopServerCommand}"
+                                        IsEnabled="{Binding IsStarted }" />
+                            </UniformGrid>
 
 
-            </StackPanel>
-            <UniformGrid Columns="2" Grid.Row="1" Margin="3">
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding TftpServerDirectory ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     materialDesign:HintAssist.Hint="TftpServerDirectory"
+                                     materialDesign:HintAssist.IsFloating="True"
+                                     Margin="10 5 5 10" />
+                        </Grid>
+                    </Grid>
+                    <UniformGrid Columns="2" Grid.Row="1" Margin="3">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                            <ListBox x:Name="TextBoxFiles" ItemsSource="{Binding DirectoryCollection}" />
+                        </ScrollViewer>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                            <StackPanel>
+                                <ProgressBar x:Name="WaveProgressBar" Minimum="0" Maximum="100" Height="20" />
+                                <TextBox x:Name="TextBoxLog" Text="{Binding StatusLog}" TextWrapping="Wrap" />
+                            </StackPanel>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                    <ListBox x:Name="TextBoxFiles" ItemsSource="{Binding DirectoryCollection}" />
-                </ScrollViewer>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                    <StackPanel>
-                        <ProgressBar x:Name="WaveProgressBar" Minimum="0" Maximum="100" Height="20"></ProgressBar>
-                        <TextBox x:Name="TextBoxLog" Text="{Binding StatusLog}"  TextWrapping="Wrap"/>
-                    </StackPanel>
-                  
-                </ScrollViewer>
-              
-            </UniformGrid>
+                        </ScrollViewer>
 
-        </Grid>
+                    </UniformGrid>
+                </Grid>
+
+
+            </TabItem>
+            <TabItem Header="Client">
+                <Grid DataContext="{Binding Source={StaticResource Locator},Path=TftpClient}">
+                    <GroupBox Header="TFTPClient">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="120" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="在此输入需要下载的文件名"
+                                         materialDesign:HintAssist.IsFloating="True" Margin="5"
+                                         Text="{Binding DownLoadFileName,UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <Button Grid.Column="1" Command="{Binding StartDownLoadCommand}" Content="DownLoad"
+                                        Margin="5" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="120" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="最近一次上传的文件名"
+                                         materialDesign:HintAssist.IsFloating="True" Margin="5"
+                                         Text="{Binding UpLoadFileName,UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+
+                                <Button Grid.Column="1" Command="{Binding SelectFileToUploadCommand}"
+                                        Content="LoadingFile" Margin="5" />
+                                <Button IsEnabled="{Binding IsReadyToUpLoad}" Grid.Column="2" Command="{Binding StartUpLoadCommand}" Content="UpLoad"
+                                        Margin="5" />
+                            </Grid>
+                            <TextBox Text="{Binding TftpClientDirectory}" />
+
+                            <ProgressBar x:Name="ClientProgressBar" Minimum="0" Maximum="100" Height="20" />
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     materialDesign:HintAssist.Hint="StatusLog"
+                                     materialDesign:HintAssist.IsFloating="True"
+                                     VerticalScrollBarVisibility="Auto"
+                                     TextWrapping="Wrap" Text="{Binding StatusLog,UpdateSourceTrigger=PropertyChanged}"
+                                     Height="150" />
+                        </StackPanel>
+                    </GroupBox>
+
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
 
     </materialDesign:Card>
 </Page>

@@ -11,7 +11,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
     public class GetDataResult : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public DLMSDataItem Data { get; set; }
+        public DlmsDataItem Data { get; set; }
         [XmlIgnore] public AxdrUnsigned8 DataAccessResult { get; set; }
         public DataAccessError DataAccessError { get; set; }
 
@@ -36,7 +36,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             if (a == "00")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
-                Data = new DLMSDataItem();
+                Data = new DlmsDataItem();
                 DataAccessResult = new AxdrUnsigned8();
                 DataAccessResult.Value = "00";
                 return Data.PduStringInHexConstructor(ref pduStringInHex);

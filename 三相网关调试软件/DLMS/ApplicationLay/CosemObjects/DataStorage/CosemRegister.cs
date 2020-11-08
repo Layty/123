@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage
@@ -13,24 +11,23 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public CosemRegisterTable(string logicName)
         {
             LogicalName = logicName;
-
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.RegisterActivation);
         }
     }
 
     public class CosemExtendedRegister : CosemRegister
     {
-        public DLMSDataItem Status
+        public DlmsDataItem Status
         {
-            get => _Status;
+            get => _status;
             set
             {
-                _Status = value;
+                _status = value;
                 OnPropertyChanged();
             }
         }
 
-        private DLMSDataItem _Status;
+        private DlmsDataItem _status;
 
         public CosemExtendedRegister(string logicName) : base(logicName)
         {

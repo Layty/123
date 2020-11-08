@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Media;
 using System.Net.Sockets;
 using System.Speech.Synthesis;
 using System.Windows;
@@ -46,11 +45,14 @@ namespace 三相智慧能源网关调试软件
 
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (send, e) =>
             {
-                var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
+                MessageBoxWindow msgBoxWindow = new MessageBoxWindow() {Message = "是否退出程序？", Title = "提示"};
+                var result=  msgBoxWindow.ShowDialog();
+                //                var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
+                //                if (result == MessageBoxResult.Yes)
+                if (result==true)
                 {
 //                    speechSynthesizer.Speak("后会有期");
-                 this.Close();   
+                    this.Close();
 //                    Application.Current.Shutdown();
                 }
             }));
@@ -152,9 +154,6 @@ namespace 三相智慧能源网关调试软件
         }
 
 
-      
-
-
         private void ColorZone_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             // 按下拖动
@@ -213,12 +212,14 @@ namespace 三相智慧能源网关调试软件
         {
             new LogWindow() {Owner = this}.Show();
         }
+
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(new UserLoginPage());
-            var notify = new Win10NotifyMessage { NotifyText = "Hi" };
+            var notify = new Win10NotifyMessage {NotifyText = "Hi"};
             notify.Show();
         }
+
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             var notify = new Win10NotifyMessage {NotifyText = "Goodbye"};

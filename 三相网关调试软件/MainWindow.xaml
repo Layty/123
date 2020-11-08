@@ -285,6 +285,7 @@
                                             Source="Image/dimi.jpg" />
                                         </materialDesign:Chip.Icon>
                                     </materialDesign:Chip>
+                                  
                                     <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="HelLog"
                                                            HorizontalContentAlignment="Center"
                                                            Height="30" Click="HeartBeatButton_OnClick" />

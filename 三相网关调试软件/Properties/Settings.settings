@@ -62,5 +62,8 @@
     <Setting Name="DlmsProfileGenericSheetName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ProfileGeneric$</Value>
     </Setting>
+    <Setting Name="TftpClientDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\TFTPClientFiles</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

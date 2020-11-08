@@ -12,8 +12,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class DLMSSettingsViewModel : ObservableObject
     {
-        public OctetStringDisplayFormat OctetStringDisplayFormat { get; set; } = OctetStringDisplayFormat.Original;
-        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat { get; set; } = UInt32ValueDisplayFormat.IntValue;
+       
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));

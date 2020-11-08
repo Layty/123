@@ -7,9 +7,8 @@ using System.Text;
 using System.Xml.Serialization;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
-using 三相智慧能源网关调试软件.Properties;
+
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
@@ -28,19 +27,89 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         IntValue,
         Original,
         IpAddress,
-     
     }
 
-    public enum SelfDisplayEnum
-    {
-        None,
-        OctetString,
-        UInt32
-    }
 
-    public class ValueDisplay : INotifyPropertyChanged
+    [XmlInclude(typeof(DLMSArray))]
+    [XmlInclude(typeof(DlmsStructure))]
+//    [XmlInclude(typeof(DlmsCompactArray))]
+    public class DlmsDataItem : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
     {
-        [XmlIgnore] public SelfDisplayEnum DisplayEnum { get; set; }
+        [XmlAttribute]
+        public OctetStringDisplayFormat OctetStringDisplayFormat
+        {
+            get => _octetStringDisplayFormat;
+            set
+            {
+                _octetStringDisplayFormat = value;
+                UpdateDisplayFormat();
+                OnPropertyChanged();
+            }
+        }
+
+        private OctetStringDisplayFormat _octetStringDisplayFormat = OctetStringDisplayFormat.Original;
+
+        [XmlAttribute]
+        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat
+        {
+            get => _uInt32ValueDisplayFormat;
+            set
+            {
+                _uInt32ValueDisplayFormat = value;
+                UpdateDisplayFormat();
+                OnPropertyChanged();
+            }
+        }
+
+        private UInt32ValueDisplayFormat _uInt32ValueDisplayFormat = UInt32ValueDisplayFormat.IntValue;
+
+        public void UpdateDisplayFormat()
+        {
+            if (DataType != DataType.OctetString)
+            {
+                if (DataType != DataType.UInt32)
+                {
+                    return;
+                }
+            }
+
+
+            string formatDisplayOctetString = "";
+            if (DataType == DataType.OctetString)
+            {
+                try
+                {
+                    formatDisplayOctetString = NormalDataParse.HowToDisplayOctetString(
+                        Value.ToString().StringToByte(),
+                        OctetStringDisplayFormat);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+                ValueString = formatDisplayOctetString;
+            }
+            else if (DataType == DataType.UInt32)
+            {
+                try
+                {
+                    formatDisplayOctetString = NormalDataParse.HowToDisplayIntValue(
+                        Value.ToString().StringToByte(),
+                        UInt32ValueDisplayFormat);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+                ValueString = formatDisplayOctetString;
+            }
+        }
+
+       
 
         public string ValueString
         {
@@ -54,104 +123,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         private string _valueString;
 
-        [XmlAttribute]
-        public OctetStringDisplayFormat OctetStringDisplayFormat
-        {
-            get => _octetStringDisplayFormat;
-            set
-            {
-                _octetStringDisplayFormat = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private OctetStringDisplayFormat _octetStringDisplayFormat;
-
-        [XmlAttribute]
-        public UInt32ValueDisplayFormat UInt32ValueDisplayFormat
-        {
-            get => _uInt32ValueDisplayFormat;
-            set
-            {
-                _uInt32ValueDisplayFormat = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private UInt32ValueDisplayFormat _uInt32ValueDisplayFormat;
-
-        public ValueDisplay(OctetStringDisplayFormat octetString, UInt32ValueDisplayFormat uInt32Value)
-        {
-            OctetStringDisplayFormat = octetString;
-            UInt32ValueDisplayFormat = uInt32Value;
-        }
-
-        public ValueDisplay()
-        {
-            OctetStringDisplayFormat = OctetStringDisplayFormat.Original;
-            UInt32ValueDisplayFormat = UInt32ValueDisplayFormat.Original;
-        }
-
-
-        public void UpdateDisplayFormat(byte[] valueBytes, DataType dataType, OctetStringDisplayFormat octetString,
-            UInt32ValueDisplayFormat uInt32Value)
-        {
-            OctetStringDisplayFormat = octetString;
-            UInt32ValueDisplayFormat = uInt32Value;
-            if (dataType == DataType.OctetString)
-            {
-                DisplayEnum = SelfDisplayEnum.OctetString;
-                if (DisplayEnum == SelfDisplayEnum.OctetString)
-                {
-                    ValueString = NormalDataParse.HowToDisplayOctetString(valueBytes, OctetStringDisplayFormat);
-                }
-            }
-            else if (dataType == DataType.UInt32)
-            {
-                DisplayEnum = SelfDisplayEnum.UInt32;
-                if (DisplayEnum == SelfDisplayEnum.UInt32)
-                {
-                    ValueString = NormalDataParse.HowToDisplayIntValue(valueBytes, UInt32ValueDisplayFormat);
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    [XmlInclude(typeof(DlmsStructure))]
-    public class DLMSDataItem : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
-    {
-        public void UpdateDisplayFormat(OctetStringDisplayFormat octetString, UInt32ValueDisplayFormat uInt32Value)
-        {
-            if (DataType != DataType.OctetString)
-            {
-                if (DataType != DataType.UInt32)
-                {
-                    return;
-                }
-            }
-
-            ValueDisplay.UpdateDisplayFormat(ValueBytes, DataType, octetString, uInt32Value);
-        }
-
-        public ValueDisplay ValueDisplay
-        {
-            get => _valueDisplay;
-            set
-            {
-                _valueDisplay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ValueDisplay _valueDisplay;
 
         [XmlAttribute]
         public DataType DataType
@@ -166,23 +137,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         private DataType _dataType;
 
-
-        public int Length
-        {
-            get => _length;
-            set
-            {
-                _length = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _length;
-
-
-        /// <summary>
-        /// ValueByte ==Length+Value
-        /// </summary>
         [XmlIgnore]
         public byte[] ValueBytes
         {
@@ -190,55 +144,44 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             set
             {
                 _valueBytes = value;
-                LengthAndValue = value.ByteToString();
                 OnPropertyChanged();
             }
         }
 
         private byte[] _valueBytes;
 
-        [XmlAttribute]
-        public string LengthAndValue
+        public object Value
         {
-            get => _lengthAndValue;
+            get => _value;
             set
             {
-                _lengthAndValue = value;
+                _value = value;
+                if (value != null)
+                {
+                    ValueString = value.ToString();
+                }
+
                 OnPropertyChanged();
             }
         }
 
-        private string _lengthAndValue;
-
-        public object Value { get; set; }
-
-        public void UpdateValueBytes()
-        {
-            SetValueByte(DataType, ValueDisplay.ValueString);
-        }
+        private object _value;
 
 
-        public DLMSDataItem()
+        public DlmsDataItem()
         {
             DataType = DataType.NullData;
-            ValueDisplay = new ValueDisplay();
-            Value = null;
         }
 
-        public DLMSDataItem(DataType dataType, byte[] valueBytes)
+        public DlmsDataItem(DataType dataType)
         {
             DataType = dataType;
-            ValueDisplay = new ValueDisplay();
-            ValueBytes = valueBytes;
-            Value = null;
         }
 
-        public DLMSDataItem(DataType dataType, string hexString)
+        public DlmsDataItem(DataType dataType, object value)
         {
             DataType = dataType;
-            ValueDisplay = new ValueDisplay();
-            ValueDisplay.ValueString = hexString;
-            ParseDLMSDataItem(DataType, hexString);
+            Value = value;
         }
 
         private void SetValueByte(DataType dataType, string valueString)
@@ -247,39 +190,43 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             {
                 case DataType.UInt8:
                     ValueBytes = new[] {byte.Parse(valueString)};
+                    Value = ValueBytes.ByteToString();
                     break;
                 case DataType.UInt16:
                     ValueBytes = BitConverter.GetBytes(ushort.Parse(valueString)).Reverse().ToArray();
+                    Value = ValueBytes.ByteToString();
                     break;
                 case DataType.UInt32:
-                    ValueDisplay.DisplayEnum = SelfDisplayEnum.UInt32;
-                    switch (ValueDisplay.UInt32ValueDisplayFormat)
+
+                    switch (UInt32ValueDisplayFormat)
                     {
                         case UInt32ValueDisplayFormat.Original:
                             ValueBytes = valueString.StringToByte();
+                            Value = ValueBytes.ByteToString();
                             break;
                         case UInt32ValueDisplayFormat.IpAddress:
                         {
                             var s = valueString.Split('.');
                             List<byte> list = new List<byte>();
-                            foreach (var VARIABLE in s)
+                            foreach (var variable in s)
                             {
-                                list.Add(byte.Parse(VARIABLE));
+                                list.Add(byte.Parse(variable));
                             }
 
                             ValueBytes = list.ToArray();
+                            Value = ValueBytes.ByteToString();
                             break;
                         }
                         case UInt32ValueDisplayFormat.IntValue:
                             ValueBytes = BitConverter.GetBytes(uint.Parse(valueString)).Reverse().ToArray();
+                            Value = ValueBytes.ByteToString();
                             break;
                     }
 
                     break;
                 case DataType.OctetString:
-                    ValueDisplay.DisplayEnum = SelfDisplayEnum.OctetString;
                     byte[] dataBytes;
-                    switch (ValueDisplay.OctetStringDisplayFormat)
+                    switch (OctetStringDisplayFormat)
                     {
                         case OctetStringDisplayFormat.Ascii:
                             dataBytes = Encoding.Default.GetBytes(valueString);
@@ -294,14 +241,16 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     {
                         byte len = (byte) dataBytes.Length;
                         List<byte> list = new List<byte>();
-                        list.Add(len);
+//                        list.Add(len);
                         list.AddRange(dataBytes);
                         ValueBytes = list.ToArray();
+                        Value = ValueBytes.ByteToString();
                     }
 
                     break;
                 case DataType.BitString:
                     ValueBytes = valueString.StringToByte().Skip(1).ToArray();
+                    Value = ValueBytes.ByteToString();
                     var count = valueString.StringToByte()[0];
                     var value = valueString.StringToByte().Skip(1).ToArray();
                     var bitstring = new DLMSBitString(value, 0, count);
@@ -313,69 +262,20 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     ls.Add(dataLength);
                     ls.AddRange(data);
                     ValueBytes = ls.ToArray();
+                    Value = ValueBytes.ByteToString();
                     break;
                 case DataType.Boolean:
                     ValueBytes = new[] {byte.Parse(valueString)};
+                    Value = ValueBytes.ByteToString();
                     break;
                 case DataType.Enum:
                     ValueBytes = new[] {byte.Parse(valueString)};
+                    Value = ValueBytes.ByteToString();
                     break;
                 case DataType.Structure:
 
                     break;
             }
-        }
-
-
-        public byte[] ParseDLMSDataItem(DataType dataType, string hexString)
-        {
-            switch (dataType)
-            {
-                case DataType.BitString:
-                    ValueBytes = hexString.StringToByte().Skip(1).ToArray();
-                    var count = hexString.StringToByte()[0];
-                    var value = hexString.StringToByte().Skip(1).ToArray();
-                    ValueDisplay.ValueString = new DLMSBitString(value, 0, count).Value;
-                    break;
-                case DataType.UInt8:
-                    ValueBytes = new[] {byte.Parse(hexString)};
-                    break;
-
-                case DataType.UInt16:
-                    ValueBytes = BitConverter.GetBytes(ushort.Parse(hexString)).Reverse().ToArray();
-                    break;
-                case DataType.UInt32:
-                    ValueBytes = BitConverter.GetBytes(uint.Parse(hexString)).Reverse().ToArray();
-                    break;
-                case DataType.OctetString:
-                    ValueBytes = hexString.StringToByte();
-                    break;
-
-                case DataType.VisibleString:
-                    ValueBytes = hexString.StringToByte();
-                    ValueDisplay.ValueString = Encoding.Default.GetString(ValueBytes);
-                    break;
-                case DataType.Boolean:
-                    ValueBytes = new[] {byte.Parse(hexString)};
-                    break;
-                case DataType.Enum:
-                    ValueBytes = new[] {byte.Parse(hexString)};
-                    break;
-                case DataType.Structure:
-                    ValueBytes = hexString.StringToByte().ToArray();
-                    //var StructureCount = hexString.StringToByte()[0];
-
-                    //List<byte> StructureList = new List<byte>();
-                    //for (int i = 0; i < StructureCount; i++)
-                    //{
-                    //    StructureList.AddRange(ParseDLMSDataItem((DataType,)));
-                    //}
-
-
-                    break;
-            }
-
-            return ValueBytes;
         }
 
         public string GXBitString(byte value, int count)
@@ -418,7 +318,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -448,72 +347,71 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 {
                     case "03":
                         DataType = DataType.Boolean;
-                        ValueDisplay.ValueString = pduStringInHex.Substring(2, 2);
-                        ValueBytes = ValueDisplay.ValueString.StringToByte();
+                        Value = pduStringInHex.Substring(2, 2);
                         pduStringInHex = pduStringInHex.Substring(4);
                         break;
                     case "04":
                         DataType = DataType.BitString;
                         pduStringInHex = pduStringInHex.Substring(2);
-                        ValueDisplay.ValueString = BitStringConstructor(ref pduStringInHex);
-                        ValueBytes = ValueDisplay.ValueString.StringToByte();
+                        Value = BitStringConstructor(ref pduStringInHex);
+                     
                         break;
                     case "05":
                         DataType = DataType.Int32;
-                        ValueBytes = pduStringInHex.Substring(2, 8).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToInt32(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 8);
+                        ValueString = BitConverter
+                            .ToInt32(Value.ToString().StringToByte().Reverse().ToArray(), 0).ToString();
                         pduStringInHex = pduStringInHex.Substring(10);
                         break;
                     case "06":
                         DataType = DataType.UInt32;
-                        ValueBytes = pduStringInHex.Substring(2, 8).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToUInt32(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 8);
+//                        ValueString = BitConverter
+//                            .ToUInt32(Value.ToString().StringToByte().Reverse().ToArray(), 0).ToString();
+                       UpdateDisplayFormat();
+                     
                         pduStringInHex = pduStringInHex.Substring(10);
                         break;
                     case "09":
                         DataType = DataType.OctetString;
-                        var oct = new AxdrOctetString();
                         pduStringInHex = pduStringInHex.Substring(2);
-
-                        if (!oct.PduStringInHexConstructor(ref pduStringInHex))
-                        {
-                            return false;
-                        }
-
-                        ValueBytes = oct.ToPduStringInHex().StringToByte();
-                        ValueDisplay.ValueString = oct.Value;
-
+                        Value = OctetStringConstructor(ref pduStringInHex);
+                        UpdateDisplayFormat();
                         break;
                     case "0A":
                         DataType = DataType.VisibleString;
                         pduStringInHex = pduStringInHex.Substring(2);
-                        var visible = new AxdrVisibleString();
-                        visible.PduStringInHexConstructor(ref pduStringInHex);
-                        ValueDisplay.ValueString = visible.Value;
-                        ValueBytes = Encoding.Default.GetBytes(ValueDisplay.ValueString);
+                        Value = VisibleStringConstructor(ref pduStringInHex);
+//                        var visible = new AxdrVisibleString();
+//                        visible.PduStringInHexConstructor(ref pduStringInHex);
+                        ValueBytes = Encoding.Default.GetBytes(Value.ToString());
                         break;
                     case "0F":
                         DataType = DataType.Int8;
-                        ValueBytes = pduStringInHex.Substring(2, 2).StringToByte();
-                        ValueDisplay.ValueString = (ValueBytes[0].ToString());
+                        Value = pduStringInHex.Substring(2, 2);
+                        ValueString = byte.Parse(Value.ToString()).ToString();
                         pduStringInHex = pduStringInHex.Substring(4);
                         break;
                     case "10":
                         DataType = DataType.Int16;
-                        ValueBytes = pduStringInHex.Substring(2, 4).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToInt16(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 4);
+                        ValueString = BitConverter
+                            .ToInt16(Value.ToString().StringToByte().ToArray(), 0)
+                            .ToString();
                         pduStringInHex = pduStringInHex.Substring(6);
                         break;
                     case "11":
                         DataType = DataType.UInt8;
-                        ValueBytes = pduStringInHex.Substring(2, 2).StringToByte();
-                        ValueDisplay.ValueString = (ValueBytes[0].ToString());
+                        Value = pduStringInHex.Substring(2, 2);
+                        ValueString = sbyte.Parse(Value.ToString()).ToString();
                         pduStringInHex = pduStringInHex.Substring(4);
                         break;
                     case "12":
                         DataType = DataType.UInt16;
-                        ValueBytes = pduStringInHex.Substring(2, 4).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToInt16(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 4);
+                        ValueString = BitConverter
+                            .ToInt16(Value.ToString().StringToByte().ToArray(), 0)
+                            .ToString();
                         pduStringInHex = pduStringInHex.Substring(6);
                         break;
                     case "13":
@@ -530,47 +428,55 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     //}
                     case "14":
                         DataType = DataType.Int64;
-                        ValueBytes = pduStringInHex.Substring(2, 16).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToInt64(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 16);
+
+                        ValueString =
+                            BitConverter.ToInt64(ValueBytes.Reverse().ToArray(), 0).ToString();
                         pduStringInHex = pduStringInHex.Substring(18);
                         break;
                     case "15":
                         DataType = DataType.UInt64;
-                        ValueBytes = pduStringInHex.Substring(2, 16).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToUInt64(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 16);
+                        ValueString = BitConverter
+                            .ToUInt64(Value.ToString().StringToByte().Reverse().ToArray(), 0).ToString();
                         pduStringInHex = pduStringInHex.Substring(18);
                         break;
                     case "16":
                         DataType = DataType.Enum;
-                        ValueBytes = pduStringInHex.Substring(2, 2).StringToByte();
-                        ValueDisplay.ValueString = (ValueBytes[0].ToString());
+                        Value = pduStringInHex.Substring(2, 2);
+
                         pduStringInHex = pduStringInHex.Substring(4);
                         break;
                     case "17":
                         DataType = DataType.Float32;
-                        ValueBytes = pduStringInHex.Substring(2, 8).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToSingle(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 8);
+                        ValueString = BitConverter
+                            .ToSingle(Value.ToString().StringToByte().ToArray(), 0)
+                            .ToString();
                         pduStringInHex = pduStringInHex.Substring(10);
                         break;
                     case "18":
                         DataType = DataType.Float64;
-                        ValueBytes = pduStringInHex.Substring(2, 16).StringToByte();
-                        ValueDisplay.ValueString = BitConverter.ToDouble(ValueBytes.Reverse().ToArray(), 0).ToString();
+                        Value = pduStringInHex.Substring(2, 16);
+                        ValueString = BitConverter
+                            .ToDouble(Value.ToString().StringToByte().ToArray(), 0)
+                            .ToString();
                         pduStringInHex = pduStringInHex.Substring(18);
                         break;
                     case "19":
                         DataType = DataType.DateTime;
-                        ValueBytes = pduStringInHex.Substring(2, 24).StringToByte();
+                        Value = pduStringInHex.Substring(2, 24);
                         pduStringInHex = pduStringInHex.Substring(26);
                         break;
                     case "1A":
                         DataType = DataType.Date;
-                        ValueBytes = pduStringInHex.Substring(2, 10).StringToByte();
+                        Value = pduStringInHex.Substring(2, 10);
+
                         pduStringInHex = pduStringInHex.Substring(12);
                         break;
                     case "1B":
                         DataType = DataType.Time;
-                        ValueBytes = pduStringInHex.Substring(2, 8).StringToByte();
+                        Value = pduStringInHex.Substring(2, 8);
                         pduStringInHex = pduStringInHex.Substring(10);
                         break;
                     case "02":
@@ -582,8 +488,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                             return false;
                         }
 
-                        ValueBytes = structure.ToPduStringInHex().Substring(2).StringToByte();
-
+                        Value = structure;
                         break;
                     case "01":
                         DataType = DataType.Array;
@@ -594,11 +499,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                             return false;
                         }
 
-                        ValueBytes = array.ToPduStringInHex().Substring(2).StringToByte();
+                        Value = array;
                         break;
                     case "00":
                         DataType = DataType.NullData;
-                        ValueBytes = null;
+                        Value = null;
                         pduStringInHex = pduStringInHex.Substring(2);
                         break;
                     default:
@@ -619,46 +524,53 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             switch (DataType)
             {
                 case DataType.Boolean:
-                    return "03" + ValueBytes.ByteToString();
+                    return "03" + Value;
                 case DataType.BitString:
-                    return "04" + GetBitStringValue(ValueBytes.ByteToString());
+                    return "04" + GetBitStringValue(Value.ToString());
                 case DataType.Int32:
-                    return "05" + ValueBytes.ByteToString();
+                    return "05" + Value;
                 case DataType.UInt32:
-                    return "06" + ValueBytes.ByteToString();
+                    return "06" + Value;
                 case DataType.OctetString:
-                    return "09" + ValueBytes.ByteToString();
+                    return "09" + GetOctetStringValue(Value.ToString());
                 case DataType.VisibleString:
-                    return "0A" + Encoding.Default.GetString(ValueBytes).Length.ToString("X2") +
-                           ValueBytes.ByteToString();
+                    return "0A" + GetVisibleStringValue(Value.ToString());
                 case DataType.Int8:
-                    return "0F" + ValueBytes.ByteToString();
+                    return "0F" + Value;
                 case DataType.Int16:
-                    return "10" + ValueBytes.ByteToString();
+                    return "10" + Value;
                 case DataType.UInt8:
-                    return "11" + ValueBytes.ByteToString();
+                    return "11" + Value;
                 case DataType.UInt16:
-                    return "12" + ValueBytes.ByteToString();
+                    return "12" + Value;
                 case DataType.Int64:
-                    return "14" + ValueBytes.ByteToString();
+                    return "14" + Value;
                 case DataType.UInt64:
-                    return "15" + ValueBytes.ByteToString();
+                    return "15" + Value;
                 case DataType.Enum:
-                    return "16" + ValueBytes.ByteToString();
+                    return "16" + Value;
                 case DataType.Float32:
-                    return "17" + ValueBytes.ByteToString();
+                    return "17" + Value;
                 case DataType.Float64:
-                    return "18" + ValueBytes.ByteToString();
+                    return "18" + Value;
                 case DataType.DateTime:
-                    return "19" + ValueBytes.ByteToString();
+                    return "19" + Value;
                 case DataType.Date:
-                    return "1A" + ValueBytes.ByteToString();
+                    return "1A" + Value;
                 case DataType.Time:
-                    return "1B" + ValueBytes.ByteToString();
+                    return "1B" + Value;
                 case DataType.Structure:
-                    return "02" + ValueBytes.ByteToString();
+                {
+                    DlmsStructure dlmsStructure = (DlmsStructure) Value;
+                    return dlmsStructure.ToPduStringInHex();
+                }
+
                 case DataType.Array:
-                    return "01" + ValueBytes.ByteToString();
+                {
+                    DLMSArray dlmsArray = (DLMSArray) Value;
+                    return dlmsArray.ToPduStringInHex();
+                }
+
 
                 //                case "COMPACTARRAY":
                 //                {
@@ -750,6 +662,38 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             }
 
             return stringBuilder.ToString();
+        }
+
+        private string GetOctetStringValue(string s)
+        {
+            int qty = s.Length / 2;
+            return EncodeVarLength(qty) + s;
+        }
+
+        private string GetVisibleStringValue(string s)
+        {
+            return EncodeVarLength(s.Length) + MyConvert.StringToOctetString(s);
+        }
+
+        private string OctetStringConstructor(ref string s)
+        {
+            int num = MyConvert.DecodeVarLength(ref s);
+            string result = s.Substring(0, num * 2);
+            s = s.Substring(num * 2);
+            return result;
+        }
+
+        private string VisibleStringConstructor(ref string s)
+        {
+            int num = MyConvert.DecodeVarLength(ref s);
+            string s2 = s.Substring(0, num * 2);
+            s = s.Substring(num * 2);
+            return MyConvert.OctetStringToString(s2);
+        }
+
+        public void UpdateValueBytes()
+        {
+            SetValueByte(DataType, ValueString);
         }
     }
 }

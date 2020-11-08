@@ -6,7 +6,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 {
     public class CosemData : CosemObject, IDlmsBase
     {
-        public DLMSDataItem Value
+        public DlmsDataItem Value
         {
             get => _value;
             set
@@ -16,7 +16,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private DLMSDataItem _value;
+        private DlmsDataItem _value;
 
 
         public CosemData(string logicalName) : this(logicalName, ObjectType.Data)

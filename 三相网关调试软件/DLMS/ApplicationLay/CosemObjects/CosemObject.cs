@@ -7,15 +7,6 @@ using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
-    /// <summary>
-    /// 接口类base本身没有明确规定，它只包含一个属性“逻辑名”
-    /// </summary>
-    public abstract class CosemBase
-    {
-        public string LogicalName { get; set; }
-    }
-
-   
     public abstract class CosemObject : CosemBase, INotifyPropertyChanged
     {
         public AxdrUnsigned16 ClassId
@@ -29,7 +20,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         }
 
         private AxdrUnsigned16 _classId;
-
 
         public string Description { get; set; }
 
@@ -77,28 +67,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
                 throw new Exception("Invalid Logical Name.");
             }
         }
-
-
-//        public byte[] SetAttributeData(sbyte attrId, DLMSDataItem dlmsDataItem)
-//        {
-//            SetRequestNormal setRequestNormal =
-//                new SetRequestNormal(new AttributeDescriptor(
-//                        ClassId, new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
-//                        new AxdrInteger8(attrId))
-//                    , dlmsDataItem);
-//            return setRequestNormal.ToPduBytes();
-//        }
-
-
-//        public byte[] ActionExecute(sbyte methodIndex, DLMSDataItem dlmsDataItem)
-//        {
-//            ActionRequestNormal actionRequestNormal = new ActionRequestNormal(new CosemMethodDescriptor(
-//                    ClassId,
-//                    new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
-//                    new AxdrInteger8(methodIndex)), dlmsDataItem
-//            );
-//            return actionRequestNormal.ToPduBytes();
-//        }
 
         public CosemAttributeDescriptor GetCosemAttributeDescriptor(sbyte attributeIndex)
         {

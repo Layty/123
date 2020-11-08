@@ -41,7 +41,7 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
         {
             if (ToggleButtonSelectChannel.IsChecked == true)
             {
-                ToggleButtonSelectChannel.Content = "WRAPPER";
+                ToggleButtonSelectChannel.Content = "Wrapper";
                 Client.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
                 Client.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
             }

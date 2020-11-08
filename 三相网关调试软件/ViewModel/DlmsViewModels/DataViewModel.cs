@@ -16,7 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
 
 
-        public ObservableCollection<CosemSelfDefineData> DataCollection
+        public ObservableCollection<CustomCosemDataModel> DataCollection
         {
             get => _dataCollection;
             set
@@ -26,9 +26,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private ObservableCollection<CosemSelfDefineData> _dataCollection;
+        private ObservableCollection<CustomCosemDataModel> _dataCollection;
 
-        public RelayCommand<CosemSelfDefineData> GetLogicNameCommand
+        public RelayCommand<CustomCosemDataModel> GetLogicNameCommand
         {
             get => _getLogicNameCommand;
             set
@@ -38,9 +38,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineData> _getLogicNameCommand;
+        private RelayCommand<CustomCosemDataModel> _getLogicNameCommand;
 
-        public RelayCommand<CosemSelfDefineData> GetValueCommand
+        public RelayCommand<CustomCosemDataModel> GetValueCommand
         {
             get => _getValueCommand;
             set
@@ -50,9 +50,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineData> _getValueCommand;
+        private RelayCommand<CustomCosemDataModel> _getValueCommand;
 
-        public RelayCommand<CosemSelfDefineData> SetValueCommand
+        public RelayCommand<CustomCosemDataModel> SetValueCommand
         {
             get => _setValueCommand;
             set
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineData> _setValueCommand;
+        private RelayCommand<CustomCosemDataModel> _setValueCommand;
 
         public DLMSClient Client { get; set; }
 
@@ -71,40 +71,48 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
             ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
             var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
-            DataCollection = new ObservableCollection<CosemSelfDefineData>();
+            DataCollection = new ObservableCollection<CustomCosemDataModel>();
 
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                DataCollection.Add(new CosemSelfDefineData(dataTable.Rows[i][0].ToString(),
+                DataCollection.Add(new CustomCosemDataModel(dataTable.Rows[i][0].ToString(),
                         (ObjectType) (int.Parse(dataTable.Rows[i][2].ToString())),
                         new AxdrInteger8(sbyte.Parse(dataTable.Rows[i][3].ToString())))
                     {DataName = dataTable.Rows[i][1].ToString()});
             }
 
-            GetLogicNameCommand = new RelayCommand<CosemSelfDefineData>(async t =>
+            GetLogicNameCommand = new RelayCommand<CustomCosemDataModel>(async t =>
             {
-                t.Value = new DLMSDataItem();
+                t.Value = new DlmsDataItem();
                 var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
                 if (getResponse != null)
                 {
-                    t.Value.ValueDisplay.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
+                    t.Value.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
                     t.Value = getResponse.GetResponseNormal.Result.Data;
                 }
             });
-            GetValueCommand = new RelayCommand<CosemSelfDefineData>(async t =>
+            GetValueCommand = new RelayCommand<CustomCosemDataModel>(async t =>
             {
                 t.LastResult = new ErrorCode();
-                t.Value = new DLMSDataItem();
+                if (t.Value==null)
+                {
+                    t.Value = new DlmsDataItem();
+                }
+
+                t.Value.Value = "";
+                
                 GetResponse requestAndWaitResponse =
                     await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
                 if (requestAndWaitResponse != null)
                 {
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
-                    t.Value = requestAndWaitResponse.GetResponseNormal.Result.Data;
+                   var tt= requestAndWaitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
+                   t.Value.PduStringInHexConstructor(ref tt);
+//                    t.Value.Value = requestAndWaitResponse.GetResponseNormal.Result.Data.Value;
                 }
             });
-            SetValueCommand = new RelayCommand<CosemSelfDefineData>(async (t) =>
+            SetValueCommand = new RelayCommand<CustomCosemDataModel>(async (t) =>
             {
                 t.Value.UpdateValueBytes();
                 t.LastResult = new ErrorCode();

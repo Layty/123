@@ -12,13 +12,24 @@ namespace 三相智慧能源网关调试软件.View
     /// </summary>
     public partial class MessageBoxWindow : Window
     {
+        public string Message
+        {
+            get => (string)GetValue(MessageProperty);
+            set => SetValue(MessageProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MessageProperty =
+            DependencyProperty.Register("Message", typeof(string), typeof(MessageBoxWindow));
+
+
         public MessageBoxWindow()
         {
             InitializeComponent();
             DataContext = this;
         }
 
-        public string Message { get; set; } = "Message";
+
 
         private void MessageBoxWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -40,10 +51,14 @@ namespace 三相智慧能源网关调试软件.View
         {
             var unloadAnimation = new DoubleAnimation
             {
-                Duration = new Duration(TimeSpan.Parse("0:0:0.5")), From = 1, To = 0.1
+                Duration = new Duration(TimeSpan.Parse("0:0:0.5")), To = 0
             };
             var loadclock = unloadAnimation.CreateClock();
-            loadclock.Completed += (a, b) => { DialogResult = true; };
+            loadclock.Completed += (a, b) =>
+            {
+                DialogResult = true;
+            };
+
             Scale.ApplyAnimationClock(ScaleTransform.ScaleXProperty, loadclock);
          
         }
@@ -60,6 +75,21 @@ namespace 三相智慧能源网关调试软件.View
             }
         }
 
-      
+
+        private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
+        {
+            var unloadAnimation = new DoubleAnimation
+            {
+                Duration = new Duration(TimeSpan.Parse("0:0:0.5")),
+                To = 0
+            };
+            var loadclock = unloadAnimation.CreateClock();
+            loadclock.Completed += (a, b) =>
+            {
+                DialogResult = false;
+            };
+
+            Scale.ApplyAnimationClock(ScaleTransform.ScaleXProperty, loadclock);
+        }
     }
 }

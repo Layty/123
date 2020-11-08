@@ -6,22 +6,21 @@ using System.Windows;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
-
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
     public class CosemClock : CosemObject, IDlmsBase
     {
         public int TimeZone
         {
-            get => _TimeZone;
+            get => _timeZone;
             set
             {
-                _TimeZone = value;
+                _timeZone = value;
                 OnPropertyChanged();
             }
         }
 
-        private int _TimeZone;
+        private int _timeZone;
 
 
         public short Year { get; set; }

@@ -162,11 +162,12 @@ namespace 三相智慧能源网关调试软件
                     {
                         ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         Messenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
-                            "Status");
+                            "ClientStatus");
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
 
                         ConnectResult = true;
                         Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "ClientStatus");
+                        
                         Task.Run(ReceiveData);
                     }
                     catch (Exception e)
@@ -197,6 +198,7 @@ namespace 三相智慧能源网关调试软件
                     {
                         string str2 = $"{DateTime.Now}  {ClientSocket.RemoteEndPoint} 服务端主动断开了当前链接..." + "\r\n";
                         Messenger.Default.Send(str2, "ClientStatus");
+                        Disconnect();
                         break;
                     }
 
@@ -208,11 +210,8 @@ namespace 三相智慧能源网关调试软件
             {
                 Messenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
             }
-            finally
-            {
-                ClientSocket?.Disconnect(false);
-                ConnectResult = false;
-            }
+
+
         }
 
         public void SendDataToServer(string inputSendData)
@@ -314,10 +313,10 @@ namespace 三相智慧能源网关调试软件
             {
                 return;
             }
-
             ClientSocket.Disconnect(false);
             ConnectResult = false;
             Messenger.Default.Send("关闭连接成功", "ClientStatus");
+           
         }
 
         public void CloseAll()

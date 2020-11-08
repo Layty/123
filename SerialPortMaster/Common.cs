@@ -78,8 +78,7 @@ namespace MySerialPortMaster
         {
             if (inBytes == null)
             {
-                throw new Exception(@"不能将空数组转换为16进制字符串"); 
-               
+                throw new Exception(@"不能将空数组转换为16进制字符串");
             }
 
             string stringOut = "";
@@ -89,11 +88,6 @@ namespace MySerialPortMaster
                 {
                     stringOut += inBytes[i].ToString("X2") + " ";
                 }
-
-                //                foreach (byte inByte in inBytes)
-                //                {
-                //                    stringOut = stringOut + $"{inByte:X2}" + " ";
-                //                }
             }
             catch (Exception e)
             {

@@ -8,7 +8,6 @@
              xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=RegisterViewModel}">
-
     <Grid>
         <materialDesign:Card>
             <DataGrid ItemsSource="{Binding Registers}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto" CanUserSortColumns="False"
@@ -59,7 +58,7 @@
                                     Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="Value.DataType" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                    Binding="{Binding Value.ValueDisplay.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    Binding="{Binding Value.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     Header="ValueString" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
                                     Binding="{Binding  ScalarUnit.Scalar,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"

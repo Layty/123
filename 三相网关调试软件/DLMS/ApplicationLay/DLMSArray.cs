@@ -38,35 +38,35 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
     //        throw new System.NotImplementedException();
     //    }
     //}
-    public class DLMSArray : IToPduStringInHex, IPduStringInHexConstructor
+    public class DLMSArray :  IPduStringInHexConstructor
     {
         private DataType DataType { get; set; } = DataType.Array;
-        public DLMSDataItem[] Items { get; set; }
-
+        public DlmsDataItem[] Items { get; set; }
 
         public string ToPduStringInHex()
         {
-            string str = "01";
+           string str = "01"; 
             string str2 = (Items.Length <= 127)
                 ? Items.Length.ToString("X2")
                 : ((Items.Length > 255) ? ("82" + Items.Length.ToString("X4")) : ("81" + Items.Length.ToString("X2")));
             StringBuilder stringBuilder = new StringBuilder();
-            DLMSDataItem[] array = Items;
-            foreach (DLMSDataItem dlmsDataItem in array)
+            DlmsDataItem[] array = Items;
+            foreach (DlmsDataItem dlmsDataItem in array)
             {
                 stringBuilder.Append(dlmsDataItem.ToPduStringInHex());
             }
 
-            return str + str2 + stringBuilder;
+           return str + str2 + stringBuilder;
+  
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);
-            Items = new DLMSDataItem[num];
+            Items = new DlmsDataItem[num];
             for (int i = 0; i < num; i++)
             {
-                Items[i] = new DLMSDataItem();
+                Items[i] = new DlmsDataItem();
                 if (!Items[i].PduStringInHexConstructor(ref pduStringInHex))
                 {
                     return false;

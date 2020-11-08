@@ -553,9 +553,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public DLMSClient Client { get; set; }
 
-        private ObservableCollection<CosemSelfDefineUtilityTablesModel> _utilityTablesCollection;
+        private ObservableCollection<CustomCosemUtilityTablesModel> _utilityTablesCollection;
 
-        public ObservableCollection<CosemSelfDefineUtilityTablesModel> UtilityTablesCollection
+        public ObservableCollection<CustomCosemUtilityTablesModel> UtilityTablesCollection
         {
             get => _utilityTablesCollection;
             set
@@ -583,12 +583,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
 //            if (IsInDesignMode)
 //            {
-//                UtilityTablesCollection = new ObservableCollection<CosemSelfDefineUtilityTablesModel>
+//                UtilityTablesCollection = new ObservableCollection<CustomCosemUtilityTablesModel>
 //                {
-//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.1.98.0.128.255"},
-//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.2.98.0.128.255"},
-//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.3.98.0.128.255"},
-//                    new CosemSelfDefineUtilityTablesModel {LogicalName = "1.4.98.0.128.255"}
+//                    new CustomCosemUtilityTablesModel {LogicalName = "1.1.98.0.128.255"},
+//                    new CustomCosemUtilityTablesModel {LogicalName = "1.2.98.0.128.255"},
+//                    new CustomCosemUtilityTablesModel {LogicalName = "1.3.98.0.128.255"},
+//                    new CustomCosemUtilityTablesModel {LogicalName = "1.4.98.0.128.255"}
 //                };
 //            }
 //            else
@@ -599,14 +599,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
                 var dataTable = excel.GetExcelDataTable("UtilityTables$");
 
-                UtilityTablesCollection = new ObservableCollection<CosemSelfDefineUtilityTablesModel>();
+                UtilityTablesCollection = new ObservableCollection<CustomCosemUtilityTablesModel>();
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    UtilityTablesCollection.Add(new CosemSelfDefineUtilityTablesModel()
+                    UtilityTablesCollection.Add(new CustomCosemUtilityTablesModel()
                         {LogicalName = dataTable.Rows[i][0].ToString(), Name = dataTable.Rows[i][1].ToString()});
                 }
 
-                GetLogicNameDataCommand = new RelayCommand<CosemSelfDefineUtilityTablesModel>(
+                GetLogicNameDataCommand = new RelayCommand<CustomCosemUtilityTablesModel>(
                     async t =>
                     {
                         t.DataForShow = "";
@@ -619,27 +619,26 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
                             {
                                 t.DataForShow = NormalDataParse.HowToDisplayOctetString(
-                                    getResponse.GetResponseNormal.Result.Data.ValueBytes,
+                                    getResponse.GetResponseNormal.Result.Data.Value.ToString().StringToByte(),
                                     OctetStringDisplayFormat.Obis);
                             }
                         }
                     });
-                GetMeterAddressData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
+                GetMeterAddressData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                      
                         var dataResult = await Client.GetRequest(t.GetTableIdAttributeDescriptor());
                         t.DataForShow = NormalDataParse.ParsePduData(dataResult);
                     }
                 );
-                GetDataLengthData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
+                GetDataLengthData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
                         var dataResult = await Client.GetRequest(t.GetLengthAttributeDescriptor());
                         t.DataForShow = NormalDataParse.ParsePduData(dataResult);
                     }
                 );
-                GetBuffData = new RelayCommand<CosemSelfDefineUtilityTablesModel>(async t =>
+                GetBuffData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
                    
@@ -659,9 +658,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineUtilityTablesModel> _getLogicNameDataCommand;
+        private RelayCommand<CustomCosemUtilityTablesModel> _getLogicNameDataCommand;
 
-        public RelayCommand<CosemSelfDefineUtilityTablesModel> GetLogicNameDataCommand
+        public RelayCommand<CustomCosemUtilityTablesModel> GetLogicNameDataCommand
         {
             get => _getLogicNameDataCommand;
             set
@@ -671,9 +670,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineUtilityTablesModel> _etMeterAddressData;
+        private RelayCommand<CustomCosemUtilityTablesModel> _etMeterAddressData;
 
-        public RelayCommand<CosemSelfDefineUtilityTablesModel> GetMeterAddressData
+        public RelayCommand<CustomCosemUtilityTablesModel> GetMeterAddressData
         {
             get => _etMeterAddressData;
             set
@@ -683,9 +682,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineUtilityTablesModel> _getDataLengthData;
+        private RelayCommand<CustomCosemUtilityTablesModel> _getDataLengthData;
 
-        public RelayCommand<CosemSelfDefineUtilityTablesModel> GetDataLengthData
+        public RelayCommand<CustomCosemUtilityTablesModel> GetDataLengthData
         {
             get => _getDataLengthData;
             set
@@ -695,9 +694,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand<CosemSelfDefineUtilityTablesModel> _getBuffData;
+        private RelayCommand<CustomCosemUtilityTablesModel> _getBuffData;
 
-        public RelayCommand<CosemSelfDefineUtilityTablesModel> GetBuffData
+        public RelayCommand<CustomCosemUtilityTablesModel> GetBuffData
         {
             get => _getBuffData;
             set

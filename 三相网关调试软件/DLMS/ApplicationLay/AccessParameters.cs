@@ -2,12 +2,12 @@
 {
     public class AccessParameters:IToPduStringInHex,IPduStringInHexConstructor
     {
-        public DLMSDataItem Data { get; set; }
+        public DlmsDataItem Data { get; set; }
    
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            Data = new DLMSDataItem();
+            Data = new DlmsDataItem();
             return Data.PduStringInHexConstructor(ref pduStringInHex);
         }
 

@@ -43,13 +43,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
     public class DlmsStructure : IToPduBytes, IPduBytesToConstructor
     {
-        public DLMSDataItem[] Items { get; set; }
+        public DlmsDataItem[] Items { get; set; }
 
         public DlmsStructure()
         {
         }
 
-        public DlmsStructure(DLMSDataItem[] items)
+        public DlmsStructure(DlmsDataItem[] items)
         {
             Items = items;
         }
@@ -80,14 +80,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
             var pduStringInHex = pduBytes.ByteToString();
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);
-            Items = new DLMSDataItem[num];
+            Items = new DlmsDataItem[num];
             for (int i = 0; i < num; i++)
             {
-                Items[i] = new DLMSDataItem();
+                Items[i] = new DlmsDataItem();
             }
 
-            DLMSDataItem[] array = Items;
-            foreach (DLMSDataItem dlmsDataItem in array)
+            DlmsDataItem[] array = Items;
+            foreach (DlmsDataItem dlmsDataItem in array)
             {
                 if (!dlmsDataItem.PduStringInHexConstructor(ref pduStringInHex))
                 {
@@ -103,8 +103,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             string str = "02";
             string str2 = (Items.Length > 127) ? ("82" + Items.Length.ToString("X4")) : Items.Length.ToString("X2");
             StringBuilder stringBuilder = new StringBuilder();
-            DLMSDataItem[] array = Items;
-            foreach (DLMSDataItem dlmsDataItem in array)
+            DlmsDataItem[] array = Items;
+            foreach (DlmsDataItem dlmsDataItem in array)
             {
                 stringBuilder.Append(dlmsDataItem.ToPduStringInHex());
             }
@@ -115,14 +115,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);
-            Items = new DLMSDataItem[num];
+            Items = new DlmsDataItem[num];
             for (int i = 0; i < num; i++)
             {
-                Items[i] = new DLMSDataItem();
+                Items[i] = new DlmsDataItem();
             }
 
-            DLMSDataItem[] array = Items;
-            foreach (DLMSDataItem dlmsDataItem in array)
+            DlmsDataItem[] array = Items;
+            foreach (DlmsDataItem dlmsDataItem in array)
             {
                 if (!dlmsDataItem.PduStringInHexConstructor(ref pduStringInHex))
                 {

@@ -2,18 +2,19 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Tftp.Net;
 using 三相智慧能源网关调试软件.Properties;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class TftpServerViewModel : ViewModelBase
+    public class TftpServerViewModel : ObservableObject
     {
         private TftpServer _tftpServer;
         private readonly OpenFileDialog _openFileDialog;
@@ -23,17 +24,22 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public bool IsStarted
         {
             get => _isStarted;
-            set { _isStarted = value; RaisePropertyChanged(); }
+            set
+            {
+                _isStarted = value;
+                OnPropertyChanged();
+            }
         }
 
         private string _tftpServerDirectory;
+
         public string TftpServerDirectory
         {
             get => _tftpServerDirectory;
             set
             {
                 _tftpServerDirectory = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -45,9 +51,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _directoryCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
+
         private string _log;
 
         public string StatusLog
@@ -56,7 +63,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _log = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -64,8 +71,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public TftpServerViewModel()
         {
             TftpServerDirectory = Settings.Default.TftpServerDirectory;
-            DirectoryCollection =new ObservableCollection<string>();
+            DirectoryCollection = new ObservableCollection<string>();
             _folderBrowserDialog1 = new FolderBrowserDialog {SelectedPath = TftpServerDirectory};
+
             BrowseCommand = new RelayCommand(BrowseDialog);
 
             _openFileDialog = new OpenFileDialog();
@@ -76,13 +84,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 if (GetServerDirectory())
                 {
                     _tftpServer = new TftpServer();
-                    _tftpServer?.Start();
+
                     _tftpServer.OnReadRequest += TftpServer_OnReadRequest;
                     _tftpServer.OnWriteRequest += TftpServer_OnWriteRequest;
                     _tftpServer.OnError += TftpServer_OnError;
+                    _tftpServer?.Start();
                     IsStarted = true;
+                  
                 }
-               
             });
             StopServerCommand = new RelayCommand(() =>
             {
@@ -97,7 +106,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public void OpenFileDialog()
         {
-            _openFileDialog.InitialDirectory = Environment.CurrentDirectory;
+            _openFileDialog.InitialDirectory = Environment.CurrentDirectory + TftpServerDirectory;
             _openFileDialog.ShowDialog();
         }
 
@@ -110,7 +119,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _browseCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -122,7 +131,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _openDialogCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -134,7 +143,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _startCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -146,19 +155,18 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _stopCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
 
         private void BrowseDialog()
         {
-          DialogResult result=  _folderBrowserDialog1.ShowDialog();
-          if (result==DialogResult.OK)
-          {
-              TftpServerDirectory = _folderBrowserDialog1.SelectedPath;
-          }
-
+            DialogResult result = _folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                TftpServerDirectory = _folderBrowserDialog1.SelectedPath;
+            }
         }
 
 
@@ -174,10 +182,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// <param name="client"></param>
         private void TftpServer_OnReadRequest(ITftpTransfer transfer, EndPoint client)
         {
-            string path = Path.Combine(TftpServerDirectory, transfer.Filename);
+            string path = Path.Combine(Environment.CurrentDirectory+TftpServerDirectory, transfer.Filename);
             FileInfo file = new FileInfo(path);
-            bool flag = !file.Exists;
-            if (flag)
+
+            if (!file.Exists)
             {
                 CancelTransfer(transfer, TftpErrorPacket.FileNotFound);
             }
@@ -190,17 +198,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void TftpServer_OnWriteRequest(ITftpTransfer transfer, EndPoint client)
         {
-            string file = Path.Combine(_tftpServerDirectory, transfer.Filename);
-            bool flag = File.Exists(file);
-            if (flag)
-            {
-                CancelTransfer(transfer, TftpErrorPacket.FileAlreadyExists);
-            }
-            else
-            {
-                OutputTransferStatus(transfer, "Accepting write request from " + client);
-                StartTransfer(transfer, new FileStream(file, FileMode.CreateNew));
-            }
+          
+                string file = Path.Combine(Environment.CurrentDirectory+_tftpServerDirectory, transfer.Filename);
+                bool flag = File.Exists(file);
+                if (flag)
+                {
+                    CancelTransfer(transfer, TftpErrorPacket.FileAlreadyExists);
+                }
+                else
+                {
+                    OutputTransferStatus(transfer, "Accepting write request from " + client);
+                   StartTransfer(transfer, new FileStream(file, FileMode.CreateNew)); 
+                }
+        
         }
 
 
@@ -229,6 +239,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void Transfer_OnFinished(ITftpTransfer transfer)
         {
             OutputTransferStatus(transfer, "Finished");
+            transfer.OnProgress -= Transfer_OnProgress;
+            transfer.OnError -= Transfer_OnError;
+            transfer.OnFinished -= Transfer_OnFinished;
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                DirectoryCollection.Add(transfer.Filename);//完成后更新列表
+            });
+           
+
         }
 
         private void Transfer_OnError(ITftpTransfer transfer, TftpTransferError error)
@@ -238,13 +257,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void Transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)
         {
-            Messenger.Default.Send(progress, "ProgressStatus");
+            Task.Run(() => { Messenger.Default.Send(progress, "ServerProgressStatus"); });
         }
 
 
         public bool GetServerDirectory()
         {
-            if (!string.IsNullOrEmpty(TftpServerDirectory)&&Directory.Exists(TftpServerDirectory))
+            if (!string.IsNullOrEmpty(TftpServerDirectory) && Directory.Exists(TftpServerDirectory))
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(TftpServerDirectory);
                 DirectoryCollection.Clear();

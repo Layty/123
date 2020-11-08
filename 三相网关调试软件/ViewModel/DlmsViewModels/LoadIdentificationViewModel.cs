@@ -6,13 +6,14 @@ using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
+using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class LoadIdentificationViewModel : ObservableObject
     {
         public DLMSClient Client { get; set; }
-        public CosemLoadIdentification CosemLoadIdentification { get; set; }
+        public CustomCosemLoadIdentificationModel CustomCosemLoadIdentificationModel { get; set; }
         public string LoadOriginalDataHex
         {
             get => _loadOriginalDataHex;
@@ -153,7 +154,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             if (loadDataBytes != null)
             {
-                LoadOriginalDataHex = loadDataBytes.GetResponseNormal.Result.Data.ValueBytes.ByteToString("");
+                LoadOriginalDataHex = loadDataBytes.GetResponseNormal.Result.Data.Value.ToString();
                 LoadOriginalDataHex = LoadOriginalDataHex.Substring(2); //去掉长度
                 var load = new LoadDataParse();
                 if (load.Parse(LoadOriginalDataHex))
@@ -166,17 +167,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public LoadIdentificationViewModel()
         {
             Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
-            CosemLoadIdentification = new CosemLoadIdentification();
+            CustomCosemLoadIdentificationModel = new CustomCosemLoadIdentificationModel();
             GetEarliestCommand = new RelayCommand(async () =>
             {
                 var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetEarliestLoadIdentification());
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetEarliestLoadIdentification());
                 ParseData(LoadDataBytes);
             });
             GetLatestCommand = new RelayCommand(async () =>
             {
                 var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLatestLoadIdentification());
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetLatestLoadIdentification());
                 ParseData(LoadDataBytes);
             });
             GetGivenTimeCommand = new RelayCommand<string>(async (t) =>
@@ -184,7 +185,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 DateTime.TryParse(t, out var setDateTime);
                 CosemClock dt = new CosemClock(setDateTime);
                 var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CosemLoadIdentification.GetLoadIdentificationWithTime(dt));
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetLoadIdentificationWithTime(dt));
                 ParseData(LoadDataBytes);
             });
         }

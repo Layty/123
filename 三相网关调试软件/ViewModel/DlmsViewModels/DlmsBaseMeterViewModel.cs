@@ -86,13 +86,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt16, "8192");
+                DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "8192");
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                var dataItem = new DLMSDataItem(DataType.UInt16, "0");
+                var dataItem = new DlmsDataItem(DataType.UInt16, "0");
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
@@ -103,8 +103,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             SetCapturePeriodCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemProfileGeneric("1.0.99.1.0.255");
-                cosem.CapturePeriod1 = new AxdrUnsigned32("00000060");
-                var dlmsData = new DLMSDataItem(DataType.UInt32, cosem.CapturePeriod1.Value);
+                cosem.CapturePeriod = new AxdrUnsigned32("00000060");
+                var dlmsData = new DlmsDataItem(DataType.UInt32, cosem.CapturePeriod.Value);
 
                 await Client.SetRequestAndWaitResponse(cosem.GetCapturePeriodAttributeDescriptor(), dlmsData);
             });
@@ -114,7 +114,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 Client.actionRequest = new ActionRequest()
                 {
                     ActionRequestNormal = new ActionRequestNormal(cosem.GetScriptExecuteCosemMethodDescriptor(),
-                        new DLMSDataItem(DataType.UInt16, "0001")
+                        new DlmsDataItem(DataType.UInt16, "0001")
                     )
                 };
                 await Client.ActionRequest(Client.actionRequest);

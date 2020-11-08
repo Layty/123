@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件.Model
 {
@@ -9,7 +9,7 @@ namespace 三相智慧能源网关调试软件.Model
         public string Assembly
         {
             get => _assembly;
-            set { _assembly = value; RaisePropertyChanged(); }
+            set { _assembly = value; OnPropertyChanged(); }
         }
 
 
@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _menuName = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -33,7 +33,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _iconFont = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _fontSize = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _foreground = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

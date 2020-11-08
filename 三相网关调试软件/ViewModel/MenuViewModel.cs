@@ -34,7 +34,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                     new MenuModel
                     {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TcpClientPage",
                         Foreground = "#00FF00"
                     }
                 };
@@ -64,7 +64,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     new MenuModel()
                     {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TelnetPage",
+                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", Assembly = "ServerCenter.TcpClientPage",
                         Foreground = "#FF0000"
                     },
                 };
@@ -106,8 +106,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe6ee", 
-                        Assembly = "ServerCenter.TelnetPage",
+                        MenuName = "TcpClient", FontSize = "20", IconFont = "\xe6ee", 
+                        Assembly = "ServerCenter.TcpClientPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel

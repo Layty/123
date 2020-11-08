@@ -1,10 +1,8 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
+﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
 
 namespace 三相智慧能源网关调试软件.Model
 {
-    public class CosemSelfDefineUtilityTablesModel : CosemUtilityTables, INotifyPropertyChanged
+    public class CustomCosemUtilityTablesModel : CosemUtilityTables
     {
         public string Name { get; set; }
         public string NameDescription { get; set; } = "LogicalName";
@@ -23,11 +21,5 @@ namespace 三相智慧能源网关调试软件.Model
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

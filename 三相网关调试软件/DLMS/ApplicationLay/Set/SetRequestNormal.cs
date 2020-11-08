@@ -13,7 +13,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 
         public SelectiveAccessDescriptor AccessSelection { get; set; }
 
-        public DLMSDataItem Value { get; set; }
+        public DlmsDataItem Value { get; set; }
 
         public SetRequestNormal()
         {
@@ -28,7 +28,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
         }
 
-        public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor, DLMSDataItem value)
+        public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor, DlmsDataItem value)
         {
             CosemAttributeDescriptor = cosemAttributeDescriptor;
             Value = value;

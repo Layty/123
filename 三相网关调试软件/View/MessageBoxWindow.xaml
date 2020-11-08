@@ -10,39 +10,58 @@
         Loaded="MessageBoxWindow_OnLoaded"
         RenderTransformOrigin="0.5,0.5"
         MouseMove="MessageBoxWindow_OnMouseMove">
+    <Window.Resources>
+        <Style x:Key="MessageStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="FontSize" Value="35" />
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryHueDarkBrush}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Window.RenderTransform>
         <ScaleTransform x:Name="Scale" ScaleX="1" ScaleY="{Binding ElementName=Scale ,Path=ScaleX }" />
     </Window.RenderTransform>
-    <Grid Background="AliceBlue">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.Resources>
-            <Style x:Key="MessageStyle" TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Foreground" Value="DarkGray" />
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="Aqua" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-           
-        </Grid.Resources>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="&#xe629;" FontSize="30" FontFamily="/Fonts/#iconfont" />
-            <TextBlock Text="{Binding Title}"  FontSize="30" />
-        </StackPanel>
+    <Grid  Background="Transparent">
+        <Border  BorderBrush="{DynamicResource PrimaryHueDarkBrush}">
+            <materialDesign:Card  UniformCornerRadius="2"  materialDesign:ShadowAssist.ShadowDepth="Depth5" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="20" />
+                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- <TextBlock Text="&#xe629;" FontSize="20" FontFamily="/Fonts/#iconfont" /> -->
+                        <materialDesign:PackIcon Kind="NotificationsActive" Margin="5"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    <TextBlock Text="{Binding Title}"  FontSize="20"/>
 
-        <TextBlock Grid.Row="1" Text="{Binding Path=Message}" FontSize="20" Style="{StaticResource MessageStyle}" />
-        <Button Grid.Row="2" FontSize="20" Width="100" Height="30"
-                materialDesign:ButtonAssist.CornerRadius="20" x:Name="Button"
-                Click="Button_OnClick">
-            OK
-        </Button>
-      
+                </StackPanel>
+
+                    <TextBlock Grid.Row="1" Text="{Binding Message}" FontSize="20"
+                           Style="{StaticResource MessageStyle}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button  Width="80" Height="30" Margin="5 0" materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                            materialDesign:ButtonAssist.CornerRadius="20" x:Name="ButtonClose"
+                            Click="ButtonClose_OnClick">
+                        Cancel
+                        </Button>
+                        <Button  Width="80" Height="30" Margin="5 0" materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                            materialDesign:ButtonAssist.CornerRadius="20" x:Name="Button"
+                            Click="Button_OnClick">
+                        OK
+                    </Button>
+                    </StackPanel>
+              
+                </Grid>
+            </materialDesign:Card>
+        </Border>
     </Grid>
 </Window>

@@ -32,7 +32,8 @@
                                                         <Button Content="Get"
                                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetCaptureObjectsCommand ,Mode=TwoWay}"
                                                                 CommandParameter="{Binding }" Margin="2 0" />
-                                                        <Button Content="Set" Margin="2 0" />
+                                                        <Button Content="Set"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetCaptureObjectsCommand ,Mode=TwoWay}"
+                                                                CommandParameter="{Binding }" Margin="2 0"/>
                                                     </StackPanel>
                                                     <DataGrid Grid.Row="1" AutoGenerateColumns="True"
                                                               ItemsSource="{Binding CaptureObjects}" />
@@ -50,7 +51,7 @@
                                                 <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                          materialDesign:HintAssist.IsFloating="True"
                                                          materialDesign:HintAssist.Hint="CapturePeriod"
-                                                         Text="{Binding CapturePeriod1.Value,UpdateSourceTrigger=PropertyChanged}" />
+                                                         Text="{Binding CapturePeriod.Value,UpdateSourceTrigger=PropertyChanged}" />
                                                 <Button Content="Get"
                                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetCapturePeriodCommand ,Mode=TwoWay}"
                                                         CommandParameter="{Binding }" />

@@ -308,14 +308,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     alarmObject.AlarmClockTime = cosemClock.ToDateTime().ToString();
                     if (dataNotification.NotificationBody.DataType == DataType.Structure)
                     {
-                        string value = dataNotification.NotificationBody.ValueBytes.ByteToString();
+                        string value = dataNotification.NotificationBody.Value.ToString();
                         var dlmsStructure = new DlmsStructure();
                         if (dlmsStructure.PduStringInHexConstructor(ref value))
                         {
                             var itemstring = new List<string>();
                             foreach (var dlmsStructureItem in dlmsStructure.Items)
                             {
-                                itemstring.Add(dlmsStructureItem.ValueDisplay.ValueString);
+                                itemstring.Add(dlmsStructureItem.ValueString);
                             }
 
                             alarmObject.PushId = new AxdrOctetStringFixed(itemstring[0], 6);

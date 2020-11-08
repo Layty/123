@@ -9,7 +9,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
     {
         public Logger Logger = LogManager.GetLogger("XML");
 
-        private StringBuilder _xmlLogStringBuilder = new StringBuilder();
+        private readonly StringBuilder _xmlLogStringBuilder = new StringBuilder();
 //        public string XmlLogAppend  
 //        {
 //            get => _xmlLogStringBuilder.ToString();

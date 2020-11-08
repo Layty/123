@@ -111,7 +111,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             OctetStringDisplayFormat octetStringDisplayFormat)
         {
             var displayString = "";
-            dataBytes = dataBytes.Skip(1).ToArray();
             switch (octetStringDisplayFormat)
             {
                 case OctetStringDisplayFormat.Ascii:

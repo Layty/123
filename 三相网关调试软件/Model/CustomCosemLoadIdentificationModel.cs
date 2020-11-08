@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using 三相智慧能源网关调试软件.Commom;
+﻿using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Ber;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
-namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
+namespace 三相智慧能源网关调试软件.Model
 {
-    public class CosemLoadIdentification : CosemObject
+    public class CustomCosemLoadIdentificationModel : CosemObject
     {
-        public CosemLoadIdentification()
+        public CustomCosemLoadIdentificationModel()
         {
             LogicalName = "0.1.128.0.0.255";
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.LoadIdentification);
@@ -23,60 +23,48 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 
         public SelectiveAccessDescriptor GetEarliestAccessDescriptor()
         {
-            DLMSDataItem[] dataItems = new DLMSDataItem[]
+            DlmsStructure structure = new DlmsStructure
             {
-                new DLMSDataItem(DataType.UInt16, "0000"),
-                new DLMSDataItem(DataType.UInt16, "0001"),
+                Items = new[]
+                {
+                    new DlmsDataItem(DataType.UInt16, "0000"),
+                    new DlmsDataItem(DataType.UInt16, "0001"),
+                }
             };
-            List<byte> list = new List<byte>();
-            list.Add((byte) dataItems.Length);
-            foreach (var dlmsDataItem in dataItems)
-            {
-                list.AddRange((dlmsDataItem.ToPduBytes()));
-                ;
-            }
-
             return new SelectiveAccessDescriptor(new AxdrUnsigned8("02"),
-                new DLMSDataItem(DataType.Structure, list.ToArray()));
+                new DlmsDataItem(DataType.Structure, structure) );
         }
 
         public SelectiveAccessDescriptor GetLatestAccessDescriptor()
         {
-            DLMSDataItem[] dataItems = new DLMSDataItem[]
+            DlmsStructure structure = new DlmsStructure
             {
-                new DLMSDataItem(DataType.UInt16, "0001"),
-                new DLMSDataItem(DataType.UInt16, "0001"),
+                Items = new[]
+                {
+                    new DlmsDataItem(DataType.UInt16) {Value = "0001"},
+                    new DlmsDataItem(DataType.UInt16) {Value = "0001"},
+                }
             };
-            List<byte> list = new List<byte>();
-            list.Add((byte) dataItems.Length);
-            foreach (var dlmsDataItem in dataItems)
-            {
-                list.AddRange(dlmsDataItem.ToPduBytes());
-            }
-
             return new SelectiveAccessDescriptor(new AxdrUnsigned8("02"),
-                new DLMSDataItem(DataType.Structure, list.ToArray()));
+                new DlmsDataItem(DataType.Structure, structure));
         }
 
         public SelectiveAccessDescriptor GetSelectiveAccessDescriptorWithTime(CosemClock cosemClock)
         {
-            BerOctetString timerBerOctetString = new BerOctetString();
-            timerBerOctetString.Value = cosemClock.GetDateTimeBytes().ByteToString("");
-
-            DLMSDataItem[] dataItems = new[]
+            BerOctetString timerBerOctetString = new BerOctetString
             {
-                new DLMSDataItem(DataType.OctetString, timerBerOctetString.ToPduStringInHex()),
-                new DLMSDataItem(DataType.UInt16, "0001"),
+                Value = cosemClock.GetDateTimeBytes().ByteToString("")
             };
-            List<byte> list = new List<byte>();
-            list.Add((byte) dataItems.Length);
-            foreach (var dlmsDataItem in dataItems)
+            DlmsStructure dlmsStructure = new DlmsStructure
             {
-                list.AddRange(dlmsDataItem.ToPduBytes());
-            }
-
+                Items = new[]
+                {
+                    new DlmsDataItem(DataType.OctetString, timerBerOctetString.ToPduStringInHex()),
+                    new DlmsDataItem(DataType.UInt16, "0001"),
+                }
+            };
             return new SelectiveAccessDescriptor(new AxdrUnsigned8("01"),
-                new DLMSDataItem(DataType.Structure, list.ToArray()));
+                new DlmsDataItem(DataType.Structure,dlmsStructure));
         }
 
         public CosemAttributeDescriptorWithSelection GetLoadIdentificationWithTime(CosemClock cosemClock)

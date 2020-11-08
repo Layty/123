@@ -1,5 +1,4 @@
 ﻿using System;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
@@ -12,18 +11,19 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public sbyte AttributeIndex { get; set; }
         public ushort DataIndex { get; set; }
 
-        public DLMSDataItem ToDlmsDataItem()
+        public DlmsDataItem ToDlmsDataItem()
         {
             DlmsStructure dlmsStructure = new DlmsStructure();
-            dlmsStructure.Items = new DLMSDataItem[4];
-            dlmsStructure.Items[0] = new DLMSDataItem(DataType.UInt16, ClassId.ToString("X4"));
-            dlmsStructure.Items[1] = new DLMSDataItem(DataType.OctetString, MyConvert.ObisToHexCode(LogicalName));
-            dlmsStructure.Items[2] = new DLMSDataItem(DataType.Int8, AttributeIndex.ToString("X2"));
-            dlmsStructure.Items[3] = new DLMSDataItem(DataType.UInt16, DataIndex.ToString("X4"));
-            return new DLMSDataItem(DataType.Structure, dlmsStructure.ToPduBytes());
+            dlmsStructure.Items = new DlmsDataItem[4];
+            dlmsStructure.Items[0] = new DlmsDataItem(DataType.UInt16, ClassId.ToString("X4"));
+            dlmsStructure.Items[1] = new DlmsDataItem(DataType.OctetString, MyConvert.ObisToHexCode(LogicalName));
+            dlmsStructure.Items[2] = new DlmsDataItem(DataType.Int8, AttributeIndex.ToString("X2"));
+            dlmsStructure.Items[3] = new DlmsDataItem(DataType.UInt16, DataIndex.ToString("X4"));
+
+            return new DlmsDataItem(DataType.Structure, dlmsStructure);
         }
 
-        public static CaptureObjectDefinition CreateFromDlmsData(DLMSDataItem ddi)
+        public static CaptureObjectDefinition CreateFromDlmsData(DlmsDataItem ddi)
         {
             if (ddi == null || !(ddi.DataType is DataType.Structure))
             {
@@ -31,9 +31,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
 
             DlmsStructure dlmsStructure = new DlmsStructure();
-            var structrue = ddi.ToPduStringInHex();
-            structrue = structrue.Substring(2);
-            dlmsStructure.PduStringInHexConstructor(ref structrue);
+            var structure = ddi.ToPduStringInHex();
+            structure = structure.Substring(2);
+            dlmsStructure.PduStringInHexConstructor(ref structure);
             if (dlmsStructure.Items.Length != 4)
             {
                 return null;
@@ -45,14 +45,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
                 return null;
             }
 
-            captureObjectDefinition.ClassId = Convert.ToUInt16(dlmsStructure.Items[0].ValueBytes.ByteToString(), 16);
+            captureObjectDefinition.ClassId = Convert.ToUInt16(dlmsStructure.Items[0].Value.ToString(), 16);
             if (dlmsStructure.Items[1].DataType != DataType.OctetString)
             {
                 return null;
             }
 
             captureObjectDefinition.LogicalName =
-                MyConvert.GetObisOriginal(dlmsStructure.Items[1].ValueBytes.ByteToString().Substring(2));
+                MyConvert.GetObisOriginal(dlmsStructure.Items[1].Value.ToString().Substring(2));
 
             if (string.IsNullOrEmpty(captureObjectDefinition.LogicalName))
             {
@@ -65,13 +65,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
 
             captureObjectDefinition.AttributeIndex =
-                Convert.ToSByte(dlmsStructure.Items[2].ValueBytes.ByteToString(), 16);
+                Convert.ToSByte(dlmsStructure.Items[2].Value.ToString(), 16);
             if (dlmsStructure.Items[3].DataType != DataType.UInt16)
             {
                 return null;
             }
 
-            captureObjectDefinition.DataIndex = Convert.ToUInt16(dlmsStructure.Items[3].ValueBytes.ByteToString(), 16);
+            captureObjectDefinition.DataIndex = Convert.ToUInt16(dlmsStructure.Items[3].Value.ToString(), 16);
             return captureObjectDefinition;
         }
 

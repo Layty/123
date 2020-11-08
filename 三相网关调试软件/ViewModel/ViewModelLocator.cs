@@ -35,6 +35,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TcpServerViewModel>(); //网关调试登录Telnet客户端
                 SimpleIoc.Default.Register<TftpServerViewModel>();
+                SimpleIoc.Default.Register<TftpClientViewModel>();
                 SimpleIoc.Default.Register<NetLogViewModel>();
 //                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
                 SimpleIoc.Default.Register<XMLLogViewModel>();
@@ -99,6 +100,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public XMLLogViewModel XmlLogViewModel => ServiceLocator.Current.GetInstance<XMLLogViewModel>();
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
+        public TftpClientViewModel TftpClient => ServiceLocator.Current.GetInstance<TftpClientViewModel>();
         public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
 
    

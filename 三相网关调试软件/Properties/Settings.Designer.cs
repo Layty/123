@@ -262,5 +262,17 @@ namespace 三相智慧能源网关调试软件.Properties {
                 this["DlmsProfileGenericSheetName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\TFTPClientFiles")]
+        public string TftpClientDirectory {
+            get {
+                return ((string)(this["TftpClientDirectory"]));
+            }
+            set {
+                this["TftpClientDirectory"] = value;
+            }
+        }
     }
 }

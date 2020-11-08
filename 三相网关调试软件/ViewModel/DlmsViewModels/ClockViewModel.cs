@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 
@@ -51,7 +52,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     var DisplayFormat = OctetStringDisplayFormat.DateTime;
                     Clock.Time =
                         NormalDataParse.HowToDisplayOctetString(
-                            response.GetResponseNormal.Result.Data.ValueBytes, DisplayFormat);
+                            response.GetResponseNormal.Result.Data.Value.ToString().StringToByte(), DisplayFormat);
                 }
             });
             GetTimeZoneCommand = new RelayCommand(async () =>
@@ -59,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 var response = await Client.GetRequestAndWaitResponse(Clock.GetTimeZoneAttributeDescriptor());
                 if (response != null)
                 {
-                    Clock.TimeZone = int.Parse(response.GetResponseNormal.Result.Data.ValueDisplay.ValueString);
+                    Clock.TimeZone = int.Parse(response.GetResponseNormal.Result.Data.ValueString);
                 }
             });
         }

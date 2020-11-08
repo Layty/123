@@ -11,7 +11,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
             
         }
-        public SelectiveAccessDescriptor(AxdrUnsigned8 accessSelector , DLMSDataItem dlmsDataItem)
+        public SelectiveAccessDescriptor(AxdrUnsigned8 accessSelector , DlmsDataItem dlmsDataItem)
         {
             AccessSelector = accessSelector;
             AccessParameters=new AccessParameters(){Data = dlmsDataItem };

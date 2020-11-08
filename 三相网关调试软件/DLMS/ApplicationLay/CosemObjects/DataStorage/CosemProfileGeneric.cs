@@ -1,85 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage
 {
-    public interface IToDlmsDataItem
-    {
-        DLMSDataItem ToDlmsDataItem();
-    }
-
-    public class ProfileGenericRangeDescriptor : IToDlmsDataItem
-    {
-        public CaptureObjectDefinition RestrictingObject { get; set; }
-        public DLMSDataItem FromValue { get; set; }
-        public DLMSDataItem ToValue { get; set; }
-        public List<CaptureObjectDefinition> SelectedValues { get; set; }
-
-        public DLMSDataItem ToDlmsDataItem()
-        {
-            DlmsStructure dlmsStructure = new DlmsStructure();
-            dlmsStructure.Items = new DLMSDataItem[4];
-            dlmsStructure.Items[0] = RestrictingObject.ToDlmsDataItem();
-            dlmsStructure.Items[1] = FromValue;
-            dlmsStructure.Items[2] = ToValue;
-            DLMSArray dlmsArray = new DLMSArray();
-            if (SelectedValues == null || SelectedValues.Count == 0)
-            {
-                dlmsArray.Items = new DLMSDataItem[0];
-            }
-            else
-            {
-                dlmsArray.Items = new DLMSDataItem[SelectedValues.Count];
-                for (int i = 0; i < SelectedValues.Count; i++)
-                {
-                    dlmsArray.Items[i] = SelectedValues[i].ToDlmsDataItem();
-                }
-            }
-
-            dlmsStructure.Items[3] = new DLMSDataItem(DataType.Array, dlmsArray.ToPduStringInHex());
-
-            DLMSDataItem dlmsDataItem = new DLMSDataItem(DataType.Structure, dlmsStructure.ToPduBytes());
-            return dlmsDataItem;
-        }
-    }
-
-    public class ProfileGenericEntryDescriptor : IToDlmsDataItem
-    {
-        public uint FromIndex { get; set; }
-        public uint ToIndex { get; set; }
-        public ushort FromSelectedValue { get; set; }
-        public ushort ToSelectedValue { get; set; }
-
-        public DLMSDataItem ToDlmsDataItem()
-        {
-            DlmsStructure dlmsStructure = new DlmsStructure();
-            dlmsStructure.Items = new DLMSDataItem[4];
-            dlmsStructure.Items[0] = new DLMSDataItem(DataType.UInt32, FromIndex.ToString("X8"));
-            dlmsStructure.Items[1] = new DLMSDataItem(DataType.UInt32, ToIndex.ToString("X8"));
-            dlmsStructure.Items[2] = new DLMSDataItem(DataType.UInt16, FromSelectedValue.ToString("X4"));
-            dlmsStructure.Items[3] = new DLMSDataItem(DataType.UInt16, ToSelectedValue.ToString("X4"));
-            DLMSDataItem dlmsDataItem = new DLMSDataItem(DataType.Structure, dlmsStructure.ToPduBytes());
-
-            return dlmsDataItem;
-        }
-    }
-
     public class CosemProfileGeneric : CosemObject, IDlmsBase
     {
         public DLMSArray Buffer { get; set; } //2
 
-
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
-            new ObservableCollection<CaptureObjectDefinition>();//3
+            new ObservableCollection<CaptureObjectDefinition>(); //3
 
-        public uint CapturePeriod
+        public AxdrUnsigned32 CapturePeriod
         {
             get => _capturePeriod;
             set
@@ -89,19 +24,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private uint _capturePeriod;
-
-        public AxdrUnsigned32 CapturePeriod1
-        {
-            get => _capturePeriod1;
-            set
-            {
-                _capturePeriod1 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private AxdrUnsigned32 _capturePeriod1 = new AxdrUnsigned32();
+        private AxdrUnsigned32 _capturePeriod = new AxdrUnsigned32();
 
         //5
 
@@ -155,7 +78,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 
 
         /// <summary>
-        /// 保持最大条目数   //8
+        /// 保持最大条目数   //Attribute=8
         /// </summary>
         public uint ProfileEntries
         {
@@ -198,25 +121,15 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 
         public CosemAttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
 
-
-//        public byte[] SetCapturePeriod(uint capturePeriod)
-//        {
-//            this.CapturePeriod = capturePeriod;
-//            DLMSDataItem dlmsDataItem =
-//                new DLMSDataItem(this.GetDataType(4), BitConverter.GetBytes(CapturePeriod).Reverse().ToArray());
-//            this.CapturePeriod1 = new AxdrUnsigned32();
-//
-//            return SetAttributeData(4, dlmsDataItem);
-//        }
-
-
         public CosemAttributeDescriptor GetSortMethodAttributeDescriptor() => GetCosemAttributeDescriptor(5);
-
 
         public CosemAttributeDescriptor GetEntriesInUseAttributeDescriptor() => GetCosemAttributeDescriptor(7);
 
         public CosemAttributeDescriptor GetProfileEntriesAttributeDescriptor() => GetCosemAttributeDescriptor(8);
 
+
+        public CosemMethodDescriptor GetResetMethodDescriptor() => GetCosemMethodDescriptor(1);
+        public CosemMethodDescriptor GetCaptureMethodDescriptor() => GetCosemMethodDescriptor(2);
         string[] IDlmsBase.GetNames()
         {
             return new string[8]
@@ -266,13 +179,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 
         public virtual void Reset()
         {
-            DLMSDataItem dataItem = new DLMSDataItem(DataType.UInt8, new byte[] {00});
+            DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
 //            ActionExecute(1, dataItem);
         }
 
         public void Capture()
         {
-            DLMSDataItem dataItem = new DLMSDataItem(DataType.Int8, new byte[] {00});
+            DlmsDataItem dataItem = new DlmsDataItem(DataType.Int8) {Value = "00"};
 //            ActionExecute(2, dataItem);
         }
 
