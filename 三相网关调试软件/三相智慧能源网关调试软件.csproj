@@ -508,8 +508,8 @@
     <Compile Include="View\ServerCenter\TcpClientPage.xaml.cs">
       <DependentUpon>TcpClientPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\TftpServerPage.xaml.cs">
-      <DependentUpon>TftpServerPage.xaml</DependentUpon>
+    <Compile Include="View\ServerCenter\TftpMasterPage.xaml.cs">
+      <DependentUpon>TftpMasterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ServerCenter\TftpServerControl.xaml.cs">
       <DependentUpon>TftpServerControl.xaml</DependentUpon>
@@ -684,7 +684,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\TftpServerPage.xaml">
+    <Page Include="View\ServerCenter\TftpMasterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

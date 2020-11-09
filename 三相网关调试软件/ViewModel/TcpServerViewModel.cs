@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
@@ -18,10 +16,11 @@ using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Properties;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using ObservableObject = Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class TcpServerViewModel : ViewModelBase
+    public class TcpServerViewModel : ObservableObject
     {
         public TcpServerHelper TcpServerHelper
         {
@@ -29,7 +28,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _tcpServerHelper = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -42,7 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _startListen = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -54,7 +53,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _disConnectServerCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -66,7 +65,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _disConnectClientCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -79,7 +78,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _sendDataToServerCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -92,7 +91,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentSocketClient = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -105,7 +104,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentSendMsg = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -117,7 +116,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _selectSocketCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -126,15 +125,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public DLMSClient DLMSClient
         {
-            get => _DLMSClient;
+            get => _dlmsClient;
             set
             {
-                _DLMSClient = value;
-                RaisePropertyChanged();
+                _dlmsClient = value;
+                OnPropertyChanged();
             }
         }
 
-        private DLMSClient _DLMSClient;
+        private DLMSClient _dlmsClient;
 
 
         public bool IsAutoResponseHeartBeat
@@ -143,7 +142,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _isAutoResponseHeartBeat = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -151,15 +150,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public TcpTranslator Translator
         {
-            get => translator;
+            get => _translator;
             set
             {
-                translator = value;
-                RaisePropertyChanged();
+                _translator = value;
+                OnPropertyChanged();
             }
         }
 
-        private TcpTranslator translator;
+        private TcpTranslator _translator;
 
         public bool IsNeedTranslator
         {
@@ -167,7 +166,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _isNeedTranslator = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -180,23 +179,23 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _heartBeatDelayTime = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private int _heartBeatDelayTime;
 
-        public ObservableCollection<Alarm> Alarms
+        public ObservableCollection<AlarmViewModel> Alarms
         {
             get => _alarms;
             set
             {
                 _alarms = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<Alarm> _alarms;
+        private ObservableCollection<AlarmViewModel> _alarms;
 
 
         public TcpServerViewModel()
@@ -213,13 +212,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
             StartListen = new RelayCommand(() =>
             {
                 if (IsNeedTranslator)
-                {
-                    translator.StartListen();
-                }
+                    _translator.StartListen();
                 else
-                {
                     TcpServerHelper.StartListen();
-                }
             });
             DisConnectServerCommand = new RelayCommand(TcpServerHelper.CloseSever);
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
@@ -227,7 +222,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
-            Alarms = new ObservableCollection<Alarm>();
+            Alarms = new ObservableCollection<AlarmViewModel>();
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
         }
 
@@ -243,47 +238,62 @@ namespace 三相智慧能源网关调试软件.ViewModel
             ByPass,
         }
 
-        public class Alarm : IPduStringInHexConstructor
+        public class CustomAlarm : DlmsStructure
         {
-            public string DateTime { get; set; }
-            public string IpAddress { get; set; }
-            public string AlarmClockTime { get; set; }
             public AxdrOctetStringFixed PushId { get; set; }
-
             public AxdrOctetString CosemLogicalDeviceName { get; set; }
             public AxdrUnsigned32 AlarmDescriptor1 { get; set; }
             public AxdrUnsigned32 AlarmDescriptor2 { get; set; }
 
+
+            public new bool PduStringInHexConstructor(ref string pduStringInHex)
+            {
+                if (base.PduStringInHexConstructor(ref pduStringInHex))
+                {
+                    PushId = new AxdrOctetStringFixed(6);
+                    var pid = Items[0].Value.ToString();
+                    if (!PushId.PduStringInHexConstructor(ref pid)) return false;
+                    var deviceName = Items[1].ToPduStringInHex().Substring(2);
+                    CosemLogicalDeviceName = new AxdrOctetString();
+                    if (!CosemLogicalDeviceName.PduStringInHexConstructor(ref deviceName)) return false;
+                    var descriptor1 = Items[2].Value.ToString();
+                    AlarmDescriptor1 = new AxdrUnsigned32();
+                    if (!AlarmDescriptor1.PduStringInHexConstructor(ref descriptor1)) return false;
+                    var descriptor2 = Items[3].Value.ToString();
+                    AlarmDescriptor2 = new AxdrUnsigned32();
+                    if (!AlarmDescriptor2.PduStringInHexConstructor(ref descriptor2)) return false;
+
+                    return true;
+                }
+
+
+                return false;
+            }
+        }
+
+        public class AlarmViewModel : ObservableObject
+        {
+            public string DateTime { get; set; }
+            public string IpAddress { get; set; }
+            public string AlarmDateTime { get; set; }
             public AlarmType AlarmType { get; set; }
 
-            public bool PduStringInHexConstructor(ref string pduStringInHex)
+            public CustomAlarm CustomAlarm
             {
-                PushId = new AxdrOctetStringFixed(6);
-                if (!PushId.PduStringInHexConstructor(ref pduStringInHex))
+                get => _customAlarm;
+                set
                 {
-                    return false;
+                    _customAlarm = value;
+                    OnPropertyChanged();
                 }
-
-                CosemLogicalDeviceName = new AxdrOctetString();
-                if (!CosemLogicalDeviceName.PduStringInHexConstructor(ref pduStringInHex))
-                {
-                    return false;
-                }
-
-                AlarmDescriptor1 = new AxdrUnsigned32();
-                if (!AlarmDescriptor1.PduStringInHexConstructor(ref pduStringInHex))
-                {
-                    return false;
-                }
-
-                AlarmDescriptor2 = new AxdrUnsigned32();
-                if (!AlarmDescriptor2.PduStringInHexConstructor(ref pduStringInHex))
-                {
-                    return false;
-                }
+            }
 
 
-                return true;
+            private CustomAlarm _customAlarm;
+
+            public AlarmViewModel()
+            {
+                CustomAlarm = new CustomAlarm();
             }
         }
 
@@ -292,53 +302,44 @@ namespace 三相智慧能源网关调试软件.ViewModel
             try
             {
                 var s = bytes.ByteToString();
-                NetFrame netFrame = new NetFrame();
-                if (!netFrame.PduStringInHexConstructor(ref s))
-                {
-                    return;
-                }
+                var netFrame = new NetFrame();
+                if (!netFrame.PduStringInHexConstructor(ref s)) return;
 
                 var s1 = netFrame.DLMSApduDataBytes.ByteToString();
-                DataNotification dataNotification = new DataNotification();
+                var dataNotification = new DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
-                    var alarmObject = new Alarm();
-                    CosemClock cosemClock = new CosemClock();
-                    cosemClock.DlmsClockParse(dataNotification.DateTime.Value.StringToByte());
-                    alarmObject.AlarmClockTime = cosemClock.ToDateTime().ToString();
-                    if (dataNotification.NotificationBody.DataType == DataType.Structure)
+                    var alarmViewModel = new AlarmViewModel()
                     {
-                        string value = dataNotification.NotificationBody.Value.ToString();
-                        var dlmsStructure = new DlmsStructure();
-                        if (dlmsStructure.PduStringInHexConstructor(ref value))
+                        DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss"),
+                        IpAddress = clientSocket.RemoteEndPoint.ToString(),
+                    };
+
+                    var cosemClock = new CosemClock();
+                    cosemClock.DlmsClockParse(dataNotification.DateTime.Value.StringToByte());
+                    alarmViewModel.AlarmDateTime = cosemClock.ToDateTime().ToString();
+
+                    if (dataNotification.NotificationBody.DataValue.DataType == DataType.Structure)
+                    {
+                        var dlmsStructure = (DlmsStructure) dataNotification.NotificationBody.DataValue.Value;
+                        var stringStructure = dlmsStructure.ToPduStringInHex().Substring(2);
+
+                        if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
                         {
-                            var itemstring = new List<string>();
-                            foreach (var dlmsStructureItem in dlmsStructure.Items)
-                            {
-                                itemstring.Add(dlmsStructureItem.ValueString);
-                            }
-
-                            alarmObject.PushId = new AxdrOctetStringFixed(itemstring[0], 6);
-                            alarmObject.CosemLogicalDeviceName = new AxdrOctetString(itemstring[1]);
-
-                            alarmObject.AlarmDescriptor1 = new AxdrUnsigned32(uint.Parse(itemstring[2]).ToString("X8"));
-                            alarmObject.AlarmDescriptor2 = new AxdrUnsigned32(uint.Parse(itemstring[3]).ToString("X8"));
-                            alarmObject.DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
-                            alarmObject.IpAddress = clientSocket.RemoteEndPoint.ToString();
-                            switch (alarmObject.AlarmDescriptor2.Value)
+                            switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
                             {
                                 case "02000000":
-                                    alarmObject.AlarmType = AlarmType.ByPass;
+                                    alarmViewModel.AlarmType = AlarmType.ByPass;
                                     break;
                                 case "00000001":
-                                    alarmObject.AlarmType = AlarmType.PowerOff;
+                                    alarmViewModel.AlarmType = AlarmType.PowerOff;
                                     break;
                                 default:
-                                    alarmObject.AlarmType = AlarmType.None;
+                                    alarmViewModel.AlarmType = AlarmType.None;
                                     break;
                             }
 
-                            DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmObject); });
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }
                     }
                 }
@@ -362,16 +363,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void CalcTcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-            if (bytes == null)
-            {
-                return;
-            }
+            if (bytes == null) return;
 
             if (!_isNeedContinue)
             {
                 if (bytes.Length < 7)
                 {
-                    Logger lgLogger = LogManager.GetCurrentClassLogger();
+                    var lgLogger = LogManager.GetCurrentClassLogger();
                     lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
                     _listReturnBytes.AddRange(bytes);
                     _returnBytes = _listReturnBytes.ToArray();
@@ -380,7 +378,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
                 else
                 {
-                    if (bytes[7] == (bytes.Length - 8))
+                    if (bytes[7] == bytes.Length - 8)
                     {
                         _listReturnBytes.AddRange(bytes);
                         _returnBytes = _listReturnBytes.ToArray();
@@ -390,7 +388,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         _isNeedContinue = false;
                     }
 
-                    if (bytes[7] > (bytes.Length - 8))
+                    if (bytes[7] > bytes.Length - 8)
                     {
                         TotalLength = bytes[7];
                         NeedReceiveLength = TotalLength - (bytes.Length - 8);
@@ -427,7 +425,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _socketAndAddressCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -441,10 +439,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// <param name="bytes"></param>
         private async void TcpServerHelper_ReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-            if (!IsAutoResponseHeartBeat)
-            {
-                return;
-            }
+            if (!IsAutoResponseHeartBeat) return;
 
             try
             {

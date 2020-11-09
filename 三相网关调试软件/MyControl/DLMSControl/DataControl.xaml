@@ -19,8 +19,8 @@
                       FrozenColumnCount="2" CanUserResizeColumns="False"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                       CanUserSortColumns="False"
-                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
-                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                      materialDesign:DataGridAssist.CellPadding="14 8 8 8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="18"
                       HorizontalGridLinesBrush="{DynamicResource PrimaryHueDarkBrush}" GridLinesVisibility="Horizontal">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -31,7 +31,7 @@
                 </DataGrid.ColumnHeaderStyle>
 
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="操作区" Width="100" CanUserReorder="False"  >
+                    <DataGridTemplateColumn Header="操作区" Width="120" CanUserReorder="False"  >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -39,13 +39,13 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Button Content="Get" Margin="0 0" Grid.Column="0" x:Name="ButtonGet" Height="30"
-                                            Width="30"
+                                    <Button Content="Get" Margin="0 0" Grid.Column="0" x:Name="ButtonGet" Height="40"
+                                            Width="40"
                                             Style="{StaticResource MaterialDesignFloatingActionButton}"
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand ,Mode=TwoWay}"
                                             CommandParameter="{Binding }" />
-                                    <Button Content="Set" Margin="5 0" Grid.Column="1" x:Name="ButtonSet" Height="30"
-                                            Width="30"
+                                    <Button Content="Set" Margin="5 0" Grid.Column="1" x:Name="ButtonSet" Height="40"
+                                            Width="40"
                                             Style="{StaticResource MaterialDesignFloatingActionButton}"
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand ,Mode=TwoWay}"
                                             CommandParameter="{Binding }" />

@@ -109,19 +109,19 @@
                                                 <TextBox Text="{Binding IpAddress}"
                                                          materialDesign:HintAssist.Hint="IpAddress"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
-                                                <TextBox Text="{Binding AlarmClockTime}"
-                                                         materialDesign:HintAssist.Hint="AlarmClockTime"
+                                                <TextBox Text="{Binding   AlarmDateTime}"
+                                                         materialDesign:HintAssist.Hint="AlarmDateTime"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
-                                                <TextBox Text="{Binding PushId.Value}"
+                                                <TextBox Text="{Binding CustomAlarm.PushId.Value}"
                                                          materialDesign:HintAssist.Hint="PushId"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
-                                                <TextBox Text="{Binding CosemLogicalDeviceName.Value}"
+                                                <TextBox Text="{Binding CustomAlarm.CosemLogicalDeviceName.Value}"
                                                          materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
-                                                <TextBox Text="{Binding AlarmDescriptor1.Value}"
+                                                <TextBox Text="{Binding CustomAlarm.AlarmDescriptor1.Value}"
                                                          materialDesign:HintAssist.Hint="AlarmDescriptor1"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
-                                                <TextBox Text="{Binding AlarmDescriptor2.Value}"
+                                                <TextBox Text="{Binding CustomAlarm.AlarmDescriptor2.Value}"
                                                          materialDesign:HintAssist.Hint="AlarmDescriptor2"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding AlarmType}"

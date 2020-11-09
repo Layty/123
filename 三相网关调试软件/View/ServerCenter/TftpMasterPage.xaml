@@ -1,4 +1,4 @@
-﻿<Page x:Class="三相智慧能源网关调试软件.View.ServerCenter.TftpServerPage"
+﻿<Page x:Class="三相智慧能源网关调试软件.View.ServerCenter.TftpMasterPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,7 +11,7 @@
       DataContext="{Binding Source={StaticResource Locator
     },Path=TftpServer}"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="TftpServerPage">
+      Title="TftpMasterPage">
     <materialDesign:Card>
         <TabControl>
             <TabItem Header="Server">

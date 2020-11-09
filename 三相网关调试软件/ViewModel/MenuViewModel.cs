@@ -112,8 +112,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        MenuName = "TFTPServer", FontSize = "20", IconFont = "\xe619",
-                        Assembly = "ServerCenter.TftpServerPage",
+                        MenuName = "TFTPMaster", FontSize = "20", IconFont = "\xe619",
+                        Assembly = "ServerCenter.TftpMasterPage",
                         Foreground = "#0000FF"
                     },
 //                    new MenuModel()

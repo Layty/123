@@ -1,18 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using GalaSoft.MvvmLight.Messaging;
+﻿using System.Windows.Controls;
 using GalaSoft.MvvmLight.Threading;
 using Tftp.Net;
 
 namespace 三相智慧能源网关调试软件.View.ServerCenter
 {
     /// <summary>
-    /// TftpServerPage.xaml 的交互逻辑
+    /// TftpMasterPage.xaml 的交互逻辑
     /// </summary>
-    public partial class TftpServerPage : Page
+    public partial class TftpMasterPage : Page
     {
-        public TftpServerPage()
+        public TftpMasterPage()
         {
             InitializeComponent();
 //            Messenger.Default.Register<TftpTransferProgress>(this, "ServerProgressStatus", UpdateProgressStatus);

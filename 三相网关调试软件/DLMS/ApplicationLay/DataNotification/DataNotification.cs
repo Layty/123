@@ -10,12 +10,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.DataNotificat
         public AxdrUnsigned32 LongInvokeIdAndPriority { get; set; }
 
         public AxdrOctetStringFixed DateTime { get; set; }
-        public DlmsDataItem NotificationBody { get; set; }
+
+        public NotificationBody NotificationBody { get; set; }
+//        public DlmsDataItem NotificationBody { get; set; }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            var NotificationTag = pduStringInHex.Substring(0, 2);
-            if (NotificationTag != "0F")
+            var notificationTag = pduStringInHex.Substring(0, 2);
+            if (notificationTag != "0F")
             {
                 return false;
             }
@@ -34,8 +36,25 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.DataNotificat
                 return false;
             }
 
-            NotificationBody = new DlmsDataItem();
+            NotificationBody = new NotificationBody();
             if (!NotificationBody.PduStringInHexConstructor(ref pduStringInHex))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    public class NotificationBody : IPduStringInHexConstructor
+    {
+        public DlmsDataItem DataValue { get; set; }
+
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            DataValue = new DlmsDataItem();
+            if (!DataValue.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
