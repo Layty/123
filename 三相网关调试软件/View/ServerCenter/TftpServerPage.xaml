@@ -70,6 +70,18 @@
                 <Grid DataContext="{Binding Source={StaticResource Locator},Path=TftpClient}">
                     <GroupBox Header="TFTPClient">
                         <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding RemoteIpAddress}" Margin="5"
+                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                         materialDesign:HintAssist.Hint="RemoteIpAddress"
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         ></TextBox>
+                                <TextBox Text="{Binding Port}"  Margin="5"
+                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                         materialDesign:HintAssist.Hint="Port"
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         ></TextBox>
+                            </StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
 
@@ -98,7 +110,8 @@
 
                                 <Button Grid.Column="1" Command="{Binding SelectFileToUploadCommand}"
                                         Content="LoadingFile" Margin="5" />
-                                <Button IsEnabled="{Binding IsReadyToUpLoad}" Grid.Column="2" Command="{Binding StartUpLoadCommand}" Content="UpLoad"
+                                <Button IsEnabled="{Binding IsReadyToUpLoad}" Grid.Column="2"
+                                        Command="{Binding StartUpLoadCommand}" Content="UpLoad"
                                         Margin="5" />
                             </Grid>
                             <TextBox Text="{Binding TftpClientDirectory}" />

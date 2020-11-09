@@ -80,15 +80,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 };
 
 
-                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
-                {
-                    new MenuModel
-                    {
-                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
-                        Assembly = "BaseMeter.UpGradeBaseMeterPage",
-                        Foreground = "#00FF00"
-                    }
-                };
+//                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
+//                {
+//                    new MenuModel
+//                    {
+//                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
+//                        Assembly = "BaseMeter.UpGradeBaseMeterPage",
+//                        Foreground = "#00FF00"
+//                    }
+//                };
 
                 ServicesMenuCollection = new ObservableCollection<MenuModel>
                 {

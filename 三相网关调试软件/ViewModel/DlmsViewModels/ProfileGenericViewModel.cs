@@ -187,16 +187,15 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             SetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 List<DlmsDataItem> dataItems = new List<DlmsDataItem>() { };
-                DlmsStructure structures = new DlmsStructure();
+
                 foreach (var captureObjectDefinition in t.CaptureObjects)
                 {
                     dataItems.Add(captureObjectDefinition.ToDlmsDataItem());
                 }
-                structures.Items = dataItems.ToArray();
 
-                DlmsDataItem iii = new DlmsDataItem(DataType.Structure, structures);
+                DLMSArray array = new DLMSArray() {Items = dataItems.ToArray()};
                 await Client.SetRequestAndWaitResponse(t.GetCaptureObjectsAttributeDescriptor(),
-                    new DlmsDataItem(DataType.Array, iii));
+                    new DlmsDataItem(DataType.Array, array));
             });
             GetCapturePeriodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>

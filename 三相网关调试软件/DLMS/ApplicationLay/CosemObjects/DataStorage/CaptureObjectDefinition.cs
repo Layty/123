@@ -52,7 +52,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
 
             captureObjectDefinition.LogicalName =
-                MyConvert.GetObisOriginal(dlmsStructure.Items[1].Value.ToString().Substring(2));
+                MyConvert.GetObisOriginal(dlmsStructure.Items[1].Value.ToString());
 
             if (string.IsNullOrEmpty(captureObjectDefinition.LogicalName))
             {

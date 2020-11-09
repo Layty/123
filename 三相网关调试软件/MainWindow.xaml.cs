@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -14,6 +15,8 @@ using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
 
 
 namespace 三相智慧能源网关调试软件
@@ -23,8 +26,10 @@ namespace 三相智慧能源网关调试软件
     /// </summary>
     public partial class MainWindow : Window
     {
-        Key[] Target = new Key[] {Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right};
-        int KeyState = 0;
+        readonly Key[] _target = new Key[]
+            {Key.Up, Key.Up, Key.Down, Key.Down, Key.Left, Key.Right, Key.Left, Key.Right};
+
+        int _keyState = 0;
 
         public DispatcherTimer Timer = new DispatcherTimer();
 
@@ -43,13 +48,14 @@ namespace 三相智慧能源网关调试软件
             Timer.Tick += Timer_Tick;
 //            Timer.Start();
 
+
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (send, e) =>
             {
                 MessageBoxWindow msgBoxWindow = new MessageBoxWindow() {Message = "是否退出程序？", Title = "提示"};
-                var result=  msgBoxWindow.ShowDialog();
+                var result = msgBoxWindow.ShowDialog();
                 //                var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
                 //                if (result == MessageBoxResult.Yes)
-                if (result==true)
+                if (result == true)
                 {
 //                    speechSynthesizer.Speak("后会有期");
                     this.Close();
@@ -82,25 +88,30 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
+        private void tbxEditMe_TextChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("mychanged");
+        }
+
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Target[KeyState])
+            if (e.Key == _target[_keyState])
             {
-                KeyState++;
-                if (KeyState >= Target.Length)
+                _keyState++;
+                if (_keyState >= _target.Length)
                 {
                     var s = ServiceLocator.Current.GetInstance<UserLoginViewModel>();
                     s.LoginModel.LoginResult = true;
 
-                    KeyState = 0;
+                    _keyState = 0;
                 }
             }
             else
             {
-                KeyState = 0;
-                if (e.Key == Target[KeyState])
+                _keyState = 0;
+                if (e.Key == _target[_keyState])
                 {
-                    KeyState++;
+                    _keyState++;
                 }
             }
         }

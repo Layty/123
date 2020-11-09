@@ -1,19 +1,51 @@
 ﻿using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Tftp.Net;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class TftpClientViewModel : ObservableObject
     {
-        public string RemoteIpAddress { get; set; }
-        public int Port { get; set; }
+        /// <summary>
+        /// 远端TFTP服务器IP
+        /// </summary>
+        public string RemoteIpAddress
+        {
+            get => _remoteIpAddress;
+            set
+            {
+                _remoteIpAddress = value;
+                OnPropertyChanged();
+            }
+        }
 
+        private string _remoteIpAddress = "127.0.0.1";
+
+        /// <summary>
+        /// 远端TFTP服务器Port,默认69
+        /// </summary>
+        public int Port
+        {
+            get => _port;
+            set
+            {
+                _port = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _port = 69;
+
+        /// <summary>
+        /// 日志记录
+        /// </summary>
         public string StatusLog
         {
             get => _log;
@@ -26,7 +58,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private string _log;
 
-
+        /// <summary>
+        /// 需要从服务端当前目录下的的文件名
+        /// </summary>
         public string DownLoadFileName
         {
             get => _downLoadFileName;
@@ -39,7 +73,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private string _downLoadFileName = "base_meter";
 
+        /// <summary>
+        /// TFTP客户端当前目录
+        /// </summary>
+        public string TftpClientDirectory
+        {
+            get => _tftpClientDirectory;
+            set
+            {
+                _tftpClientDirectory = value;
+                OnPropertyChanged();
+            }
+        }
 
+        private string _tftpClientDirectory;
+
+        /// <summary>
+        /// 需要从本地客户端上传至服务器的文件名
+        /// </summary>
         public string UpLoadFileName
         {
             get => _upLoadFileName;
@@ -52,6 +103,22 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private string _upLoadFileName;
 
+        /// <summary>
+        /// 是否准备好了上传
+        /// </summary>
+        public bool IsReadyToUpLoad
+        {
+            get => _isReadyToUpLoad;
+            set
+            {
+                _isReadyToUpLoad = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isReadyToUpLoad;
+        private Stream _downLoadStream;
+        private Stream _upLoadStream;
 
         public RelayCommand StartDownLoadCommand
         {
@@ -65,6 +132,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand _startDownLoadCommand;
 
+        public RelayCommand SelectFileToUploadCommand { get; set; }
+
         public RelayCommand StartUpLoadCommand
         {
             get => _startUpLoadCommand;
@@ -77,26 +146,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand _startUpLoadCommand;
         public TftpClient TftpClient { get; set; }
-        private string _tftpClientDirectory;
-
-        public string TftpClientDirectory
-        {
-            get => _tftpClientDirectory;
-            set
-            {
-                _tftpClientDirectory = value;
-                OnPropertyChanged();
-            }
-        }
-
-        
-
-        public bool IsReadyToUpLoad
-        {
-            get => _isReadyToUpLoad;
-            set { _isReadyToUpLoad = value; OnPropertyChanged(); }
-        }
-        private bool _isReadyToUpLoad;
 
         public TftpClientViewModel()
         {
@@ -104,7 +153,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             StartDownLoadCommand = new RelayCommand(
                 () =>
                 {
-                    TftpClient = new TftpClient("localhost");
+                    TftpClient = new TftpClient(IPAddress.Parse(RemoteIpAddress), Port);
                     var transfer = TftpClient.Download(DownLoadFileName);
                     Task.Run(() => { StartTransfer(transfer); });
                 });
@@ -123,18 +172,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             StartUpLoadCommand = new RelayCommand(() =>
             {
-                TftpClient = new TftpClient("localhost");
+                TftpClient = new TftpClient(IPAddress.Parse(RemoteIpAddress), Port);
                 var transfer = TftpClient.Upload(UpLoadFileName);
                 if (IsReadyToUpLoad)
                 {
                     Task.Run(() => { StartTransfer(transfer, _upLoadStream); });
                 }
-               
             });
         }
-
-        public RelayCommand SelectFileToUploadCommand { get; set; }
-
 
         public void StreamToFile(string fileName)
         {
@@ -160,62 +205,54 @@ namespace 三相智慧能源网关调试软件.ViewModel
             fs.Close();
         }
 
-        public void StartClient()
-        {
-        }
-
-        private Stream _downLoadStream;
-        private Stream _upLoadStream;
-
         public void StartTransfer(ITftpTransfer transfer)
         {
-            transfer.OnProgress += transfer_OnProgress;
-            transfer.OnFinished += transferDownLoad_OnFinished;
-            transfer.OnError += transfer_OnError;
+            transfer.OnProgress += Transfer_OnProgress;
+            transfer.OnFinished += TransferDownLoad_OnFinished;
+            transfer.OnError += Transfer_OnError;
             _downLoadStream = new MemoryStream();
             transfer.Start(_downLoadStream);
         }
 
         public void StartTransfer(ITftpTransfer transfer, Stream stream)
         {
-            transfer.OnProgress += transfer_OnProgress;
-            transfer.OnFinished += transferUpLoad_OnFinished;
-            transfer.OnError += transfer_OnError;
+            transfer.OnProgress += Transfer_OnProgress;
+            transfer.OnFinished += TransferUpLoad_OnFinished;
+            transfer.OnError += Transfer_OnError;
             transfer.Start(stream);
         }
 
-
-        private void transfer_OnError(ITftpTransfer transfer, TftpTransferError error)
+        private void Transfer_OnError(ITftpTransfer transfer, TftpTransferError error)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += (error.ToString()); });
-            transfer.OnProgress -= transfer_OnProgress;
-            transfer.OnFinished -= transferDownLoad_OnFinished;
-            transfer.OnError -= transfer_OnError;
+            DispatcherHelper.CheckBeginInvokeOnUI(() => StatusLog += error.ToString());
+            transfer.OnProgress -= Transfer_OnProgress;
+            transfer.OnFinished -= TransferDownLoad_OnFinished;
+            transfer.OnError -= Transfer_OnError;
             IsReadyToUpLoad = false;
         }
 
-        private void transferDownLoad_OnFinished(ITftpTransfer transfer)
+        private void TransferDownLoad_OnFinished(ITftpTransfer transfer)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += "Transfer succeeded."; });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => StatusLog += "TransferDownLoad succeeded.");
             var filePath = Path.Combine(TftpClientDirectory, DownLoadFileName);
             StreamToFile(filePath);
-            transfer.OnProgress -= transfer_OnProgress;
-            transfer.OnFinished -= transferDownLoad_OnFinished;
-            transfer.OnError -= transfer_OnError;
+            transfer.OnProgress -= Transfer_OnProgress;
+            transfer.OnFinished -= TransferDownLoad_OnFinished;
+            transfer.OnError -= Transfer_OnError;
         }
 
-        private void transferUpLoad_OnFinished(ITftpTransfer transfer)
+        private void TransferUpLoad_OnFinished(ITftpTransfer transfer)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += "Transfer succeeded."; });
-            transfer.OnProgress -= transfer_OnProgress;
-            transfer.OnFinished -= transferUpLoad_OnFinished;
-            transfer.OnError -= transfer_OnError;
+            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += "TransferUpLoad succeeded."; });
+            transfer.OnProgress -= Transfer_OnProgress;
+            transfer.OnFinished -= TransferUpLoad_OnFinished;
+            transfer.OnError -= Transfer_OnError;
             IsReadyToUpLoad = false;
         }
 
-        private void transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)
+        private void Transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)
         {
-            Task.Run(() => { Messenger.Default.Send(progress, "ClientProgressStatus"); });
+           StrongReferenceMessenger.Default.Send(progress, "ClientProgressStatus");
         }
     }
 }

@@ -103,7 +103,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 
                 GetResponse requestAndWaitResponse =
                     await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
-                if (requestAndWaitResponse != null)
+                if (requestAndWaitResponse.GetResponseNormal != null)
                 {
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
