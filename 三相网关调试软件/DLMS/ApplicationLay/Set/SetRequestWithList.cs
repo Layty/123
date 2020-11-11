@@ -5,7 +5,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
     public class SetRequestWithList
     {
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
         public DlmsDataItem[] ValueList { get; set; }
         public string ToPduStringInHex()

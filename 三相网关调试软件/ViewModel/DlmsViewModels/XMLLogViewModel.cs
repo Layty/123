@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using NLog;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -37,7 +37,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                 //                _XmlLogString = value;
                 _xmlLogStringBuilder.Append(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -54,7 +54,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _keepMaxSendAndReceiveDataLength = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -64,24 +64,15 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set
             {
                 _isEnableWriteLogToFile = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
         private bool _isEnableWriteLogToFile;
 
 
-        public RelayCommand ClearAllDataCommand
-        {
-            get => _clearAllDataCommand;
-            set
-            {
-                _clearAllDataCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _clearAllDataCommand;
+        public RelayCommand ClearAllDataCommand { get; set; }
+     
 
         public XMLLogViewModel()
         {

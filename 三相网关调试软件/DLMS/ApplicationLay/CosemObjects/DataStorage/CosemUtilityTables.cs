@@ -7,18 +7,57 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 {
     public class CosemUtilityTables : CosemObject, IDlmsBase
     {
-        public ushort TableId { get; set; }
-        public byte[] Buffer { get; set; }
+        public AxdrIntegerUnsigned16 TableId
+        {
+            get => _tableId;
+            set
+            {
+                _tableId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private AxdrIntegerUnsigned16 _tableId;
+
+
+        public AxdrIntegerUnsigned32 Length
+        {
+            get => _length;
+            set
+            {
+                _length = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private AxdrIntegerUnsigned32 _length;
+
+        public AxdrIntegerOctetString Buffer
+        {
+            get => _buffer;
+            set
+            {
+                _buffer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private AxdrIntegerOctetString _buffer;
+
 
         public CosemUtilityTables()
         {
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.UtilityTables);
+            TableId = new AxdrIntegerUnsigned16();
+            Length = new AxdrIntegerUnsigned32();
+            Buffer = new AxdrIntegerOctetString();
         }
 
-        public CosemUtilityTables(string logicName):this()
+        public CosemUtilityTables(string logicName) : this()
         {
             LogicalName = logicName;
         }
+
         public CosemAttributeDescriptor GetLogicNameAttributeDescriptor() => GetCosemAttributeDescriptor(1);
         public CosemAttributeDescriptor GetTableIdAttributeDescriptor() => GetCosemAttributeDescriptor(2);
         public CosemAttributeDescriptor GetLengthAttributeDescriptor() => GetCosemAttributeDescriptor(3);

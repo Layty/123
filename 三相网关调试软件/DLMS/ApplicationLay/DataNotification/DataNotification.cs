@@ -7,7 +7,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.DataNotificat
     {
         public Command Command { get; set; } = Command.DataNotification;
 
-        public AxdrUnsigned32 LongInvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned32 LongInvokeIdAndPriority { get; set; }
 
         public AxdrOctetStringFixed DateTime { get; set; }
 
@@ -23,7 +23,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.DataNotificat
             }
 
             pduStringInHex = pduStringInHex.Substring(2);
-            LongInvokeIdAndPriority = new AxdrUnsigned32();
+            LongInvokeIdAndPriority = new AxdrIntegerUnsigned32();
             if (!LongInvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

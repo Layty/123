@@ -7,8 +7,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
     public class SetResponseNormal : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
-        private AxdrUnsigned8 _result { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+        private AxdrIntegerUnsigned8 _result { get; set; }
         public DataAccessResult Result { get; set; }
 
         public string ToPduStringInHex()
@@ -26,13 +26,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
                 return false;
             }
 
-            InvokeIdAndPriority = new AxdrUnsigned8();
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            _result = new AxdrUnsigned8();
+            _result = new AxdrIntegerUnsigned8();
             if (!_result.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

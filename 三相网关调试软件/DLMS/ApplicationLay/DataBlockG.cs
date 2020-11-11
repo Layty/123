@@ -6,10 +6,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public class DataBlockG:IToPduStringInHex,IPduStringInHexConstructor
     {
-        public AxdrBoolean LastBlock { get; set; }
-        public AxdrUnsigned32 BlockNumber { get; set; }
-        public AxdrOctetString RawData { get; set; }
-        public AxdrUnsigned8 DataAccessResult { get; set; }
+        public AxdrIntegerBoolean LastBlock { get; set; }
+        public AxdrIntegerUnsigned32 BlockNumber { get; set; }
+        public AxdrIntegerOctetString RawData { get; set; }
+        public AxdrIntegerUnsigned8 DataAccessResult { get; set; }
 
 
         public string ToPduStringInHex()
@@ -36,12 +36,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             {
                 return false;
             }
-            LastBlock = new AxdrBoolean();
+            LastBlock = new AxdrIntegerBoolean();
             if (!LastBlock.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
-            BlockNumber = new AxdrUnsigned32();
+            BlockNumber = new AxdrIntegerUnsigned32();
             if (!BlockNumber.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
@@ -50,13 +50,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
             if (a == "00")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
-                RawData = new AxdrOctetString();
+                RawData = new AxdrIntegerOctetString();
                 return RawData.PduStringInHexConstructor(ref pduStringInHex);
             }
             if (a == "01")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
-                DataAccessResult = new AxdrUnsigned8();
+                DataAccessResult = new AxdrIntegerUnsigned8();
                 return DataAccessResult.PduStringInHexConstructor(ref pduStringInHex);
             }
             return false;

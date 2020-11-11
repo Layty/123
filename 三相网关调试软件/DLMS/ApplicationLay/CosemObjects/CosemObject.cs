@@ -9,7 +9,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
 {
     public abstract class CosemObject : CosemBase, INotifyPropertyChanged
     {
-        public AxdrUnsigned16 ClassId
+        public AxdrIntegerUnsigned16 ClassId
         {
             get => _classId;
             set
@@ -19,7 +19,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             }
         }
 
-        private AxdrUnsigned16 _classId;
+        private AxdrIntegerUnsigned16 _classId;
 
         public string Description { get; set; }
 
@@ -72,10 +72,10 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
         {
             return new CosemAttributeDescriptor(
                 ClassId, new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
-                new AxdrInteger8(attributeIndex));
+                new AxdrIntegerInteger8(attributeIndex));
         }
 
-        public CosemAttributeDescriptor GetCosemAttributeDescriptor(AxdrInteger8 attributeIndex)
+        public CosemAttributeDescriptor GetCosemAttributeDescriptor(AxdrIntegerInteger8 attributeIndex)
         {
             return new CosemAttributeDescriptor(
                 ClassId, new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
@@ -87,7 +87,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             return new CosemMethodDescriptor(
                 ClassId,
                 new AxdrOctetStringFixed(MyConvert.ObisToHexCode(LogicalName), 6),
-                new AxdrInteger8(methodIndex));
+                new AxdrIntegerInteger8(methodIndex));
         }
 
 

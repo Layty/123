@@ -15,6 +15,16 @@ using NLog;
 
 namespace 三相智慧能源网关调试软件
 {
+    public static class Lib
+    {
+        public static async Task<bool> CheckTimeout(this Action proc, int seconds)
+        {
+            var t = Task.Delay(seconds * 1000);
+            var w = await Task.WhenAny(Task.Run(proc), t);
+            return w == t;
+        }
+    }
+
     public class TcpServerHelper : ValidateModelBase
     {
         public bool IsStarted
@@ -96,6 +106,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         private int _responseTimeOut = 2;
+
 
         public readonly List<CancellationTokenSource> SocketClientCancellationTokens =
             new List<CancellationTokenSource>();
@@ -224,8 +235,6 @@ namespace 三相智慧能源网关调试软件
                             SpeechSynthesizer speech = new SpeechSynthesizer();
                             speech.SpeakAsync("有新的连接");
                             SocketClientList.Add(socket1);
-//                            SocketClientListEndPoint.Add(socket1.RemoteEndPoint);
-//                            Dictionary[socket1] = socket1.RemoteEndPoint;
                         });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
@@ -310,14 +319,17 @@ namespace 三相智慧能源网关调试软件
         }
 
 
+        CancellationTokenSource cancellationTokenSource;
+
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
-            _returnBytes = null;
-            ReceiveBytes += TcpServerHelper_ReceiveBytes;
-            destinationSocket.Send(bytes);
-            OnSendBytesToClient(destinationSocket, bytes);
-            await Task.Run(() =>
+           
+            return await Task.Run(() =>
             {
+                _returnBytes = null;
+                ReceiveBytes += TcpServerHelper_ReceiveBytes;
+                destinationSocket.Send(bytes);
+                OnSendBytesToClient(destinationSocket, bytes);
                 Stopwatch stopwatch1 = new Stopwatch();
                 TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
                 stopwatch1.Start();
@@ -341,10 +353,10 @@ namespace 三相智慧能源网关调试软件
                         break;
                     }
                 }
+
+                ReceiveBytes -= TcpServerHelper_ReceiveBytes;
+                return _returnBytes;
             });
-        
-            ReceiveBytes -= TcpServerHelper_ReceiveBytes;
-            return _returnBytes;
         }
 
         public string ResponseTime { get; set; }
@@ -364,7 +376,7 @@ namespace 三相智慧能源网关调试软件
 
             if (!_isNeedContinue)
             {
-                if (bytes.Length < 7)
+                if (bytes.Length < 8)
                 {
                     Logger lgLogger = LogManager.GetCurrentClassLogger();
                     lgLogger.Debug("This Is Not 47Message Should Never Enter Here");
@@ -375,7 +387,8 @@ namespace 三相智慧能源网关调试软件
                 }
                 else
                 {
-                    if (bytes[7] == (bytes.Length - 8))
+                    var uInt16Length = BitConverter.ToUInt16(bytes.Skip(6).Take(2).Reverse().ToArray(),0);
+                    if (uInt16Length == (bytes.Length - 8))
                     {
                         _listReturnBytes.AddRange(bytes);
                         _returnBytes = _listReturnBytes.ToArray();
@@ -384,9 +397,9 @@ namespace 三相智慧能源网关调试软件
                         _isNeedContinue = false;
                     }
 
-                    if (bytes[7] > (bytes.Length - 8))
+                    if (uInt16Length > (bytes.Length - 8))
                     {
-                        TotalLength = bytes[7];
+                        TotalLength = uInt16Length;
                         NeedReceiveLength = TotalLength - (bytes.Length - 8);
                         _listReturnBytes.AddRange(bytes);
                         _isNeedContinue = true;
@@ -438,16 +451,10 @@ namespace 三相智慧能源网关调试软件
             if (SocketServer != null)
             {
                 SocketServer.Close();
-//                SocketServer.Dispose();
                 OnNotifyStatusMsg(DateTime.Now + "已关闭监听" + Environment.NewLine);
             }
         }
 
-
-        public void SendFile()
-        {
-            SocketClientList[0].SendFile("txt.txt");
-        }
 
         public void DisConnectClient(string strRemoteEndPoint)
         {
@@ -473,7 +480,7 @@ namespace 三相智慧能源网关调试软件
             SocketClientList[num].Shutdown(SocketShutdown.Both);
             SocketClientList[num].Disconnect(reuseSocket: false);
             DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.RemoveAt(num); });
-            //  SocketClientList.RemoveAt(num);
+
             SocketClientCancellationTokens[num].Cancel();
             SocketClientCancellationTokens.RemoveAt(num);
         }

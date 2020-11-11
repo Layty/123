@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using 三相智慧能源网关调试软件.Properties;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class SkinViewModel : ViewModelBase
+    public class SkinViewModel : ObservableObject
     {
         public SkinViewModel()
         {
-            if (IsInDesignMode)
-            {
-                //Swatches = new SwatchesProvider().Swatches;
-                //IsDarkTheme = Properties.Settings.Default.IsDarkTheme;
-                //ApplyBase(IsDarkTheme);
-            }
-            else
             {
                 Swatches = new SwatchesProvider().Swatches;
                 IsDarkTheme = Settings.Default.IsDarkTheme;
@@ -36,7 +29,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _isDarkTheme = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

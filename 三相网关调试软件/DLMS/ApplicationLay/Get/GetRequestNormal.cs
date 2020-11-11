@@ -10,8 +10,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
     {
         [XmlIgnore] public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
 
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
-            = new AxdrUnsigned8("C1");
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+            = new AxdrIntegerUnsigned8("C1");
 
         public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor AccessSelection { get; set; }

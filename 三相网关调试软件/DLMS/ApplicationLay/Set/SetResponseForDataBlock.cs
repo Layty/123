@@ -4,8 +4,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
 {
     public class SetResponseForDataBlock:IPduStringInHexConstructor
     {
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
-        public AxdrUnsigned32 BlockNumber { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
         public char ToPduStringInHex()
         {
@@ -18,12 +18,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
             {
                 return false;
             }
-            InvokeIdAndPriority = new AxdrUnsigned8();
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
-            BlockNumber = new AxdrUnsigned32();
+            BlockNumber = new AxdrIntegerUnsigned32();
             if (!BlockNumber.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

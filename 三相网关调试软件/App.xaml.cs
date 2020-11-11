@@ -19,7 +19,7 @@ namespace 三相智慧能源网关调试软件
 
         protected override void OnStartup(StartupEventArgs e)
         {
-//            _cracker.Cracker( );
+            _cracker.Cracker();
             DispatcherHelper.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
@@ -27,7 +27,7 @@ namespace 三相智慧能源网关调试软件
             base.OnStartup(e);
         }
 
-     
+
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
@@ -40,7 +40,6 @@ namespace 三相智慧能源网关调试软件
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.Error("无法处理的异常啊" + e.ExceptionObject);
-           
         }
 
         //能够捕获 UI 线程抛出的未处理异常 可通过事件参数 e.Handled = true 来阻止程序崩溃

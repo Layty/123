@@ -4,9 +4,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public class CosemAttributeDescriptor : IPduStringInHexConstructor, IToPduStringInHex
     {
-        public AxdrUnsigned16 ClassId { get; set; }
+        public AxdrIntegerUnsigned16 ClassId { get; set; }
         public AxdrOctetStringFixed InstanceId { get; set; }
-        public AxdrInteger8 AttributeId { get; set; }
+        public AxdrIntegerInteger8 AttributeId { get; set; }
 
         public int Length => CalculateLength();
 
@@ -32,7 +32,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         {
         }
 
-        public CosemAttributeDescriptor(AxdrUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrInteger8 attributeId)
+        public CosemAttributeDescriptor(AxdrIntegerUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrIntegerInteger8 attributeId)
         {
             ClassId = classId;
             InstanceId = instanceId;
@@ -49,7 +49,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            AxdrUnsigned16 cosemClassId = new AxdrUnsigned16();
+            AxdrIntegerUnsigned16 cosemClassId = new AxdrIntegerUnsigned16();
             if (!cosemClassId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 return false;
             }
 
-            AxdrInteger8 cosemObjectAttributeId = new AxdrInteger8();
+            AxdrIntegerInteger8 cosemObjectAttributeId = new AxdrIntegerInteger8();
             if (!cosemObjectAttributeId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Xml.Serialization;
-using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrBoolean :  IToPduStringInHex, IPduStringInHexConstructor
+    public class AxdrIntegerBoolean : AxdrIntegerBase
     {
-        [XmlIgnore] public int Length => 1;
-        [XmlAttribute] public string Value { get; set; }
+        public override int Length => 1;
 
-        public AxdrBoolean()
+        public AxdrIntegerBoolean()
         {
         }
 
-        public AxdrBoolean(string hexStringValue)
+        public AxdrIntegerBoolean(string hexStringValue)
         {
             if (hexStringValue.Length != 2)
             {
@@ -24,7 +20,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             Value = hexStringValue;
         }
 
-        public AxdrBoolean(byte boolByte)
+        public AxdrIntegerBoolean(byte boolByte)
         {
             Value = boolByte.ToString("X2").PadLeft(2, '0');
         }
@@ -54,23 +50,5 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
 
             throw new InvalidOperationException("Value is not a Boolean value");
         }
-
-        public string ToPduStringInHex()
-        {
-            return Value;
-        }
-
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Length < 2)
-            {
-                return false;
-            }
-
-            Value = pduStringInHex.Substring(0, 2);
-            pduStringInHex = pduStringInHex.Substring(2);
-            return true;
-        }
-
     }
 }

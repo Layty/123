@@ -4,14 +4,14 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public class SelectiveAccessDescriptor : IToPduStringInHex,IPduStringInHexConstructor
     {
-        public AxdrUnsigned8 AccessSelector { get; set; }
+        public AxdrIntegerUnsigned8 AccessSelector { get; set; }
         public AccessParameters AccessParameters { get; set; }
 
         public SelectiveAccessDescriptor()
         {
             
         }
-        public SelectiveAccessDescriptor(AxdrUnsigned8 accessSelector , DlmsDataItem dlmsDataItem)
+        public SelectiveAccessDescriptor(AxdrIntegerUnsigned8 accessSelector , DlmsDataItem dlmsDataItem)
         {
             AccessSelector = accessSelector;
             AccessParameters=new AccessParameters(){Data = dlmsDataItem };
@@ -19,7 +19,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
         
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            AccessSelector = new AxdrUnsigned8();
+            AccessSelector = new AxdrIntegerUnsigned8();
             if (!AccessSelector.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

@@ -2,40 +2,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
+using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Common;
 
 namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage
 {
-    public class CosemRegisterTable : CosemObject
-    {
-        public CosemRegisterTable(string logicName)
-        {
-            LogicalName = logicName;
-            ClassId = MyConvert.GetClassIdByObjectType(ObjectType.RegisterActivation);
-        }
-    }
-
-    public class CosemExtendedRegister : CosemRegister
-    {
-        public DlmsDataItem Status
-        {
-            get => _status;
-            set
-            {
-                _status = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private DlmsDataItem _status;
-
-        public CosemExtendedRegister(string logicName) : base(logicName)
-        {
-            LogicalName = logicName;
-            ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ExtendedRegister);
-        }
-    }
-
     public class CosemDemandRegister : CosemExtendedRegister
     {
         public CosemDemandRegister(string logicName) : base(logicName)
@@ -43,11 +14,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             LogicalName = logicName;
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.DemandRegister);
         }
-    }
-
-    public class CosemRegisterActivation : CosemObject
-    {
-
     }
 
     public class ScalarUnit : INotifyPropertyChanged
@@ -82,7 +48,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
 
         public ScalarUnit()
         {
-            Scalar = 1;
+            Scalar =1;
             Unit = Unit.None;
             DlmsUnitDefinition = LoadDlmsUnit();
         }

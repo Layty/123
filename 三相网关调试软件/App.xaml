@@ -9,8 +9,7 @@
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:三相智慧能源网关调试软件.ViewModel" />
             <!--<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />-->
             <converters:FactoryConverter x:Key="FactoryConverter" />
-            <converters:tftp_p_rConverter x:Key="Tftp_p_rConverter" />
-            <converters:tftp_g_rConverter x:Key="Tftp_g_rConverter" />
+       
       
            
             <Style  TargetType="Path" BasedOn="{x:Null}"></Style>

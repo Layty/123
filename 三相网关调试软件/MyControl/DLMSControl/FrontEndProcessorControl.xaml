@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.ServerCenter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-             xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
              mc:Ignorable="d"
              DataContext="{Binding  Source={StaticResource Locator} ,Path=TcpServer}">
     <Grid>
@@ -74,7 +72,7 @@
                                 <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合"
                                          materialDesign:HintAssist.IsFloating="True"
                                          ItemsSource="{Binding TcpServerHelper.SocketClientList}"
-                                         BorderThickness="2" 
+                                         BorderThickness="2"
                                          SelectedItem="{Binding DLMSClient.CurrentSocket}"
                                          KeyDown="UIElement_OnKeyDown"
                                          SelectionChanged="Selector_OnSelectionChanged">
@@ -82,7 +80,8 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center" Foreground="{DynamicResource LinearGradientBrush}" />
+                                                                         VerticalAlignment="Center"
+                                                                         Foreground="{DynamicResource LinearGradientBrush}" />
                                                 <TextBlock Text="{Binding RemoteEndPoint}" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -96,13 +95,13 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Auto">
                             <ItemsControl ItemsSource="{Binding Alarms}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <materialDesign:Card UniformCornerRadius="2">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Card UniformCornerRadius="2">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="NotificationsActive"
                                                                          HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center" Foreground="Red"/>
+                                                                         VerticalAlignment="Center" Foreground="Red" />
                                                 <TextBox Text="{Binding DateTime}"
                                                          materialDesign:HintAssist.Hint="DateTime"
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
@@ -130,20 +129,19 @@
                                                          materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                             </StackPanel>
                                         </materialDesign:Card>
-                                 
 
 
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
 
-            </ScrollViewer>
-            </GroupBox>
+                        </ScrollViewer>
+                    </GroupBox>
 
                     <Expander Header="自定义发送" Grid.Row="2">
                         <Grid>

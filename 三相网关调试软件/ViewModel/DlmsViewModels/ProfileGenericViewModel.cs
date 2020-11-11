@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
@@ -25,109 +23,28 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private ObservableCollection<CustomCosemProfileGenericModel> _profileGenericCollection;
 
-        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand
-        {
-            get => _getCaptureObjectsCommand;
-            set
-            {
-                _getCaptureObjectsCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand { get; set; }
 
-        private AsyncRelayCommand<CustomCosemProfileGenericModel> _getCaptureObjectsCommand;
+        public RelayCommand<CustomCosemProfileGenericModel> SetCaptureObjectsCommand { get; set; }
 
 
-        public RelayCommand<CustomCosemProfileGenericModel> SetCaptureObjectsCommand
-        {
-            get => _setCaptureObjectsCommand;
-            set
-            {
-                _setCaptureObjectsCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemProfileGenericModel> _setCaptureObjectsCommand;
+        public RelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand { get; set; }
 
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand
-        {
-            get => _getCapturePeriodCommand;
-            set
-            {
-                _getCapturePeriodCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemProfileGenericModel> _getCapturePeriodCommand;
-
-        public RelayCommand<CustomCosemProfileGenericModel> SetCapturePeriodCommand
-        {
-            get => _setCapturePeriodCommand;
-            set
-            {
-                _setCapturePeriodCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemProfileGenericModel> _setCapturePeriodCommand;
+        public RelayCommand<CustomCosemProfileGenericModel> SetCapturePeriodCommand { get; set; }
 
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetEntriesInUseCommand
-        {
-            get => _getEntriesInUseCommand;
-            set
-            {
-                _getEntriesInUseCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CustomCosemProfileGenericModel> GetEntriesInUseCommand { get; set; }
 
-        private RelayCommand<CustomCosemProfileGenericModel> _getEntriesInUseCommand;
-
-        public RelayCommand<CustomCosemProfileGenericModel> GetProfileEntriesCommand
-        {
-            get => _getProfileEntriesCommand;
-            set
-            {
-                _getProfileEntriesCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemProfileGenericModel> _getProfileEntriesCommand;
+        public RelayCommand<CustomCosemProfileGenericModel> GetProfileEntriesCommand { get; set; }
 
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetSortMethodCommand
-        {
-            get => _getSortMethodCommand;
-            set
-            {
-                _getSortMethodCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemProfileGenericModel> _getSortMethodCommand;
+        public RelayCommand<CustomCosemProfileGenericModel> GetSortMethodCommand { get; set; }
 
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetBufferCommand
-        {
-            get => _getBufferCommand;
-            set
-            {
-                _getBufferCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CustomCosemProfileGenericModel> GetBufferCommand { get; set; }
 
-        private RelayCommand<CustomCosemProfileGenericModel> _getBufferCommand;
-
-
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
 
 
         public ObservableCollection<byte[]> ListObservableCollection
@@ -145,7 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public ProfileGenericViewModel()
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
             ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
             var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsProfileGenericSheetName);
 
@@ -157,16 +74,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     {ProfileGenericName = dataTable.Rows[i][1].ToString()});
             }
 
-            GetCaptureObjectsCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
-                var responese = await Client.GetRequestAndWaitResponse(t.GetCaptureObjectsAttributeDescriptor()
+                var response = await Client.GetRequestAndWaitResponse(t.GetCaptureObjectsAttributeDescriptor()
                 );
-                if (responese != null)
+                if (response != null)
                 {
-                    if (responese.GetResponseNormal.Result.Data.DataType == DataType.Array)
+                    if (response.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
                         var array = new DLMSArray();
-                        var ar = responese.GetResponseNormal.Result.Data.ToPduStringInHex();
+                        var ar = response.GetResponseNormal.Result.Data.ToPduStringInHex();
                         ar = ar.Substring(2);
                         if (array.PduStringInHexConstructor(ref ar))
                         {
@@ -186,7 +103,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
             SetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
-                List<DlmsDataItem> dataItems = new List<DlmsDataItem>() { };
+                List<DlmsDataItem> dataItems = new List<DlmsDataItem>();
 
                 foreach (var captureObjectDefinition in t.CaptureObjects)
                 {
@@ -227,28 +144,32 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetProfileEntriesCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
-                var resultBytes = await Client.GetRequest(t.GetProfileEntriesAttributeDescriptor());
-                t.ProfileEntries = uint.Parse(NormalDataParse.ParsePduData(resultBytes));
+                var response = await Client.GetRequestAndWaitResponse(t.GetProfileEntriesAttributeDescriptor());
+                if (response != null)
+                {
+                    t.ProfileEntries.Value = response.GetResponseNormal.Result.Data.ValueString;
+                }
             });
             GetSortMethodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
-                var resultBytes = await Client.GetRequest(t.GetSortMethodAttributeDescriptor());
-                t.SortMethod = (SortMethod) ushort.Parse(NormalDataParse.ParsePduData(resultBytes));
+                var response = await Client.GetRequestAndWaitResponse(t.GetSortMethodAttributeDescriptor());
+                if (response != null)
+                    t.SortMethod = (SortMethod) ushort.Parse(response.GetResponseNormal.Result.Data.ValueString);
             });
 
             GetBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
-                var resultBytes = await Client.GetRequest(t.GetBufferAttributeDescriptor());
-                var stringTo = NormalDataParse.ParsePduData(resultBytes).StringToByte();
-                var splitCountLength = (stringTo.Length - 1) / stringTo[0];
-                ListObservableCollection = new ObservableCollection<byte[]>();
-                for (int i = 0; i < stringTo[0]; i++)
-                {
-                    var index = 1 + (i * splitCountLength);
-                    ListObservableCollection.Add(stringTo.Skip(index).Take(splitCountLength).ToArray());
-                }
+                var response = await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor());
+//                var stringTo = NormalDataParse.ParsePduData(resultBytes).StringToByte();
+//                var splitCountLength = (stringTo.Length - 1) / stringTo[0];
+//                ListObservableCollection = new ObservableCollection<byte[]>();
+//                for (int i = 0; i < stringTo[0]; i++)
+//                {
+//                    var index = 1 + (i * splitCountLength);
+//                    ListObservableCollection.Add(stringTo.Skip(index).Take(splitCountLength).ToArray());
+//                }
             });
         }
     }

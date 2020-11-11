@@ -9,8 +9,8 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
     public class GetRequestNext : IToPduBytes
     {
         [XmlIgnore] protected GetRequestType GetRequestType { get; set; } = GetRequestType.Next;
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
-        public AxdrUnsigned32 BlockNumber { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
         public GetRequestNext()
         {

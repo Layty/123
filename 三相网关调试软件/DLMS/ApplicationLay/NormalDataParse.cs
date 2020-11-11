@@ -10,82 +10,6 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public static class NormalDataParse
     {
-        public static string ParsePduData(byte[] pduBytes)
-        {
-            string result = "";
-            if (pduBytes[0] != (byte) Command.GetResponse)
-            {
-                return null;
-            }
-
-            switch (pduBytes[1])
-            {
-                case (byte) GetResponseType.Normal:
-                    var InvokeIdAndPriority = pduBytes[2];
-                    var datatype = pduBytes.Skip(3).Take(2).Reverse().ToArray();
-                    var dt = BitConverter.ToInt16(datatype, 0);
-                    switch (dt)
-                    {
-                        case (byte) DataType.UInt8:
-                            result = pduBytes.Skip(5).Take(1).ToArray()[0].ToString();
-                            break;
-                        case (byte) DataType.UInt16:
-                            result = BitConverter.ToUInt16(pduBytes.Skip(5).Take(2).Reverse().ToArray(), 0).ToString();
-                            break;
-                        case (byte) DataType.Int32:
-                            result = BitConverter.ToInt32(pduBytes.Skip(5).Take(4).Reverse().ToArray(), 0).ToString();
-                            break;
-                        case (byte) DataType.UInt32:
-                            result = BitConverter.ToUInt32(pduBytes.Skip(5).Take(4).Reverse().ToArray(), 0).ToString();
-                            break;
-                        case (byte) DataType.OctetString:
-                            if ((pduBytes[5] & 0x80) == 0x80)
-                            {
-                                var index = pduBytes[5] - 0x80;
-                                var range = BitConverter.ToInt16(pduBytes.Skip(6).Take(index).Reverse().ToArray(), 0);
-                                var resultBytes = pduBytes.Skip(6 + index).Take(range).ToArray();
-                                result = Encoding.Default.GetString(resultBytes);
-                            }
-                            else
-                            {
-                                result = pduBytes.Skip(6).Take(pduBytes[5]).ToArray().ByteToString();
-                            }
-
-                            break;
-                        case (byte) DataType.Structure:
-                            var rangeStruct = pduBytes.Skip(5).Take(1).ToArray()[0];
-                            result = pduBytes.Skip(6).ToArray().ByteToString(); //返回结构体
-                            break;
-                        case (byte) DataType.Enum:
-                            // var EnumValue = pduBytes.Skip(5).Take(1).ToArray()[0];
-                            result = pduBytes.Skip(5).Take(1).ToArray()[0].ToString();
-                            break;
-                        case (byte) DataType.Array:
-                            result = pduBytes.Skip(5).ToArray().ByteToString();
-                            break;
-                    }
-
-                    break;
-                case (byte) GetResponseType.WithDataBlock:
-                    var InvokeIdAndPriority2 = pduBytes[2];
-                    var lastblock = pduBytes[3];
-                    var BlockNumber = pduBytes.Skip(4).Take(4).ToArray();
-                    var rResult = pduBytes[9];
-                    var rawData = pduBytes[10];
-                    result = pduBytes.Skip(10).ToArray().ByteToString();
-                    ;
-                    break;
-                case (byte) GetResponseType.WithList:
-                    ;
-                    break;
-            }
-
-
-            return result;
-        }
-
-       
-
         public static string HowToDisplayIntValue(byte[] dataBytes, UInt32ValueDisplayFormat octetStringDisplayFormat)
         {
             var displayString = "";
@@ -134,7 +58,12 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                     var week = Convert.ToString(dataBytes[4]).PadLeft(2, '0');
                     return year + month + day + week;
 
-                case OctetStringDisplayFormat.Time: break;
+                case OctetStringDisplayFormat.Time:
+                    var hour = Convert.ToString(dataBytes[0]).PadLeft(2, '0');
+                    var min = Convert.ToString(dataBytes[1]).PadLeft(2, '0');
+                    var sen = Convert.ToString(dataBytes[2]).PadLeft(2, '0');
+                    return hour + min + sen;
+                    
             }
 
             return displayString;

@@ -16,7 +16,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects
             Scripts = new List<Script>();
             LogicalName = "0.0.10.0.0.255";
             Version = 1;
-            ClassId = new AxdrUnsigned16(ObjectType.ScriptTable.ToString("X4"));
+            ClassId = new AxdrIntegerUnsigned16(ObjectType.ScriptTable.ToString("X4"));
         }
 
         public ScriptTable(string logicalName,ObjectType objectType)

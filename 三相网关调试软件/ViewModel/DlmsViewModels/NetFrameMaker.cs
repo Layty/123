@@ -6,7 +6,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class NetFrameMaker : ObservableObject
     {
-        private DLMSSettingsViewModel DlmsSettingsViewModel { get; }
+        private DlmsSettingsViewModel DlmsSettingsViewModel { get; }
 
         public NetFrame NetFrame
         {
@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         private NetFrame _netFrame;
 
 
-        public NetFrameMaker(DLMSSettingsViewModel settingsViewModel)
+        public NetFrameMaker(DlmsSettingsViewModel settingsViewModel)
         {
             DlmsSettingsViewModel = settingsViewModel;
         }
@@ -30,9 +30,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             NetFrame = new NetFrame()
             {
-                Version = new AxdrUnsigned16("1"),
-                SourceAddress = new AxdrUnsigned16((DlmsSettingsViewModel.ClientAddress.ToString("X4"))),
-                DestAddress = new AxdrUnsigned16((DlmsSettingsViewModel.ServerAddress.ToString("X4"))),
+                Version = new AxdrIntegerUnsigned16("1"),
+                SourceAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ClientAddress.ToString("X4"))),
+                DestAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ServerAddress.ToString("X4"))),
             };
         }
 

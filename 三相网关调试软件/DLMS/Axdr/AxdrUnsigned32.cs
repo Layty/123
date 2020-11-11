@@ -6,29 +6,16 @@ using System.Xml.Serialization;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrUnsigned32 : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
+    public class AxdrIntegerUnsigned32 : AxdrIntegerBase
     {
-        [XmlIgnore] public int Length => 4;
-
-        [XmlAttribute]
-        public string Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _value;
+        [XmlIgnore] public override int Length => 4;
 
 
-        public AxdrUnsigned32()
+        public AxdrIntegerUnsigned32()
         {
         }
 
-        public AxdrUnsigned32(string s)
+        public AxdrIntegerUnsigned32(string s)
         {
             if (s.Length != 8)
             {
@@ -36,11 +23,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
 
             Value = s;
-        }
-
-        public string ToPduStringInHex()
-        {
-            return Value;
         }
 
 
@@ -52,26 +34,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
 
             return Convert.ToUInt32(Value, 16);
-        }
-
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Length < 8)
-            {
-                return false;
-            }
-
-            Value = pduStringInHex.Substring(0, 8);
-            pduStringInHex = pduStringInHex.Substring(8);
-            return true;
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

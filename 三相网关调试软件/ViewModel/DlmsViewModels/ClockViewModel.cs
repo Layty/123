@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MySerialPortMaster;
+using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
 
@@ -8,7 +8,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class ClockViewModel : ObservableObject
     {
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
         public CosemClock Clock { get; set; }
 
 
@@ -39,7 +39,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public ClockViewModel()
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
             var dataTable = excel.GetExcelDataTable("Clock$");
             Clock = new CosemClock(dataTable.Rows[0][0].ToString());

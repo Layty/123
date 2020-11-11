@@ -209,8 +209,6 @@
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\SerialPortAvaildConvert.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
-    <Compile Include="Converters\Tftp-g-rConverter.cs" />
-    <Compile Include="Converters\Tftp-p-rConverter.cs" />
     <Compile Include="DLMS\ApplicationLay\AccessParameters.cs" />
     <Compile Include="DLMS\ApplicationLay\Action\ActionRequest.cs" />
     <Compile Include="DLMS\ApplicationLay\Action\ActionRequestNextBlock.cs" />
@@ -242,6 +240,9 @@
     <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemBase.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\CosemDisconnectControl.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CaptureObjectDefinition.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemExtendedRegister.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemRegisterActivation.cs" />
+    <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemRegisterTable.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\IToDlmsDataItem.cs" />
     <Compile Include="DLMS\ApplicationLay\CosemObjects\DataStorage\ProfileGenericEntryDescriptor.cs" />
@@ -260,6 +261,8 @@
     <Compile Include="DLMS\ApplicationLay\IPduBytesToConstructor.cs" />
     <Compile Include="DLMS\ApplicationLay\Release\ReleaseRequest.cs" />
     <Compile Include="DLMS\ApplicationLay\Release\ReleaseResponse.cs" />
+    <Compile Include="DLMS\Axdr\AxdrIntegerBase.cs" />
+    <Compile Include="DLMS\Axdr\AxdrStringBase.cs" />
     <Compile Include="DLMS\IPduStringInHexConstructor.cs" />
     <Compile Include="DLMS\IToPduStringInHex.cs" />
     <Compile Include="DLMS\ApplicationLay\GetDataResult.cs" />

@@ -19,11 +19,11 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
 
     public class InitiateResponse : IPduBytesToConstructor
     {
-        public AxdrUnsigned8 NegotiatedDlmsVersionNumber { get; set; }
+        public AxdrIntegerUnsigned8 NegotiatedDlmsVersionNumber { get; set; }
        public Conformance NegotiatedConformance { get; set; }
 
-        public AxdrUnsigned16 ServerMaxReceivePduSize { get; set; }
-        public AxdrInteger16 VaaName { get; set; }
+        public AxdrIntegerUnsigned16 ServerMaxReceivePduSize { get; set; }
+        public AxdrIntegerInteger16 VaaName { get; set; }
 
 
         public bool PduBytesToConstructor(byte[] pduBytes)
@@ -39,7 +39,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                 {
                     //negotiated - quality - of - service  pdu[1];
 
-                    NegotiatedDlmsVersionNumber = new AxdrUnsigned8();
+                    NegotiatedDlmsVersionNumber = new AxdrIntegerUnsigned8();
                     var pduStringInHex = pdu.Skip(2).ToArray().ByteToString("");
                     if (!NegotiatedDlmsVersionNumber.PduStringInHexConstructor(ref pduStringInHex))
                     {
@@ -53,9 +53,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
                         var negovalue = BitConverter.ToUInt32(nego.Reverse().ToArray(), 0);
                         NegotiatedConformance = (Conformance) negovalue;
                         pduStringInHex = pduStringInHex.Substring(8);
-                        ServerMaxReceivePduSize = new AxdrUnsigned16();
+                        ServerMaxReceivePduSize = new AxdrIntegerUnsigned16();
                         ServerMaxReceivePduSize.PduStringInHexConstructor(ref pduStringInHex);
-                        VaaName = new AxdrInteger16();
+                        VaaName = new AxdrIntegerInteger16();
                         VaaName.PduStringInHexConstructor(ref pduStringInHex);
                         return true;
                     }

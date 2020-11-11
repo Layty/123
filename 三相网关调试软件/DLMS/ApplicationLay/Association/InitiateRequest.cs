@@ -22,7 +22,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association
            
         }
 
-        public InitiateRequest(DLMSSettingsViewModel dlmsSettingsViewModel)
+        public InitiateRequest(DlmsSettingsViewModel dlmsSettingsViewModel)
         {
             ProposedDlmsVersionNumber = new ProposedDlmsVersionNumber();
             this.ProposedDlmsVersionNumber.Value = dlmsSettingsViewModel.DlmsVersion;

@@ -4,44 +4,17 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Controls;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class MenuViewModel : ViewModelBase
+    public class MenuViewModel : ObservableObject
     {
         public MenuViewModel()
         {
-            if (IsInDesignMode)
-            {
-                ManagementMenuCollection = new ObservableCollection<MenuModel>
-                {
-                    new MenuModel {MenuName = "命令", FontSize = "20", IconFont = "\xe7b7"},
-                    new MenuModel {MenuName = "系统日志", FontSize = "20", IconFont = "\xe668"},
-                    new MenuModel {MenuName = "实时数据", FontSize = "20", IconFont = "\xe6ab"},
-                    new MenuModel {MenuName = "全局参数", FontSize = "20", IconFont = "\xe606"},
-                };
-
-                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
-                {
-                    new MenuModel
-                    {
-                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600", Assembly = "UpGradeBaseMeterPage",
-                        Foreground = "#00FF00"
-                    },
-
-                    new MenuModel
-                    {
-                        MenuName = "Telnet", FontSize = "20", IconFont = "\xe600", Assembly = "TcpClientPage",
-                        Foreground = "#00FF00"
-                    }
-                };
-                SelectCommand = new RelayCommand<MenuModel>(Select);
-            }
-
-            else
+          
             {
 #if 张诗华
                 BaseMeterMenuCollection = new ObservableCollection<MenuModel>()
@@ -80,28 +53,28 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 };
 
 
-//                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
-//                {
-//                    new MenuModel
-//                    {
-//                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
-//                        Assembly = "BaseMeter.UpGradeBaseMeterPage",
-//                        Foreground = "#00FF00"
-//                    }
-//                };
+                BaseMeterMenuCollection = new ObservableCollection<MenuModel>
+                {
+                    new MenuModel
+                    {
+                        MenuName = "基表升级", FontSize = "20", IconFont = "\xe600",
+                        Assembly = "BaseMeter.UpGradeBaseMeterPage",
+                        Foreground = "#00FF00"
+                    }
+                };
 
                 ServicesMenuCollection = new ObservableCollection<MenuModel>
                 {
                     new MenuModel
                     {
                         MenuName = "DLMSSettings", FontSize = "20", IconFont = "\xe606",
-                        Assembly = "ServerCenter.DLMSSettingsPage",
+                        Assembly = "ServerCenter.DlmsSettingsPage",
                         Foreground = "#FF0000"
                     },
                     new MenuModel
                     {
                         MenuName = "DLMSClient", FontSize = "20", IconFont = "\xe63a",
-                        Assembly = "ServerCenter.DLMSClientPage",
+                        Assembly = "ServerCenter.DlmsClientPage",
                         Foreground = "#FFFF00"
                     },
                     new MenuModel
@@ -146,7 +119,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _managementMenuCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -159,7 +132,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _baseMeterMenuCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -171,7 +144,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _servicesMenuCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -179,7 +152,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public ObservableCollection<MenuModel> ToolsMenuCollection
         {
             get => _toolsMenuCollection;
-            set { _toolsMenuCollection = value; RaisePropertyChanged(); }
+            set { _toolsMenuCollection = value; OnPropertyChanged();}
         }
         private ObservableCollection<MenuModel> _toolsMenuCollection;
 
@@ -192,7 +165,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _menuModel = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -204,21 +177,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentPage = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
-
-        private RelayCommand<MenuModel> _selectCommand;
-
-        public RelayCommand<MenuModel> SelectCommand
-        {
-            get => _selectCommand;
-            set
-            {
-                _selectCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        public RelayCommand<MenuModel> SelectCommand { get; set; }
 
 
         private void Select(MenuModel menuModel)

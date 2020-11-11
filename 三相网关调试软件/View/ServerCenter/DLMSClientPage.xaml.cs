@@ -12,28 +12,28 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
     /// <summary>
     /// DLMSClientPage.xaml 的交互逻辑
     /// </summary>
-    public partial class DLMSClientPage : Page
+    public partial class DlmsClientPage : Page
     {
-        private DLMSClient Client { get; set; }
+        private DlmsClient Client { get; set; }
 
-        public DLMSClientPage()
+        public DlmsClientPage()
         {
             InitializeComponent();
-            Client = ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ServiceLocator.Current.GetInstance<DLMSClient>().CurrentSocket = ListBox.SelectedItem as Socket;
+            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket = ListBox.SelectedItem as Socket;
             ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DLMSClient>().CurrentSocket;
+                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
         }
 
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
         {
-            ServiceLocator.Current.GetInstance<DLMSClient>().CurrentSocket = (Socket)ListBox.SelectedItem;
+            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket = (Socket)ListBox.SelectedItem;
             ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DLMSClient>().CurrentSocket;
+                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
         }
 
 

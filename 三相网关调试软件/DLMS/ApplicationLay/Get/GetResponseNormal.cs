@@ -7,7 +7,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
     public class GetResponseNormal : IToPduStringInHex,IPduStringInHexConstructor
     {
         [XmlIgnore] public GetResponseType GetResponseType { get; set; } = GetResponseType.Normal;
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
 
         public GetDataResult Result { get; set; }
 
@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
                 return false;
             }
 
-            InvokeIdAndPriority = new AxdrUnsigned8();
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

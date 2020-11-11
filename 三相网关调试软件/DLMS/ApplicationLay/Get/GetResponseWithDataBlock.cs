@@ -8,7 +8,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
     {
         [XmlIgnore]
         public GetResponseType GetResponseType { get; set; } = GetResponseType.WithDataBlock;
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public DataBlockG DataBlockG { get; set; }
 
         
@@ -25,7 +25,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
             }
            
       
-            InvokeIdAndPriority = new AxdrUnsigned8();
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

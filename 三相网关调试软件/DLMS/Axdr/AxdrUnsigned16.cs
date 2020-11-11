@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Xml.Serialization;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrUnsigned16 : IToPduStringInHex, IPduStringInHexConstructor
+    public class AxdrIntegerUnsigned16 : AxdrIntegerBase
     {
-        [XmlIgnore] public int Length => 2;
-        [XmlAttribute] public string Value { get; set; }
+        public override int Length => 2;
 
-
-        public AxdrUnsigned16()
+        public AxdrIntegerUnsigned16()
         {
         }
 
-        public AxdrUnsigned16(string hexStringValue)
+        public AxdrIntegerUnsigned16(string hexStringValue)
         {
             int length = hexStringValue.Length;
             if (length <= 4)
@@ -30,10 +27,7 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             throw new ArgumentException("The length not match type");
         }
 
-        public string ToPduStringInHex()
-        {
-            return Value;
-        }
+
 
         public ushort GetEntityValue()
         {
@@ -43,18 +37,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
 
             return Convert.ToUInt16(Value, 16);
-        }
-
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Length < 4)
-            {
-                return false;
-            }
-
-            Value = pduStringInHex.Substring(0, 4);
-            pduStringInHex = pduStringInHex.Substring(4);
-            return true;
         }
     }
 }

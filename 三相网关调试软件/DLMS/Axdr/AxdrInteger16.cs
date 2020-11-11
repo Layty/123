@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Xml.Serialization;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 
 namespace 三相智慧能源网关调试软件.DLMS.Axdr
 {
-    public class AxdrInteger16 : IToPduStringInHex, IPduStringInHexConstructor
+    public class AxdrIntegerInteger16 : AxdrIntegerBase
     {
-        [XmlIgnore] public int Length => 2;
-        [XmlAttribute] public string Value { get; set; }
-     
+        [XmlIgnore] public override int Length => 2;
 
-        public AxdrInteger16()
+
+        public AxdrIntegerInteger16()
         {
         }
 
-        public AxdrInteger16(string hexString)
+        public AxdrIntegerInteger16(string hexString)
         {
             if (hexString.Length != 4)
             {
@@ -22,11 +20,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
 
             Value = hexString;
-        }
-
-        public string ToPduStringInHex()
-        {
-            return Value;
         }
 
 
@@ -38,18 +31,6 @@ namespace 三相智慧能源网关调试软件.DLMS.Axdr
             }
 
             return Convert.ToInt16(Value, 16);
-        }
-
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
-        {
-            if (pduStringInHex.Length < 4)
-            {
-                return false;
-            }
-
-            Value = pduStringInHex.Substring(0, 4);
-            pduStringInHex = pduStringInHex.Substring(4);
-            return true;
         }
     }
 }

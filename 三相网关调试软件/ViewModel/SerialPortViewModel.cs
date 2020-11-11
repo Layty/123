@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO.Ports;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
-
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class SerialPortViewModel : ViewModelBase
+    public class SerialPortViewModel : ObservableObject
     {
         public SerialPortViewModel()
         {
-            if (IsInDesignMode)
-            {
-                SerialPortConfigCaretaker =
-                    new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
-                var config = SerialPortConfigCaretaker.DefaultConfig;
-                SerialPortMaster = new SerialPortMaster(config);
-            }
-            else
             {
                 SerialPortConfigCaretaker =
                     new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
@@ -42,18 +33,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ClearSendCountCommand = new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearSendCount());
                 ClearReceivedCountCommand =
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearReceiveCount());
-
-
             }
 
-        
+
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
                 SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMaster
                     .CreateMySerialPortConfig);
             });
-            OpenCalcCommand = new RelayCommand( () => {  Process.Start("compmgmt.msc"); });
-            OpenOrCloseCommand=new RelayCommand( ()=> {
+            OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
+            OpenOrCloseCommand = new RelayCommand(() =>
+            {
                 try
                 {
                     if (!SerialPortMaster.IsOpen)
@@ -64,24 +54,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         SerialPortMaster.Close();
                     }
+
                     SaveSerialPortConfigFileCommand.Execute(null);
                 }
                 catch (Exception e)
                 {
-                    var view = new MyControl.MessageBox() { Message = e.Message, Title = e.Source };
+                    var view = new MyControl.MessageBox() {Message = e.Message, Title = e.Source};
                     //  await DialogHost.Show(view, "SerialPortPage");
                 }
-               
             });
         }
-    
+
         public SerialPortMaster SerialPortMaster
         {
             get => _serialPortMaster;
             set
             {
                 _serialPortMaster = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -89,18 +79,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private SerialPortConfigCaretaker SerialPortConfigCaretaker { get; set; }
 
 
-        public RelayCommand OpenOrCloseCommand
-        {
-            get => _openOrCloseCommand;
-            set { _openOrCloseCommand = value; RaisePropertyChanged(); }
-        }
-        private RelayCommand _openOrCloseCommand;
+        public RelayCommand OpenOrCloseCommand { get; set; }
 
 
         #region 串口参数资源集合
 
         public string[] PortNamesCollection => SerialPort.GetPortNames();
-        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400,115200};
+        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400, 115200};
         public Array ParityCollection => Enum.GetValues(typeof(Parity));
         public StopBits[] StopBitsCollection => new[] {StopBits.One, StopBits.OnePointFive, StopBits.Two};
         public int[] DataBitsCollection => new[] {6, 7, 8};
@@ -134,7 +119,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 发送区
 
         public RelayCommand SendTextCommand { get; set; }
-        
+
         #endregion
     }
 }

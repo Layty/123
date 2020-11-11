@@ -31,7 +31,7 @@ namespace 三相智慧能源网关调试软件.Model
                     new DlmsDataItem(DataType.UInt16, "0001"),
                 }
             };
-            return new SelectiveAccessDescriptor(new AxdrUnsigned8("02"),
+            return new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                 new DlmsDataItem(DataType.Structure, structure) );
         }
 
@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件.Model
                     new DlmsDataItem(DataType.UInt16) {Value = "0001"},
                 }
             };
-            return new SelectiveAccessDescriptor(new AxdrUnsigned8("02"),
+            return new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                 new DlmsDataItem(DataType.Structure, structure));
         }
 
@@ -63,7 +63,7 @@ namespace 三相智慧能源网关调试软件.Model
                     new DlmsDataItem(DataType.UInt16, "0001"),
                 }
             };
-            return new SelectiveAccessDescriptor(new AxdrUnsigned8("01"),
+            return new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
                 new DlmsDataItem(DataType.Structure,dlmsStructure));
         }
 

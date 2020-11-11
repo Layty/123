@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.DLMS.HDLC
 {
     public class HdlcFrameMaker
     {
-        private readonly DLMSSettingsViewModel _dlmsSettingsViewModel;
+        private readonly DlmsSettingsViewModel _dlmsSettingsViewModel;
 
         public Hdlc46Frame Hdlc46Frame { get; set; }
 
-        public HdlcFrameMaker(DLMSSettingsViewModel dlmsSettingsViewModel)
+        public HdlcFrameMaker(DlmsSettingsViewModel dlmsSettingsViewModel)
         {
             _dlmsSettingsViewModel = dlmsSettingsViewModel;
         }

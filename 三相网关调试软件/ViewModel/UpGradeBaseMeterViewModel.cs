@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using CommonServiceLocator;
 using FileTransmit;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
-using 三相智慧能源网关调试软件.Properties;
 
+using 三相智慧能源网关调试软件.Properties;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class UpGradeBaseMeterViewModel : ViewModelBase
+    public class UpGradeBaseMeterViewModel : ObservableObject
     {
         private SerialPortViewModel _serialPortViewModel;
 
@@ -20,7 +20,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _serialPortViewModel = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
 
                 _isInitUpGradeSerialPort = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -60,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _fileTransmitProtocol = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -72,7 +72,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _fileIndex = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -86,7 +86,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _packetNo = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -98,7 +98,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _fileName = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -110,7 +110,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _fileSize = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -122,7 +122,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentCount = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -133,7 +133,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _packetBuff = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -149,7 +149,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _transmitMode = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -161,7 +161,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _yModemType = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -223,54 +223,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        private RelayCommand _startCommand;
+ 
 
         public RelayCommand StartCommand
-        {
-            get => _startCommand;
-            set
-            {
-                _startCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        { get; set; }
 
 
-        private RelayCommand _stopCommand;
+
 
         public RelayCommand StopCommand
-        {
-            get => _stopCommand;
-            set
-            {
-                _stopCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        { get; set; }
 
-        private RelayCommand _useComCommand;
 
-        public RelayCommand UserComCommand
-        {
-            get => _useComCommand;
-            set
-            {
-                _useComCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        public RelayCommand UserComCommand { get; set; }
 
-        private RelayCommand _releaseComCommand;
+   
 
-        public RelayCommand ReleaseComCommand
-        {
-            get => _releaseComCommand;
-            set
-            {
-                _releaseComCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        public RelayCommand ReleaseComCommand { get; set; }
+
 
 
         private void YModem_ReSendPacket(object sender, EventArgs e)
@@ -365,8 +335,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
 
             _serialPortViewModel.SerialPortMaster.Send(e.Data); //使用Send可捕捉发送日志
-            //_serialPortViewModel.SerialPortMaster.SerialPort.Write(e.Data, 0, e.Data.Length);
-            //  Messenger.Default.Send(e.Data, "SendFileToBaseMeter");
+
         }
 
 
@@ -400,17 +369,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
-        private RelayCommand _selectFileCommand;
 
-        public RelayCommand SelectFileCommand
-        {
-            get => _selectFileCommand;
-            set
-            {
-                _selectFileCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+
+        public RelayCommand SelectFileCommand { get; set; }
 
 
         private void SelectFile()
@@ -419,7 +380,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 Filter = "二进制文件(*.bin)|*.bin|所有文件(*.*)|*.*"
             };
-            if (openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == DialogResult.Yes)
             {
                 FileName = openFileDialog.FileName;
                 Settings.Default.BaseMeterUpGradeFile = FileName;

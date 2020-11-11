@@ -51,7 +51,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
 
-        public EModeViewModel(DLMSSettingsViewModel settings)
+        public EModeViewModel(DlmsSettingsViewModel settings)
         {
             StartBaud = settings.StartBaud;
             NegotiateBaud = settings.NegotiateBaud;

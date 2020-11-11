@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
@@ -16,7 +15,8 @@ using 三相智慧能源网关调试软件.DLMS.Axdr;
 using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Properties;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
-using ObservableObject = Microsoft.Toolkit.Mvvm.ComponentModel.ObservableObject;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -35,54 +35,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private TcpServerHelper _tcpServerHelper;
 
 
-        public RelayCommand StartListen
-        {
-            get => _startListen;
-            set
-            {
-                _startListen = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand _startListen;
-
-        public RelayCommand DisConnectServerCommand
-        {
-            get => _disConnectServerCommand;
-            set
-            {
-                _disConnectServerCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand _disConnectServerCommand;
-
-        public RelayCommand<string> DisConnectClientCommand
-        {
-            get => _disConnectClientCommand;
-            set
-            {
-                _disConnectClientCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<string> _disConnectClientCommand;
+        public RelayCommand StartListen { get; set; }
 
 
-        public RelayCommand SendDataToServerCommand
-        {
-            get => _sendDataToServerCommand;
-            set
-            {
-                _sendDataToServerCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand DisConnectServerCommand { get; set; }
 
-        private RelayCommand _sendDataToServerCommand;
+        public RelayCommand<string> DisConnectClientCommand { get; set; }
+
+
+        public RelayCommand SendDataToServerCommand { get; set; }
 
 
         public Socket CurrentSocketClient
@@ -110,20 +71,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private string _currentSendMsg;
 
-        public RelayCommand<Socket> SelectSocketCommand
-        {
-            get => _selectSocketCommand;
-            set
-            {
-                _selectSocketCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<Socket> _selectSocketCommand;
+        public RelayCommand<Socket> SelectSocketCommand { get; set; }
 
 
-        public DLMSClient DLMSClient
+        public DlmsClient DLMSClient
         {
             get => _dlmsClient;
             set
@@ -133,7 +84,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private DLMSClient _dlmsClient;
+        private DlmsClient _dlmsClient;
 
 
         public bool IsAutoResponseHeartBeat
@@ -241,9 +192,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
-            public AxdrOctetString CosemLogicalDeviceName { get; set; }
-            public AxdrUnsigned32 AlarmDescriptor1 { get; set; }
-            public AxdrUnsigned32 AlarmDescriptor2 { get; set; }
+            public AxdrIntegerOctetString CosemLogicalDeviceName { get; set; }
+            public AxdrIntegerUnsigned32 AlarmDescriptor1 { get; set; }
+            public AxdrIntegerUnsigned32 AlarmDescriptor2 { get; set; }
 
 
             public new bool PduStringInHexConstructor(ref string pduStringInHex)
@@ -254,13 +205,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     var pid = Items[0].Value.ToString();
                     if (!PushId.PduStringInHexConstructor(ref pid)) return false;
                     var deviceName = Items[1].ToPduStringInHex().Substring(2);
-                    CosemLogicalDeviceName = new AxdrOctetString();
+                    CosemLogicalDeviceName = new AxdrIntegerOctetString();
                     if (!CosemLogicalDeviceName.PduStringInHexConstructor(ref deviceName)) return false;
                     var descriptor1 = Items[2].Value.ToString();
-                    AlarmDescriptor1 = new AxdrUnsigned32();
+                    AlarmDescriptor1 = new AxdrIntegerUnsigned32();
                     if (!AlarmDescriptor1.PduStringInHexConstructor(ref descriptor1)) return false;
                     var descriptor2 = Items[3].Value.ToString();
-                    AlarmDescriptor2 = new AxdrUnsigned32();
+                    AlarmDescriptor2 = new AxdrIntegerUnsigned32();
                     if (!AlarmDescriptor2.PduStringInHexConstructor(ref descriptor2)) return false;
 
                     return true;
@@ -357,7 +308,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private byte[] _returnBytes;
         private readonly List<byte> _listReturnBytes = new List<byte>();
-        private bool _isNeedContinue = false;
+        private bool _isNeedContinue;
         private int TotalLength { get; set; }
         private int NeedReceiveLength { get; set; }
 

@@ -7,7 +7,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set
     public class SetRequestWithDataBlock : IToPduBytes
     {
         [XmlIgnore] protected SetRequestType SetRequestType { get; set; } = SetRequestType.WithDataBlock;
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public DataBlockSA DataBlockSA { get; set; }
 
         public byte[] ToPduBytes()

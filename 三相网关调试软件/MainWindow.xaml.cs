@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -15,9 +14,6 @@ using 三相智慧能源网关调试软件.View;
 using GalaSoft.MvvmLight.Threading;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MessageBox = System.Windows.MessageBox;
-
 
 namespace 三相智慧能源网关调试软件
 {
@@ -53,8 +49,6 @@ namespace 三相智慧能源网关调试软件
             {
                 MessageBoxWindow msgBoxWindow = new MessageBoxWindow() {Message = "是否退出程序？", Title = "提示"};
                 var result = msgBoxWindow.ShowDialog();
-                //                var result = MessageBox.Show("是否退出程序", "提示", MessageBoxButton.YesNo);
-                //                if (result == MessageBoxResult.Yes)
                 if (result == true)
                 {
 //                    speechSynthesizer.Speak("后会有期");
@@ -88,10 +82,6 @@ namespace 三相智慧能源网关调试软件
             Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
         }
 
-        private void tbxEditMe_TextChanged(object sender, EventArgs e)
-        {
-            MessageBox.Show("mychanged");
-        }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {

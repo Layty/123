@@ -1,8 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MySerialPortMaster;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
@@ -30,50 +29,24 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private ObservableCollection<CustomCosemRegisterModel> _registers;
 
-        public RelayCommand<CustomCosemRegisterModel> GetValueCommand
-        {
-            get => _getValueCommand;
-            set
-            {
-                _getValueCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CustomCosemRegisterModel> GetValueAndScalarUnitCommand { get; set; }
 
-        private RelayCommand<CustomCosemRegisterModel> _getValueCommand;
+        public RelayCommand<CustomCosemRegisterModel> GetValueCommand { get; set; }
+        public RelayCommand<CustomCosemRegisterModel> GetScalarUnitCommand { get; set; }
 
-        public RelayCommand<CustomCosemRegisterModel> SetValueCommand
-        {
-            get => _setValueCommand;
-            set
-            {
-                _setValueCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CustomCosemRegisterModel> SetValueCommand { get; set; }
 
-        private RelayCommand<CustomCosemRegisterModel> _setValueCommand;
 
-        public RelayCommand<CosemRegister> GetLogicNameCommand
-        {
-            get => _getLogicNameCommand;
-            set
-            {
-                _getLogicNameCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand<CosemRegister> GetLogicNameCommand { get; set; }
 
-        private RelayCommand<CosemRegister> _getLogicNameCommand;
-
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
 
 
         public RegisterViewModel()
         {
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
             var dataTable = excel.GetExcelDataTable("Register$");
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
             Registers = new ObservableCollection<CustomCosemRegisterModel>();
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
@@ -81,14 +54,37 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     {RegisterName = dataTable.Rows[i][1].ToString()});
             }
 
-            GetValueCommand = new RelayCommand<CustomCosemRegisterModel>(
+            GetValueCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
+            {
+                t.Value = new DlmsDataItem();
+                var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
+                if (getResponse != null)
+                {
+                    t.LastResult =
+                        (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                    t.Value = getResponse.GetResponseNormal.Result.Data;
+                }
+            });
+            GetScalarUnitCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
+            {
+                t.ScalarUnit = new ScalarUnit();
+                var scalarUnitResponse =
+                    await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
+                if (scalarUnitResponse != null)
+                {
+                    var structure = (DlmsStructure) scalarUnitResponse.GetResponseNormal.Result.Data.Value;
+                    t.ScalarUnit.Scalar = (sbyte) Convert.ToSByte(structure.Items[0].Value.ToString(), 16);
+                    t.ScalarUnit.Unit = (Unit) byte.Parse(structure.Items[1].ValueString);
+                }
+            });
+            GetValueAndScalarUnitCommand = new RelayCommand<CustomCosemRegisterModel>(
                 async t =>
                 {
                     t.Value = new DlmsDataItem();
-                    t.ScalarUnit = new ScalarUnit() ;
+                    t.ScalarUnit = new ScalarUnit();
                     var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
-                 
-                    if (getResponse!=null)
+
+                    if (getResponse != null)
                     {
                         t.LastResult =
                             (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
@@ -98,28 +94,25 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             return;
                         }
 
-                        var scalarUnit = await Client.GetRequest(t.GetScalar_UnitAttributeDescriptor());
-                        var structData = NormalDataParse.ParsePduData(scalarUnit);
-                        var unitByte = structData.StringToByte();
-                        switch (unitByte.Take(1).ToArray()[0])
+                        var scalarUnitResponse =
+                            await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
+                        if (scalarUnitResponse != null)
                         {
-                            case (byte) DataType.Int8:
-                                t.ScalarUnit.Scalar = (sbyte) unitByte.Skip(1).Take(1).ToArray()[0];
-                                break;
-                        }
-
-                        switch (unitByte.Skip(2).Take(1).ToArray()[0])
-                        {
-                            case (byte) DataType.Enum:
-                                t.ScalarUnit.Unit = (Unit) unitByte.Skip(3).Take(1).ToArray()[0];
-                                break;
+                            var strun = (DlmsStructure) scalarUnitResponse.GetResponseNormal.Result.Data.Value;
+                            t.ScalarUnit.Scalar = (sbyte) Convert.ToSByte(strun.Items[0].Value.ToString(), 16);
+                            t.ScalarUnit.Unit = (Unit) byte.Parse(strun.Items[1].ValueString);
                         }
                     }
                 });
             SetValueCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
             {
-                t.Value.UpdateValueBytes();
-                var dataResult = await Client.SetRequestAndWaitResponse(t.GetValueAttributeDescriptor(), t.Value);
+                t.Value.UpdateValue();
+                var setResponse = await Client.SetRequestAndWaitResponse(t.GetValueAttributeDescriptor(), t.Value);
+                if (setResponse != null)
+                {
+                    t.LastResult =
+                        (ErrorCode) setResponse.SetResponseNormal.Result;
+                }
             });
         }
     }

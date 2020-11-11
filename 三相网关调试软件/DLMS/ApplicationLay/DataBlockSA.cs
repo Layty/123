@@ -6,9 +6,9 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
 {
     public class DataBlockSA
     {
-        public AxdrBoolean LastBlock { get; set; }
-        public AxdrUnsigned32 BlockNumber { get; set; }
-        public AxdrOctetString RawData { get; set; }
+        public AxdrIntegerBoolean LastBlock { get; set; }
+        public AxdrIntegerUnsigned32 BlockNumber { get; set; }
+        public AxdrIntegerOctetString RawData { get; set; }
 
         [XmlIgnore] public int Length => CalculateLength();
 
@@ -49,19 +49,19 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay
                 return false;
             }
 
-            LastBlock = new AxdrBoolean();
+            LastBlock = new AxdrIntegerBoolean();
             if (!LastBlock.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            BlockNumber = new AxdrUnsigned32();
+            BlockNumber = new AxdrIntegerUnsigned32();
             if (!BlockNumber.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            RawData = new AxdrOctetString();
+            RawData = new AxdrIntegerOctetString();
             if (!RawData.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

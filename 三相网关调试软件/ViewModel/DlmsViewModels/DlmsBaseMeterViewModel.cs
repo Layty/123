@@ -48,7 +48,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         #endregion
 
 
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
         public EModeViewModel EModeViewModel { get; set; }
 
         private SerialPortViewModel SerialPortViewModel { get; set; }
@@ -60,39 +60,40 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             EModeViewModel = new EModeViewModel(SerialPortViewModel.SerialPortMaster); //近红外
 
-            Client = ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
             EModeViewModel = Client.EModeViewModel;
             InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
             DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
-                var value = await Client.GetRequest(cosem.GetValueAttributeDescriptor());
-                if (value != null && value.Length != 0)
+                var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
+                if (response != null )
                 {
-                    var data = NormalDataParse.ParsePduData(value);
-                    SoftVersion = data;
+                 
+                    SoftVersion = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
             ReadFactoryCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                var value = await Client.GetRequest(cosem.GetValueAttributeDescriptor());
-                if (value != null && value.Length != 0)
+                var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
+                if (response != null)
                 {
-                    FactoryStatus = NormalDataParse.ParsePduData(value);
+                    FactoryStatus = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "8192");
+              
+                DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000");//8192
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                var dataItem = new DlmsDataItem(DataType.UInt16, "0");
+                var dataItem = new DlmsDataItem(DataType.UInt16, "0000");
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
@@ -103,7 +104,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             SetCapturePeriodCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemProfileGeneric("1.0.99.1.0.255");
-                cosem.CapturePeriod = new AxdrUnsigned32("00000060");
+                cosem.CapturePeriod = new AxdrIntegerUnsigned32("00000060");
                 var dlmsData = new DlmsDataItem(DataType.UInt32, cosem.CapturePeriod.Value);
 
                 await Client.SetRequestAndWaitResponse(cosem.GetCapturePeriodAttributeDescriptor(), dlmsData);
@@ -165,65 +166,21 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
         }
 
-
-//        private async void Init()
-//        {
-//            try
-//            {
-//                if (StartProtocolType == StartProtocolType.IEC21E)
-//                {
-//                    if (await EModeViewModel.Execute21ENegotiateAsync())
-//                    {
-////                        var t = Hdlc46Executor.ExecuteHdlcSNRMRequest();
-//                        var t = Client.SNRMRequest();
-//                        await t.ContinueWith(
-//                            t1 =>
-//                            {
-//                                return Client.AarqRequest();
-//                            },
-//                            TaskContinuationOptions.OnlyOnRanToCompletion);
-//                    }
-//                }
-
-//            }
-//            catch (Exception exception)
-//            {
-//                MessageBox.Show(exception.Message);
-//            }
-//        }
-
-
         #region Command
 
-        private RelayCommand _initCommand;
+
 
         /// <summary>
         /// 初始化命令，根据是否使用21E,或者使用HDLC46进行初始化通信,包含SNRM,AARQ
         /// </summary>
-        public RelayCommand InitCommand
-        {
-            get => _initCommand;
-            set
-            {
-                _initCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand InitCommand { get; set; }
+   
 
-        private RelayCommand _disconnectCommand;
 
         /// <summary>
         /// 断开连接命令
         /// </summary>
-        public RelayCommand DisconnectCommand
-        {
-            get => _disconnectCommand;
-            set
-            {
-                _disconnectCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand DisconnectCommand { get; set; }
 
         private RelayCommand _getSoftVersionCommand;
 

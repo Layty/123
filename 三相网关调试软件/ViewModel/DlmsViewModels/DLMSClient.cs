@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using MySerialPortMaster;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
@@ -28,11 +28,8 @@ using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class DLMSClient : ViewModelBase
+    public class DlmsClient : ObservableObject
     {
-        public Array OctetStringDisplayFormatArray { get; set; } = Enum.GetValues(typeof(OctetStringDisplayFormat));
-        public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
-
         #region 协议层资源
 
         public EModeViewModel EModeViewModel { get; set; }
@@ -52,7 +49,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public Logger Logger = LogManager.GetLogger("XML");
         public bool IsAuthenticationRequired { get; set; }
-        public DLMSSettingsViewModel DlmsSettingsViewModel { get; set; }
+        public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
 
 
         /// <summary>
@@ -168,23 +165,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             return is21ENegotiateSucceed;
         }
 
-//
-//        public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor)
-//        {
-//            getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
-//            XmlCommon(getRequest);
-//            var dataResult = await HandlerSendData(getRequest.ToPduBytes());
-//            return HandleGetResponse(dataResult);
-//        }
-        public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,GetRequestType getRequestType=GetRequestType.Normal)
+
+        public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
+            GetRequestType getRequestType = GetRequestType.Normal)
         {
             switch (getRequestType)
             {
-                case GetRequestType.Normal: getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor); break;
+                case GetRequestType.Normal:
+                    getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
+                    break;
                 case GetRequestType.Next: break;
                 case GetRequestType.WithList: break;
             }
-          
+
             XmlCommon(getRequest);
             var dataResult = await HandlerSendData(getRequest.ToPduBytes());
             return HandleGetResponse(dataResult);
@@ -218,8 +211,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
                 {
                     xmlSerializer.Serialize(xmlWriter, t, ns);
-                    var loggg = ServiceLocator.Current.GetInstance<XMLLogViewModel>();
-                    loggg.XmlLog = stringWriter + Environment.NewLine + "-----萌萌哒分割线-----\r\n";
+                    var log = ServiceLocator.Current.GetInstance<XMLLogViewModel>();
+                    log.XmlLog = stringWriter + Environment.NewLine + "-----萌萌哒分割线-----\r\n";
                 }
             }
         }
@@ -228,18 +221,15 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             GetResponse getResponse = new GetResponse();
             var data = dataResult.ByteToString("");
-//            Logger.Trace(dataResult.ByteToString);
-            if (getResponse.PduStringInHexConstructor(ref data))
-            {
-                XmlCommon(getResponse);
-                if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
-                {
-                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
-                }
-            }
-            else
+            if (!getResponse.PduStringInHexConstructor(ref data))
             {
                 return null;
+            }
+
+            XmlCommon(getResponse);
+            if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
+            {
+                getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
             }
 
             return getResponse;
@@ -250,16 +240,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             SetResponse setResponse = new SetResponse();
             string d = dataResult.ByteToString("");
-//            Logger.Trace(dataResult.ByteToString);
-            if (setResponse.PduStringInHexConstructor(ref d))
-            {
-                XmlCommon(setResponse);
-                return setResponse;
-            }
-            else
+
+            if (!setResponse.PduStringInHexConstructor(ref d))
             {
                 return null;
             }
+
+            XmlCommon(setResponse);
+            return setResponse;
         }
 
         public async Task<SetResponse> SetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
@@ -324,38 +312,18 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
 
-        public RelayCommand InitRequestCommand
-        {
-            get => _initRequestCommand;
-            set
-            {
-                _initRequestCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        public RelayCommand InitRequestCommand { get; set; }
 
-        private RelayCommand _initRequestCommand;
-
-        public RelayCommand ReleaseRequestCommand
-        {
-            get => _releaseRequestCommand;
-            set
-            {
-                _releaseRequestCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _releaseRequestCommand;
+        public RelayCommand ReleaseRequestCommand { get; set; }
 
         private GetRequest getRequest { get; set; }
 
         public SetRequest setRequest { get; set; }
         public ActionRequest actionRequest { get; set; }
 
-        public DLMSClient()
+        public DlmsClient()
         {
-            DlmsSettingsViewModel = ServiceLocator.Current.GetInstance<DLMSSettingsViewModel>();
+            DlmsSettingsViewModel = ServiceLocator.Current.GetInstance<DlmsSettingsViewModel>();
             Socket = ServiceLocator.Current.GetInstance<TcpServerViewModel>().TcpServerHelper;
 
             PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;

@@ -12,8 +12,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class LoadIdentificationViewModel : ObservableObject
     {
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
         public CustomCosemLoadIdentificationModel CustomCosemLoadIdentificationModel { get; set; }
+
         public string LoadOriginalDataHex
         {
             get => _loadOriginalDataHex;
@@ -166,65 +167,39 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public LoadIdentificationViewModel()
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
             CustomCosemLoadIdentificationModel = new CustomCosemLoadIdentificationModel();
             GetEarliestCommand = new RelayCommand(async () =>
             {
-                var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetEarliestLoadIdentification());
-                ParseData(LoadDataBytes);
+                var loadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel
+                        .GetEarliestLoadIdentification());
+                ParseData(loadDataBytes);
             });
             GetLatestCommand = new RelayCommand(async () =>
             {
-                var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetLatestLoadIdentification());
-                ParseData(LoadDataBytes);
+                var loadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel
+                        .GetLatestLoadIdentification());
+                ParseData(loadDataBytes);
             });
             GetGivenTimeCommand = new RelayCommand<string>(async (t) =>
             {
                 DateTime.TryParse(t, out var setDateTime);
                 CosemClock dt = new CosemClock(setDateTime);
-                var LoadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel.GetLoadIdentificationWithTime(dt));
-                ParseData(LoadDataBytes);
+                var loadDataBytes =
+                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel
+                        .GetLoadIdentificationWithTime(dt));
+                ParseData(loadDataBytes);
             });
         }
 
 
-        public RelayCommand GetEarliestCommand
-        {
-            get => _getEarliestCommand;
-            set
-            {
-                _getEarliestCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand GetEarliestCommand { get; set; }
 
-        private RelayCommand _getEarliestCommand;
 
-        public RelayCommand GetLatestCommand
-        {
-            get => _getLatestCommand;
-            set
-            {
-                _getLatestCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand GetLatestCommand { get; set; }
 
-        private RelayCommand _getLatestCommand;
-
-        public RelayCommand<string> GetGivenTimeCommand
-        {
-            get => _getGivenTimeCommand;
-            set
-            {
-                _getGivenTimeCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<string> _getGivenTimeCommand;
+        public RelayCommand<string> GetGivenTimeCommand { get; set; }
     }
 }

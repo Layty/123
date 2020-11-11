@@ -65,7 +65,6 @@ namespace 三相智慧能源网关调试软件
 
         public void SaveDataTableToExcelFile(string excelSheetName, DataTable dataTable)
         {
-            DataTable result;
             using (OleDbConnection connection = new OleDbConnection(ExcelConnectionStr))
             {
                 connection.Open();

@@ -1,33 +1,29 @@
 ﻿using System;
 using System.Data.OleDb;
-using System.Windows;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.UserLoginServiceReference;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class UserLoginViewModel : ViewModelBase
+    public class UserLoginViewModel : ObservableObject
     {
         public UserLoginViewModel()
         {
-            if (IsInDesignModeStatic)
-            {
-                LoginModel = new UserLoginModel {UserName = "Test", Password = "123456", KeepPassword = true};
-            }
-            else
             {
                 LoginModel = new UserLoginModel();
 
                 ReadUserInfoFromResource();
 
-                //                LoginCommand = new RelayCommand(Login);
+//                LoginCommand = new RelayCommand(Login);
 
                 LoginCommand = new RelayCommand(LoginFormWcfServer);
+
                 ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
 
                 SaveUserInfoToResourceCommand = new RelayCommand(SaveUserInfoToResource);
@@ -62,55 +58,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        public RelayCommand SaveUserInfoToResourceCommand
-        {
-            get => _saveUserInfoToResourceCommand;
-            set
-            {
-                _saveUserInfoToResourceCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _saveUserInfoToResourceCommand;
+        public RelayCommand SaveUserInfoToResourceCommand { get; set; }
 
 
-        private UserLoginModel _loginModel;
-
-        public UserLoginModel LoginModel
-        {
-            get => _loginModel;
-            set
-            {
-                _loginModel = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _loginCommand;
-
-        public RelayCommand LoginCommand
-        {
-            get => _loginCommand ?? (_loginCommand = new RelayCommand(Login));
-            set
-            {
-                _loginCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+        public UserLoginModel LoginModel { get; set; }
 
 
-        private RelayCommand _exitApplicationCommand;
+        public RelayCommand LoginCommand { get; set; }
 
-        public RelayCommand ExitApplicationCommand
-        {
-            get => _exitApplicationCommand;
-            set
-            {
-                _exitApplicationCommand = value;
-                RaisePropertyChanged();
-            }
-        }
+
+        public RelayCommand ExitApplicationCommand { get; set; }
 
         /// <summary>
         /// 关闭系统

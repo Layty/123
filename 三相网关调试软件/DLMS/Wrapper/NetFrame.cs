@@ -6,11 +6,11 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 {
     public class NetFrame : IToPduStringInHex, IPduStringInHexConstructor
     {
-        public AxdrUnsigned16 Version { get; set; }
+        public AxdrIntegerUnsigned16 Version { get; set; }
 
-        public AxdrUnsigned16 SourceAddress { get; set; }
-        public AxdrUnsigned16 DestAddress { get; set; }
-        AxdrUnsigned16 Length { get; set; }
+        public AxdrIntegerUnsigned16 SourceAddress { get; set; }
+        public AxdrIntegerUnsigned16 DestAddress { get; set; }
+        AxdrIntegerUnsigned16 Length { get; set; }
         public byte[] DLMSApduDataBytes { get; set; }
 
 
@@ -40,25 +40,25 @@ namespace 三相智慧能源网关调试软件.DLMS.Wrapper
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            Version = new AxdrUnsigned16();
+            Version = new AxdrIntegerUnsigned16();
             if (!Version.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            SourceAddress = new AxdrUnsigned16();
+            SourceAddress = new AxdrIntegerUnsigned16();
             if (!SourceAddress.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            DestAddress = new AxdrUnsigned16();
+            DestAddress = new AxdrIntegerUnsigned16();
             if (!DestAddress.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            Length = new AxdrUnsigned16();
+            Length = new AxdrIntegerUnsigned16();
             if (!Length.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

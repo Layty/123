@@ -263,14 +263,14 @@
 
                             Foreground="{Binding MenuModel.Foreground}"
                             FontSize="20" RenderTransformOrigin="0.5,0.5">
-                            <TextBlock.RenderTransform>
-                                <TranslateTransform></TranslateTransform>
-                            </TextBlock.RenderTransform>
-                            <TextBlock.Effect>
-                                <DropShadowEffect Direction="0" Color="{DynamicResource MaterialDesignShadow}" BlurRadius="1" Opacity="0.5"
-                                                   RenderingBias="Performance" ShadowDepth="20"
-                                                  ></DropShadowEffect>
-                            </TextBlock.Effect>
+                            <!-- <TextBlock.RenderTransform> -->
+                            <!--     <TranslateTransform></TranslateTransform> -->
+                            <!-- </TextBlock.RenderTransform> -->
+                            <!-- <TextBlock.Effect> -->
+                            <!--     <DropShadowEffect Direction="0" Color="{DynamicResource MaterialDesignShadow}" BlurRadius="1" Opacity="0.5" -->
+                            <!--                        RenderingBias="Performance" ShadowDepth="20" -->
+                            <!--                       ></DropShadowEffect> -->
+                            <!-- </TextBlock.Effect> -->
                             
                         </TextBlock>
                             <!-- 窗口操作区-->

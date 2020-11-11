@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
 using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -70,7 +69,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 set
                 {
                     _Ia = value;
-               
+
                     OnPropertyChanged();
                 }
             }
@@ -551,7 +550,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             private float? _NominalI;
         }
 
-        public DLMSClient Client { get; set; }
+        public DlmsClient Client { get; set; }
 
         private ObservableCollection<CustomCosemUtilityTablesModel> _utilityTablesCollection;
 
@@ -577,24 +576,22 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private ObservableCollection<DiYaGuiDataModel> _DiYaGuiDataModels;
-  
+
+        public RelayCommand<CustomCosemUtilityTablesModel> GetLogicNameDataCommand { get; set; }
+
+        public RelayCommand<CustomCosemUtilityTablesModel> GetMeterAddressData { get; set; }
+
+
+        public RelayCommand<CustomCosemUtilityTablesModel> GetDataLengthData { get; set; }
+
+
+        public RelayCommand<CustomCosemUtilityTablesModel> GetBuffData { get; set; }
 
         public UtilityTablesViewModel()
         {
-//            if (IsInDesignMode)
-//            {
-//                UtilityTablesCollection = new ObservableCollection<CustomCosemUtilityTablesModel>
-//                {
-//                    new CustomCosemUtilityTablesModel {LogicalName = "1.1.98.0.128.255"},
-//                    new CustomCosemUtilityTablesModel {LogicalName = "1.2.98.0.128.255"},
-//                    new CustomCosemUtilityTablesModel {LogicalName = "1.3.98.0.128.255"},
-//                    new CustomCosemUtilityTablesModel {LogicalName = "1.4.98.0.128.255"}
-//                };
-//            }
-//            else
             {
                 DiYaGuiDataModels = new ObservableCollection<DiYaGuiDataModel>();
-                Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DLMSClient>();
+                Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
 
                 ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
                 var dataTable = excel.GetExcelDataTable("UtilityTables$");
@@ -610,99 +607,61 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     async t =>
                     {
                         t.DataForShow = "";
-                        var dataResult = await Client.GetRequest(t.GetLogicNameAttributeDescriptor());
-                        GetResponse getResponse = new GetResponse();
-                        var data = dataResult.ByteToString("");
-
-                        if (getResponse.PduStringInHexConstructor(ref data))
+                        var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
+                        if (getResponse != null)
                         {
                             if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
                             {
                                 t.DataForShow = NormalDataParse.HowToDisplayOctetString(
                                     getResponse.GetResponseNormal.Result.Data.Value.ToString().StringToByte(),
                                     OctetStringDisplayFormat.Obis);
+                                t.LogicalName = t.DataForShow;
                             }
                         }
                     });
                 GetMeterAddressData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var dataResult = await Client.GetRequest(t.GetTableIdAttributeDescriptor());
-                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
+                        var response = await Client.GetRequestAndWaitResponse(t.GetTableIdAttributeDescriptor());
+                        if (response != null)
+                        {
+                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                            t.TableId.Value = t.DataForShow;
+                        }
                     }
                 );
                 GetDataLengthData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var dataResult = await Client.GetRequest(t.GetLengthAttributeDescriptor());
-                        t.DataForShow = NormalDataParse.ParsePduData(dataResult);
+                        var response = await Client.GetRequestAndWaitResponse(t.GetLengthAttributeDescriptor());
+                        if (response != null)
+                        {
+                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                            t.Length.Value = t.DataForShow;
+                        }
                     }
                 );
                 GetBuffData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                   
-                        var dataResult = await Client.GetRequest(t.GetBufferAttributeDescriptor());
-                        t.DataForShow =
-                            NormalDataParse.ParsePduData(dataResult);
-                        var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));
-                        var daa = d as DiYaGuiDataModel;
+                        var response = await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor());
+                        if (response != null)
                         {
-                            if (daa != null)
+                            response.GetResponseNormal.Result.Data.OctetStringDisplayFormat =
+                                OctetStringDisplayFormat.Ascii;
+                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                            t.Buffer.Value = t.DataForShow;
+                            var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));
+                            var daa = d as DiYaGuiDataModel;
                             {
-                                DiYaGuiDataModels.Add(daa);
+                                if (daa != null)
+                                {
+                                    DiYaGuiDataModels.Add(daa);
+                                }
                             }
                         }
                     }
                 );
-            }
-        }
-
-        private RelayCommand<CustomCosemUtilityTablesModel> _getLogicNameDataCommand;
-
-        public RelayCommand<CustomCosemUtilityTablesModel> GetLogicNameDataCommand
-        {
-            get => _getLogicNameDataCommand;
-            set
-            {
-                _getLogicNameDataCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemUtilityTablesModel> _etMeterAddressData;
-
-        public RelayCommand<CustomCosemUtilityTablesModel> GetMeterAddressData
-        {
-            get => _etMeterAddressData;
-            set
-            {
-                _etMeterAddressData = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemUtilityTablesModel> _getDataLengthData;
-
-        public RelayCommand<CustomCosemUtilityTablesModel> GetDataLengthData
-        {
-            get => _getDataLengthData;
-            set
-            {
-                _getDataLengthData = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand<CustomCosemUtilityTablesModel> _getBuffData;
-
-        public RelayCommand<CustomCosemUtilityTablesModel> GetBuffData
-        {
-            get => _getBuffData;
-            set
-            {
-                _getBuffData = value;
-                OnPropertyChanged();
             }
         }
     }

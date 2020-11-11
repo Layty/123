@@ -5,7 +5,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action
 {
     public class ActionResponseWithOptionalData:IToPduStringInHex,IPduStringInHexConstructor
     {
-        public AxdrUnsigned8 Result { get; set; }
+        public AxdrIntegerUnsigned8 Result { get; set; }
         public GetDataResult ReturnParameters { get; set; }
         public string ToPduStringInHex()
         {
@@ -29,7 +29,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action
             {
                 return false;
             }
-            Result = new AxdrUnsigned8();
+            Result = new AxdrIntegerUnsigned8();
             if (!Result.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

@@ -14,7 +14,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
             new ObservableCollection<CaptureObjectDefinition>(); //3
 
-        public AxdrUnsigned32 CapturePeriod
+        public AxdrIntegerUnsigned32 CapturePeriod
         {
             get => _capturePeriod;
             set
@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private AxdrUnsigned32 _capturePeriod = new AxdrUnsigned32();
+        private AxdrIntegerUnsigned32 _capturePeriod = new AxdrIntegerUnsigned32();
 
         //5
 
@@ -64,7 +64,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         /// 加载的条目数 //7
         /// </summary>
 
-        public AxdrUnsigned32 EntriesInUse
+        public AxdrIntegerUnsigned32 EntriesInUse
         {
             get => _entriesInUse;
             set
@@ -74,13 +74,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private AxdrUnsigned32 _entriesInUse = new AxdrUnsigned32();
+        private AxdrIntegerUnsigned32 _entriesInUse = new AxdrIntegerUnsigned32();
 
 
         /// <summary>
         /// 保持最大条目数   //Attribute=8
         /// </summary>
-        public uint ProfileEntries
+        public AxdrIntegerUnsigned32 ProfileEntries
         {
             get => _profileEntries;
             set
@@ -90,7 +90,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
             }
         }
 
-        private uint _profileEntries;
+        private AxdrIntegerUnsigned32 _profileEntries = new AxdrIntegerUnsigned32();
 
         public CosemProfileGeneric(string logicalName)
         {
@@ -108,13 +108,13 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
         {
             return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
-                new SelectiveAccessDescriptor(new AxdrUnsigned8("01"), ProfileGenericEntryDescriptor.ToDlmsDataItem()));
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"), ProfileGenericEntryDescriptor.ToDlmsDataItem()));
         }
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()
         {
             return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
-                new SelectiveAccessDescriptor(new AxdrUnsigned8("01"), ProfileGenericRangeDescriptor.ToDlmsDataItem()));
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"), ProfileGenericRangeDescriptor.ToDlmsDataItem()));
         }
 
         public CosemAttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);

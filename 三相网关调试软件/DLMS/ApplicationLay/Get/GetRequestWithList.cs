@@ -11,7 +11,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
     public class GetRequestWithList : IToPduBytes
     {
         [XmlIgnore] protected GetRequestType GetRequestType { get; set; } = GetRequestType.WithList;
-        public AxdrUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
 
         public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
 
@@ -22,7 +22,7 @@ namespace 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get
         public GetRequestWithList(CosemAttributeDescriptorWithSelection[] attributeDescriptorList)
         {
             AttributeDescriptorList = attributeDescriptorList;
-            InvokeIdAndPriority = new AxdrUnsigned8("C1");
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8("C1");
         }
 
         public byte[] ToPduBytes()

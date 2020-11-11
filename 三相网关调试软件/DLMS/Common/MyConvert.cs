@@ -240,9 +240,9 @@ namespace 三相智慧能源网关调试软件.DLMS.Common
             return stringBuilder.ToString();
         }
 
-        public static AxdrUnsigned16 GetClassIdByObjectType(ObjectType objectType)
+        public static AxdrIntegerUnsigned16 GetClassIdByObjectType(ObjectType objectType)
         {
-            return new AxdrUnsigned16(((ushort) objectType).ToString("X4"));
+            return new AxdrIntegerUnsigned16(((ushort) objectType).ToString("X4"));
         }
     }
 }

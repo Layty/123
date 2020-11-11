@@ -11,8 +11,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
-                SimpleIoc.Default.Register<DLMSSettingsViewModel>();
-                SimpleIoc.Default.Register<DLMSClient>();
+                SimpleIoc.Default.Register<DlmsSettingsViewModel>();
+                SimpleIoc.Default.Register<DlmsClient>();
               
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
@@ -79,8 +79,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #endregion
 
         #region 管理芯相关业务
-        public DLMSClient DlmsClient => ServiceLocator.Current.GetInstance<DLMSClient>();
-        public DLMSSettingsViewModel DlmsSettingsViewModel => ServiceLocator.Current.GetInstance<DLMSSettingsViewModel>();
+        public DlmsClient DlmsClient => ServiceLocator.Current.GetInstance<DlmsClient>();
+        public DlmsSettingsViewModel DlmsSettingsViewModel => ServiceLocator.Current.GetInstance<DlmsSettingsViewModel>();
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
         public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();

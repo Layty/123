@@ -72,7 +72,7 @@
                                                 <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                          materialDesign:HintAssist.IsFloating="True"
                                                          materialDesign:HintAssist.Hint="ProfileEntries"
-                                                         Text="{Binding ProfileEntries,UpdateSourceTrigger=PropertyChanged}" />
+                                                         Text="{Binding ProfileEntries.Value,UpdateSourceTrigger=PropertyChanged}" />
                                                 <Button Content="Get"
                                                         Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetProfileEntriesCommand ,Mode=TwoWay}"
                                                         CommandParameter="{Binding }" />

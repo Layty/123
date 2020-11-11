@@ -10,7 +10,7 @@ using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class DLMSSettingsViewModel : ObservableObject
+    public class DlmsSettingsViewModel : ObservableObject
     {
        
         public bool UseLogicalNameReferencing { get; set; }
@@ -163,7 +163,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             set { _systemTitle = value; OnPropertyChanged(); }
         }
         private string _systemTitle;
-        public DLMSSettingsViewModel()
+        public DlmsSettingsViewModel()
         {
             UseLogicalNameReferencing = true;
             DlmsVersion = 6;

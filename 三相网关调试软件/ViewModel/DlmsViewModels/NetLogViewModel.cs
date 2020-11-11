@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -36,29 +35,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         private MyNetLogModel _myClientNetLogModel;
 
 
-        public RelayCommand ClearServerBufferCommand
-        {
-            get => _clearServerBufferCommand;
-            set
-            {
-                _clearServerBufferCommand = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand ClearServerBufferCommand { get; set; }
 
-        private RelayCommand _clearServerBufferCommand;
-
-        public RelayCommand ClearClientBufferCommand
-        {
-            get => _clearClientBufferCommand;
-            set
-            {
-                _clearClientBufferCommand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private RelayCommand _clearClientBufferCommand;
+        public RelayCommand ClearClientBufferCommand { get; set; }
 
         public NetLogViewModel()
         {
@@ -81,7 +60,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     MyClientNetLogModel.Log = DateTime.Now + "ClientErrorEvent" + errorMessage + Environment.NewLine;
                 });
 
-     
 
             Messenger.Default.Register<string>(this, "ServerStatus",
                 status => { MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine; });
