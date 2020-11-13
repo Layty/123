@@ -10,24 +10,33 @@ namespace DlmsWebApi.Controllers
     [Route("api/[controller]/[action]"), ApiController]
     public class DlmsDataController : ControllerBase
     {
-        private readonly DlmsDataContext _context;
+        private readonly CosemContext _context;
 
-        public DlmsDataController(DlmsDataContext context)
+        public DlmsDataController(CosemContext context)
         {
             this._context = context;
         }
 
         [HttpGet]
-        public IEnumerable<DlmsData> GetDlmsDataList()
+        public IEnumerable<DlmsData> GetAll()
         {
-            return _context.DlmsDataItems.ToList();
+            return _context.CosemItems.ToList();
         }
 
+
+//        [HttpGet]
+//        public async Task<DlmsData> GetDlmsDataById(int id)
+//        {
+//            return await _context.DlmsDataItems.FirstOrDefaultAsync(t => Equals(t.Id, id));
+//        }
+
+
         [HttpGet]
-        public async Task<DlmsData> GetDlmsDataById(int id)
+        public async Task<DlmsData> Get(string obis)
         {
-            return await _context.DlmsDataItems.FirstOrDefaultAsync(t => Equals(t.Id, id));
+            return await _context.CosemItems.FirstOrDefaultAsync(t => Equals(t.LogicName, obis));
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] DlmsData dlmsData)
@@ -53,14 +62,14 @@ namespace DlmsWebApi.Controllers
             }
             else
             {
-                var newDlmsData = await _context.DlmsDataItems.SingleOrDefaultAsync(t => Equals(t.Id, dlmsData.Id));
+                var newDlmsData = await _context.CosemItems.SingleOrDefaultAsync(t => Equals(t.Id, dlmsData.Id));
                 if (newDlmsData == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    _context.DlmsDataItems.Update(newDlmsData);
+                    _context.CosemItems.Update(newDlmsData);
                     await _context.SaveChangesAsync();
                     return Ok(newDlmsData);
                 }
@@ -68,16 +77,16 @@ namespace DlmsWebApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string obis)
         {
-            var newDlmsData = await _context.DlmsDataItems.SingleOrDefaultAsync(t => Equals(t.Id, id));
+            var newDlmsData = await _context.CosemItems.SingleOrDefaultAsync(t => Equals(t.LogicName, obis));
             if (newDlmsData == null)
             {
                 return NotFound();
             }
             else
             {
-                _context.DlmsDataItems.Remove(newDlmsData);
+                _context.CosemItems.Remove(newDlmsData);
                 await _context.SaveChangesAsync();
                 return Ok();
             }

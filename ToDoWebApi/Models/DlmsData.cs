@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace DlmsWebApi.Models
 {
-    public interface IIDlmsDataRepository
+    public interface IDlmsDataRepository
     {
         IEnumerable<DlmsData> GetAll();
-        DlmsData Get(int id);
-        DlmsData Add(DlmsData item);
-        void Remove(int id);
+        Task<DlmsData> Get(string obis);
+        Task<DlmsData> Add(DlmsData item);
+        void Remove(string obis);
         bool Update(DlmsData item);
     }
 
@@ -17,8 +18,7 @@ namespace DlmsWebApi.Models
         [Key] public int Id { get; set; }
 
         public string DataName { get; set; }
-        public string ClassId { get; set; }
+        public int ClassId { get; set; }
         public string LogicName { get; set; }
-        public byte Attr { get; set; }
     }
 }

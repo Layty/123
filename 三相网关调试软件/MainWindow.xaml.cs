@@ -226,5 +226,10 @@ namespace 三相智慧能源网关调试软件
             var notify = new Win10NotifyMessage {NotifyText = "Goodbye"};
             notify.Show();
         }
+
+        private void ButtonCosemEditor_OnClick(object sender, RoutedEventArgs e)
+        {
+            new CosemObjectsManagement() { Owner = this }.Show();
+        }
     }
 }

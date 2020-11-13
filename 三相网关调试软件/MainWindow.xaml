@@ -289,7 +289,8 @@
                                     <myControl:HeartBeatButton x:Name="HeartBeatButton" Content="HelLog"
                                                            HorizontalContentAlignment="Center"
                                                            Height="30" Click="HeartBeatButton_OnClick" />
-                                    <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
+                                    
+                                <ToggleButton x:Name="ToggleButtonLog" Margin="2 0"
                                               IsChecked="False"
                                               Style="{StaticResource MaterialDesignActionToggleButton}"
                                               ToolTip="报文显示" Click="ToggleButtonLog_OnClick">
@@ -310,6 +311,7 @@
                                                     <TextBlock>主题</TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                        <Button x:Name="ButtonCosemEditor" Content="CosemEditor" Click="ButtonCosemEditor_OnClick"></Button>
                                             <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
                                         </ListBox>
                                     </materialDesign:PopupBox>

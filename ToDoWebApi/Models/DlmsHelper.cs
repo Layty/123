@@ -5,28 +5,19 @@ namespace DlmsWebApi.Models
 {
     public class DlmsHelper
     {
-        public readonly DlmsDataContext DlmsDataContext;
+        public readonly CosemContext CosemContext;
 
-        public DlmsHelper(DlmsDataContext dlmsDataContext)
+        public DlmsHelper(CosemContext cosemContext)
         {
-            this.DlmsDataContext = dlmsDataContext;
+            this.CosemContext = cosemContext;
         }
 
         public async Task InitDataBaseAsync()
         {
-            DlmsDataContext.Database.EnsureCreated();
+            CosemContext.Database.EnsureCreated();
 //            await InitDefaultDataAsync();
         }
 
-        async Task InitDefaultDataAsync()
-        {
-            if (!this.DlmsDataContext.DlmsDataItems.Any())
-            {
-                DlmsDataContext.DlmsDataItems.Add(new DlmsData()
-                    {Id = 1, Attr = 1, ClassId = "0001", DataName = "ShuJu", LogicName = "123"});
-            }
-
-            await DlmsDataContext.SaveChangesAsync();
-        }
+       
     }
 }

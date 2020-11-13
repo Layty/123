@@ -1,5 +1,6 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -62,6 +63,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #endregion
 
              
+                SimpleIoc.Default.Register<CosemObjectViewModel>();
             }
 
         }
@@ -124,13 +126,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #endregion
 
         #region IIC
+
         /// <summary>
         /// IIC数据视图模型
         /// </summary>
 //        public IicDataViewModel IicDataViewModel =>
 //            ServiceLocator.Current.GetInstance<IicDataViewModel>();
 
-
+        public CosemObjectViewModel CosemObjectViewModel => ServiceLocator.Current.GetInstance<CosemObjectViewModel>();
         #endregion
         public static void Cleanup()
         {

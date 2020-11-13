@@ -12,7 +12,7 @@ namespace DlmsWebApi
 //            {
 //                try
 //                {
-//                    var dbContext = scope.ServiceProvider.GetService<DlmsDataContext>();
+//                    var dbContext = scope.ServiceProvider.GetService<CosemContext>();
 //                    dbContext.Database.EnsureDeleted();
 //                    dbContext.Database.Migrate();
 //                }

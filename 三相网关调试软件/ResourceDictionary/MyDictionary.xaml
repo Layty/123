@@ -569,14 +569,17 @@
     <!-- DataGridTextColumn 文字居中 -->
     <Style x:Key="CenterAlignmentStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="Wrap" />
+      
         <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Width" Value="Auto"></Setter>
     </Style>
     <!-- DataGridTextColumn 文字居左 -->
     <Style x:Key="LeftAlignmentStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Width" Value="Auto"></Setter>
     </Style>
     <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>

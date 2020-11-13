@@ -22,17 +22,15 @@ namespace DlmsWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-           services.AddScoped<DlmsDataContext>();
-            services.AddDbContext<DlmsDataContext>(option =>
+            services.AddScoped<CosemContext>();
+            services.AddDbContext<CosemContext>(option =>
             {
                 var str = Configuration.GetConnectionString("DlmsConnectionString");
-                option.UseSqlServer(str, sql => sql.MigrationsAssembly("ToDoWebApi"));
+                option.UseSqlServer(str, sql => sql.MigrationsAssembly("DlmsWebApi"));
             });
-            ; services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",new OpenApiInfo(){Description = "Hello API"});
-            });
-            services.AddTransient<DlmsDataContext>();
+            ;
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo() {Description = "Hello API"}); });
+            services.AddTransient<CosemContext>();
             services.AddTransient<DlmsHelper>();
         }
 
@@ -46,11 +44,8 @@ namespace DlmsWebApi
             }
 
             app.UseSwagger();
-         
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,7 +55,7 @@ namespace DlmsWebApi
 
             app.UseRouting();
 
-          app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
