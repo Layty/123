@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
-using GalaSoft.MvvmLight;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
 
@@ -17,7 +17,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _isStartWriteLogToFile = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -34,7 +34,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _isSendDataDisplayFormat16 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         private bool _isReceiveFormat16 = true;
@@ -48,7 +48,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _isReceiveFormat16 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
         public void HandlerSendData(Socket socket, byte[] sendBytes)
@@ -83,7 +83,7 @@ namespace 三相智慧能源网关调试软件.Model
                 }
 
                 NetLogStringBuilder.Append(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -93,7 +93,7 @@ namespace 三相智慧能源网关调试软件.Model
             set
             {
                 _keepMaxSendAndReceiveDataLength = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 

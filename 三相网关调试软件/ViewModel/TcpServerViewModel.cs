@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Threading;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.DataNotification;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
-using 三相智慧能源网关调试软件.DLMS.Wrapper;
 using 三相智慧能源网关调试软件.Properties;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.ApplicationLay.DataNotification;
+using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Wrapper;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -273,7 +272,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     if (dataNotification.NotificationBody.DataValue.DataType == DataType.Structure)
                     {
                         var dlmsStructure = (DlmsStructure) dataNotification.NotificationBody.DataValue.Value;
-                        var stringStructure = dlmsStructure.ToPduStringInHex().Substring(2);
+                        var stringStructure = dlmsStructure.ToPduStringInHex();
 
                         if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
                         {

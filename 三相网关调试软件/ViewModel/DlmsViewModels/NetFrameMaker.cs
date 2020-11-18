@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
-using 三相智慧能源网关调试软件.DLMS.Wrapper;
+using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Wrapper;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {

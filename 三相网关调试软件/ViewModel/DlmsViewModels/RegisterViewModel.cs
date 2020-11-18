@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -56,6 +55,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             GetValueCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
             {
+                t.CompleteData = "";
                 t.Value = new DlmsDataItem();
                 var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
                 if (getResponse != null)
@@ -63,23 +63,30 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.LastResult =
                         (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                     t.Value = getResponse.GetResponseNormal.Result.Data;
+                    t.CompleteData = t.ParserData();
                 }
             });
             GetScalarUnitCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
             {
+                t.CompleteData = "";
                 t.ScalarUnit = new ScalarUnit();
                 var scalarUnitResponse =
                     await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
                 if (scalarUnitResponse != null)
                 {
-                    var structure = (DlmsStructure) scalarUnitResponse.GetResponseNormal.Result.Data.Value;
-                    t.ScalarUnit.Scalar = (sbyte) Convert.ToSByte(structure.Items[0].Value.ToString(), 16);
-                    t.ScalarUnit.Unit = (Unit) byte.Parse(structure.Items[1].ValueString);
+                    t.LastResult =
+                        (ErrorCode) scalarUnitResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                    var su = scalarUnitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
+                    if (t.ScalarUnit.PduStringInHexConstructor(ref su))
+                    {
+                        t.CompleteData = t.ParserData();
+                    }
                 }
             });
             GetValueAndScalarUnitCommand = new RelayCommand<CustomCosemRegisterModel>(
                 async t =>
                 {
+                    t.CompleteData = "";
                     t.Value = new DlmsDataItem();
                     t.ScalarUnit = new ScalarUnit();
                     var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
@@ -98,9 +105,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
                         if (scalarUnitResponse != null)
                         {
-                            var strun = (DlmsStructure) scalarUnitResponse.GetResponseNormal.Result.Data.Value;
-                            t.ScalarUnit.Scalar = (sbyte) Convert.ToSByte(strun.Items[0].Value.ToString(), 16);
-                            t.ScalarUnit.Unit = (Unit) byte.Parse(strun.Items[1].ValueString);
+                            t.LastResult =
+                                (ErrorCode) scalarUnitResponse.GetResponseNormal.Result.DataAccessResult
+                                    .GetEntityValue();
+                            if (t.LastResult != ErrorCode.Ok)
+                            {
+                                return;
+                            }
+
+                            var su = scalarUnitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
+                            if (t.ScalarUnit.PduStringInHexConstructor(ref su))
+                            {
+                                t.CompleteData = t.ParserData();
+                            }
                         }
                     }
                 });

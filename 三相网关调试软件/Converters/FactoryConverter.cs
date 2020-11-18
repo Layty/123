@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using Color = System.Drawing.Color;
 
 
 namespace 三相智慧能源网关调试软件.Converters

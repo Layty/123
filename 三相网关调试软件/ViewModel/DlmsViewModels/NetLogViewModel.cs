@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -48,27 +48,27 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             ClearServerBufferCommand = new RelayCommand(() => { MyServerNetLogModel.ClearBuffer(); });
             ClearClientBufferCommand = new RelayCommand(() => { MyClientNetLogModel.ClearBuffer(); });
 
-            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent",
-                (s) => { MyClientNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
-            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent",
-                (s) => { MyClientNetLogModel.HandlerSendData(s.Item1, s.Item2); });
-            Messenger.Default.Register<string>(this, "ClientStatus",
-                status => { MyClientNetLogModel.Log = DateTime.Now + "ClientStatus" + status + Environment.NewLine; });
-            Messenger.Default.Register<string>(this, "ClientErrorEvent",
-                errorMessage =>
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>,string>(this, "ClientReceiveDataEvent",
+                (sender,args) => { MyClientNetLogModel.HandlerReceiveData(args.Item1, args.Item2); });
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
+                (sender, args) => { MyClientNetLogModel.HandlerSendData(args.Item1, args.Item2); });
+            StrongReferenceMessenger.Default.Register<string,string>(this, "ClientStatus",
+                (sender,status) => { MyClientNetLogModel.Log = DateTime.Now + "ClientStatus" + status + Environment.NewLine; });
+            StrongReferenceMessenger.Default.Register<string, string>(this, "ClientErrorEvent",
+                (sender,errorMessage) =>
                 {
                     MyClientNetLogModel.Log = DateTime.Now + "ClientErrorEvent" + errorMessage + Environment.NewLine;
                 });
 
 
-            Messenger.Default.Register<string>(this, "ServerStatus",
-                status => { MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine; });
-            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent",
-                (s) => { MyServerNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
-            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent",
-                (s) => { MyServerNetLogModel.HandlerSendData(s.Item1, s.Item2); });
-            Messenger.Default.Register<string>(this, "ServerErrorEvent",
-                (errorString) =>
+            StrongReferenceMessenger.Default.Register<string,string>(this, "ServerStatus",
+                (sender,status) => { MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine; });
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>,string>(this, "ServerReceiveDataEvent",
+                (sender, s) => { MyServerNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
+                (sender, s) => { MyServerNetLogModel.HandlerSendData(s.Item1, s.Item2); });
+            StrongReferenceMessenger.Default.Register<string,string>(this, "ServerErrorEvent",
+                (sender,errorString) =>
                 {
                     MyServerNetLogModel.Log = DateTime.Now + "ServerErrorEvent" + errorString +
                                               Environment.NewLine;

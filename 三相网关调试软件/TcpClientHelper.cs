@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -112,13 +112,15 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnReceiveByte(Socket serverSocket, byte[] bytes)
         {
             ReceiveByte?.Invoke(serverSocket, bytes);
-            Messenger.Default.Send((serverSocket, bytes), "ClientReceiveDataEvent");
+//            Messenger.Default.Send((serverSocket, bytes), "ClientReceiveDataEvent");
+            StrongReferenceMessenger.Default.Send((serverSocket, bytes).ToTuple(), "ClientReceiveDataEvent");
         }
 
         protected virtual void OnSendDataToServerByte(Socket serverSocket, byte[] bytes)
         {
             SendDataToServerByte?.Invoke(serverSocket, bytes);
-            Messenger.Default.Send((serverSocket, bytes), "ClientSendDataEvent");
+            //            Messenger.Default.Send((serverSocket, bytes), "ClientSendDataEvent");
+            StrongReferenceMessenger.Default.Send((serverSocket, bytes).ToTuple(), "ClientSendDataEvent");
         }
 
         public TcpClientHelper(string serverIpAddress, int serverPortNum)
@@ -161,27 +163,30 @@ namespace 三相智慧能源网关调试软件
                     try
                     {
                         ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        Messenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
+                        StrongReferenceMessenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
                             "ClientStatus");
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
 
                         ConnectResult = true;
-                        Messenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "ClientStatus");
-                        
+                        StrongReferenceMessenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "ClientStatus");
+
                         Task.Run(ReceiveData);
                     }
                     catch (Exception e)
                     {
                         ConnectResult = false;
-                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
-                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
+//                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
+//                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
+                        StrongReferenceMessenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
+                        StrongReferenceMessenger.Default.Send("异常" + e.Message + "from  ConnectToServer()",
+                            "ClientNetErrorEvent");
                     }
                 });
             }
             catch (Exception e)
             {
                 ConnectResult = false;
-                Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
+                StrongReferenceMessenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
                 throw;
             }
         }
@@ -197,7 +202,7 @@ namespace 三相智慧能源网关调试软件
                     if (flag2)
                     {
                         string str2 = $"{DateTime.Now}  {ClientSocket.RemoteEndPoint} 服务端主动断开了当前链接..." + "\r\n";
-                        Messenger.Default.Send(str2, "ClientStatus");
+                        StrongReferenceMessenger.Default.Send(str2, "ClientStatus");
                         Disconnect();
                         break;
                     }
@@ -208,10 +213,9 @@ namespace 三相智慧能源网关调试软件
             }
             catch (Exception e)
             {
-                Messenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
+                //   Messenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
+                StrongReferenceMessenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
             }
-
-
         }
 
         public void SendDataToServer(string inputSendData)
@@ -232,11 +236,13 @@ namespace 三相智慧能源网关调试软件
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData);
                 ClientSocket.Send(sendBytes);
                 MySendMessage += (inputSendData + Environment.NewLine);
-                Messenger.Default.Send(sendBytes, "ClientSendDataEvent");
+                // Messenger.Default.Send(sendBytes, "ClientSendDataEvent");
+                StrongReferenceMessenger.Default.Send(sendBytes, "ClientSendDataEvent");
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
+                // Messenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
+                StrongReferenceMessenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
             }
         }
 
@@ -255,7 +261,7 @@ namespace 三相智慧能源网关调试软件
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
+                StrongReferenceMessenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
             }
         }
 
@@ -274,7 +280,8 @@ namespace 三相智慧能源网关调试软件
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
+                //Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
+                StrongReferenceMessenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
             }
         }
 
@@ -303,7 +310,7 @@ namespace 三相智慧能源网关调试软件
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(ex.Message, "ClientErrorEvent");
+                StrongReferenceMessenger.Default.Send(ex.Message, "ClientErrorEvent");
             }
         }
 
@@ -313,10 +320,11 @@ namespace 三相智慧能源网关调试软件
             {
                 return;
             }
+
             ClientSocket.Disconnect(false);
             ConnectResult = false;
-            Messenger.Default.Send("关闭连接成功", "ClientStatus");
-           
+//            Messenger.Default.Send("关闭连接成功", "ClientStatus");
+            StrongReferenceMessenger.Default.Send("关闭连接成功", "ClientStatus");
         }
 
         public void CloseAll()
@@ -328,7 +336,8 @@ namespace 三相智慧能源网关调试软件
 
             ClientSocket?.Close();
             ConnectResult = false;
-            Messenger.Default.Send("关闭连接成功", "ClientStatus");
+//            Messenger.Default.Send("关闭连接成功", "ClientStatus");
+            StrongReferenceMessenger.Default.Send("关闭连接成功", "ClientStatus");
         }
 
         public void Dispose()

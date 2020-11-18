@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CommonServiceLocator;
-using 三相智慧能源网关调试软件.DLMS;
+using MyDlmsStandard;
 using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 

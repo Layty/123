@@ -1,4 +1,4 @@
-﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
+﻿using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 
 namespace 三相智慧能源网关调试软件.Model
 {

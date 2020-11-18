@@ -1,16 +1,12 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Commom;
 using 三相智慧能源网关调试软件.Model.IIC;
-using System.Collections.Generic;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -20,7 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         主要用途：
         更改记录：
     */
-    public class IicDataViewModel : ViewModelBase
+    public class IicDataViewModel : ObservableObject
     {
         public ObservableCollection<IicInstantData> InstantDataCollection
         {
@@ -28,7 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _instantDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -40,7 +36,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentEnergyDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -52,7 +48,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _last1EnergyDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -64,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _last2EnergyDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -79,7 +75,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _currentDemandDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -94,7 +90,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _last1DemandDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -109,7 +105,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _last2DemandDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -122,7 +118,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _uaHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -134,7 +130,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ubHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -146,7 +142,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ucHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -158,7 +154,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _iaHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -170,7 +166,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ibHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -182,7 +178,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _icHarmonicDataCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -206,17 +202,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         IicHarmonicData _iicHarmonicDataIc = new IicHarmonicData();
 
 
-        public RelayCommand ClearCommand
-        {
-            get => _clearCommand;
-            set
-            {
-                _clearCommand = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private RelayCommand _clearCommand;
+        public RelayCommand ClearCommand { get; set; }
 
         public IicDataViewModel()
         {
@@ -235,7 +221,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             IcHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
 
 
-            Messenger.Default.Register<byte[]>(this, "ReceiveDataEvent", HandlerData);
+            StrongReferenceMessenger.Default.Register<byte[],string>(this, "ReceiveDataEvent", HandlerData);
             ClearCommand = new RelayCommand(() =>
             {
                 InstantDataCollection.Clear();
@@ -254,7 +240,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
         }
 
-        private void HandlerData(byte[] obj)
+        private void HandlerData(object sender,byte[] obj)
         {
             var stringData = Encoding.Default.GetString(obj);
             var bb = stringData.Split('\n');

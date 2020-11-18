@@ -4,10 +4,10 @@ using System.Text;
 using System.Windows.Forms;
 using CommonServiceLocator;
 using FileTransmit;
-
 using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class UpGradeBaseMeterViewModel : ObservableObject
@@ -37,6 +37,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         SerialPortViewModel.SerialPortMaster.IsAutoDataReceived = true;
                     }
+
                     SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
                 }
                 else
@@ -49,7 +50,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source, MySerialPortMaster.SerialPortEventArgs e)
+        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source,
+            MySerialPortMaster.SerialPortEventArgs e)
         {
             FileTransmitProtocol.ReceivedFromUart(e.DataBytes);
         }
@@ -223,24 +225,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
         }
 
 
- 
-
-        public RelayCommand StartCommand
-        { get; set; }
+        public RelayCommand StartCommand { get; set; }
 
 
-
-
-        public RelayCommand StopCommand
-        { get; set; }
+        public RelayCommand StopCommand { get; set; }
 
 
         public RelayCommand UserComCommand { get; set; }
 
-   
 
         public RelayCommand ReleaseComCommand { get; set; }
-
 
 
         private void YModem_ReSendPacket(object sender, EventArgs e)
@@ -335,7 +329,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
 
             _serialPortViewModel.SerialPortMaster.Send(e.Data); //使用Send可捕捉发送日志
-
         }
 
 
@@ -367,8 +360,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 throw;
             }
         }
-
-
 
 
         public RelayCommand SelectFileCommand { get; set; }

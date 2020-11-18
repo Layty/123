@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MyDlmsStandard.ApplicationLay.Association;
 using 三相智慧能源网关调试软件;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
-using 三相智慧能源网关调试软件.DLMS.Wrapper;
+
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 using 三相智慧能源网关调试软件.Model.IIC;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
 
 namespace 三相智慧能源网关调试软件.Converters
 {

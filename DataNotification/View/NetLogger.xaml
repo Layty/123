@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="DataNotification.View.NetLogger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+            >
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource Locator}" Path="NetLogViewModel" />
+    </UserControl.DataContext>
+    <materialDesign:Card UniformCornerRadius="5">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding MyServerNetLogModel.KeepMaxSendAndReceiveDataLength}"
+                     materialDesign:HintAssist.Hint="最大缓存字符数" />
+                <CheckBox Name="CheckBoxScrollToEnd" Content="自动滚动"
+                      IsChecked="True" />
+                <CheckBox  IsChecked="{Binding MyServerNetLogModel.IsSendDataDisplayFormat16,Mode=TwoWay}">十六进制显示发送数据</CheckBox>
+                <CheckBox  IsChecked="{Binding MyServerNetLogModel.IsReceiveFormat16,Mode=TwoWay}" >十六进制显示接收数据</CheckBox>
+                <CheckBox Name="CheckBoxWriteLog" Content="自动捕获日志并写入文件" IsChecked="{Binding MyServerNetLogModel.IsStartWriteLogToFile}"></CheckBox>
+                <Button Name="ButtonClearData" VerticalAlignment="Center" 
+                    Command="{Binding ClearServerBufferCommand}"
+                    Margin="5"
+                    materialDesign:RippleAssist.Feedback="#DD000000">
+                    清空缓存(_C)
+                </Button>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <TextBox  x:Name="TextBoxNetLog"
+                         materialDesign:HintAssist.Hint="数据收发历史缓存区"
+                         TextChanged="TextBoxNetLog_OnTextChanged"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         VerticalScrollBarVisibility="Auto" Width="{Binding RelativeSource={RelativeSource  AncestorType={x:Type UserControl}, Mode=FindAncestor } ,Path=Width}"
+                         Style="{StaticResource MaterialDesignTextBox}"
+                         Text="{Binding MyServerNetLogModel.Log,Mode=OneWay}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         SpellCheck.IsEnabled="True"
+                         Margin="3"
+                         BorderThickness="2">
+
+                </TextBox>
+                <x:Code>
+                    <![CDATA[
+              private void TextBoxNetLog_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (CheckBoxScrollToEnd.IsChecked == true)
+            {
+                TextBoxNetLog.ScrollToEnd();
+            }
+        }]]>
+                </x:Code>
+            </Grid>
+         
+        </Grid>
+     
+    </materialDesign:Card>
+  
+</UserControl>

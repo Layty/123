@@ -3,13 +3,13 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using ENet;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class ENetClientHelper : ViewModelBase
+    public class ENetClientHelper : ObservableObject
     {
         private Host _host;
         private Peer _peer;
@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _serverPortNum = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -33,7 +33,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _serverIpAddress = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -45,7 +45,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _ipEndPoint = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _statusString = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -69,7 +69,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _timeOut = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -81,7 +81,7 @@ namespace 三相智慧能源网关调试软件
             set
             {
                 _connectResult = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -91,7 +91,7 @@ namespace 三相智慧能源网关调试软件
             ServerIpAddress = Settings.Default.GatewayIpAddress;
             ServerPortNum = Settings.Default.GatewayPort;
             IpEndPoint = new IPEndPoint(IPAddress.Parse(ServerIpAddress), ServerPortNum);
-           // Task.Run(Server);//开启本地服务端
+            // Task.Run(Server);//开启本地服务端
         }
 
         private void SaveGateWayInfo()
@@ -119,20 +119,20 @@ namespace 三相智慧能源网关调试软件
                 if (@event.Type == EventType.Connect)
                 {
                     ConnectResult = true;
-                    Messenger.Default.Send($"成功连接至{_peer.GetRemoteAddress()}", "Status");
+                    StrongReferenceMessenger.Default.Send($"成功连接至{_peer.GetRemoteAddress()}", "Status");
                     SaveGateWayInfo(); //保存信息
                     Task.Run(ReceiveData);
                 }
                 else
                 {
                     ConnectResult = false;
-                    Messenger.Default.Send("连接不成功", "Status");
+                    StrongReferenceMessenger.Default.Send("连接不成功", "Status");
                 }
             }
             catch (Exception e)
             {
                 ConnectResult = false;
-                Messenger.Default.Send("异常" + e.Message, "ENetErrorEvent");
+                StrongReferenceMessenger.Default.Send("异常" + e.Message, "ENetErrorEvent");
                 throw;
             }
         }
@@ -154,11 +154,11 @@ namespace 三相智慧能源网关调试软件
                 byte[] sendBytes = Encoding.Default.GetBytes(inputSendData);
                 _host.CheckEvents(out var @event);
                 _peer.Send(@event.ChannelID, sendBytes, PacketFlags.Reliable);
-                Messenger.Default.Send(sendBytes, "SendDataEvent");
+                StrongReferenceMessenger.Default.Send(sendBytes, "SendDataEvent");
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(ex.Message, "ENetErrorEvent");
+                StrongReferenceMessenger.Default.Send(ex.Message, "ENetErrorEvent");
             }
         }
 
@@ -173,13 +173,13 @@ namespace 三相智慧能源网关调试软件
                     if (@event.Type == EventType.Receive)
                     {
                         byte[] data = @event.Packet.GetBytes();
-                        Messenger.Default.Send(data, "ReceiveDataEvent");
-                        Messenger.Default.Send(data, "ENetReceiveDataEvent");
+                        StrongReferenceMessenger.Default.Send(data, "ReceiveDataEvent");
+                        StrongReferenceMessenger.Default.Send(data, "ENetReceiveDataEvent");
                         @event.Packet.Dispose();
                     }
                     else if (@event.Type == EventType.Disconnect)
                     {
-                        Messenger.Default.Send("ServerMakeMeDisConnect", "Status");
+                        StrongReferenceMessenger.Default.Send("ServerMakeMeDisConnect", "Status");
                         @event.Packet.Dispose();
                         @event.Peer.DisconnectNow(1);
                         ConnectResult = false;
@@ -204,7 +204,7 @@ namespace 三相智慧能源网关调试软件
             }
 
             _peer.DisconnectNow(1);
-            Messenger.Default.Send($"我主动断开与服务端{_peer.GetRemoteAddress()}的连接", "Status");
+            StrongReferenceMessenger.Default.Send($"我主动断开与服务端{_peer.GetRemoteAddress()}的连接", "Status");
             ConnectResult = false;
         }
 
@@ -233,7 +233,8 @@ namespace 三相智慧能源网关调试软件
                                 {
                                     case EventType.Connect:
                                         peer = @event.Peer;
-                                        Messenger.Default.Send($"本地服务端收到{peer.GetRemoteAddress()}连接", "Status");
+                                        StrongReferenceMessenger.Default.Send($"本地服务端收到{peer.GetRemoteAddress()}连接",
+                                            "Status");
                                         break;
 
                                     case EventType.Receive:
@@ -241,17 +242,18 @@ namespace 三相智慧能源网关调试软件
                                         peer.Send(@event.ChannelID, data, PacketFlags.Reliable);
                                         string @string = Encoding.Default.GetString(data);
                                         byte[] bytes = Convert.FromBase64String(@string);
-                                       ;
-                                        Messenger.Default.Send(Encoding.Default.GetString(bytes), "Status");
-                                       
+
+                                        StrongReferenceMessenger.Default.Send(Encoding.Default.GetString(bytes),
+                                            "Status");
+
                                         @event.Packet.Dispose();
                                         break;
                                     case EventType.Disconnect:
-                                        Messenger.Default.Send($"客户端{peer.GetRemoteAddress()}主动断开", "Status");
+                                        StrongReferenceMessenger.Default.Send($"客户端{peer.GetRemoteAddress()}主动断开",
+                                            "Status");
                                         break;
                                 }
-                            } 
-                            while (host.CheckEvents(out @event));
+                            } while (host.CheckEvents(out @event));
                         }
                     }
                     catch (Exception e)

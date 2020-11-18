@@ -1,6 +1,7 @@
-﻿using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.Axdr;
+
 
 namespace 三相智慧能源网关调试软件.Model
 {

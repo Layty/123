@@ -25,8 +25,12 @@ namespace 三相智慧能源网关调试软件.View
 
         private void UserLoginPage_OnKeyDown(object sender, KeyEventArgs e)
         {
-            var userLoginViewModel = ServiceLocator.Current.GetInstance<UserLoginViewModel>();
-            userLoginViewModel.LoginCommand.Execute(null);
+            if (e.Key==Key.Enter)
+            {
+                var userLoginViewModel = ServiceLocator.Current.GetInstance<UserLoginViewModel>();
+                userLoginViewModel.LoginCommand.Execute(null);
+            }
+        
             
         }
     }

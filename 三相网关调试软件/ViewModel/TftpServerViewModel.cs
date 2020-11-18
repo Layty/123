@@ -4,10 +4,9 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Tftp.Net;
 using 三相智慧能源网关调试软件.Properties;
 
@@ -172,7 +171,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void TftpServer_OnError(TftpTransferError error)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += (error.ToString()); });
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            { StatusLog += (error.ToString()); });
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void OutputTransferStatus(ITftpTransfer transfer, string acceptingWriteRequestFrom)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 StatusLog += $"[{transfer.Filename}] {acceptingWriteRequestFrom}]";
             });
@@ -257,7 +257,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void Transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)
         {
-            Task.Run(() => { Messenger.Default.Send(progress, "ServerProgressStatus"); });
+            Task.Run(() => { StrongReferenceMessenger.Default.Send(progress, "ServerProgressStatus"); });
         }
 
 

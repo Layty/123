@@ -1,10 +1,9 @@
-﻿using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
-using 三相智慧能源网关调试软件.DLMS.Ber;
-using 三相智慧能源网关调试软件.DLMS.Common;
+﻿using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Ber;
+using MyDlmsStandard.Common;
 
 namespace 三相智慧能源网关调试软件.Model
 {

@@ -65,5 +65,8 @@
     <Setting Name="TftpClientDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\TFTPClientFiles</Value>
     </Setting>
+    <Setting Name="WebApiUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost:5000/api</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -65,9 +65,7 @@
                                         </Grid>
 
                                     </Grid>
-
                                 </Grid>
-
 
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -83,17 +81,39 @@
                                         Binding="{Binding LastResult,UpdateSourceTrigger=PropertyChanged}"
                                         Header="LastResult" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding CompleteData,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        Header="CompleteData" />
+
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
                                         Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                         Header="Value.DataType" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding Value.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Value.Value" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
                                         Binding="{Binding Value.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                        Header="ValueString" />
+                                        Header="Value.ValueString" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                        Binding="{Binding  ScalarUnit.Scalar,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
-                                        Header="Scalar" />
+                                        Binding="{Binding  ScalarUnit.Scalar.DataType,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Scalar.DataType" />
                     <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                        Binding="{Binding ScalarUnit.Unit,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged ,Converter={converters:UnitConverter}}"
-                                        Header="Unit" />
+                                        Binding="{Binding  ScalarUnit.Scalar.ValueString,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Scalar.ValueString" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding  ScalarUnit.Scalar.Value,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Scalar.Value" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding ScalarUnit.UnitDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
+                                        Header="UnitDisplay" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding ScalarUnit.Unit.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
+                                        Header="Unit.DataType" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding ScalarUnit.Unit.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
+                                        Header="Unit.Value" />
+                    <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
+                                        Binding="{Binding ScalarUnit.Unit.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
+                                        Header="Unit.ValueString" />
                 </DataGrid.Columns>
 
             </DataGrid>

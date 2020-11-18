@@ -9,11 +9,11 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CommonServiceLocator;
-using GalaSoft.MvvmLight.Messaging;
 using 三相智慧能源网关调试软件.View;
-using GalaSoft.MvvmLight.Threading;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
+
 
 namespace 三相智慧能源网关调试软件
 {
@@ -74,12 +74,65 @@ namespace 三相智慧能源网关调试软件
             //避免最大化时覆盖任务栏
             MaxWidth = SystemParameters.WorkArea.Width;
             MaxHeight = SystemParameters.WorkArea.Height;
-            Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
-            Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent", PlayNetSendFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
-            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
+//            Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
+//            Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
+//            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent", PlayNetSendFlashing);
+//            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
+//            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
+//            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
+            StrongReferenceMessenger.Default.Register<string, string>(this, "PlaySendFlashing",
+                (sender, arg) =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+                });
+            StrongReferenceMessenger.Default.Register<string, string>(this, "PlayReceiveFlashing",
+                (sender, arg) =>
+                {
+                   DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+                });
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
+                ((recipient, message) =>
+                {
+
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                        BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+
+                }));
+
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
+                ((recipient, message) =>
+                {
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                        BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+                }));
+
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
+                ((recipient, message) =>
+                {
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                        BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+                }));
+
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientReceiveDataEvent",
+                ((recipient, message) =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+                    });
+                }));
         }
 
 
@@ -229,7 +282,7 @@ namespace 三相智慧能源网关调试软件
 
         private void ButtonCosemEditor_OnClick(object sender, RoutedEventArgs e)
         {
-            new CosemObjectsManagement() { Owner = this }.Show();
+            new CosemObjectsManagement() {Owner = this}.Show();
         }
     }
 }

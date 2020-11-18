@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
-using 三相智慧能源网关调试软件.DLMS.Wrapper;
+using MyDlmsStandard.Wrapper;
+
 
 namespace 三相智慧能源网关调试软件
 {
@@ -86,7 +87,7 @@ namespace 三相智慧能源网关调试软件
         /// <summary>
         /// 需要12位转8位时，存储 12位表地址的高四位地址
         /// </summary>
-        private readonly IDictionary<Socket, byte[]> MeterHeight4ByteDictionary = new Dictionary<Socket, byte[]>();
+        private readonly IDictionary<Socket, byte[]> _meterHeight4ByteDictionary = new Dictionary<Socket, byte[]>();
 
         public TcpTranslator()
         {
@@ -147,7 +148,7 @@ namespace 三相智慧能源网关调试软件
                             var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
                             if (len == 0x0F) //12位转8位
                             {
-                                MeterHeight4ByteDictionary[meterSocket] =
+                                _meterHeight4ByteDictionary[meterSocket] =
                                     frame.MeterAddressBytes.Take(4).ToArray(); //保留高位4地址后续用于补全
                                 frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
                                 arg2 = frame.ToPduBytes();
@@ -177,7 +178,7 @@ namespace 三相智慧能源网关调试软件
                             {
                                 // 8位转12位
                                 var list = new List<byte>();
-                                list.AddRange(MeterHeight4ByteDictionary[socket.Key]); //添加原保留的高位地址
+                                list.AddRange(_meterHeight4ByteDictionary[socket.Key]); //添加原保留的高位地址
                                 list.AddRange(frame.MeterAddressBytes);
                                 frame.MeterAddressBytes = list.ToArray();
                                 arg2 = frame.ToPduBytes();

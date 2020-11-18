@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
+using MyDlmsStandard;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.HDLC.Enums;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {

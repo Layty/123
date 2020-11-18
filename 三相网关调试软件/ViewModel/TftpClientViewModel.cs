@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -243,7 +242,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void TransferUpLoad_OnFinished(ITftpTransfer transfer)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(delegate { StatusLog += "TransferUpLoad succeeded."; });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { StatusLog += "TransferUpLoad succeeded."; });
             transfer.OnProgress -= Transfer_OnProgress;
             transfer.OnFinished -= TransferUpLoad_OnFinished;
             transfer.OnError -= Transfer_OnError;
@@ -252,7 +251,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void Transfer_OnProgress(ITftpTransfer transfer, TftpTransferProgress progress)
         {
-           StrongReferenceMessenger.Default.Send(progress, "ClientProgressStatus");
+            StrongReferenceMessenger.Default.Send(progress, "ClientProgressStatus");
         }
     }
 }

@@ -10,20 +10,21 @@ using System.Xml.Serialization;
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MyDlmsStandard;
 using MySerialPortMaster;
 using NLog;
 using 三相智慧能源网关调试软件.Commom;
-using 三相智慧能源网关调试软件.DLMS;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Association;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Release;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Set;
-using 三相智慧能源网关调试软件.DLMS.Ber;
-using 三相智慧能源网关调试软件.DLMS.HDLC;
-using 三相智慧能源网关调试软件.DLMS.HDLC.Enums;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.Action;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.Association;
+using MyDlmsStandard.ApplicationLay.Get;
+using MyDlmsStandard.ApplicationLay.Release;
+using MyDlmsStandard.ApplicationLay.Set;
+using MyDlmsStandard.Ber;
+using MyDlmsStandard.HDLC;
+using MyDlmsStandard.HDLC.Enums;
+
 using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -115,7 +116,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 bytes = await PhysicalLayerSendData(HdlcFrameMaker.SNRMRequest());
                 if (HdlcFrameMaker.ParseUaResponse(bytes))
                 {
-                    AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel);
+                    AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
+                        DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
+                        DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
                     bytes = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(aarq.ToPduBytes()));
                     bytes = HowToTakeReplyApduData(bytes);
                     if (bytes != null)
@@ -130,7 +133,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
             else if (DlmsSettingsViewModel.InterfaceType == InterfaceType.WRAPPER)
             {
-                AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel);
+                AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
+                    DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
+                    DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
                 XmlCommon(aarq);
                 bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduBytes()));
                 if (bytes != null)
@@ -285,7 +290,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             byte[] result = null;
             var re = new ReleaseRequest();
             re.Reason = new BerInteger() {Value = "00"};
-            re.UserInformation = new UserInformation() {InitiateRequest = new InitiateRequest(DlmsSettingsViewModel)};
+            re.UserInformation = new UserInformation()
+            {
+                InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,
+                    DlmsSettingsViewModel.DlmsVersion, DlmsSettingsViewModel.ProposedConformance)
+            };
             var releaseBytes = Common.StringToByte(re.ToPduStringInHex());
             if (force && (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC))
             {
@@ -328,7 +337,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
 
-            HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel);
+            HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel.ServerAddress,(byte)DlmsSettingsViewModel.ClientAddress,DlmsSettingsViewModel.DlmsInfo);
             NetFrameMaker = new NetFrameMaker(DlmsSettingsViewModel);
             EModeViewModel = new EModeViewModel(PortMaster);
 

@@ -14,9 +14,9 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
       xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
-      Loaded="UserLoginPage_OnLoaded" KeyDown="UserLoginPage_OnKeyDown" >
+      Loaded="UserLoginPage_OnLoaded" KeyDown="UserLoginPage_OnKeyDown">
     <Page.Resources>
-       
+
         <Storyboard x:Key="OpenStoryboard" TargetName="RootBorder" TargetProperty="Width">
             <DoubleAnimation From="0" To="{Binding ElementName=ThisPage,Path=Width}" Duration="00:00:1"
                              DesiredFrameRate="100">
@@ -82,8 +82,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <materialDesign:PackIcon Grid.Row="0" Kind="UserCircle" x:Name="PackIcon" Width="80" 
-                                             Height="80" 
+                    <materialDesign:PackIcon Grid.Row="0" Kind="UserCircle" x:Name="PackIcon" Width="80"
+                                             Height="80"
                                              HorizontalAlignment="Center" VerticalAlignment="Center">
                         <!-- <materialDesign:PackIcon.Triggers> -->
                         <!--     <EventTrigger RoutedEvent="materialDesign:PackIcon.MouseEnter"> -->
@@ -154,7 +154,8 @@
         </materialDesign:Card>
 
         <Button Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 -20"
-                Width="180" 
+                Width="180"
+                IsEnabled="{Binding IsCancel}"
                 Height="40" materialDesign:ShadowAssist.ShadowDepth="Depth5"
                 x:Name="ButtonLogin" Command="{Binding LoginCommand}">
             <StackPanel Orientation="Horizontal">

@@ -89,12 +89,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         Assembly = "ServerCenter.TftpMasterPage",
                         Foreground = "#0000FF"
                     },
-//                    new MenuModel()
-//                    {
-//                        MenuName = "IICDataAnalysis", FontSize = "20", IconFont = "\xe6ab",
-//                        Assembly = "ServerCenter.IicDataPage",
-//                        Foreground = "#6666FF"
-//                    },
+                    new MenuModel()
+                    {
+                        MenuName = "IICDataAnalysis", FontSize = "20", IconFont = "\xe6ab",
+                        Assembly = "ServerCenter.IicDataPage",
+                        Foreground = "#6666FF"
+                    },
                 };
 
                 ToolsMenuCollection=new ObservableCollection<MenuModel>()

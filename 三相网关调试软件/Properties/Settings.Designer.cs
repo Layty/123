@@ -274,5 +274,17 @@ namespace 三相智慧能源网关调试软件.Properties {
                 this["TftpClientDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:5000/api")]
+        public string WebApiUrl {
+            get {
+                return ((string)(this["WebApiUrl"]));
+            }
+            set {
+                this["WebApiUrl"] = value;
+            }
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using GalaSoft.MvvmLight.Threading;
 using Tftp.Net;
 
 namespace 三相智慧能源网关调试软件.View.ServerCenter
@@ -18,11 +17,6 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
 
         private void UpdateClientProgressStatus(TftpTransferProgress transferProgress)
         {
-//            Dispatcher.BeginInvoke(new Action(() =>
-//            {
-//                ClientProgressBar.Maximum = transferProgress.TotalBytes;
-//                ClientProgressBar.Value = transferProgress.TransferredBytes;
-//            }));
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 ClientProgressBar.Maximum = transferProgress.TotalBytes;
@@ -32,10 +26,6 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
 
         private void UpdateProgressStatus(TftpTransferProgress transferProgress)
         {
-//            Dispatcher.BeginInvoke(new Action(() => {
-//                WaveProgressBar.Maximum = transferProgress.TotalBytes;
-//                WaveProgressBar.Value = transferProgress.TransferredBytes;
-//            }));
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
             {
                 WaveProgressBar.Maximum = transferProgress.TotalBytes;

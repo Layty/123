@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition  />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBox Name="TextBoxObis" Text="obis" Width="150"
@@ -38,8 +38,9 @@
                      Text="{Binding CurrentCosemObjectEdit.Name,UpdateSourceTrigger=PropertyChanged}" />
             <Button Content="新增" Command="{Binding AddCommand}" Margin="5" />
         </StackPanel>
-        <DataGrid Grid.Row="2" materialDesign:DataGridAssist.CellPadding="4 2 2 2"
-                  ItemsSource="{Binding CosemObjects}" CanUserResizeColumns="True"
+        <DataGrid Grid.Row="2" 
+                  ItemsSource="{Binding CosemObjects}" CanUserResizeColumns="True"  
+
                   AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False">
             <DataGrid.ItemTemplate>
                 <ItemContainerTemplate>

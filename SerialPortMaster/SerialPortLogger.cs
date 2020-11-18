@@ -1,6 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
-using GalaSoft.MvvmLight;
 using NLog;
 
 namespace MySerialPortMaster
@@ -11,7 +12,7 @@ namespace MySerialPortMaster
         主要用途：记录串口通信日志
         更改记录：
     */
-    public class SerialPortLogger : ObservableObject
+    public class SerialPortLogger : INotifyPropertyChanged
     {
         /*--------------------------字段---------------------------------*/
         public StringBuilder SendAndReceiveDataStringBuilder { get; set; }
@@ -36,7 +37,7 @@ namespace MySerialPortMaster
             private set
             {
                 _sendFrameCount = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -51,7 +52,7 @@ namespace MySerialPortMaster
             private set
             {
                 _sendBytesCount = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -67,7 +68,7 @@ namespace MySerialPortMaster
             private set
             {
                 _receiveFrameCount = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -82,7 +83,7 @@ namespace MySerialPortMaster
             private set
             {
                 _receiveBytesCount = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -97,7 +98,7 @@ namespace MySerialPortMaster
             set
             {
                 _isReceiveFormat16 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -112,7 +113,7 @@ namespace MySerialPortMaster
             private set
             {
                 _dataReceiveShowBytes = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -125,7 +126,7 @@ namespace MySerialPortMaster
             private set
             {
                 _currentReceiveBytes = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -140,7 +141,7 @@ namespace MySerialPortMaster
             set
             {
                 _isSendDataDisplayFormat16 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -156,7 +157,7 @@ namespace MySerialPortMaster
             set
             {
                 _currentSendBytes = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -168,7 +169,7 @@ namespace MySerialPortMaster
             private set
             {
                 _currentSendData = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -184,7 +185,7 @@ namespace MySerialPortMaster
             set
             {
                 _keepMaxSendAndReceiveDataLength = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -203,7 +204,7 @@ namespace MySerialPortMaster
             set
             {
                 _isEnableWriteLogToFile = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -227,7 +228,7 @@ namespace MySerialPortMaster
                 }
 
                 SendAndReceiveDataStringBuilderCollections.Append(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -276,7 +277,8 @@ namespace MySerialPortMaster
             CurrentSendData = IsSendDataDisplayFormat16
                 ? sendBytes.ByteToString()
                 : Encoding.ASCII.GetString(sendBytes);
-            SendAndReceiveDataCollections = $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} => {CurrentSendData}{Environment.NewLine}";
+            SendAndReceiveDataCollections =
+                $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} => {CurrentSendData}{Environment.NewLine}";
         }
 
         public void HandlerReceiveData(byte[] receiveBytes)
@@ -287,7 +289,8 @@ namespace MySerialPortMaster
             //根据当前设置的显示格式，进行存储
             DataReceiveForShow =
                 IsReceiveFormat16 ? receiveBytes.ByteToString() : Encoding.ASCII.GetString(receiveBytes);
-            SendAndReceiveDataCollections = $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} <= {DataReceiveForShow}{Environment.NewLine}";
+            SendAndReceiveDataCollections =
+                $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} <= {DataReceiveForShow}{Environment.NewLine}";
         }
 
         /// <summary>
@@ -313,5 +316,11 @@ namespace MySerialPortMaster
         }
 
         /*------------------------私有方法-------------------------------*/
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

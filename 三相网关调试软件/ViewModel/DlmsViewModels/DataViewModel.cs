@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.Get;
+using MyDlmsStandard.Axdr;
 using 三相智慧能源网关调试软件.Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -83,6 +83,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
+                    if (t.LastResult!=ErrorCode.Ok)
+                    {
+                       return; 
+                    }
                     var tt = requestAndWaitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
                     t.Value.PduStringInHexConstructor(ref tt);
                 }

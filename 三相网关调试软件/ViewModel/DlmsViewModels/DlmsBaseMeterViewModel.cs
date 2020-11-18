@@ -2,12 +2,12 @@
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.Action;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.ApplicationLayEnums;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects;
-using 三相智慧能源网关调试软件.DLMS.ApplicationLay.CosemObjects.DataStorage;
-using 三相智慧能源网关调试软件.DLMS.Axdr;
+using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.Action;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.Axdr;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {

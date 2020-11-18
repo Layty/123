@@ -1,15 +1,18 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm;
+using Microsoft.Toolkit.Mvvm.Messaging;
+
 
 namespace MySerialPortMaster
 {
-    public class SerialPortMaster : ObservableObject
+    public class SerialPortMaster : INotifyPropertyChanged
     {
         #region 串口基本参数
 
@@ -35,12 +38,12 @@ namespace MySerialPortMaster
                     SerialPort.PortName = value;
                     SerialPort.Open();
                     IsOpen = true;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
                 else
                 {
                     SerialPort.PortName = value;
-                    RaisePropertyChanged();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -51,7 +54,7 @@ namespace MySerialPortMaster
             set
             {
                 SerialPort.BaudRate = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -61,7 +64,7 @@ namespace MySerialPortMaster
             set
             {
                 SerialPort.StopBits = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -71,7 +74,7 @@ namespace MySerialPortMaster
             set
             {
                 SerialPort.Parity = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -81,7 +84,7 @@ namespace MySerialPortMaster
             set
             {
                 SerialPort.DataBits = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -93,7 +96,7 @@ namespace MySerialPortMaster
             private set
             {
                 _isOpen = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -106,7 +109,7 @@ namespace MySerialPortMaster
             set
             {
                 _responseTimeOut = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -129,7 +132,7 @@ namespace MySerialPortMaster
                 }
 
                 _isAutoDataReceived = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -144,7 +147,7 @@ namespace MySerialPortMaster
             set
             {
                 _responseTime = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -155,7 +158,7 @@ namespace MySerialPortMaster
             set
             {
                 _interval = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -478,7 +481,7 @@ namespace MySerialPortMaster
 
         private void OnDataSend(byte[] sendBytes)
         {
-            Messenger.Default.Send("", "PlaySendFlashing");
+            StrongReferenceMessenger.Default.Send("", "PlaySendFlashing");
             SerialDataSend?.Invoke(this, new SerialPortEventArgs() {DataBytes = sendBytes});
             SerialPortLogger.HandlerSendData(sendBytes);
         }
@@ -491,7 +494,7 @@ namespace MySerialPortMaster
 
         private void OnDataReceived(byte[] receivedBytes, string responseTime)
         {
-            Messenger.Default.Send("", "PlayReceiveFlashing");
+            StrongReferenceMessenger.Default.Send("", "PlayReceiveFlashing");
             SerialDataReceived?.Invoke(this,
                 new SerialPortEventArgs
                     {DataBytes = receivedBytes, ResponseTime = responseTime});
@@ -514,5 +517,12 @@ namespace MySerialPortMaster
 
         public override string ToString() =>
             $"{IsOpen}  {SerialPort.PortName}  {SerialPort.BaudRate}  {SerialPort.Parity}  {SerialPort.DataBits}  {SerialPort.StopBits}";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

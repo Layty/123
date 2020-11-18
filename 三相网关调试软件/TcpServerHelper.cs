@@ -9,9 +9,8 @@ using System.Net.Sockets;
 using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
 using NLog;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -127,7 +126,11 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             ReceiveBytes?.Invoke(clientSocket, bytes);
-            Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
+//            Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
+            (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
+            var t = p.ToTuple();
+
+            StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
         }
 
         protected virtual void OnReceiveAllBytes(Socket clientSocket, byte[] bytes)
@@ -138,18 +141,24 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
-            Messenger.Default.Send((clientSocket, bytes), "ServerSendDataEvent");
+            (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
+            var t = p.ToTuple();
+
+            StrongReferenceMessenger.Default.Send(t, "ServerSendDataEvent");
+//            Messenger.Default.Send((clientSocket, bytes), "ServerSendDataEvent");
         }
 
         private void OnNotifyErrorMsg(string msg)
         {
             this.ErrorMsg?.Invoke(msg);
-            Messenger.Default.Send(msg, "ServerErrorEvent");
+            //            Messenger.Default.Send(msg, "ServerErrorEvent");
+            StrongReferenceMessenger.Default.Send(msg, "ServerErrorEvent");
         }
 
         protected virtual void OnNotifyStatusMsg(string msg)
         {
-            Messenger.Default.Send(msg, "ServerStatus");
+            StrongReferenceMessenger.Default.Send(msg, "ServerStatus");
+//            Messenger.Default.Send(msg, "ServerStatus");
             StatusMsg?.Invoke(msg);
         }
 
@@ -167,7 +176,6 @@ namespace 三相智慧能源网关调试软件
             ListenIpAddress = listenIpAddress;
             ListenPort = listenPort;
             ProtocolType = protocolType;
-
             SocketClientList = new ObservableCollection<Socket>();
         }
 
@@ -319,11 +327,8 @@ namespace 三相智慧能源网关调试软件
         }
 
 
-        CancellationTokenSource cancellationTokenSource;
-
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
-           
             return await Task.Run(() =>
             {
                 _returnBytes = null;
@@ -363,7 +368,7 @@ namespace 三相智慧能源网关调试软件
 
         private byte[] _returnBytes;
         private readonly List<byte> _listReturnBytes = new List<byte>();
-        private bool _isNeedContinue = false;
+        private bool _isNeedContinue;
         private int TotalLength { get; set; }
         private int NeedReceiveLength { get; set; }
 
@@ -387,7 +392,7 @@ namespace 三相智慧能源网关调试软件
                 }
                 else
                 {
-                    var uInt16Length = BitConverter.ToUInt16(bytes.Skip(6).Take(2).Reverse().ToArray(),0);
+                    var uInt16Length = BitConverter.ToUInt16(bytes.Skip(6).Take(2).Reverse().ToArray(), 0);
                     if (uInt16Length == (bytes.Length - 8))
                     {
                         _listReturnBytes.AddRange(bytes);

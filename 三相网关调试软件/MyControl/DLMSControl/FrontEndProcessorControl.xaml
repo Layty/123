@@ -60,8 +60,8 @@
                                     <CheckBox IsChecked="{Binding IsAutoResponseHeartBeat}" Content="自动识别并响应心跳帧" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button x:Name="ButtonListen" Command="{Binding StartListen}" Margin="3">开始监听</Button>
-                                    <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" Margin="3">停止</Button>
+                                    <Button x:Name="ButtonListen" Command="{Binding StartListen}" IsEnabled="{Binding TcpServerHelper.IsStarted,Converter={StaticResource InverseBooleanConverter}}" Margin="3">开始监听</Button>
+                                    <Button x:Name="ButtonStop" Command="{Binding DisConnectServerCommand}" IsEnabled="{Binding TcpServerHelper.IsStarted}" Margin="3">停止</Button>
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>

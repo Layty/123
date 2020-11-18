@@ -3,15 +3,15 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class ENetMessageBuilderViewModel : ViewModelBase
+    public class ENetMessageBuilderViewModel : ObservableObject
     {
         public ENetMessageBuilder ENetMessageMaker
         {
@@ -19,7 +19,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ENetMessageMaker = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -34,7 +34,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _requestCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged(); ;
             }
         }
 
@@ -47,7 +47,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ResultStr = value;
-                RaisePropertyChanged();
+                OnPropertyChanged(); ;
             }
         }
 
@@ -60,7 +60,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _SetCommand = value;
-                RaisePropertyChanged();
+                OnPropertyChanged(); ;
             }
         }
 
@@ -73,7 +73,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             set
             {
                 _ItemsCollection = value;
-                RaisePropertyChanged();
+                OnPropertyChanged(); ;
             }
         }
 
@@ -84,9 +84,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             ENetMessageMaker = new ENetMessageBuilder(ENetEventType.SortVersion);
             ItemsCollection = new ObservableCollection<object>();
-            Messenger.Default.Register<byte[]>(this, "ENetReceiveDataEvent", (t) =>
+            StrongReferenceMessenger.Default.Register<byte[],string>(this, "ENetReceiveDataEvent", (sender,args) =>
             {
-                var base64 = Convert.FromBase64String(Encoding.Default.GetString(t));
+                var base64 = Convert.FromBase64String(Encoding.Default.GetString(args));
                 ResultStr = ConvertJsonString(Encoding.Default.GetString(base64));
             });
             RequestCommand = new RelayCommand(() =>
