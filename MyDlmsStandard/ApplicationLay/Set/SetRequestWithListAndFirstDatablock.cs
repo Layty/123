@@ -1,16 +1,19 @@
 ﻿using System.Text;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetRequestWithListAndFirstDatablock 
+    public class SetRequestWithListAndFirstDatablock :ISetRequest
     {
+        public SetRequestType SetRequestType { get; } = SetRequestType.WithListAndWithFirstDataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public CosemAttributeDescriptorWithSelection[] AttributeDescriptorList { get; set; }
         public DataBlockSA DataBlock { get; set; }
         public string ToPduStringInHex()
         {
 			StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("05");
             stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             int num = AttributeDescriptorList.Length;
             if (num <= 127)

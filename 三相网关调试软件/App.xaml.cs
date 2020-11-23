@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Threading;
 using Lierda.WPFHelper;
 using NLog;
+using Autofac;
+using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -15,11 +17,20 @@ namespace 三相智慧能源网关调试软件
         public static Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly LierdaCracker _cracker = new LierdaCracker();
 
+        protected void Configure(ContainerBuilder builder)
+        {
+            builder.RegisterType<UserLoginViewModel>();
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             _cracker.Cracker();
             DispatcherHelper.Initialize();
+            Autofac.ContainerBuilder builder = new ContainerBuilder();
+            Configure(builder);
+            var container = builder.Build();
+     
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;

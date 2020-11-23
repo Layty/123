@@ -2,7 +2,7 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
-using 三相智慧能源网关调试软件.Commom;
+using MyDlmsStandard.Common;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -52,8 +52,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     var DisplayFormat = OctetStringDisplayFormat.DateTime;
                     Clock.Time =
-                        NormalDataParse.HowToDisplayOctetString(
-                            response.GetResponseNormal.Result.Data.Value.ToString().StringToByte(), DisplayFormat);
+                        MyConvert.HowToDisplayOctetString(
+                            Common.Common.StringToByte(response.GetResponseNormal.Result.Data.Value.ToString()), DisplayFormat);
                 }
             });
             GetTimeZoneCommand = new RelayCommand(async () =>

@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetRequestNext : IToPduBytes
+    public class GetRequestNext : IGetRequest,IToPduStringInHex
     {
-        [XmlIgnore] protected GetRequestType GetRequestType { get; set; } = GetRequestType.Next;
+        [XmlIgnore] public GetRequestType GetRequestType { get; } = GetRequestType.Next;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
@@ -17,13 +15,18 @@ namespace MyDlmsStandard.ApplicationLay.Get
             InvokeIdAndPriority.Value = "C1";
         }
 
-        public byte[] ToPduBytes()
+//        public byte[] ToPduBytes()
+//        {
+//            List<byte> pduBytes = new List<byte>();
+//            pduBytes.Add((byte) GetRequestType);
+//            pduBytes.AddRange(InvokeIdAndPriority.ToPduStringInHex().StringToByte());
+//            pduBytes.AddRange(BlockNumber.ToPduStringInHex().StringToByte());
+//            return pduBytes.ToArray();
+//        }
+
+        public string ToPduStringInHex()
         {
-            List<byte> pduBytes = new List<byte>();
-            pduBytes.Add((byte) GetRequestType);
-            pduBytes.AddRange(InvokeIdAndPriority.ToPduStringInHex().StringToByte());
-            pduBytes.AddRange(BlockNumber.ToPduStringInHex().StringToByte());
-            return pduBytes.ToArray();
+            return "02"+ InvokeIdAndPriority.ToPduStringInHex() + BlockNumber.ToPduStringInHex();
         }
     }
 }

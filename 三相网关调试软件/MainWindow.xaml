@@ -7,7 +7,7 @@
         xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
         xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
         xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
+
         DataContext="{Binding Source={StaticResource Locator }, Path=Main}"
         mc:Ignorable="d" WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
@@ -15,9 +15,12 @@
         Closing="MainWindow_OnClosing"
         ResizeMode="CanMinimize"
         WindowStyle="None" AllowsTransparency="True"
+        Background="{DynamicResource MaterialDesignPaper}"
         x:Name="ThisWindow" Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
         Title="三相智慧能源网关测试软件" Height="650" Width="1024" d:DesignWidth="120">
+   
     <Window.Resources>
+
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment"
@@ -61,13 +64,13 @@
                             </EventTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background"
-                                        Value="{DynamicResource PrimaryHueLightBrush}"
+                                        Value="{DynamicResource  PrimaryHueLightBrush}"
                                         TargetName="border" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background"
                                         TargetName="border"
-                                        Value="{DynamicResource PrimaryHueMidBrush}" />
+                                        Value="{DynamicResource PrimaryHueDarkBrush}" />
                                 <Setter Property="FontSize" Value="20" />
 
                                 <Setter Property="FontWeight"
@@ -201,10 +204,10 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <materialDesign:DialogHost IsOpen="False" >
-        <materialDesign:DialogHost.DialogContent>
-            <myControl:SkinView />
-        </materialDesign:DialogHost.DialogContent>
+    <materialDesign:DialogHost IsOpen="False" Identifier="Root">
+        <!-- <materialDesign:DialogHost.DialogContent> -->
+        <!--     <myControl:SkinView /> -->
+        <!-- </materialDesign:DialogHost.DialogContent> -->
       
             <Grid >
                 <Grid.RowDefinitions>
@@ -212,7 +215,12 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <!-- 标题栏-->
+                <materialDesign:Snackbar Height="50" 
+                    x:Name="SnackbarThree"
+                     Panel.ZIndex="1"
+                    VerticalAlignment="Top"
+                    MessageQueue="{materialDesign:MessageQueue}" />
+            <!-- 标题栏-->
                 <Grid Grid.Row="0">
                     <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"
                                           MouseDown="ColorZone_OnMouseDown"
@@ -305,7 +313,7 @@
                                     </ToggleButton>
                                     <materialDesign:PopupBox Margin="2 0" PopupMode="Click">
                                         <ListBox>
-                                            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                            <Button  DataContext="{Binding Source={StaticResource Locator},Path=DialogsViewModel}"  Command="{Binding OpenSkinViewDialogCommand}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="PaletteOutline" />
                                                     <TextBlock>主题</TextBlock>
@@ -366,7 +374,7 @@
                     </materialDesign:ColorZone>
                 </Grid>
                 <Border Grid.Row="1" BorderThickness="1,0,1,0" BorderBrush="{DynamicResource PrimaryHueDarkBrush}">
-                <Grid Grid.Row="1" ShowGridLines="False">
+                <Grid  ShowGridLines="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -375,7 +383,7 @@
 
 
                     <!-- 左侧菜单栏 -->
-                    <materialDesign:Card DockPanel.Dock="Left"
+                    <materialDesign:Card DockPanel.Dock="Left" Background="{DynamicResource MaterialDesignPaper}"
                                      DataContext="{Binding Source={StaticResource Locator},Path=Login}">
                     
                         <ScrollViewer VerticalScrollBarVisibility="Auto">

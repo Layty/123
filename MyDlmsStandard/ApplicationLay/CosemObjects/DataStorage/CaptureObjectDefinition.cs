@@ -11,6 +11,8 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public sbyte AttributeIndex { get; set; }
         public ushort DataIndex { get; set; }
 
+        public string Description { get;set; }
+
         public DlmsDataItem ToDlmsDataItem()
         {
             DlmsStructure dlmsStructure = new DlmsStructure();

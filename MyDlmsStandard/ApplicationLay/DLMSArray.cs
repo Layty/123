@@ -38,17 +38,25 @@ namespace MyDlmsStandard.ApplicationLay
     //        throw new System.NotImplementedException();
     //    }
     //}
-    public class DLMSArray :  IPduStringInHexConstructor
+
+    interface IDataType
     {
-        private DataType DataType { get; set; } = DataType.Array;
+        DataType DataType { get; }
+    }
+
+    public class DLMSArray : IDataType
+    {
+        public DataType DataType { get;} = DataType.Array;
         public DlmsDataItem[] Items { get; set; }
 
         public string ToPduStringInHex()
         {
-           string str = "01"; 
-            string str2 = (Items.Length <= 127)
+            string str = "01";
+            string str2 = Items.Length <= 127
                 ? Items.Length.ToString("X2")
-                : ((Items.Length > 255) ? ("82" + Items.Length.ToString("X4")) : ("81" + Items.Length.ToString("X2")));
+                : Items.Length > 255
+                    ? "82" + Items.Length.ToString("X4")
+                    : "81" + Items.Length.ToString("X2");
             StringBuilder stringBuilder = new StringBuilder();
             DlmsDataItem[] array = Items;
             foreach (DlmsDataItem dlmsDataItem in array)
@@ -56,12 +64,17 @@ namespace MyDlmsStandard.ApplicationLay
                 stringBuilder.Append(dlmsDataItem.ToPduStringInHex());
             }
 
-           return str + str2 + stringBuilder;
-  
+            return str + str2 + stringBuilder;
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
+            if (pduStringInHex.Substring(0, 2) != "01")
+            {
+                return false;
+            }
+
+            pduStringInHex = pduStringInHex.Substring(2);
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);
             Items = new DlmsDataItem[num];
             for (int i = 0; i < num; i++)

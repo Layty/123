@@ -4,15 +4,16 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetRequestWithDataBlock : IToPduBytes
+    public class SetRequestWithDataBlock : ISetRequest
     {
-        [XmlIgnore] protected SetRequestType SetRequestType { get; set; } = SetRequestType.WithDataBlock;
+        [XmlIgnore] public SetRequestType SetRequestType { get; } = SetRequestType.WithDataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public DataBlockSA DataBlockSA { get; set; }
 
-        public byte[] ToPduBytes()
+
+        public string ToPduStringInHex()
         {
-            throw new System.NotImplementedException();
+            return "03" + InvokeIdAndPriority.ToPduStringInHex() + DataBlockSA.ToPduStringInHex();
         }
     }
 }

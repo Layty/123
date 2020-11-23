@@ -13,7 +13,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
 
         public string ToPduStringInHex()
         {
-            return InvokeIdAndPriority.ToPduStringInHex() +Result.ToPduStringInHex();
+            return "01"+ InvokeIdAndPriority.ToPduStringInHex() +Result.ToPduStringInHex();
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)

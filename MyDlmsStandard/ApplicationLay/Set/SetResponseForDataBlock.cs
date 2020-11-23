@@ -1,15 +1,22 @@
-﻿using MyDlmsStandard.Axdr;
+﻿using System.Text;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseForDataBlock:IPduStringInHexConstructor
+    public class SetResponseForDataBlock:IPduStringInHexConstructor,ISetResponse
     {
+        public SetResponseType SetResponseType { get; } = SetResponseType.DataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
-        public char ToPduStringInHex()
+        public string ToPduStringInHex()
         {
-            throw new System.NotImplementedException();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("02");
+            stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
+            stringBuilder.Append(BlockNumber.ToPduStringInHex());
+            return stringBuilder.ToString();
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)

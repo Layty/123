@@ -9,14 +9,30 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CommonServiceLocator;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.View;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
 
 
 namespace 三相智慧能源网关调试软件
 {
+    public class DialogsViewModel : ObservableObject
+    {
+        public RelayCommand OpenSkinViewDialogCommand { get; set; }
+
+        public DialogsViewModel()
+        {
+            OpenSkinViewDialogCommand=new RelayCommand(() =>
+            {
+                DialogHost.Show(new SkinView(), "Root");
+            });
+        }
+    }
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -282,6 +298,7 @@ namespace 三相智慧能源网关调试软件
 
         private void ButtonCosemEditor_OnClick(object sender, RoutedEventArgs e)
         {
+            SnackbarThree.MessageQueue.Enqueue("Wow, easy!");
             new CosemObjectsManagement() {Owner = this}.Show();
         }
     }

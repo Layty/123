@@ -4,9 +4,9 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponse : IToPduStringInHex, IPduStringInHexConstructor
+    public class GetResponse : IToPduStringInHex, IPduStringInHexConstructor, IDlmsCommand
     {
-        [XmlIgnore] public Command Command { get; set; } = Command.GetResponse;
+        [XmlIgnore] public Command Command { get; } = Command.GetResponse;
         public GetResponseNormal GetResponseNormal { get; set; }
         public GetResponseWithDataBlock GetResponseWithDataBlock { get; set; }
         public GetResponseWithList GetResponseWithList { get; set; }
@@ -18,17 +18,14 @@ namespace MyDlmsStandard.ApplicationLay.Get
             stringBuilder.Append("C4");
             if (GetResponseNormal != null)
             {
-                stringBuilder.Append("01");
                 stringBuilder.Append(GetResponseNormal.ToPduStringInHex());
             }
             else if (GetResponseWithDataBlock != null)
             {
-                stringBuilder.Append("02");
                 stringBuilder.Append(GetResponseWithDataBlock.ToPduStringInHex());
             }
             else if (GetResponseWithList != null)
             {
-                stringBuilder.Append("03");
                 stringBuilder.Append(GetResponseWithList.ToPduStringInHex());
             }
 
@@ -42,9 +39,12 @@ namespace MyDlmsStandard.ApplicationLay.Get
                 return false;
             }
 
-            //            string a = pduStringInHex.Substring(0, 2);
-            //            if (a == "C4")
-            //            {
+            string command = pduStringInHex.Substring(0, 2);
+            if (command != "C4")
+            {
+                return false;
+            }
+
             string a = pduStringInHex.Substring(2, 2);
             if (a == "01")
             {

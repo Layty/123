@@ -1,9 +1,12 @@
-﻿using MyDlmsStandard.Axdr;
+﻿using System.Text;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseForLastDataBlock
+    public class SetResponseForLastDataBlock:ISetResponse
     {
+        public SetResponseType SetResponseType { get; } = SetResponseType.LastDataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public AxdrIntegerUnsigned8 Result { get; set; }
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
@@ -32,9 +35,15 @@ namespace MyDlmsStandard.ApplicationLay.Set
             return true;
 		}
 
-        public char ToPduStringInHex()
+        public string ToPduStringInHex()
         {
-            throw new System.NotImplementedException();
+          
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("03");
+            stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
+            stringBuilder.Append(Result.ToPduStringInHex());
+            stringBuilder.Append(BlockNumber.ToPduStringInHex());
+            return stringBuilder.ToString();
         }
     }
 }

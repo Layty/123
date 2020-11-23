@@ -78,7 +78,7 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 try
                 {
-                    formatDisplayOctetString = NormalDataParse.HowToDisplayOctetString(
+                    formatDisplayOctetString = MyConvert.HowToDisplayOctetString(
                         Value.ToString().StringToByte(),
                         OctetStringDisplayFormat);
                 }
@@ -94,7 +94,7 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 try
                 {
-                    formatDisplayOctetString = NormalDataParse.HowToDisplayIntValue(
+                    formatDisplayOctetString = MyConvert.HowToDisplayIntValue(
                         Value.ToString().StringToByte(),
                         UInt32ValueDisplayFormat);
                 }
@@ -135,19 +135,6 @@ namespace MyDlmsStandard.ApplicationLay
 
         private DataType _dataType;
 
-        [XmlIgnore]
-        public byte[] ValueBytes
-        {
-            get => _valueBytes;
-            set
-            {
-                _valueBytes = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private byte[] _valueBytes;
-
         public object Value
         {
             get => _value;
@@ -182,7 +169,6 @@ namespace MyDlmsStandard.ApplicationLay
             Value = value;
         }
 
-    
 
         public string GXBitString(byte value, int count)
         {
@@ -389,7 +375,7 @@ namespace MyDlmsStandard.ApplicationLay
                         break;
                     case "01":
                         DataType = DataType.Array;
-                        pduStringInHex = pduStringInHex.Substring(2);
+                     
                         DLMSArray array = new DLMSArray();
                         if (!array.PduStringInHexConstructor(ref pduStringInHex))
                         {
@@ -589,99 +575,77 @@ namespace MyDlmsStandard.ApplicationLay
             return MyConvert.OctetStringToString(s2);
         }
 
+        /// <summary>
+        /// 通过更改ValueString 后对Value 进行赋值
+        /// </summary>
         public void UpdateValue()
         {
             switch (DataType)
             {
                 case DataType.UInt8:
-                    //                    ValueBytes = new[] {byte.Parse(valueString)};
-                    //                    
-                    //                    Value = ValueBytes.ByteToString();
                     Value = byte.Parse(ValueString).ToString("X2");
-                    AxdrIntegerUnsigned8 uint8 = new AxdrIntegerUnsigned8();
-
                     break;
                 case DataType.UInt16:
-                    //                    ValueBytes = BitConverter.GetBytes(ushort.Parse(valueString)).Reverse().ToArray();
-                    //                    
-                    //                    Value = ValueBytes.ByteToString();
                     Value = ushort.Parse(ValueString).ToString("X4");
                     break;
                 case DataType.UInt32:
-
+                {
                     switch (UInt32ValueDisplayFormat)
                     {
                         case UInt32ValueDisplayFormat.Original:
-                            ValueBytes = ValueString.StringToByte();
-                            Value = ValueBytes.ByteToString();
+                            Value = ValueString;
                             break;
                         case UInt32ValueDisplayFormat.IpAddress:
+                        {
+                            var s = ValueString.Split('.');
+                            List<byte> list = new List<byte>();
+                            foreach (var variable in s)
                             {
-                                var s = ValueString.Split('.');
-                                List<byte> list = new List<byte>();
-                                foreach (var variable in s)
-                                {
-                                    list.Add(byte.Parse(variable));
-                                }
-
-                                ValueBytes = list.ToArray();
-                                Value = ValueBytes.ByteToString();
-                                break;
+                                list.Add(byte.Parse(variable));
                             }
+
+                            Value = list.ToArray().ByteToString();
+                            break;
+                        }
                         case UInt32ValueDisplayFormat.IntValue:
-                            ValueBytes = BitConverter.GetBytes(uint.Parse(ValueString)).Reverse().ToArray();
-                            Value = ValueBytes.ByteToString();
+                            Value = Convert.ToInt32(ValueString).ToString("X8");
                             break;
                     }
 
                     break;
+                }
                 case DataType.OctetString:
-                    byte[] dataBytes;
+
                     switch (OctetStringDisplayFormat)
                     {
                         case OctetStringDisplayFormat.Ascii:
-                            dataBytes = Encoding.Default.GetBytes(ValueString);
+                            Value = Encoding.Default.GetBytes(ValueString).ByteToString();
                             break;
-
+                        case OctetStringDisplayFormat.Obis:
+                            //TODO 判断ValueString 的 OBIS格式后对Value进行赋值
+                            break;
                         default:
-                            dataBytes = ValueString.StringToByte();
+                            Value = ValueString.StringToByte();
                             break;
                     }
 
-                    if (dataBytes.Length != 0)
-                    {
-                        byte len = (byte)dataBytes.Length;
-                        List<byte> list = new List<byte>();
-                        //                        list.Add(len);
-                        list.AddRange(dataBytes);
-                        ValueBytes = list.ToArray();
-                        Value = ValueBytes.ByteToString();
-                    }
 
                     break;
                 case DataType.BitString:
-                    ValueBytes = ValueString.StringToByte().Skip(1).ToArray();
-                    Value = ValueBytes.ByteToString();
-                    var count = ValueString.StringToByte()[0];
-                    var value = ValueString.StringToByte().Skip(1).ToArray();
-                    var bitstring = new DLMSBitString(value, 0, count);
+                    Value = ValueString;
                     break;
                 case DataType.VisibleString:
-                    var data = Encoding.Default.GetBytes(ValueString);
-                    var dataLength = (byte)data.Length;
-                    List<byte> ls = new List<byte>();
-                    ls.Add(dataLength);
-                    ls.AddRange(data);
-                    ValueBytes = ls.ToArray();
-                    Value = ValueBytes.ByteToString();
+                    Value = Encoding.Default.GetBytes(ValueString).ByteToString();
                     break;
                 case DataType.Boolean:
-                    ValueBytes = new[] { byte.Parse(ValueString) };
-                    Value = ValueBytes.ByteToString();
+//                    ValueBytes = new[] {byte.Parse(ValueString)};
+//                    Value = ValueBytes.ByteToString();
+                    Value = ValueString;
                     break;
                 case DataType.Enum:
-                    ValueBytes = new[] { byte.Parse(ValueString) };
-                    Value = ValueBytes.ByteToString();
+//                    ValueBytes = new[] {byte.Parse(ValueString)};
+//                    Value = ValueBytes.ByteToString();
+                    Value = ValueString;
                     break;
                 case DataType.Structure:
 

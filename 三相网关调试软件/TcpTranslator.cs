@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard.Wrapper;
 
 

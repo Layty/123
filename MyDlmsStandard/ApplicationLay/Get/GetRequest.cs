@@ -1,34 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetRequest : IToPduBytes
+    public class GetRequest : IToPduStringInHex,IDlmsCommand
     {
-        [XmlIgnore] protected Command Command { get; set; } = Command.GetRequest;
+        [XmlIgnore] public Command Command { get;} = Command.GetRequest;
         public GetRequestNormal GetRequestNormal { get; set; }
         public GetRequestNext GetRequestNext { get; set; }
         public GetRequestWithList GetRequestWithList { get; set; }
-
-        public byte[] ToPduBytes()
+        public string ToPduStringInHex()
         {
-            List<byte> list = new List<byte>();
-            list.Add((byte) Command);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("C0");
+
             if (GetRequestNormal != null)
             {
-                list.AddRange(GetRequestNormal.ToPduBytes());
+                stringBuilder.Append(GetRequestNormal.ToPduStringInHex());
             }
             else if (GetRequestNext != null)
             {
-                list.AddRange(GetRequestNext.ToPduBytes());
+          
+                stringBuilder.Append(GetRequestNext.ToPduStringInHex());
             }
             else if (GetRequestWithList != null)
             {
-                list.AddRange(GetRequestWithList.ToPduBytes());
+       
+                stringBuilder.Append(GetRequestWithList.ToPduStringInHex());
             }
-
-            return list.ToArray();
+            return stringBuilder.ToString();
         }
     }
 }

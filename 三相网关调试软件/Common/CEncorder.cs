@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace 三相智慧能源网关调试软件.Commom
+namespace 三相智慧能源网关调试软件.Common
 {
     /// <summary>
     /// 加密／解密工具

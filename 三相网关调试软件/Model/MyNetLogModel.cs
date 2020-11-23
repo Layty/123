@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using NLog;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 
 namespace 三相智慧能源网关调试软件.Model
 {

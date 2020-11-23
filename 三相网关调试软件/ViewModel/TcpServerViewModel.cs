@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NLog;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Properties;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -85,7 +85,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private DlmsClient _dlmsClient;
 
-
+        /// <summary>
+        /// 是否自动响应47心跳帧
+        /// </summary>
         public bool IsAutoResponseHeartBeat
         {
             get => _isAutoResponseHeartBeat;
@@ -98,6 +100,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private bool _isAutoResponseHeartBeat;
 
+        /// <summary>
+        /// 以太网转发实例，将网关的数据中转值内部测试服务器
+        /// </summary>
         public TcpTranslator Translator
         {
             get => _translator;
@@ -110,6 +115,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private TcpTranslator _translator;
 
+        /// <summary>
+        /// 是否开启转发
+        /// </summary>
         public bool IsNeedTranslator
         {
             get => _isNeedTranslator;
@@ -123,6 +131,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private bool _isNeedTranslator;
 
 
+        /// <summary>
+        /// 心跳帧延时响应时间(ms)
+        /// </summary>
         public int HeartBeatDelayTime
         {
             get => _heartBeatDelayTime;
@@ -150,11 +161,12 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public TcpServerViewModel()
         {
-            HeartBeatDelayTime = 1000;
-            TcpServerHelper = new TcpServerHelper(Settings.Default.GatewayIpAddress, 8881);
             IsAutoResponseHeartBeat = true;
-//            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
-            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes1;
+            HeartBeatDelayTime = 1000;
+            var ip = TcpServerHelper.GetHostIp();
+            TcpServerHelper = new TcpServerHelper(ip, 8881);
+            
+            TcpServerHelper.ReceiveBytes += CalcTcpServerHelper_ReceiveBytes;
 
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
@@ -162,7 +174,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             StartListen = new RelayCommand(() =>
             {
                 if (IsNeedTranslator)
-                    _translator.StartListen();
+                    Translator.StartListen();
                 else
                     TcpServerHelper.StartListen();
             });
@@ -176,10 +188,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
         }
 
-        private void TcpServerHelper_ReceiveBytes1(Socket arg1, byte[] arg2)
-        {
-            CalcTcpServerHelper_ReceiveBytes(arg1, arg2);
-        }
+       
 
         public enum AlarmType
         {

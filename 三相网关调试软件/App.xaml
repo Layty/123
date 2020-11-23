@@ -2,17 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:三相智慧能源网关调试软件"
              StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
+             xmlns:vm="clr-namespace:三相智慧能源网关调试软件.ViewModel"
              xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters">
     <Application.Resources>
         <ResourceDictionary>
-            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:三相智慧能源网关调试软件.ViewModel" />
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:FactoryConverter x:Key="FactoryConverter" />
-       
-      
-           
-            <Style  TargetType="Path" BasedOn="{x:Null}"></Style>
+
+
+            <Style TargetType="Path" BasedOn="{x:Null}" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ResourceDictionary/MyDictionary.xaml" />
                 <ResourceDictionary Source="ResourceDictionary/BrushDictionary.xaml" />
@@ -20,16 +19,20 @@
                 <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 --><!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/> -->
                 <!-- MaterialDesignThemes -->
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.light.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.defaults.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/materialdesigncolor.indigo.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/materialdesigncolor.indigo.xaml" />
-                 <!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>  -->
-               
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <!-- <ResourceDictionary -->
+                <!--     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.light.xaml" /> -->
+                <!-- <ResourceDictionary -->
+                <!--     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.defaults.xaml" /> -->
+                <!-- <ResourceDictionary -->
+                <!--     Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/materialdesigncolor.indigo.xaml" /> -->
+                <!-- <ResourceDictionary -->
+                <!--     Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/materialdesigncolor.indigo.xaml" /> -->
+                <!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>  -->
+
                 <!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/> -->
             </ResourceDictionary.MergedDictionaries>
 

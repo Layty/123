@@ -4,17 +4,16 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponseWithDataBlock : IToPduStringInHex,IPduStringInHexConstructor
+    public class GetResponseWithDataBlock : IToPduStringInHex, IGetResponse
     {
-        [XmlIgnore]
-        public GetResponseType GetResponseType { get; set; } = GetResponseType.WithDataBlock;
+        [XmlIgnore] public GetResponseType GetResponseType { get; set; } = GetResponseType.WithDataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public DataBlockG DataBlockG { get; set; }
 
-        
+
         public string ToPduStringInHex()
         {
-            return InvokeIdAndPriority.ToPduStringInHex() + DataBlockG.ToPduStringInHex();
+            return "02" + InvokeIdAndPriority.ToPduStringInHex() + DataBlockG.ToPduStringInHex();
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
@@ -23,18 +22,20 @@ namespace MyDlmsStandard.ApplicationLay.Get
             {
                 return false;
             }
-           
-      
+
+
             InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
+
             DataBlockG = new DataBlockG();
             if (!DataBlockG.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
+
             return true;
         }
     }

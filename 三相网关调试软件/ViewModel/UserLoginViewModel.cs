@@ -1,17 +1,36 @@
 ﻿using System;
 using System.Data.OleDb;
 using System.Threading.Tasks;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.UserLoginServiceReference;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using RestSharp;
+using 三相智慧能源网关调试软件.View;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
+    public interface IUserRepository
+    {
+        void Login();
+        void Exit();
+    }
+
+    public class User:IUserRepository
+    {
+        public void Login()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Exit()
+        {
+            throw new NotImplementedException();
+        }
+    }
     public class UserLoginViewModel : ObservableObject
     {
         /// <summary>
@@ -29,9 +48,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private bool _isCancel = true;
 
+      
         public UserLoginViewModel()
         {
             LoginModel = new UserLoginModel();
+            LoginModel.LoginErrorCounts = 0;
             ReadUserInfoFromResource();
 
 //                LoginCommand = new RelayCommand(Login);
@@ -48,7 +69,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
             try
             {
                 IsCancel = false;
-                LoginModel.Report = "正在登陆...";
+                if (string.IsNullOrWhiteSpace(LoginModel.UserName)||string.IsNullOrWhiteSpace(LoginModel.Password))
+                {
+                    new MessageBoxWindow(){Message = "请输入用户名和密码！"}.ShowDialog();
+                    return;
+                }
+
+                LoginModel.Report = "正在登录...";
                 var resultResponse = await Task.Run(() =>
                 {
                     var client =

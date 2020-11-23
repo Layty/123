@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows;
 
-namespace 三相智慧能源网关调试软件.Commom
+namespace 三相智慧能源网关调试软件.Common
 {
     public static class Common
     {

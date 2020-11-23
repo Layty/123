@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Microsoft.Toolkit.Mvvm.Input;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Model.IIC;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;

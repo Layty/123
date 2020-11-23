@@ -4,8 +4,9 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseNormal : IToPduStringInHex, IPduStringInHexConstructor
+    public class SetResponseNormal : ISetResponse, IToPduStringInHex
     {
+        public SetResponseType SetResponseType { get; set; }
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         private AxdrIntegerUnsigned8 _result { get; set; }
         public DataAccessResult Result { get; set; }
@@ -13,6 +14,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
         public string ToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("01");
             stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             stringBuilder.Append(_result.ToPduStringInHex());
             return stringBuilder.ToString();

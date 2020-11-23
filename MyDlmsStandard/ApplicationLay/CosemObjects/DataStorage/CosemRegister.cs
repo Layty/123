@@ -53,15 +53,15 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public string UnitDisplay
         {
-            get => _UnitDisplay;
+            get => _unitDisplay;
             set
             {
-                _UnitDisplay = value;
+                _unitDisplay = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _UnitDisplay;
+        private string _unitDisplay;
 
         public ScalarUnit()
         {

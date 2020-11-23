@@ -9,7 +9,13 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
     public class CosemProfileGeneric : CosemObject, IDlmsBase
     {
-        public DLMSArray Buffer { get; set; } //2
+        public ObservableCollection<DlmsStructure> Buffer//2
+        {
+            get => _buffer;
+            set { _buffer = value; OnPropertyChanged(); }
+        }
+        private ObservableCollection<DlmsStructure> _buffer;
+
 
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
             new ObservableCollection<CaptureObjectDefinition>(); //3
@@ -95,9 +101,12 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public CosemProfileGeneric(string logicalName)
         {
             LogicalName = logicalName;
-            ClassId = MyConvert.GetClassIdByObjectType(objectType: ObjectType.ProfileGeneric);
+            ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ProfileGeneric);
 
             SortMethod = SortMethod.FiFo;
+            ProfileGenericEntryDescriptor=new ProfileGenericEntryDescriptor();
+            ProfileGenericRangeDescriptor=new ProfileGenericRangeDescriptor();
+            Buffer=new ObservableCollection<DlmsStructure>();
         }
 
         public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }
@@ -108,7 +117,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
         {
             return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
-                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"), ProfileGenericEntryDescriptor.ToDlmsDataItem()));
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"), ProfileGenericEntryDescriptor.ToDlmsDataItem()));
         }
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()

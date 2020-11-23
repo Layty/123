@@ -14,16 +14,6 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件
 {
-    public static class Lib
-    {
-        public static async Task<bool> CheckTimeout(this Action proc, int seconds)
-        {
-            var t = Task.Delay(seconds * 1000);
-            var w = await Task.WhenAny(Task.Run(proc), t);
-            return w == t;
-        }
-    }
-
     public class TcpServerHelper : ValidateModelBase
     {
         public bool IsStarted
@@ -93,7 +83,9 @@ namespace 三相智慧能源网关调试软件
 
         private ObservableCollection<Socket> _socketClientList;
 
-
+        /// <summary>
+        /// 超时时间默认2s
+        /// </summary>
         public int ResponseTimeOut
         {
             get => _responseTimeOut;
@@ -116,7 +108,7 @@ namespace 三相智慧能源网关调试软件
         public event Action<Socket, byte[]> ReceiveBytes;
         public event Action<Socket, byte[]> SendBytesToClient;
 
-        public event Action<Socket, byte[]> ReceiveAllBytes;
+    
 
         protected virtual void OnNotifyNewClient(Socket clientSocket)
         {
@@ -133,11 +125,7 @@ namespace 三相智慧能源网关调试软件
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
         }
 
-        protected virtual void OnReceiveAllBytes(Socket clientSocket, byte[] bytes)
-        {
-            ReceiveAllBytes?.Invoke(clientSocket, bytes);
-        }
-
+        
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
@@ -178,7 +166,10 @@ namespace 三相智慧能源网关调试软件
             ProtocolType = protocolType;
             SocketClientList = new ObservableCollection<Socket>();
         }
-
+        /// <summary>
+        /// 获取当前计算机的主机IPV4地址
+        /// </summary>
+        /// <returns></returns>
         public static string GetHostIp()
         {
             IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
@@ -344,7 +335,7 @@ namespace 三相智慧能源网关调试软件
                     TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
                     if (timeSpan.Seconds >= ResponseTimeOut)
                     {
-                        ResponseTime = timeSpan.Seconds.ToString();
+//                        ResponseTime = timeSpan.Seconds.ToString();
                         stopwatch1.Reset();
                         OnNotifyStatusMsg($"超时{ResponseTimeOut}秒未响应");
                         break;

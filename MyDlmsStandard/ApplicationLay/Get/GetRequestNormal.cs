@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetRequestNormal : IToPduBytes
+    public class GetRequestNormal : IGetRequest, IToPduStringInHex
     {
-        [XmlIgnore] public GetRequestType GetRequestType { get; set; } = GetRequestType.Normal;
+        [XmlIgnore] public GetRequestType GetRequestType { get; } = GetRequestType.Normal;
 
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
             = new AxdrIntegerUnsigned8("C1");
@@ -39,29 +38,58 @@ namespace MyDlmsStandard.ApplicationLay.Get
             AttributeDescriptorWithSelection = attributeDescriptorWithSelection;
         }
 
-        public byte[] ToPduBytes()
+//        public byte[] ToPduBytes()
+//        {
+//            List<byte> pduBytes = new List<byte>();
+//            pduBytes.Add((byte) GetRequestType);
+//            pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
+//            if (AttributeDescriptor != null)
+//            {
+//                pduBytes.AddRange(AttributeDescriptor.ToPduStringInHex().StringToByte());
+//                pduBytes.Add(0x00);
+//            }
+//
+//            if (AccessSelection != null)
+//            {
+//                pduBytes.Add(0x01);
+//                pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
+//            }
+//
+//            if (AttributeDescriptorWithSelection != null)
+//            {
+//                pduBytes.AddRange(AttributeDescriptorWithSelection.ToPduStringInHex().StringToByte());
+//            }
+//
+//            return pduBytes.ToArray();
+//        }
+
+        public string ToPduStringInHex()
         {
-            List<byte> pduBytes = new List<byte>();
-            pduBytes.Add((byte) GetRequestType);
-            pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("01");
+            if (InvokeIdAndPriority != null)
+            {
+                stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
+            }
+
             if (AttributeDescriptor != null)
             {
-                pduBytes.AddRange(AttributeDescriptor.ToPduStringInHex().StringToByte());
-                pduBytes.Add(0x00);
+                stringBuilder.Append(AttributeDescriptor.ToPduStringInHex());
+                stringBuilder.Append(0x00);
             }
 
             if (AccessSelection != null)
             {
-                pduBytes.Add(0x01);
-                pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
+                stringBuilder.Append(0x01);
+                stringBuilder.Append(AccessSelection.ToPduStringInHex());
             }
 
             if (AttributeDescriptorWithSelection != null)
             {
-                pduBytes.AddRange(AttributeDescriptorWithSelection.ToPduStringInHex().StringToByte());
+                stringBuilder.Append(AttributeDescriptorWithSelection.ToPduStringInHex());
             }
 
-            return pduBytes.ToArray();
+            return stringBuilder.ToString();
         }
     }
 }

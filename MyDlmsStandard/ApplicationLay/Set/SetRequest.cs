@@ -1,48 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Common;
+using MyDlmsStandard.ApplicationLay.Get;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetRequest : IToPduBytes
+    public class SetRequest : IDlmsCommand, IToPduStringInHex
     {
-        [XmlIgnore] public Command Command { get; set; } = Command.SetRequest;
+        [XmlIgnore] public Command Command { get; } = Command.SetRequest;
         public SetRequestNormal SetRequestNormal { get; set; }
         public SetRequestWithFirstDataBlock SetRequestWithFirstDataBlock { get; set; }
         public SetRequestWithDataBlock SetRequestWithDataBlock { get; set; }
-
         public SetRequestWithList SetRequestWithList { get; set; }
-
         public SetRequestWithListAndFirstDatablock SetRequestWithListAndFirstDatablock { get; set; }
 
 
-        public byte[] ToPduBytes()
+        public string ToPduStringInHex()
         {
-            List<byte> list = new List<byte>();
-            list.Add((byte) Command);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("C1");
             if (SetRequestNormal != null)
             {
-                list.AddRange(SetRequestNormal.ToPduBytes());
+                stringBuilder.Append(SetRequestNormal.ToPduStringInHex());
             }
+
             else if (SetRequestWithFirstDataBlock != null)
             {
-                list.AddRange(SetRequestWithFirstDataBlock.ToPduBytes());
+                stringBuilder.Append(SetRequestWithFirstDataBlock.ToPduStringInHex());
             }
             else if (SetRequestWithDataBlock != null)
             {
-                list.AddRange(SetRequestWithDataBlock.ToPduBytes());
+                stringBuilder.Append(SetRequestWithDataBlock.ToPduStringInHex());
             }
             else if (SetRequestWithList != null)
             {
-                list.AddRange(SetRequestWithList.ToPduStringInHex().StringToByte());
+                
+                stringBuilder.Append(SetRequestWithList.ToPduStringInHex());
             }
             else if (SetRequestWithListAndFirstDatablock != null)
             {
-                list.AddRange(SetRequestWithListAndFirstDatablock.ToPduStringInHex().StringToByte());
+              
+                stringBuilder.Append(SetRequestWithListAndFirstDatablock.ToPduStringInHex());
             }
-
-            return list.ToArray();
+            return stringBuilder.ToString();
         }
     }
 }

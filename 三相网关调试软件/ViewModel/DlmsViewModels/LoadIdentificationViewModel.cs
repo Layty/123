@@ -5,7 +5,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.Get;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 
 using 三相智慧能源网关调试软件.Model;
 

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator},Path=ProfileGenericViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -32,8 +32,10 @@
                                                         <Button Content="Get"
                                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetCaptureObjectsCommand ,Mode=TwoWay}"
                                                                 CommandParameter="{Binding }" Margin="2 0" />
-                                                        <Button Content="Set"  Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetCaptureObjectsCommand ,Mode=TwoWay}"
-                                                                CommandParameter="{Binding }" Margin="2 0"/>
+                                                        <Button Content="Set"
+                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetCaptureObjectsCommand ,Mode=TwoWay}"
+                                                                CommandParameter="{Binding }" Margin="2 0" />
+
                                                     </StackPanel>
                                                     <DataGrid Grid.Row="1" AutoGenerateColumns="True"
                                                               ItemsSource="{Binding CaptureObjects}" />
@@ -95,11 +97,60 @@
                                     <StackPanel>
                                         <Button Content="先获取捕获对象" Margin="5" />
                                         <Button Content="获取Buffer" Margin="5"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBufferCommand ,Mode=TwoWay}"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetAllBufferCommand ,Mode=TwoWay}"
                                                 CommandParameter="{Binding }" />
-                                        <ComboBox />
-                                        <DataGrid
-                                            ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}, Path=DataContext.ListObservableCollection}" />
+                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.FromIndex}" />
+                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.ToIndex}" />
+                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.FromSelectedValue}" />
+                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.ToSelectedValue}" />
+                                        <Button Content="GetByEntry"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBufferByEntryCommand ,Mode=TwoWay}"
+                                                CommandParameter="{Binding }" />
+                                        <ComboBox ItemsSource="{Binding CaptureObjects}" SelectedIndex="0"
+                                                  IsSelected="True">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding LogicalName}" Margin="5 5" />
+                                                        <TextBlock Text="{Binding Description}" Margin="5 5" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <CheckBox Content="Capture Time" />
+                                        <!-- <DataGrid -->
+                                        <!--     ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}, Path=DataContext.ListObservableCollection}" /> -->
+
+                                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                         <ItemsControl HorizontalAlignment="Stretch"
+                                             ItemsSource="{Binding Buffer,UpdateSourceTrigger=PropertyChanged}" >
+                                             <ItemsControl.ItemTemplate>
+                                                 <DataTemplate>
+                                                     <Grid >
+                                                         <ItemsControl ItemsSource="{Binding  Items}" >
+                                                             <ItemsControl.ItemsPanel>
+                                                                 <ItemsPanelTemplate>
+                                                                     <VirtualizingStackPanel Orientation="Horizontal"></VirtualizingStackPanel>
+                                                                 </ItemsPanelTemplate>
+                                                             </ItemsControl.ItemsPanel>
+                                                             <ItemsControl.ItemTemplate>
+                                                                 <DataTemplate>
+                                                                     <StackPanel >
+                                                                         <TextBox Text="{Binding ValueString}" Margin="5 0" />
+                                                                     </StackPanel>
+                                                                 </DataTemplate>
+
+                                                             </ItemsControl.ItemTemplate>
+                                                         </ItemsControl>
+                                                     </Grid>
+
+
+                                                 </DataTemplate>
+                                             </ItemsControl.ItemTemplate>
+                                         </ItemsControl>
+                                        </ScrollViewer>
+                             
+
 
                                     </StackPanel>
 

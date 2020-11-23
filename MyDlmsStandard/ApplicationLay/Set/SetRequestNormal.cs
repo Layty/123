@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Common;
+using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetRequestNormal : IToPduBytes
+    public class SetRequestNormal : ISetRequest
     {
-        [XmlIgnore] protected SetRequestType SetRequestType { get; set; } = SetRequestType.Normal;
-        public InvokeIdAndPriority InvokeIdAndPriority { get; set; }
+        [XmlIgnore] public SetRequestType SetRequestType { get; } = SetRequestType.Normal;
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }=new AxdrIntegerUnsigned8("C1");
         protected CosemAttributeDescriptor CosemAttributeDescriptor { get; set; }
 
         public SelectiveAccessDescriptor AccessSelection { get; set; }
+
+        public CosemAttributeDescriptorWithSelection CosemAttributeDescriptorWithSelection { get; set; }
 
         public DlmsDataItem Value { get; set; }
 
@@ -25,42 +27,24 @@ namespace MyDlmsStandard.ApplicationLay.Set
         {
             CosemAttributeDescriptor = cosemAttributeDescriptor;
             AccessSelection = accessSelection;
-            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
+          
         }
 
         public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor, DlmsDataItem value)
         {
             CosemAttributeDescriptor = cosemAttributeDescriptor;
             Value = value;
-            InvokeIdAndPriority = new InvokeIdAndPriority(1, ServiceClass.Confirmed, Priority.High);
+          
         }
 
-        public byte[] ToPduBytes()
+        public string ToPduStringInHex()
         {
-            List<byte> pduBytes = new List<byte>();
-            pduBytes.Add((byte) SetRequestType);
-            pduBytes.Add(InvokeIdAndPriority.Value);
-            if (CosemAttributeDescriptor != null)
-            {
-                pduBytes.AddRange(CosemAttributeDescriptor.ToPduStringInHex().StringToByte());
-            }
-
-            if (AccessSelection != null)
-            {
-                pduBytes.Add(0x01);
-                pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
-            }
-            else
-            {
-                pduBytes.Add(0x00);
-            }
-
-            if (Value != null)
-            {
-                pduBytes.AddRange(Value.ToPduBytes());
-            }
-
-            return pduBytes.ToArray();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("01");
+            stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
+            stringBuilder.Append(CosemAttributeDescriptorWithSelection.ToPduStringInHex());
+            stringBuilder.Append(Value.ToPduStringInHex());
+            return stringBuilder.ToString();
         }
     }
 }

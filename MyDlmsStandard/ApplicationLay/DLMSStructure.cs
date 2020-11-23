@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay
@@ -40,8 +41,9 @@ namespace MyDlmsStandard.ApplicationLay
 //        }
 //    }
 
-    public class DlmsStructure : IToPduBytes, IPduBytesToConstructor
+    public class DlmsStructure : IPduStringInHexConstructor, IToPduStringInHex, IDataType
     {
+        public DataType DataType { get; } = DataType.Structure;
         public DlmsDataItem[] Items { get; set; }
 
         public DlmsStructure()
@@ -51,50 +53,6 @@ namespace MyDlmsStandard.ApplicationLay
         public DlmsStructure(DlmsDataItem[] items)
         {
             Items = items;
-        }
-
-        public byte[] ToPduBytes()
-        {
-            List<byte> list = new List<byte>();
-            list.Add(0x02);
-            if (Items.Length > 127)
-            {
-                list.Add(0x00);
-                list.Add(0x82);
-            }
-            else
-            {
-                list.Add((byte) Items.Length);
-            }
-
-            foreach (var dlmsDataItem in Items)
-            {
-                list.AddRange(MyConvert.OctetStringToByteArray(dlmsDataItem.ToPduStringInHex()));
-            }
-
-            return list.ToArray();
-        }
-
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            var pduStringInHex = pduBytes.ByteToString();
-            int num = MyConvert.DecodeVarLength(ref pduStringInHex);
-            Items = new DlmsDataItem[num];
-            for (int i = 0; i < num; i++)
-            {
-                Items[i] = new DlmsDataItem();
-            }
-
-            DlmsDataItem[] array = Items;
-            foreach (DlmsDataItem dlmsDataItem in array)
-            {
-                if (!dlmsDataItem.PduStringInHexConstructor(ref pduStringInHex))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public string ToPduStringInHex()

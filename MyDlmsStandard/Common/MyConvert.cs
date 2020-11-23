@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.Axdr;
+using MyDlmsStandard.OBIS;
 
 namespace MyDlmsStandard.Common
 {
@@ -224,6 +228,11 @@ namespace MyDlmsStandard.Common
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// 将UInt32 转成 IP格式显示的字符串
+        /// </summary>
+        /// <param name="u"></param>
+        /// <returns></returns>
         public static string UInt32ToIpAddress(uint u)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -243,6 +252,60 @@ namespace MyDlmsStandard.Common
         public static AxdrIntegerUnsigned16 GetClassIdByObjectType(ObjectType objectType)
         {
             return new AxdrIntegerUnsigned16(((ushort) objectType).ToString("X4"));
+        }
+
+        public static string HowToDisplayIntValue(byte[] dataBytes, UInt32ValueDisplayFormat octetStringDisplayFormat)
+        {
+            var displayString = "";
+            switch (octetStringDisplayFormat)
+            {
+                case UInt32ValueDisplayFormat.Original:
+                    return dataBytes.ByteToString();
+                case UInt32ValueDisplayFormat.IpAddress:
+                    uint u = BitConverter.ToUInt32(dataBytes.Reverse().ToArray(), 0);
+                    return MyConvert.UInt32ToIpAddress(u);
+                case UInt32ValueDisplayFormat.IntValue:
+                    return BitConverter.ToUInt32(dataBytes.Reverse().ToArray(), 0).ToString();
+            }
+
+            return displayString;
+        }
+
+        public static string HowToDisplayOctetString(byte[] dataBytes,
+            OctetStringDisplayFormat octetStringDisplayFormat)
+        {
+            var displayString = "";
+            switch (octetStringDisplayFormat)
+            {
+                case OctetStringDisplayFormat.Ascii:
+                    return Encoding.Default.GetString(dataBytes);
+                case OctetStringDisplayFormat.Original:
+                    return dataBytes.ByteToString();
+                case OctetStringDisplayFormat.DateTime:
+                    var dlmsclock = new CosemClock(dataBytes);
+                    return dlmsclock.ToString();
+                case OctetStringDisplayFormat.Obis:
+                    if (dataBytes.Length == 6)
+                    {
+                        return ObisHelper.GetObisOriginal(dataBytes.ByteToString().Replace(" ", ""));
+                    }
+
+                    break;
+                case OctetStringDisplayFormat.Date:
+                    var year = BitConverter.ToUInt16(dataBytes.Take(2).Reverse().ToArray(), 0);
+                    var month = Convert.ToString(dataBytes[2]).PadLeft(2, '0');
+                    var day = Convert.ToString(dataBytes[3]).PadLeft(2, '0');
+                    var week = Convert.ToString(dataBytes[4]).PadLeft(2, '0');
+                    return year + month + day + week;
+
+                case OctetStringDisplayFormat.Time:
+                    var hour = Convert.ToString(dataBytes[0]).PadLeft(2, '0');
+                    var min = Convert.ToString(dataBytes[1]).PadLeft(2, '0');
+                    var sen = Convert.ToString(dataBytes[2]).PadLeft(2, '0');
+                    return hour + min + sen;
+            }
+
+            return displayString;
         }
     }
 }

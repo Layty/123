@@ -13,7 +13,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard;
 using MySerialPortMaster;
 using NLog;
-using 三相智慧能源网关调试软件.Commom;
+using 三相智慧能源网关调试软件.Common;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -25,10 +25,21 @@ using MyDlmsStandard.Ber;
 using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
 
-using Common = 三相智慧能源网关调试软件.Commom.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
+    public class Mission
+    {
+        private DlmsClient dlmsClient { get;set; }
+
+        public void ReadEnergy(int timeSpan)
+        {
+
+
+        }
+    }
+
+
     public class DlmsClient : ObservableObject
     {
         #region 协议层资源
@@ -179,12 +190,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 case GetRequestType.Normal:
                     getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
                     break;
-                case GetRequestType.Next: break;
-                case GetRequestType.WithList: break;
+                case GetRequestType.Next: 
+                    getRequest.GetRequestNext=new GetRequestNext();
+                    break;
+                case GetRequestType.WithList:
+                  
+                   getRequest.GetRequestWithList=new GetRequestWithList();
+                    break;
             }
 
             XmlCommon(getRequest);
-            var dataResult = await HandlerSendData(getRequest.ToPduBytes());
+            var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
             return HandleGetResponse(dataResult);
         }
 
@@ -193,14 +209,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
             XmlCommon(getRequest);
-            var dataResult = await HandlerSendData(getRequest.ToPduBytes());
+            var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
             return HandleGetResponse(dataResult);
         }
 
         public async Task<byte[]> GetRequest(CosemAttributeDescriptor cosemAttributeDescriptor)
         {
             getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
-            return await HandlerSendData(getRequest.ToPduBytes());
+            return await HandlerSendData(getRequest.ToPduStringInHex());
         }
 
         private void XmlCommon<T>(T t)
@@ -259,13 +275,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             DlmsDataItem value)
         {
             setRequest = new SetRequest {SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value)};
-            var dataResult = await HandlerSendData(setRequest.ToPduBytes());
+            var dataResult = await HandlerSendData(setRequest.ToPduStringInHex());
             return HandleSetResponse(dataResult);
         }
 
         public async Task<byte[]> ActionRequest(ActionRequest actionRequestNormal)
         {
-            return await HandlerSendData((actionRequestNormal.ToPduBytes()));
+            return await HandlerSendData((MyDlmsStandard.Common.Common.StringToByte(actionRequestNormal.ToPduStringInHex())));
         }
 
         private async Task<byte[]> HandlerSendData(byte[] dataBytes)
@@ -283,6 +299,21 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             bytes = HowToTakeReplyApduData(bytes);
             return bytes;
         }
+        private async Task<byte[]> HandlerSendData(string dataHexString)
+        {
+            byte[] bytes = { };
+            if (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC)
+            {
+                bytes = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(dataHexString.StringToByte()));
+            }
+            else if (DlmsSettingsViewModel.InterfaceType == InterfaceType.WRAPPER)
+            {
+                bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(dataHexString.StringToByte()));
+            }
+
+            bytes = HowToTakeReplyApduData(bytes);
+            return bytes;
+        }
 
 
         public async Task<byte[]> ReleaseRequest(bool force = true)
@@ -295,7 +326,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,
                     DlmsSettingsViewModel.DlmsVersion, DlmsSettingsViewModel.ProposedConformance)
             };
-            var releaseBytes = Common.StringToByte(re.ToPduStringInHex());
+            var releaseBytes = Common.Common.StringToByte(re.ToPduStringInHex());
             if (force && (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC))
             {
                 result = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(releaseBytes));
@@ -351,7 +382,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             actionRequest = new ActionRequest();
         }
 
-
+        public async void ActionEnergy()
+        {
+           await InitRequest();
+//            await GetRequestAndWaitResponse()
+        }
         public Task<byte[]> SetEnterUpGradeMode()
         {
             return PortMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));

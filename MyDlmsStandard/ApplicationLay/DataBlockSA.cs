@@ -42,7 +42,7 @@ namespace MyDlmsStandard.ApplicationLay
             return stringBuilder.ToString();
         }
 
-        public bool PduStringInHexContructor(ref string pduStringInHex)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             if (string.IsNullOrEmpty(pduStringInHex))
             {

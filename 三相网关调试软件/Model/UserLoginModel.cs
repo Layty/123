@@ -2,6 +2,7 @@
 
 namespace 三相智慧能源网关调试软件.Model
 {
+
     public class UserLoginModel : ValidateModelBase
     {
         [Required(ErrorMessage = "The user name cannot be empty！")]

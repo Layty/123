@@ -6,18 +6,17 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponseWithList : IToPduStringInHex, IPduStringInHexConstructor
+    public class GetResponseWithList : IToPduStringInHex, IPduStringInHexConstructor,IGetResponse
     {
         [XmlIgnore] public GetResponseType GetResponseType { get; set; } = GetResponseType.WithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
 
         public GetDataResult[] Result;
 
-     
-
         public string ToPduStringInHex()
         {
 			StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("03");
             stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             int num = Result.Length;
             if (num <= 127)
