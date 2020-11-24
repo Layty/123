@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Serialization;
 using CommonServiceLocator;
@@ -30,12 +32,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class Mission
     {
-        private DlmsClient dlmsClient { get;set; }
+        private DlmsClient dlmsClient { get; set; }
 
         public void ReadEnergy(int timeSpan)
         {
-
-
         }
     }
 
@@ -185,17 +185,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
             GetRequestType getRequestType = GetRequestType.Normal)
         {
+          //  getRequest=new GetRequest();
             switch (getRequestType)
             {
                 case GetRequestType.Normal:
                     getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
                     break;
-                case GetRequestType.Next: 
-                    getRequest.GetRequestNext=new GetRequestNext();
+                case GetRequestType.Next:
+                    getRequest.GetRequestNext = new GetRequestNext();
                     break;
                 case GetRequestType.WithList:
-                  
-                   getRequest.GetRequestWithList=new GetRequestWithList();
+                    getRequest.GetRequestWithList = new GetRequestWithList();
                     break;
             }
 
@@ -205,12 +205,89 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         public async Task<GetResponse> GetRequestAndWaitResponse(
-            CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
+            CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection,
+            GetRequestType getRequestType = GetRequestType.Normal)
         {
-            getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
+            switch (getRequestType)
+            {
+                case GetRequestType.Normal:
+                    getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
+                    break;
+                case GetRequestType.Next:
+                    getRequest.GetRequestNext = new GetRequestNext();
+                    break;
+                case GetRequestType.WithList:
+                    getRequest.GetRequestWithList = new GetRequestWithList();
+                    break;
+            }
+
             XmlCommon(getRequest);
             var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
             return HandleGetResponse(dataResult);
+        }
+
+        public async Task<List<GetResponse>> GetRequestAndWaitResponseArray(
+            CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection,
+            GetRequestType getRequestType = GetRequestType.Normal)
+        {
+            List<GetResponse> getResponses = new List<GetResponse>();
+            stringBuilder = new StringBuilder();
+            switch (getRequestType)
+            {
+                case GetRequestType.Normal:
+                    getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
+                    break;
+                case GetRequestType.Next:
+                    getRequest.GetRequestNext = new GetRequestNext();
+                    break;
+                case GetRequestType.WithList:
+                    getRequest.GetRequestWithList = new GetRequestWithList();
+                    break;
+            }
+
+            XmlCommon(getRequest);
+            var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
+
+            var re = HandleGetResponse(dataResult);
+            if (re.GetResponseNormal != null)
+            {
+                getResponses.Add(re);
+                return getResponses;
+            }
+
+            await HowToHandleBlockNumber(getResponses, re);
+
+            return getResponses;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        public async Task HowToHandleBlockNumber(List<GetResponse> list, GetResponse response)
+        {
+            if (response != null)
+            {
+                if (response.GetResponseWithDataBlock != null)
+                {
+                    if (response.GetResponseWithDataBlock.DataBlockG.LastBlock.Value == "00")
+                    {
+                        stringBuilder.Append(response.GetResponseWithDataBlock.DataBlockG.RawData.Value);
+                        list.Add(response);
+                        var blockNumber = response.GetResponseWithDataBlock.DataBlockG.BlockNumber;
+                        getRequest = new GetRequest
+                        {
+                            GetRequestNext = new GetRequestNext() {BlockNumber = blockNumber}
+                        };
+                        var dataGetRequestNextResult = await HandlerSendData(getRequest.ToPduStringInHex());
+                        var re = HandleGetResponse(dataGetRequestNextResult);
+                        await HowToHandleBlockNumber(list, re);
+                    }
+                    else if (response.GetResponseWithDataBlock.DataBlockG.LastBlock.Value == "01")
+                    {
+                        stringBuilder.Append(response.GetResponseWithDataBlock.DataBlockG.RawData.Value);
+                        list.Add(response);
+                    }
+                }
+            }
         }
 
         public async Task<byte[]> GetRequest(CosemAttributeDescriptor cosemAttributeDescriptor)
@@ -248,10 +325,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
 
             XmlCommon(getResponse);
-            if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
+            if (getResponse.GetResponseNormal != null)
             {
-                getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
+                if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
+                {
+                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
+                }
             }
+
 
             return getResponse;
         }
@@ -281,7 +362,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public async Task<byte[]> ActionRequest(ActionRequest actionRequestNormal)
         {
-            return await HandlerSendData((MyDlmsStandard.Common.Common.StringToByte(actionRequestNormal.ToPduStringInHex())));
+            return await HandlerSendData(
+                (MyDlmsStandard.Common.Common.StringToByte(actionRequestNormal.ToPduStringInHex())));
         }
 
         private async Task<byte[]> HandlerSendData(byte[] dataBytes)
@@ -299,6 +381,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             bytes = HowToTakeReplyApduData(bytes);
             return bytes;
         }
+
         private async Task<byte[]> HandlerSendData(string dataHexString)
         {
             byte[] bytes = { };
@@ -368,7 +451,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
 
-            HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel.ServerAddress,(byte)DlmsSettingsViewModel.ClientAddress,DlmsSettingsViewModel.DlmsInfo);
+            HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel.ServerAddress,
+                (byte) DlmsSettingsViewModel.ClientAddress, DlmsSettingsViewModel.DlmsInfo);
             NetFrameMaker = new NetFrameMaker(DlmsSettingsViewModel);
             EModeViewModel = new EModeViewModel(PortMaster);
 
@@ -384,9 +468,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public async void ActionEnergy()
         {
-           await InitRequest();
+            await InitRequest();
 //            await GetRequestAndWaitResponse()
         }
+
         public Task<byte[]> SetEnterUpGradeMode()
         {
             return PortMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));

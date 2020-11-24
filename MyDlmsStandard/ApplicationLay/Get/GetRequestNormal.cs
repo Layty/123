@@ -75,12 +75,12 @@ namespace MyDlmsStandard.ApplicationLay.Get
             if (AttributeDescriptor != null)
             {
                 stringBuilder.Append(AttributeDescriptor.ToPduStringInHex());
-                stringBuilder.Append(0x00);
+                stringBuilder.Append("00");
             }
 
             if (AccessSelection != null)
             {
-                stringBuilder.Append(0x01);
+                stringBuilder.Append("01");
                 stringBuilder.Append(AccessSelection.ToPduStringInHex());
             }
 

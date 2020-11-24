@@ -7,12 +7,12 @@ namespace MyDlmsStandard.ApplicationLay.Get
     public class GetRequestNext : IGetRequest,IToPduStringInHex
     {
         [XmlIgnore] public GetRequestType GetRequestType { get; } = GetRequestType.Next;
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }=new AxdrIntegerUnsigned8("C1");
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
         public GetRequestNext()
         {
-            InvokeIdAndPriority.Value = "C1";
+            
         }
 
 //        public byte[] ToPduBytes()

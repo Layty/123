@@ -9,11 +9,16 @@
              DataContext="{Binding Source={StaticResource Locator},Path=ProfileGenericViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ItemsControl ItemsSource="{ Binding ProfileGenericCollection}">
+        <ItemsControl ItemsSource="{ Binding ProfileGenericCollection}" Margin="5 0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <materialDesign:Card>
-                        <Expander Header="{Binding ProfileGenericName}">
+                        <Expander Header="{Binding ProfileGenericName}" Margin="5 0">
                             <TabControl Height="400">
                                 <TabItem Header="Profile Params">
                                     <Grid>
@@ -95,18 +100,25 @@
                                 </TabItem>
                                 <TabItem Header="Profile Data">
                                     <StackPanel>
-                                        <Button Content="先获取捕获对象" Margin="5" />
-                                        <Button Content="获取Buffer" Margin="5"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetAllBufferCommand ,Mode=TwoWay}"
-                                                CommandParameter="{Binding }" />
-                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.FromIndex}" />
-                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.ToIndex}" />
-                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.FromSelectedValue}" />
-                                        <TextBox Text="{Binding ProfileGenericEntryDescriptor.ToSelectedValue}" />
-                                        <Button Content="GetByEntry"
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBufferByEntryCommand ,Mode=TwoWay}"
-                                                CommandParameter="{Binding }" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="先获取捕获对象" Margin="5" />
+                                            <Button Content="获取Buffer" Margin="5"
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetAllBufferCommand ,Mode=TwoWay}"
+                                                    CommandParameter="{Binding }" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <DatePicker materialDesign:HintAssist.Hint="Pick Date" Margin="5"
+                                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                                            <materialDesign:TimePicker
+                                                Margin="5"
+                                                Name="TimePicker" IsInvalidTextAllowed="False" Is24Hours="True"
+                                                WithSeconds="True" />
+                                            <TextBlock Name="TextBlockShowTheDateTimeToBeSet" Text="SelectDateTime"
+                                                       Margin="5" VerticalAlignment="Center" />
+                                        </StackPanel>
                                         <ComboBox ItemsSource="{Binding CaptureObjects}" SelectedIndex="0"
+                                                  materialDesign:HintAssist.Hint="选择对象"
+                                                  materialDesign:HintAssist.IsFloating="True"
                                                   IsSelected="True">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
@@ -121,38 +133,73 @@
                                         <!-- <DataGrid -->
                                         <!--     ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}, Path=DataContext.ListObservableCollection}" /> -->
 
-                                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                         <ItemsControl HorizontalAlignment="Stretch"
-                                             ItemsSource="{Binding Buffer,UpdateSourceTrigger=PropertyChanged}" >
-                                             <ItemsControl.ItemTemplate>
-                                                 <DataTemplate>
-                                                     <Grid >
-                                                         <ItemsControl ItemsSource="{Binding  Items}" >
-                                                             <ItemsControl.ItemsPanel>
-                                                                 <ItemsPanelTemplate>
-                                                                     <VirtualizingStackPanel Orientation="Horizontal"></VirtualizingStackPanel>
-                                                                 </ItemsPanelTemplate>
-                                                             </ItemsControl.ItemsPanel>
-                                                             <ItemsControl.ItemTemplate>
-                                                                 <DataTemplate>
-                                                                     <StackPanel >
-                                                                         <TextBox Text="{Binding ValueString}" Margin="5 0" />
-                                                                     </StackPanel>
-                                                                 </DataTemplate>
-
-                                                             </ItemsControl.ItemTemplate>
-                                                         </ItemsControl>
-                                                     </Grid>
-
-
-                                                 </DataTemplate>
-                                             </ItemsControl.ItemTemplate>
-                                         </ItemsControl>
-                                        </ScrollViewer>
-                             
-
-
                                     </StackPanel>
+                                </TabItem>
+                                <TabItem Header="DataBuffer">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Width="50"
+                                                     Text="{Binding ProfileGenericEntryDescriptor.FromIndex}"
+                                                     materialDesign:HintAssist.Hint="FromIndex"
+                                                     materialDesign:HintAssist.IsFloating="True" />
+                                            <TextBox Width="50" Text="{Binding ProfileGenericEntryDescriptor.ToIndex}"
+                                                     materialDesign:HintAssist.Hint="ToIndex"
+                                                     materialDesign:HintAssist.IsFloating="True" />
+                                            <TextBox Width="50"
+                                                     Text="{Binding ProfileGenericEntryDescriptor.FromSelectedValue}"
+                                                     materialDesign:HintAssist.Hint="FromSelectedValue"
+                                                     materialDesign:HintAssist.IsFloating="True" />
+                                            <TextBox Width="50"
+                                                     Text="{Binding ProfileGenericEntryDescriptor.ToSelectedValue}"
+                                                     materialDesign:HintAssist.Hint="ToSelectedValue"
+                                                     materialDesign:HintAssist.IsFloating="True" />
+                                            <Button Content="GetByEntry" Margin="5 0"
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetBufferByEntryCommand ,Mode=TwoWay}"
+                                                    CommandParameter="{Binding }" />
+                                        </StackPanel>
+                                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto"
+                                                      VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl HorizontalAlignment="Stretch" 
+                                                          ItemsSource="{Binding Buffer,UpdateSourceTrigger=PropertyChanged}">
+
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <ItemsControl ItemsSource="{Binding Items}">
+                                                                <ItemsControl.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <VirtualizingStackPanel
+                                                                            Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ItemsControl.ItemsPanel>
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBox MinWidth="100"
+                                                                            Text="{Binding ValueString,Converter={StaticResource HexStringToDateTimeConverter }}"
+                                                                            Margin="5 0" />
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+
+                                                        </Grid>
+
+
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                
+                                    </Grid>
+
 
                                 </TabItem>
                             </TabControl>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using CommonServiceLocator;
 using 三相智慧能源网关调试软件.Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -25,14 +26,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private ObservableCollection<CustomCosemProfileGenericModel> _profileGenericCollection;
-
         public RelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand { get; set; }
-
         public RelayCommand<CustomCosemProfileGenericModel> SetCaptureObjectsCommand { get; set; }
-
         public RelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> SetCapturePeriodCommand { get; set; }
-
         public RelayCommand<CustomCosemProfileGenericModel> GetEntriesInUseCommand { get; set; }
 
         public RelayCommand<CustomCosemProfileGenericModel> GetProfileEntriesCommand { get; set; }
@@ -44,7 +41,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByRangeCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByEntryCommand { get; set; }
         public DlmsClient Client { get; set; }
-
 
         public ProfileGenericViewModel()
         {
@@ -164,45 +160,68 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 }
 
                 var response = await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor());
-
-                if (response != null)
-                {
-                    if (response.GetResponseNormal != null)
-                    {
-                    }
-
-                    if (response.GetResponseWithDataBlock != null)
-                    {
-                        await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor(), GetRequestType.Next);
-                    }
-                }
-
-//                var stringTo = NormalDataParse.ParsePduData(resultBytes).StringToByte();
-//                var splitCountLength = (stringTo.Length - 1) / stringTo[0];
-//                ListObservableCollection = new ObservableCollection<byte[]>();
-//                for (int i = 0; i < stringTo[0]; i++)
-//                {
-//                    var index = 1 + (i * splitCountLength);
-//                    ListObservableCollection.Add(stringTo.Skip(index).Take(splitCountLength).ToArray());
-//                }
             });
             GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 var response =
-                    await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptorWithSelectionByRange());
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange());
             });
             GetBufferByEntryCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
+                t.Buffer.Clear();
                 var response =
-                    await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptorWithSelectionByEntry());
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry());
+                StringBuilder stringBuilder = new StringBuilder();
                 if (response != null)
                 {
-                    DLMSArray array = (DLMSArray) response.GetResponseNormal.Result.Data.Value;
-                    t.Buffer.Clear();
-                    foreach (var item in array.Items)
+                    if (response.Count == 1)
                     {
-                        t.Buffer.Add((DlmsStructure) item.Value);
+                        var ttttt = (DLMSArray) response[0].GetResponseNormal.Result.Data.Value;
+
+                        if (ttttt.DataType == DataType.Array)
+                        {
+                            DLMSArray array = ttttt;
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                foreach (var item in array.Items)
+                                {
+                                    t.Buffer.Add((DlmsStructure) item.Value);
+                                }
+                            });
+                        }
                     }
+                    else
+                    {
+                        foreach (var getResponse in response)
+                        {
+                            stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
+                        }
+
+                        var strr = stringBuilder.ToString();
+                        DlmsDataItem vDataItem = new DlmsDataItem();
+                      
+                        var foo = vDataItem.PduStringInHexConstructor(ref strr);
+                        if (!foo)
+                        {
+                            return;
+                        }
+                        if (vDataItem.DataType == DataType.Array)
+                        {
+                            DLMSArray array = (DLMSArray) vDataItem.Value;
+                            
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                foreach (var item in array.Items)
+                                {
+                                    t.Buffer.Add((DlmsStructure)item.Value);
+                                }
+                            });
+                        }
+                    }
+
+
+                    ;
                 }
             });
         }
