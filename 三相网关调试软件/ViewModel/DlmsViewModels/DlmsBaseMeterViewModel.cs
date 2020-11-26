@@ -70,7 +70,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
                 if (response != null )
                 {
-                 
                     SoftVersion = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
@@ -86,7 +85,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-              
                 DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000");//8192
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });

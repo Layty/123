@@ -1,3 +1,5 @@
+using System;
+using Autofac;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
@@ -8,24 +10,28 @@ namespace 三相智慧能源网关调试软件.ViewModel
     {
         public ViewModelLocator()
         {
+          
+       
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
+                #region Dlms相关服务
                 SimpleIoc.Default.Register<DlmsSettingsViewModel>();
                 SimpleIoc.Default.Register<DlmsClient>();
-
-                SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<DataViewModel>();
-                SimpleIoc.Default.Register<ClockViewModel>();
+                SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
+                SimpleIoc.Default.Register<ClockViewModel>();
                 SimpleIoc.Default.Register<LoadIdentificationViewModel>();
+
+                #endregion
+
 
                 #region 主程序界面相关
 
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
                 SimpleIoc.Default.Register<MenuViewModel>(); //菜单
                 SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
-
                 SimpleIoc.Default.Register<ColorToolViewModel>(); //程序调色板，皮肤
                 SimpleIoc.Default.Register<SkinViewModel>(true); //程序调色板，皮肤，开机直接应用
 
@@ -39,7 +45,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<TftpServerViewModel>();
                 SimpleIoc.Default.Register<TftpClientViewModel>();
                 SimpleIoc.Default.Register<NetLogViewModel>();
-                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
                 SimpleIoc.Default.Register<XMLLogViewModel>();
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
 
@@ -49,8 +54,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 三相网关计量芯相关业务
 
-                SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //DLMS协议
+                SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //基表DLMS协议
                 SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
+                SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
 
                 #endregion
 
@@ -76,6 +82,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
+        public UserLoginViewModel UserLoginViewModel1 => ServiceProvider.Instance.Get<UserLoginViewModel>();
         public DialogsViewModel DialogsViewModel => ServiceLocator.Current.GetInstance<DialogsViewModel>();
 
         #region 主程序界面相关

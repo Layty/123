@@ -138,68 +138,7 @@
         </Setter>
 
     </Style>
-    <!-- 支持旋转变换的文本-->
-    <Style x:Key="CloseTextBlockRotateAngle" TargetType="{x:Type TextBlock}">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <RotateTransform />
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                <BeginStoryboard x:Name="rotateStoryboardBegin">
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                             To="360" Duration="0:0:0.5" RepeatBehavior="Forever" />
-                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Red"  Duration="0:0:0.5" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
-                                             Duration="0:0:0.5" />
-                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Transparent"
-                                            Duration="0:0:0.5" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-        </Style.Triggers>
-    </Style>
-    <!-- 支持向下偏移变换的文本-->
-    <Style x:Key="MinTextBlockTransformY" TargetType="{x:Type TextBlock}">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform Y="0.5" X="0.5" />
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" To="5" Duration="0:0:0.2" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" To="0" Duration="0:0:0.2" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-        </Style.Triggers>
-
-    </Style>
+  
 
 
     <Style x:Key="MyTextBoxStyle" TargetType="{x:Type TextBox}">
@@ -234,14 +173,7 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="MyTextBlockStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="18" />
-        <Setter Property="FontFamily" Value="宋体" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Foreground" Value="Black" />
-    </Style>
+  
     <Style x:Key="MyBigFontButtonStyle">
         <!--在 Window 资源管理区定义样式-->
         <Setter Property="Control.FontFamily" Value="宋体" />
@@ -268,13 +200,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="MouseMoveStyle" TargetType="{x:Type TextBlock}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="Aqua" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+ 
     <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}">
         <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
         <Style.BasedOn>
@@ -347,18 +273,7 @@
             </Style>
         </Style.BasedOn>
     </Style>
-    <Style x:Key="TextBlockLinearColorBrush" TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0 0" EndPoint="1 1">
-                    <GradientStop Offset="0" Color="Brown" />
-                    <GradientStop Offset="0.3" Color='Red' />
-                    <GradientStop Offset="0.6" Color="Orange" />
-                    <GradientStop Offset="1" Color="Yellow" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
-    </Style>
+  
     <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -566,21 +481,7 @@
     </Style>
 
 
-    <!-- DataGridTextColumn 文字居中 -->
-    <Style x:Key="CenterAlignmentStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="Wrap" />
-      
-        <Setter Property="TextAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Width" Value="Auto"></Setter>
-    </Style>
-    <!-- DataGridTextColumn 文字居左 -->
-    <Style x:Key="LeftAlignmentStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="Wrap" />
-        <Setter Property="TextAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Width" Value="Auto"></Setter>
-    </Style>
+
     <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="BorderThickness" Value="1"/>
