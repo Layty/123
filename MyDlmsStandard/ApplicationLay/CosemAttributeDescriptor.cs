@@ -4,8 +4,17 @@ namespace MyDlmsStandard.ApplicationLay
 {
     public class CosemAttributeDescriptor : IPduStringInHexConstructor, IToPduStringInHex
     {
+        /// <summary>
+        /// 类ID
+        /// </summary>
         public AxdrIntegerUnsigned16 ClassId { get; set; }
+        /// <summary>
+        /// OBIS
+        /// </summary>
         public AxdrOctetStringFixed InstanceId { get; set; }
+        /// <summary>
+        /// 属性ID
+        /// </summary>
         public AxdrIntegerInteger8 AttributeId { get; set; }
 
         public int Length => CalculateLength();

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using Microsoft.Toolkit.Mvvm.Input;
-using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.Model.IIC;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using 三相智慧能源网关调试软件.Common;
+using 三相智慧能源网关调试软件.Model.IIC;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     /*
         联系邮箱：694965217@qq.com
         创建时间：2020/05/14 16:06:49
-        主要用途：
+        主要用途：用于三相网关IIC通道数据分析，需要专门的baseMeter程序
         更改记录：
     */
     public class IicDataViewModel : ObservableObject
@@ -184,6 +185,20 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private ObservableCollection<IicHarmonicData> _icHarmonicDataCollection;
 
+
+        public ObservableCollection<IicParameter> IicParameterDataCollection
+        {
+            get => _iicParameterDataCollection;
+            set
+            {
+                _iicParameterDataCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<IicParameter> _iicParameterDataCollection;
+
+
         private IicInstantData _instantData = new IicInstantData();
 
         IicEnergyData _iicCurrentEnergyData = new IicEnergyData();
@@ -201,7 +216,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         IicHarmonicData _iicHarmonicDataIb = new IicHarmonicData();
         IicHarmonicData _iicHarmonicDataIc = new IicHarmonicData();
 
-
+        IicParameter _iicParameter = new IicParameter();
         public RelayCommand ClearCommand { get; set; }
 
         public IicDataViewModel()
@@ -219,9 +234,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             IaHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
             IbHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
             IcHarmonicDataCollection = new ObservableCollection<IicHarmonicData>();
+            IicParameterDataCollection = new ObservableCollection<IicParameter>();
 
-
-            StrongReferenceMessenger.Default.Register<byte[],string>(this, "ReceiveDataEvent", HandlerData);
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(typeof(IicDataViewModel),
+                "ClientReceiveDataEvent", HandlerData);
             ClearCommand = new RelayCommand(() =>
             {
                 InstantDataCollection.Clear();
@@ -237,12 +253,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 IaHarmonicDataCollection.Clear();
                 IbHarmonicDataCollection.Clear();
                 IcHarmonicDataCollection.Clear();
+                IicParameterDataCollection.Clear();
             });
         }
 
-        private void HandlerData(object sender,byte[] obj)
+        private void HandlerData(object sender, Tuple<Socket, byte[]> mTuple)
         {
-            var stringData = Encoding.Default.GetString(obj);
+            var stringData = Encoding.Default.GetString(mTuple.Item2);
             var bb = stringData.Split('\n');
             if (bb.Length == 3)
             {
@@ -349,6 +366,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                 IaHarmonicDataCollection.Add(_iicHarmonicDataIa);
                                 IbHarmonicDataCollection.Add(_iicHarmonicDataIb);
                                 IcHarmonicDataCollection.Add(_iicHarmonicDataIc);
+                            });
+                        }
+                    }
+                    else if (dataType == (ushort) IicDataType.IicParameterData)
+                    {
+                        _iicParameter = new IicParameter();
+                        if (_iicParameter.ParseData(bytes))
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                IicParameterDataCollection.Add(_iicParameter);
                             });
                         }
                     }

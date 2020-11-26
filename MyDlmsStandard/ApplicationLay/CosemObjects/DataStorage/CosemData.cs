@@ -17,7 +17,6 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private DlmsDataItem _value;
 
-
         public CosemData(string logicalName) : this(logicalName, ObjectType.Data)
         {
             LogicalName = logicalName;
@@ -32,8 +31,6 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public CosemAttributeDescriptor GetLogicNameAttributeDescriptor() => GetCosemAttributeDescriptor(1);
         public CosemAttributeDescriptor GetValueAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
-       
-       
         public virtual string[] GetNames() => new[] {LogicalName, "Value"};
 
         public virtual int GetAttributeCount() => 2;
@@ -55,7 +52,5 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
             return dataType;
         }
-
-        
     }
 }

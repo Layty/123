@@ -61,30 +61,25 @@
 
 
                 </Grid>
-                <GroupBox Grid.Row="1" Header="发送区"  >
+                <GroupBox Grid.Row="1" Header="发送区">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="TextBoxMsg" Text="root" TextWrapping="Wrap" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Height="100" Margin="5"/>
-                        <Button Grid.Column="1" Command="{Binding SendMsgCommand}" Content="发送" Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                        <TextBox x:Name="TextBoxMsg" Text="root" TextWrapping="Wrap"
+                                 Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Height="100"
+                                 Margin="5" />
+                        <Button Grid.Column="1" Command="{Binding SendMsgCommand}" Content="发送"
+                                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}"
+                                Margin="5" />
                     </Grid>
-                 
+
                 </GroupBox>
                 <Expander Grid.Row="2" Header="三相网关参数调试" IsExpanded="False">
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                
-                        </Grid>
-
-
-                        <StackPanel Grid.Row="1" Margin="2">
+                    <Grid>
+                        <StackPanel Margin="2">
                             <Button Command="{Binding TryToLoginCommand}" Margin="3">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Key" />
@@ -97,69 +92,71 @@
                             <UniformGrid Columns="2">
 
                                 <TextBox materialDesign:HintAssist.Hint="南瑞主站IP" FontSize="20"
-                                     materialDesign:HintAssist.IsFloating="True"
-                                     x:Name="TextBoxAfterHostIP"
-                                     Text="{Binding AfterHostIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
-                                     Margin="3" />
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         x:Name="TextBoxAfterHostIP"
+                                         Text="{Binding AfterHostIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
+                                         Margin="3" />
                                 <Button Command="{Binding ReplaceAppParaHostIpCommand}" Content="设置主站IP" Margin="3" />
                             </UniformGrid>
                             <UniformGrid Columns="2">
-                                <TextBox materialDesign:HintAssist.Hint="网关IP" materialDesign:HintAssist.IsFloating="True"
-                                     Margin="3" FontSize="20"
-                                     x:Name="TextBoxAfterIP"
-                                     Text="{Binding AfterIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
+                                <TextBox materialDesign:HintAssist.Hint="网关IP"
+                                         materialDesign:HintAssist.IsFloating="True"
+                                         Margin="3" FontSize="20"
+                                         x:Name="TextBoxAfterIP"
+                                         Text="{Binding AfterIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
                                 <Button Command="{Binding ReplaceAppParaIpAddrCommand}" Content="设置网关IP" Margin="3" />
                             </UniformGrid>
                             <UniformGrid Columns="2">
                                 <TextBox materialDesign:HintAssist.Hint="默认网关" FontSize="20"
-                                     materialDesign:HintAssist.IsFloating="True" Margin="3"
-                                     x:Name="TextBoxAfterMask"
-                                     Text="{Binding AfterGateway,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
+                                         materialDesign:HintAssist.IsFloating="True" Margin="3"
+                                         x:Name="TextBoxAfterMask"
+                                         Text="{Binding AfterGateway,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
                                 <Button Command="{Binding ReplaceAppParaIpGateWayCommand}" Content="设置默认网关" Margin="3" />
                             </UniformGrid>
-                            <Button Command="{Binding ReplaceAllParaCommand}" Margin="3">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="SettingsBox"></materialDesign:PackIcon>
-                                    <TextBlock Text="一键设置参数"></TextBlock>
-                                    <materialDesign:PackIcon Kind="SettingsBox"></materialDesign:PackIcon>
-                                </StackPanel>
+                            <WrapPanel>
 
-                            </Button>
-                            <Button Command="{Binding SendMsgCommand}"  CommandParameter="cat /opt/cfg/AppPara.cfg"
-                                Margin="3">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Eye" />
-                                    <TextBlock Text="查看配置文件" />
-                                    <materialDesign:PackIcon Kind="Eye" />
-                                </StackPanel>
 
-                            </Button>
-                            <Button Command="{Binding SendMsgCommand}" CommandParameter="reboot" Margin="3">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center" />
-                                    <TextBlock Text="重启reboot" />
-                                    <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center" />
-                                </StackPanel>
+                                <Button Command="{Binding ReplaceAllParaCommand}" Margin="3">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="SettingsBox" />
+                                        <TextBlock Text="一键设置参数" />
+                                        <materialDesign:PackIcon Kind="SettingsBox" />
+                                    </StackPanel>
 
-                            </Button>
-                            <Button x:Name="ButtonTail" Content="查看IIC通讯日志" Margin="3"
-                                Command="{Binding SendMsgCommand}" CommandParameter="tail -f /opt/bin/base_meter.log"
-                                ></Button>
-                            <Button x:Name="ButtonExitTail" Content="Control+C" Margin="3" Command="{Binding SendMsgControlCCommand}"  ></Button>
-                            
+                                </Button>
+                                <Button Command="{Binding SendMsgCommand}" CommandParameter="cat /opt/cfg/AppPara.cfg"
+                                        Margin="3">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Eye" />
+                                        <TextBlock Text="查看配置文件" />
+                                        <materialDesign:PackIcon Kind="Eye" />
+                                    </StackPanel>
 
+                                </Button>
+                                <Button Command="{Binding SendMsgCommand}" CommandParameter="reboot" Margin="3">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center" />
+                                        <TextBlock Text="重启reboot" />
+                                        <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                </Button>
+                                <Button x:Name="ButtonTail" Content="查看IIC通讯日志" Margin="3"
+                                        Command="{Binding SendMsgCommand}"
+                                        CommandParameter="tail -f /opt/bin/base_meter.log" />
+                                <Button x:Name="ButtonExitTail" Content="Control+C" Margin="3"
+                                        Command="{Binding SendMsgControlCCommand}" />
+
+                            </WrapPanel>
                         </StackPanel>
-
-
-
                     </Grid>
 
                 </Expander>
-             
+
             </Grid>
         </materialDesign:Card>
-   
+
     </Grid>
 </Page>

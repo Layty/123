@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard.Wrapper;
 
 
@@ -126,7 +125,7 @@ namespace 三相智慧能源网关调试软件
             tcpClientHelper.ConnectToServer();
             SocketBindingDictionary[obj] = tcpClientHelper;
 
-            tcpClientHelper.ReceiveByte += TcpClientHelper_ReceiveByte;
+            tcpClientHelper.ReceiveDataEvent += TcpClientHelperReceiveDataEvent;
         }
 
         /// <summary>
@@ -162,7 +161,7 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private void TcpClientHelper_ReceiveByte(Socket arg1, byte[] arg2)
+        private void TcpClientHelperReceiveDataEvent(Socket arg1, byte[] arg2)
         {
             foreach (var socket in SocketBindingDictionary)
             {

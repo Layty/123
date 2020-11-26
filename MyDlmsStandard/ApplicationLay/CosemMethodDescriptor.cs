@@ -7,6 +7,9 @@ namespace MyDlmsStandard.ApplicationLay
         public AxdrIntegerUnsigned16 CosemClassId { get; set; }
 
         public AxdrOctetStringFixed CosemObjectInstanceId { get; set; }
+        /// <summary>
+        /// 方法ID
+        /// </summary>
         public AxdrIntegerInteger8 CosemObjectMethodId { get; set; }
 
         public int Length => CalculateLength();

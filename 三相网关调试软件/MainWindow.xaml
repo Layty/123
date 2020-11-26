@@ -211,15 +211,15 @@
       
             <Grid >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="45" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <materialDesign:Snackbar Height="50" 
-                    x:Name="SnackbarThree"
-                     Panel.ZIndex="1"
-                    VerticalAlignment="Top"
-                    MessageQueue="{materialDesign:MessageQueue}" />
+            <materialDesign:Snackbar Height="Auto"  Grid.Row="0"
+                                     x:Name="SnackbarThree"
+                                     Panel.ZIndex="1"
+                                     VerticalAlignment="Top"
+                                     MessageQueue="{materialDesign:MessageQueue}" />
             <!-- 标题栏-->
                 <Grid Grid.Row="0">
                     <materialDesign:ColorZone Mode="PrimaryMid" x:Name="ColorZone"

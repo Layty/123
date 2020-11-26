@@ -70,10 +70,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (array.PduStringInHexConstructor(ref ar))
                         {
                             t.CaptureObjects.Clear();
-                            for (int i = 0; i < array.Items.Length; i++)
+                            foreach (var t1 in array.Items)
                             {
                                 var captureObjectDefinition =
-                                    CaptureObjectDefinition.CreateFromDlmsData(array.Items[i]);
+                                    CaptureObjectDefinition.CreateFromDlmsData(t1);
                                 if (captureObjectDefinition != null)
                                 {
                                     var client = new RestClient(
@@ -181,14 +181,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (ttttt.DataType == DataType.Array)
                         {
                             DLMSArray array = ttttt;
-
-                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            foreach (var item in array.Items)
                             {
-                                foreach (var item in array.Items)
-                                {
-                                    t.Buffer.Add((DlmsStructure) item.Value);
-                                }
-                            });
+                                structures.Add((DlmsStructure) item.Value);
+                            }
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
                         }
                     }
                     else
@@ -200,23 +199,23 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                         var strr = stringBuilder.ToString();
                         DlmsDataItem vDataItem = new DlmsDataItem();
-                      
+
                         var foo = vDataItem.PduStringInHexConstructor(ref strr);
                         if (!foo)
                         {
                             return;
                         }
+
                         if (vDataItem.DataType == DataType.Array)
                         {
                             DLMSArray array = (DLMSArray) vDataItem.Value;
-                            
-                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            foreach (var item in array.Items)
                             {
-                                foreach (var item in array.Items)
-                                {
-                                    t.Buffer.Add((DlmsStructure)item.Value);
-                                }
-                            });
+                                structures.Add((DlmsStructure) item.Value);
+                            }
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
                         }
                     }
 

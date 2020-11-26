@@ -3,11 +3,27 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay
 {
-    public class DataBlockG:IToPduStringInHex,IPduStringInHexConstructor
+    public class DataBlockG : IToPduStringInHex, IPduStringInHexConstructor
     {
+        /// <summary>
+        ///LastBlock是bool类型，Value为 00代表false ,01代表true
+        /// 当LastBlock=00时代表未传完，
+        /// 当LastBlock=00时代表此帧为最后一块数据
+        /// </summary>
         public AxdrIntegerBoolean LastBlock { get; set; }
+
+        /// <summary>
+        /// 当前的块数号
+        /// </summary>
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
+
+        /// <summary>
+        /// 未加工的数据，最终完成所有块传输后，需要将所有RawData进行拼接后解析
+        /// </summary>
         public AxdrIntegerOctetString RawData { get; set; }
+        /// <summary>
+        /// 数据访问结果，为00代表失败，01代表成功
+        /// </summary>
         public AxdrIntegerUnsigned8 DataAccessResult { get; set; }
 
 
@@ -26,6 +42,7 @@ namespace MyDlmsStandard.ApplicationLay
                 stringBuilder.Append("00");
                 stringBuilder.Append(RawData.ToPduStringInHex());
             }
+
             return stringBuilder.ToString();
         }
 
@@ -35,16 +52,19 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 return false;
             }
+
             LastBlock = new AxdrIntegerBoolean();
             if (!LastBlock.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
+
             BlockNumber = new AxdrIntegerUnsigned32();
             if (!BlockNumber.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
+
             string a = pduStringInHex.Substring(0, 2);
             if (a == "00")
             {
@@ -52,12 +72,14 @@ namespace MyDlmsStandard.ApplicationLay
                 RawData = new AxdrIntegerOctetString();
                 return RawData.PduStringInHexConstructor(ref pduStringInHex);
             }
+
             if (a == "01")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
                 DataAccessResult = new AxdrIntegerUnsigned8();
                 return DataAccessResult.PduStringInHexConstructor(ref pduStringInHex);
             }
+
             return false;
         }
     }

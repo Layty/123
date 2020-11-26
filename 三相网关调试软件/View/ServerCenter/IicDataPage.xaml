@@ -11,7 +11,7 @@
         <Border BorderThickness="3" Padding="10">
             <ScrollViewer>
                 <StackPanel>
-                    <Button Margin="3" Command="{Binding ClearCommand}" Content="清空数据"></Button>
+                    <Button Margin="3" Command="{Binding ClearCommand}" Content="清空数据_C"></Button>
                     <GroupBox Header="IIC瞬时量" Height="200">
                         <DataGrid
                             ItemsSource="{Binding InstantDataCollection,UpdateSourceTrigger=PropertyChanged}" />
@@ -63,6 +63,10 @@
                     <GroupBox Header="IIC C相电流谐波含量" Height="200">
                         <DataGrid
                             ItemsSource="{Binding IcHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC 参数块" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding IicParameterDataCollection,UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
                 </StackPanel>
             </ScrollViewer>

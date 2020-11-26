@@ -102,7 +102,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
         {
             if (ShortName != 0)
             {
-                return ShortName.ToString() + " " + Description;
+                return ShortName + " " + Description;
             }
 
             return LogicalName + " " + Description;

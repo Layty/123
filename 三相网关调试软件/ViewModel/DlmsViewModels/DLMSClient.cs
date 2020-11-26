@@ -6,16 +6,12 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Serialization;
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard;
-using MySerialPortMaster;
-using NLog;
-using 三相智慧能源网关调试软件.Common;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -26,20 +22,13 @@ using MyDlmsStandard.ApplicationLay.Set;
 using MyDlmsStandard.Ber;
 using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
+using MySerialPortMaster;
+using NLog;
+using 三相智慧能源网关调试软件.Common;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
-    public class Mission
-    {
-        private DlmsClient dlmsClient { get; set; }
-
-        public void ReadEnergy(int timeSpan)
-        {
-        }
-    }
-
-
     public class DlmsClient : ObservableObject
     {
         #region 协议层资源
@@ -185,7 +174,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
             GetRequestType getRequestType = GetRequestType.Normal)
         {
-          //  getRequest=new GetRequest();
+            getRequest = new GetRequest();
             switch (getRequestType)
             {
                 case GetRequestType.Normal:
@@ -466,11 +455,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             actionRequest = new ActionRequest();
         }
 
-        public async void ActionEnergy()
-        {
-            await InitRequest();
-//            await GetRequestAndWaitResponse()
-        }
 
         public Task<byte[]> SetEnterUpGradeMode()
         {

@@ -11,8 +11,14 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
     /// </summary>
     public class ScalarUnit : IPduStringInHexConstructor, INotifyPropertyChanged
     {
-        public DataType DataType { get; set; } = DataType.Structure;
+        /// <summary>
+        /// 格式为固定的DLMS结构体
+        /// </summary>
+        public DataType DataType {  get; }
 
+        /// <summary>
+        /// 倍率/系数
+        /// </summary>
         public DlmsDataItem Scalar
         {
             get => _scalar;
@@ -25,6 +31,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private DlmsDataItem _scalar;
 
+        /// <summary>
+        /// 量纲/单位
+        /// </summary>
         public DlmsDataItem Unit
         {
             get => _unit;
@@ -37,20 +46,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private DlmsDataItem _unit;
 
-
-        //        public UnitEnum UnitEnumDisplay
-        //        {
-        //            get => _unitEnum;
-        //            set
-        //            {
-        //                _unitEnum = value;
-        //                OnPropertyChanged();
-        //            }
-        //        }
-        //
-        //        private UnitEnum _unitEnum;
-
-
+        /// <summary>
+        /// 量纲/单位的格式化显示
+        /// </summary>
         public string UnitDisplay
         {
             get => _unitDisplay;
@@ -65,6 +63,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public ScalarUnit()
         {
+            DataType = DataType.Structure;
             Scalar = new DlmsDataItem();
             Unit = new DlmsDataItem();
         }
@@ -72,7 +71,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public static Dictionary<byte, string> ScalarUnitDefinitionDictionary => GetScalarUnitDefinition();
 
-        public static Dictionary<byte, string> GetScalarUnitDefinition()
+        private static Dictionary<byte, string> GetScalarUnitDefinition()
         {
             Dictionary<byte, string> dictionary = new Dictionary<byte, string>();
             dictionary.Add(0, "None");
@@ -218,9 +217,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public override int GetAttributeCount() => 3;
 
-
         public override int GetMethodCount() => 1;
-
 
         public override DataType GetDataType(int index)
         {

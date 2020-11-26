@@ -206,6 +206,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 _paletteHelper.ChangePrimaryColor(hue);
                 _primaryColor = hue;
+                Settings.Default.PrimarySkin = _primaryColor.ToString();
+                Settings.Default.Save();
             }
             else if (ActiveScheme == ColorScheme.Secondary)
             {

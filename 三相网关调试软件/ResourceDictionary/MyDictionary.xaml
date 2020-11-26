@@ -156,7 +156,7 @@
                     <Storyboard>
                         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
                                              To="360" Duration="0:0:0.5" RepeatBehavior="Forever" />
-                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Red" Duration="0:0:0.5" />
+                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="Red"  Duration="0:0:0.5" />
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>

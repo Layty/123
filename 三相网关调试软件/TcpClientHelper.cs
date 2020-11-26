@@ -12,6 +12,22 @@ namespace 三相智慧能源网关调试软件
     public class TcpClientHelper : ValidateModelBase
     {
         public Socket ClientSocket { get; set; }
+
+        /// <summary>
+        /// 最大接收缓存字节数，默认1024
+        /// </summary>
+        public int MaxBuffer
+        {
+            get => _maxBuffer;
+            set
+            {
+                _maxBuffer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _maxBuffer = 1024;
+
         private readonly byte[] _messageByteServer = new byte[1024];
 
         [Required(ErrorMessage = "不能为空！")]
@@ -29,7 +45,9 @@ namespace 三相智慧能源网关调试软件
 
         private string _localIp;
 
-
+        /// <summary>
+        /// 服务端IP地址
+        /// </summary>
         [Required(ErrorMessage = "不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
             ErrorMessage = "请输入正确的IP地址！")]
@@ -45,7 +63,9 @@ namespace 三相智慧能源网关调试软件
 
         private string _serverIpAddress;
 
-
+        /// <summary>
+        /// 服务端口号
+        /// </summary>
         [Required(ErrorMessage = "不能为空！")]
         public int ServerPortNum
         {
@@ -82,44 +102,43 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private string _sendMsg;
 
-        public string MySendMessage
+
+        /// <summary>
+        /// 成功连接至服务端事件
+        /// </summary>
+        public event Action<string, string> SucceedConnectToServerEvent;
+        public event Action<Socket, byte[]> ReceiveDataEvent;
+        public event Action<Socket, byte[]> SendDataToServerEvent;
+        public event Action ErrorEvent;
+        public event Action DisconnectEvent;
+        protected virtual void OnDisconnectEvent()
         {
-            get => _sendMsg;
-            set
-            {
-                _sendMsg = value;
-                OnPropertyChanged();
-            }
+            DisconnectEvent?.Invoke();
+        }
+        protected virtual void OnErrorEvent()
+        {
+            ErrorEvent?.Invoke();
         }
 
-        private string _receiveMsg;
-
-        public string MyReceiveMessage
+        protected virtual void OnSucceedConnectToServer(string local, string remote)
         {
-            get => _receiveMsg;
-            set
-            {
-                _receiveMsg = value;
-                OnPropertyChanged();
-            }
+            StrongReferenceMessenger.Default.Send($"{ClientSocket.LocalEndPoint}成功连接至{ClientSocket.RemoteEndPoint}",
+                "ClientStatus");
+            //这里不手动负值LocalEndPoint，采用系统分配方式
+            ConnectResult = true;
+            SucceedConnectToServerEvent?.Invoke(local, remote);
         }
 
-        public event Action<Socket, byte[]> ReceiveByte;
-        public event Action<Socket, byte[]> SendDataToServerByte;
-
-        protected virtual void OnReceiveByte(Socket serverSocket, byte[] bytes)
+        protected virtual void OnReceiveDataFromServer(Socket serverSocket, byte[] bytes)
         {
-            ReceiveByte?.Invoke(serverSocket, bytes);
-//            Messenger.Default.Send((serverSocket, bytes), "ClientReceiveDataEvent");
+            ReceiveDataEvent?.Invoke(serverSocket, bytes);
             StrongReferenceMessenger.Default.Send((serverSocket, bytes).ToTuple(), "ClientReceiveDataEvent");
         }
 
-        protected virtual void OnSendDataToServerByte(Socket serverSocket, byte[] bytes)
+        protected virtual void OnSendDataToServer(Socket serverSocket, byte[] bytes)
         {
-            SendDataToServerByte?.Invoke(serverSocket, bytes);
-            //            Messenger.Default.Send((serverSocket, bytes), "ClientSendDataEvent");
+            SendDataToServerEvent?.Invoke(serverSocket, bytes);
             StrongReferenceMessenger.Default.Send((serverSocket, bytes).ToTuple(), "ClientSendDataEvent");
         }
 
@@ -131,6 +150,7 @@ namespace 三相智慧能源网关调试软件
             ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             LocalIp = GetHostIp();
         }
+
 
         public static string GetHostIp()
         {
@@ -163,20 +183,18 @@ namespace 三相智慧能源网关调试软件
                     try
                     {
                         ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        StrongReferenceMessenger.Default.Send($"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
+
+                        StrongReferenceMessenger.Default.Send(
+                            $"{ClientSocket.LocalEndPoint}正在尝试连接{ClientSocket.RemoteEndPoint}",
                             "ClientStatus");
                         ClientSocket.Connect(ServerIpAddress, ServerPortNum);
-
-                        ConnectResult = true;
-                        StrongReferenceMessenger.Default.Send($"成功连接至{ClientSocket.RemoteEndPoint}", "ClientStatus");
-
+                        OnSucceedConnectToServer(ClientSocket.LocalEndPoint.ToString(),
+                            ClientSocket.RemoteEndPoint.ToString());
                         Task.Run(ReceiveData);
                     }
                     catch (Exception e)
                     {
                         ConnectResult = false;
-//                        Messenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
-//                        Messenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
                         StrongReferenceMessenger.Default.Send("连接不成功 from  ConnectToServer()", "ClientStatus");
                         StrongReferenceMessenger.Default.Send("异常" + e.Message + "from  ConnectToServer()",
                             "ClientNetErrorEvent");
@@ -186,7 +204,8 @@ namespace 三相智慧能源网关调试软件
             catch (Exception e)
             {
                 ConnectResult = false;
-                StrongReferenceMessenger.Default.Send("异常" + e.Message + "from  ConnectToServer()", "ClientNetErrorEvent");
+                StrongReferenceMessenger.Default.Send("异常" + e.Message + "from  ConnectToServer()",
+                    "ClientNetErrorEvent");
                 throw;
             }
         }
@@ -201,112 +220,66 @@ namespace 三相智慧能源网关调试软件
                     bool flag2 = receiveDataLen == 0;
                     if (flag2)
                     {
-                        string str2 = $"{DateTime.Now}  {ClientSocket.RemoteEndPoint} 服务端主动断开了当前链接..." + "\r\n";
+                        string str2 = $"{DateTime.Now}  {ClientSocket.RemoteEndPoint} 服务端主动断开了当前链接...\r\n";
                         StrongReferenceMessenger.Default.Send(str2, "ClientStatus");
                         Disconnect();
                         break;
                     }
 
                     byte[] receiveBytes = _messageByteServer.Take(receiveDataLen).ToArray();
-                    OnReceiveByte(ClientSocket, receiveBytes);
+                    OnReceiveDataFromServer(ClientSocket, receiveBytes);
                 }
             }
             catch (Exception e)
             {
-                //   Messenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
                 StrongReferenceMessenger.Default.Send(e.Message + "from  ReceiveData()", "ClientNetErrorEvent");
+                ConnectResult = false;
             }
         }
 
-        public void SendDataToServer(string inputSendData)
-        {
-            if (ConnectResult == false)
-            {
-                return;
-            }
-
-            bool flag = inputSendData == null;
-            if (flag)
-            {
-                throw new ArgumentNullException("inputSendData");
-            }
-
-            try
-            {
-                byte[] sendBytes = Encoding.Default.GetBytes(inputSendData);
-                ClientSocket.Send(sendBytes);
-                MySendMessage += (inputSendData + Environment.NewLine);
-                // Messenger.Default.Send(sendBytes, "ClientSendDataEvent");
-                StrongReferenceMessenger.Default.Send(sendBytes, "ClientSendDataEvent");
-            }
-            catch (Exception ex)
-            {
-                // Messenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
-                StrongReferenceMessenger.Default.Send(ex.Message, "ClientStatusNetErrorEvent");
-            }
-        }
+    
 
         public void SendDataToServer(byte[] inputBytesData)
         {
             bool flag = inputBytesData.Length == 0;
             if (flag)
             {
-                throw new ArgumentNullException("inputBytesData");
+                throw new ArgumentNullException(nameof(inputBytesData));
             }
 
             try
             {
                 ClientSocket.Send(inputBytesData);
-                OnSendDataToServerByte(ClientSocket, inputBytesData);
+                OnSendDataToServer(ClientSocket, inputBytesData);
             }
             catch (Exception ex)
             {
                 StrongReferenceMessenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
-            }
-        }
-
-        public void SendDataToServer(Socket socket, byte[] inputBytesData)
-        {
-            bool flag = inputBytesData.Length == 0;
-            if (flag)
-            {
-                throw new ArgumentNullException("inputBytesData");
-            }
-
-            try
-            {
-                socket.Send(inputBytesData);
-                OnSendDataToServerByte(socket, inputBytesData);
-            }
-            catch (Exception ex)
-            {
-                //Messenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
-                StrongReferenceMessenger.Default.Send("异常" + ex.Message, "ClientNetErrorEvent");
+                OnErrorEvent();
             }
         }
 
         /// <summary>
         /// 发送数据至服务端，并加上换行符
         /// </summary>
-        /// <param name="inputSendData"></param>
-        public void SendDataToServerWithNewLine(string inputSendData)
+        /// <param name="sendData"></param>
+        public void SendDataToServerWithNewLine(string sendData)
         {
             if (ConnectResult == false)
             {
                 return;
             }
 
-            bool flag = inputSendData == null;
-            if (flag)
+            if (string.IsNullOrEmpty(sendData))
             {
-                throw new ArgumentNullException("inputSendData");
+                throw new ArgumentNullException(nameof(sendData));
             }
 
             try
             {
-                byte[] sendBytes = Encoding.Default.GetBytes(inputSendData + Environment.NewLine);
+                byte[] sendBytes = Encoding.Default.GetBytes(sendData + Environment.NewLine);
                 ClientSocket.Send(sendBytes);
-                OnSendDataToServerByte(ClientSocket, sendBytes);
+                OnSendDataToServer(ClientSocket, sendBytes);
             }
             catch (Exception ex)
             {
@@ -323,8 +296,8 @@ namespace 三相智慧能源网关调试软件
 
             ClientSocket.Disconnect(false);
             ConnectResult = false;
-//            Messenger.Default.Send("关闭连接成功", "ClientStatus");
             StrongReferenceMessenger.Default.Send("关闭连接成功", "ClientStatus");
+            
         }
 
         public void CloseAll()
@@ -336,7 +309,6 @@ namespace 三相智慧能源网关调试软件
 
             ClientSocket?.Close();
             ConnectResult = false;
-//            Messenger.Default.Send("关闭连接成功", "ClientStatus");
             StrongReferenceMessenger.Default.Send("关闭连接成功", "ClientStatus");
         }
 
@@ -344,5 +316,8 @@ namespace 三相智慧能源网关调试软件
         {
             ((IDisposable) ClientSocket).Dispose();
         }
+
+
+     
     }
 }

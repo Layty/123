@@ -1,8 +1,5 @@
-using System;
-using Autofac;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using NPOI.SS.Util.CellWalk;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -11,8 +8,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
     {
         public ViewModelLocator()
         {
-            
-            
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
@@ -30,8 +25,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<MainViewModel>(); //主窗体
                 SimpleIoc.Default.Register<MenuViewModel>(); //菜单
                 SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
-                SimpleIoc.Default.Register<SkinViewModel>(); //程序调色板，皮肤
+
                 SimpleIoc.Default.Register<ColorToolViewModel>(); //程序调色板，皮肤
+                SimpleIoc.Default.Register<SkinViewModel>(true); //程序调色板，皮肤，开机直接应用
+
                 #endregion
 
 
@@ -86,8 +83,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public MenuViewModel Menu => ServiceLocator.Current.GetInstance<MenuViewModel>();
         public UserLoginViewModel Login => ServiceLocator.Current.GetInstance<UserLoginViewModel>();
+        public ColorToolViewModel ColorToolViewModel => ServiceLocator.Current.GetInstance<ColorToolViewModel>();
         public SkinViewModel Skin => ServiceLocator.Current.GetInstance<SkinViewModel>();
+
         public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
+
         #endregion
 
         #region 管理芯相关业务
@@ -99,7 +99,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
-        public ColorToolViewModel ColorToolViewModel => ServiceLocator.Current.GetInstance<ColorToolViewModel>();
+
 
         public ProfileGenericViewModel ProfileGenericViewModel =>
             ServiceLocator.Current.GetInstance<ProfileGenericViewModel>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -9,12 +10,12 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
     public class CosemProfileGeneric : CosemObject, IDlmsBase
     {
-        public ObservableCollection<DlmsStructure> Buffer//2
+        public List<DlmsStructure> Buffer//2
         {
             get => _buffer;
             set { _buffer = value; OnPropertyChanged(); }
         }
-        private ObservableCollection<DlmsStructure> _buffer;
+        private List<DlmsStructure> _buffer;
 
 
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
@@ -106,7 +107,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             SortMethod = SortMethod.FiFo;
             ProfileGenericEntryDescriptor=new ProfileGenericEntryDescriptor();
             ProfileGenericRangeDescriptor=new ProfileGenericRangeDescriptor();
-            Buffer=new ObservableCollection<DlmsStructure>();
+            Buffer = new List<DlmsStructure>();
         }
 
         public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }

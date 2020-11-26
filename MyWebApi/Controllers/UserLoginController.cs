@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Services;
 
@@ -20,10 +21,12 @@ namespace MyWebApi.Controllers
             var result= await _dbContext.Login(userName, password);
             if (result)
             {
+                Console.WriteLine($"{DateTime.Now} {userName} 登录成功");
                 return Ok();
             }
             else
             {
+                Console.WriteLine($"{DateTime.Now} {userName} 不存在");
                 return NotFound();
             }
         }
