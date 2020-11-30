@@ -10,7 +10,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-    public class UpGradeBaseMeterViewModel : ObservableObject
+    public class FileTransmitViewModel : ObservableObject
     {
         private SerialPortViewModel _serialPortViewModel;
 
@@ -170,7 +170,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public Array YModemTypeArray => Enum.GetValues(typeof(YModemType));
 
 
-        public UpGradeBaseMeterViewModel()
+        public FileTransmitViewModel()
         {
             SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
             TransmitMode = TransmitMode.Send;
@@ -180,13 +180,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             FileTransmitProtocol = new YModem(TransmitMode, YModemType, 10);
             UserComCommand = new RelayCommand(() =>
             {
-                //SerialPortViewModel.SerialPortMaster.SerialPort.DataReceived += SerialPort_DataReceived;
                 SerialPortViewModel.SerialPortMaster.SerialDataReceived +=
                     SerialPortMasterModelSerialDataReceived;
             });
             ReleaseComCommand = new RelayCommand(() =>
             {
-                // SerialPortViewModel.SerialPortMaster.SerialPort.DataReceived -= SerialPort_DataReceived;
                 SerialPortViewModel.SerialPortMaster.SerialDataReceived -=
                     SerialPortMasterModelSerialDataReceived;
             });

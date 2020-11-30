@@ -50,7 +50,7 @@
                                 Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
-                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                                         Background="{DynamicResource SecondaryHueMidBrush}" />
                                 <TextBlock Text="进入升级模式" />
                             </StackPanel>
 
@@ -58,14 +58,14 @@
                         <Button x:Name="ButtonClearAllData" Command="{Binding ClearAllCommand}" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
-                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                                         Background="{DynamicResource SecondaryHueMidBrush}" />
                                 <TextBlock Text="总清" />
                             </StackPanel>
                         </Button>
                         <Button x:Name="ButtonSetCapturePeriod" Command="{Binding SetCapturePeriodCommand}" Margin="5">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Alert"
-                                                         Background="{DynamicResource SecondaryAccentBrush}" />
+                                                         Background="{DynamicResource SecondaryHueMidBrush}" />
                                 <TextBlock Text="设捕获周期60s清空电量曲线" />
                             </StackPanel>
                         </Button>
@@ -77,7 +77,7 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Grid.Column="1" Margin="5" materialDesign:ColorZoneAssist.Mode="PrimaryMid" Header="FileTransmitProtocol"
-                      DataContext="{Binding Source={StaticResource Locator},Path=UpGradeBaseMeterViewModel}">
+                      DataContext="{Binding Source={StaticResource Locator},Path=FileTransmitViewModel}">
                 <StackPanel>
                     <CheckBox Content="串口使能" x:Name="CheckBoxIsUseCom"  IsChecked="{Binding IsInitUpGradeSerialPort}"
                               VerticalAlignment="Center" />

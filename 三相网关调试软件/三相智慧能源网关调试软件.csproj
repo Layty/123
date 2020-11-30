@@ -206,6 +206,7 @@
     <Compile Include="Common\Msg.cs" />
     <Compile Include="Common\MsgViewModel.cs" />
     <Compile Include="Common\PaletteHelperExtensions.cs" />
+    <Compile Include="Common\XmlHelper.cs" />
     <Compile Include="Connected Services\UserLoginServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -313,7 +314,7 @@
     <Compile Include="ViewModel\DlmsViewModels\UtilityTablesViewModel.cs" />
     <Compile Include="ViewModel\TftpClientViewModel.cs" />
     <Compile Include="ViewModel\TftpServerViewModel.cs" />
-    <Compile Include="ViewModel\UpGradeBaseMeterViewModel.cs" />
+    <Compile Include="ViewModel\FileTransmitViewModel.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\GateWayLoginModel.cs" />
     <Compile Include="Model\MenuModel.cs" />

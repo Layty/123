@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
 {
     public sealed class ScriptTable : CosemObject, IDlmsBase
     {
         public List<Script> Scripts { get; set; }
-
+ 
         public ScriptTable()
         {
             Scripts = new List<Script>();
             LogicalName = "0.0.10.0.0.255";
             Version = 1;
-            ClassId = new AxdrIntegerUnsigned16(ObjectType.ScriptTable.ToString("X4"));
+        
+            ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ScriptTable);
         }
 
         public ScriptTable(string logicalName, ObjectType objectType)
@@ -26,12 +28,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
         public CosemAttributeDescriptor GetScriptsAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
         public CosemMethodDescriptor GetScriptExecuteCosemMethodDescriptor() => GetCosemMethodDescriptor(1);
-//        public byte[] ScriptExecute(ushort scriptId)
-//        {
-//            DLMSDataItem dlmsData =
-//                new DLMSDataItem(DataType.UInt16, BitConverter.GetBytes(scriptId).Reverse().ToArray());
-//            return ActionExecute(1, dlmsData);
-//        }
+
 
         string[] IDlmsBase.GetNames()
         {

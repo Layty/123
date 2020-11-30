@@ -69,7 +69,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #region 三相网关计量芯相关业务
 
                 SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //基表DLMS协议
-                SimpleIoc.Default.Register<UpGradeBaseMeterViewModel>(); //计量芯升级
+                SimpleIoc.Default.Register<FileTransmitViewModel>(); //计量芯升级
                 SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
 
                 #endregion
@@ -159,8 +159,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         #region 智能仪表
 
-        public UpGradeBaseMeterViewModel UpGradeBaseMeterViewModel =>
-            ServiceLocator.Current.GetInstance<UpGradeBaseMeterViewModel>();
+        public FileTransmitViewModel FileTransmitViewModel =>
+            ServiceLocator.Current.GetInstance<FileTransmitViewModel>();
 
         #endregion
 

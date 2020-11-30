@@ -119,7 +119,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 bytes = await PhysicalLayerSendData(HdlcFrameMaker.SNRMRequest());
                 if (HdlcFrameMaker.ParseUaResponse(bytes))
                 {
-                  
                     AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
                         DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                         DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
@@ -130,7 +129,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         var ass = new AssociationResponse();
                         if (ass.PduBytesToConstructor(bytes))
                         {
-                            XmlCommon(ass);
+                            XmlHelper.XmlCommon(ass);
                         }
                     }
                 }
@@ -144,14 +143,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
                     DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                     DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
-                XmlCommon(aarq);
+                XmlHelper.XmlCommon(aarq);
                 bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduBytes()));
                 if (bytes != null)
                 {
                     var ass = new AssociationResponse();
                     if (ass.PduBytesToConstructor(bytes))
                     {
-                        XmlCommon(ass);
+                        XmlHelper.XmlCommon(ass);
                     }
                 }
             }
@@ -182,7 +181,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
             GetRequestType getRequestType = GetRequestType.Normal)
         {
-            getRequest = new GetRequest();
+            var getRequest = new GetRequest();
             switch (getRequestType)
             {
                 case GetRequestType.Normal:
@@ -196,7 +195,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     break;
             }
 
-            XmlCommon(getRequest);
+            XmlHelper.XmlCommon(getRequest);
             var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
             return HandleGetResponse(dataResult);
         }
@@ -218,7 +217,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     break;
             }
 
-            XmlCommon(getRequest);
+            XmlHelper.XmlCommon(getRequest);
             var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
             return HandleGetResponse(dataResult);
         }
@@ -242,7 +241,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     break;
             }
 
-            XmlCommon(getRequest);
+            XmlHelper.XmlCommon(getRequest);
             var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
 
             var re = HandleGetResponse(dataResult);
@@ -293,24 +292,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             return await HandlerSendData(getRequest.ToPduStringInHex());
         }
 
-        private void XmlCommon<T>(T t)
-        {
-            using (StringWriter stringWriter = new StringWriter())
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                ns.Add("", ""); //去掉Namespaces
-                //OmitXmlDeclaration = true 省略XML声明
-                XmlWriterSettings settings = new XmlWriterSettings
-                    {OmitXmlDeclaration = true, Indent = true, Encoding = Encoding.UTF8};
-                using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
-                {
-                    xmlSerializer.Serialize(xmlWriter, t, ns);
-                    var log = ServiceLocator.Current.GetInstance<XMLLogViewModel>();
-                    log.XmlLog = stringWriter + Environment.NewLine + "-----萌萌哒分割线-----\r\n";
-                }
-            }
-        }
 
         private GetResponse HandleGetResponse(byte[] dataResult)
         {
@@ -322,7 +303,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 return null;
             }
 
-            XmlCommon(getResponse);
+            XmlHelper.XmlCommon(getResponse);
             if (getResponse.GetResponseNormal != null)
             {
                 if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
@@ -346,22 +327,24 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 return null;
             }
 
-            XmlCommon(setResponse);
+            XmlHelper.XmlCommon(setResponse);
             return setResponse;
         }
 
         public async Task<SetResponse> SetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
             DlmsDataItem value)
         {
-            setRequest = new SetRequest {SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value)};
+            var setRequest = new SetRequest {SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value)};
+            XmlHelper.XmlCommon(setRequest);
             var dataResult = await HandlerSendData(setRequest.ToPduStringInHex());
             return HandleSetResponse(dataResult);
         }
 
-        public async Task<byte[]> ActionRequest(ActionRequest actionRequestNormal)
+        public async Task<byte[]> ActionRequest(ActionRequest actionRequest)
         {
+            XmlHelper.XmlCommon(actionRequest);
             return await HandlerSendData(
-                (MyDlmsStandard.Common.Common.StringToByte(actionRequestNormal.ToPduStringInHex())));
+                (MyDlmsStandard.Common.Common.StringToByte(actionRequest.ToPduStringInHex())));
         }
 
         private async Task<byte[]> HandlerSendData(byte[] dataBytes)
@@ -400,14 +383,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public async Task<byte[]> ReleaseRequest(bool force = true)
         {
             byte[] result = null;
-            var re = new ReleaseRequest();
-            re.Reason = new BerInteger() {Value = "00"};
-            re.UserInformation = new UserInformation()
+            var re = new ReleaseRequest
             {
-                InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,
-                    DlmsSettingsViewModel.DlmsVersion, DlmsSettingsViewModel.ProposedConformance)
+                Reason = new BerInteger() {Value = "00"},
+                UserInformation = new UserInformation()
+                {
+                    InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,
+                        DlmsSettingsViewModel.DlmsVersion, DlmsSettingsViewModel.ProposedConformance)
+                }
             };
-            var releaseBytes = Common.Common.StringToByte(re.ToPduStringInHex());
+            var releaseBytes = re.ToPduStringInHex().StringToByte();
             if (force && (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC))
             {
 //                result = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(releaseBytes));
@@ -439,8 +424,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private GetRequest getRequest { get; set; }
 
-        public SetRequest setRequest { get; set; }
-        public ActionRequest actionRequest { get; set; }
 
         public DlmsClient()
         {
@@ -460,8 +443,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             InitRequestCommand = new RelayCommand(async () => { await InitRequest(); });
             ReleaseRequestCommand = new RelayCommand(async () => { await ReleaseRequest(true); });
             getRequest = new GetRequest();
-            setRequest = new SetRequest();
-            actionRequest = new ActionRequest();
         }
 
 

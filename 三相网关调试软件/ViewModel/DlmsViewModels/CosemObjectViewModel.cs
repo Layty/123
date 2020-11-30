@@ -95,8 +95,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     var str = JsonConvert.SerializeObject(CurrentCosemObjectEdit);
                     request.AddParameter("CurrentCosemObjectEdit", str, ParameterType.RequestBody);
                     IRestResponse response = client.Execute(request);
-                    MessageBoxWindow message = new MessageBoxWindow();
-                    message.Message = response.IsSuccessful ? "成功" : "失败";
+                    MessageBoxWindow message = new MessageBoxWindow
+                    {
+                        Message = response.IsSuccessful ? "成功" : "失败"
+                    };
                     message.ShowDialog();
                 }
                 catch (Exception e)
@@ -114,8 +116,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     var str = JsonConvert.SerializeObject(t);
                     request.AddParameter("Update", str, ParameterType.RequestBody);
                     IRestResponse response = client.Execute(request);
-                    MessageBoxWindow message = new MessageBoxWindow();
-                    message.Message = response.IsSuccessful ? "成功" : "失败";
+                    MessageBoxWindow message = new MessageBoxWindow
+                    {
+                        Message = response.IsSuccessful ? "成功" : "失败"
+                    };
                     message.ShowDialog();
                 }
                 catch (Exception e)
@@ -131,8 +135,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     var request = new RestRequest(Method.DELETE);
 
                     IRestResponse response = client.Execute(request);
-                    MessageBoxWindow message = new MessageBoxWindow();
-                    message.Message = response.IsSuccessful ? "成功" : "失败";
+                    MessageBoxWindow message = new MessageBoxWindow
+                    {
+                        Message = response.IsSuccessful ? "成功" : "失败"
+                    };
                     message.ShowDialog();
                 }
                 catch (Exception e)
@@ -142,19 +148,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
         }
 
-        private void AddHeader(RestRequest request)
-        {
-            request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Connection", "keep-alive");
-            request.AddHeader("Accept-Encoding", "gzip, deflate");
-            request.AddHeader("Host", "localhost:5000");
-            request.AddHeader("Postman-Token",
-                "1f01f478-7455-48a4-98ec-13c088abdfdf,b71b18e9-0c33-474e-af0c-ca9891227e00");
-            request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Accept", "*/*");
-            request.AddHeader("User-Agent", "PostmanRuntime/7.15.2");
-            request.AddHeader("Content-Type", "application/json");
-        }
+        //private void AddHeader(RestRequest request)
+        //{
+        //    request.AddHeader("cache-control", "no-cache");
+        //    request.AddHeader("Connection", "keep-alive");
+        //    request.AddHeader("Accept-Encoding", "gzip, deflate");
+        //    request.AddHeader("Host", "localhost:5000");
+        //    request.AddHeader("Postman-Token",
+        //        "1f01f478-7455-48a4-98ec-13c088abdfdf,b71b18e9-0c33-474e-af0c-ca9891227e00");
+        //    request.AddHeader("Cache-Control", "no-cache");
+        //    request.AddHeader("Accept", "*/*");
+        //    request.AddHeader("User-Agent", "PostmanRuntime/7.15.2");
+        //    request.AddHeader("Content-Type", "application/json");
+        //}
 
         public ObservableCollection<CosemObjectEdit> CosemObjects
         {

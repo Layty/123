@@ -101,8 +101,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
             SetCapturePeriodCommand = new RelayCommand(async () =>
             {
-                var cosem = new CosemProfileGeneric("1.0.99.1.0.255");
-                cosem.CapturePeriod = new AxdrIntegerUnsigned32("00000060");
+                var cosem = new CosemProfileGeneric("1.0.99.1.0.255")
+                {
+                    CapturePeriod = new AxdrIntegerUnsigned32("00000060")
+                };
                 var dlmsData = new DlmsDataItem(DataType.UInt32, cosem.CapturePeriod.Value);
 
                 await Client.SetRequestAndWaitResponse(cosem.GetCapturePeriodAttributeDescriptor(), dlmsData);
@@ -110,13 +112,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             ClearAllCommand = new RelayCommand(async () =>
             {
                 var cosem = new ScriptTable();
-                Client.actionRequest = new ActionRequest()
+               var actionRequest = new ActionRequest()
                 {
                     ActionRequestNormal = new ActionRequestNormal(cosem.GetScriptExecuteCosemMethodDescriptor(),
                         new DlmsDataItem(DataType.UInt16, "0001")
                     )
                 };
-                await Client.ActionRequest(Client.actionRequest);
+                await Client.ActionRequest(actionRequest);
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {
