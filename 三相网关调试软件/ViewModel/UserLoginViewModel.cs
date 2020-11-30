@@ -7,6 +7,7 @@ using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using RestSharp;
 using 三相智慧能源网关调试软件.View;
 
@@ -90,7 +91,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 {
                     LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                     LoginModel.LoginResult = true;
-//                    StrongReferenceMessenger.Default.Send<bool, string>(true, "LoginResult");
+                    StrongReferenceMessenger.Default.Send("ni hao ya da shuai bi", "Snackbar");
                     LoginModel.Report = "登录成功";
                 }
                 else

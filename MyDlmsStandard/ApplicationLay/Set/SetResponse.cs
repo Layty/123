@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Get;
 
@@ -6,7 +7,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
 {
     public class SetResponse : IToPduStringInHex, IPduStringInHexConstructor, IDlmsCommand
     {
-        public Command Command { get; } = Command.SetResponse;
+        [XmlIgnore] public Command Command { get; } = Command.SetResponse;
         public SetResponseNormal SetResponseNormal { get; set; }
 
         public SetResponseForDataBlock SetResponseForDataBlock { get; set; }

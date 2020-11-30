@@ -1,11 +1,12 @@
-﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using System.Xml.Serialization;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
     public interface ISetRequest
     {
-        SetRequestType SetRequestType { get; }
+        [XmlIgnore] SetRequestType SetRequestType { get; }
         AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
 
         string ToPduStringInHex();

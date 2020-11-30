@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 
@@ -6,7 +7,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
 {
     public class SetResponseNormal : ISetResponse, IToPduStringInHex
     {
-        public SetResponseType SetResponseType { get; set; }
+        [XmlIgnore] public SetResponseType SetResponseType { get; set; }//需要标注XmlIgnore，不然XML序列化时报错
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         private AxdrIntegerUnsigned8 _result { get; set; }
         public DataAccessResult Result { get; set; }

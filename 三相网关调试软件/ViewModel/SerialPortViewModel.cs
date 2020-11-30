@@ -5,6 +5,7 @@ using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -21,6 +22,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ClearReceiveDataCommand = new RelayCommand(() =>
                 {
                     SerialPortMaster.SerialPortLogger.ClearDataReceiveBytes();
+                   
                 });
                 ClearHistoryDataCommand =
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearHistoryText());
@@ -59,8 +61,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
                 catch (Exception e)
                 {
-                    var view = new MyControl.MessageBox() {Message = e.Message, Title = e.Source};
-                    //  await DialogHost.Show(view, "SerialPortPage");
+                    
+                    StrongReferenceMessenger.Default.Send(e.Message, "Snackbar");
                 }
             });
         }

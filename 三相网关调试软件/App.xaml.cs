@@ -7,6 +7,8 @@ using System.Windows.Threading;
 using Lierda.WPFHelper;
 using NLog;
 using Autofac;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件
@@ -72,18 +74,22 @@ namespace 三相智慧能源网关调试软件
             builder.RegisterType<UserLoginViewModel>();
         }
 
-        protected void ConfigureServices()
-        {
-            AutofacLocator autofacLocator = new AutofacLocator(); //创建IOC容器
-            autofacLocator.Register(); //注册服务
-            BootStrapper.Initialize(autofacLocator);
-        }
+//        protected void ConfigureServices()
+//        {
+//            AutofacLocator autofacLocator = new AutofacLocator(); //创建IOC容器
+//            autofacLocator.Register(); //注册服务
+//         //  BootStrapper.Initialize(autofacLocator);
+//        }
 
+      
         protected override void OnStartup(StartupEventArgs e)
         {
             _cracker.Cracker();
             DispatcherHelper.Initialize();
-            ConfigureServices();
+           // ConfigureServices();
+
+      
+
 
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -97,7 +103,7 @@ namespace 三相智慧能源网关调试软件
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             Logger.Error("TaskError" + e.Exception);
-
+            StrongReferenceMessenger.Default.Send("TaskError", "Snackbar");
             e.SetObserved();
         }
 
@@ -111,7 +117,7 @@ namespace 三相智慧能源网关调试软件
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Logger.Error($"Current_DispatcherUnhandledException:{e.Exception}");
-
+            StrongReferenceMessenger.Default.Send("Current_DispatcherUnhandledException", "Snackbar");
             e.Handled = true;
         }
     }

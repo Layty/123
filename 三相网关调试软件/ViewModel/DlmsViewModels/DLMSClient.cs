@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.Action;
@@ -77,6 +78,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             if (parseBytes == null || parseBytes.Length == 0)
             {
+                StrongReferenceMessenger.Default.Send("未收到数据帧", "Snackbar");
                 return null;
             }
 
@@ -108,6 +110,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     var flag21E = await Execute21ENegotiate();
                     if (!flag21E)
                     {
+                        StrongReferenceMessenger.Default.Send("21E协商失败", "Snackbar");
                         return null;
                     }
                 }
@@ -116,6 +119,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 bytes = await PhysicalLayerSendData(HdlcFrameMaker.SNRMRequest());
                 if (HdlcFrameMaker.ParseUaResponse(bytes))
                 {
+                  
                     AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
                         DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                         DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
@@ -129,6 +133,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             XmlCommon(ass);
                         }
                     }
+                }
+                else
+                {
+                    StrongReferenceMessenger.Default.Send("HDLC失败", "Snackbar");
                 }
             }
             else if (DlmsSettingsViewModel.InterfaceType == InterfaceType.WRAPPER)
@@ -310,6 +318,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             var data = dataResult.ByteToString("");
             if (!getResponse.PduStringInHexConstructor(ref data))
             {
+                StrongReferenceMessenger.Default.Send("解析响应帧失败", "Snackbar");
                 return null;
             }
 
@@ -401,7 +410,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             var releaseBytes = Common.Common.StringToByte(re.ToPduStringInHex());
             if (force && (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC))
             {
-                result = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(releaseBytes));
+//                result = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(releaseBytes));
                 result = await PhysicalLayerSendData(HdlcFrameMaker.DisconnectRequest());
                 //TODO :ParseUA
             }

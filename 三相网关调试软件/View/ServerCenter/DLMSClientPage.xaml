@@ -73,7 +73,7 @@
                                 </DoubleAnimation>
                             </Storyboard>
                         </ControlTemplate.Resources>
-                        <Viewbox Width="80"  >
+                        <Viewbox Width="80">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CheckStates">
                                     <VisualStateGroup.Transitions>
@@ -124,10 +124,10 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Grid >
+                            <Grid>
                                 <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Rectangle x:Name="Track"
                                            Fill="{Binding (materialDesign:ToggleButtonAssist.SwitchTrackOffBackground), RelativeSource={RelativeSource TemplatedParent}}"
@@ -160,7 +160,7 @@
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   Content="{TemplateBinding Content}" FlowDirection="LeftToRight"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  Margin="{TemplateBinding Padding}" 
+                                                  Margin="{TemplateBinding Padding}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                             </Grid>
                         </Viewbox>
@@ -251,6 +251,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
             <StackPanel Orientation="Horizontal" Grid.Row="0">
                 <Button Command="{Binding InitRequestCommand }" Width="100"
                         Margin="3">
@@ -259,7 +260,7 @@
                         <TextBlock Text="Init" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding ReleaseRequestCommand }"  Width="100"
+                <Button Command="{Binding ReleaseRequestCommand }" Width="100"
                         Margin="3">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xe718;" FontFamily="/Fonts/#iconfont" />
@@ -267,19 +268,18 @@
                     </StackPanel>
 
                 </Button>
-                <ToggleButton x:Name="ToggleButtonSelectChannel" Margin="10 0 0 0" Style="{StaticResource ToggleButtonStyle12}"
-                              IsChecked="False" Content="SerialPort"   Click="ToggleButtonSelectChannel_OnClick"
-                              />
-            
-              
+                <ToggleButton x:Name="ToggleButtonSelectChannel" Margin="10 0 0 0"
+                              Style="{StaticResource ToggleButtonStyle12}"
+                              IsChecked="False" Content="SerialPort" Click="ToggleButtonSelectChannel_OnClick" />
+
 
             </StackPanel>
             <ListBox x:Name="ListBox" Grid.Row="1"
-                         DataContext="{Binding Source={StaticResource Locator},Path=TcpServer}"
-                         ItemsSource="{ Binding TcpServerHelper.SocketClientList}"
-                         FontSize="20"
-                         SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
-                         SelectionChanged="Selector_OnSelectionChanged">
+                     DataContext="{Binding Source={StaticResource Locator},Path=TcpServer}"
+                     ItemsSource="{ Binding TcpServerHelper.SocketClientList}"
+                     FontSize="20"
+                     SelectedItem="{Binding DLMSClient.CurrentSocket}" KeyDown="UIElement_OnKeyDown"
+                     SelectionChanged="Selector_OnSelectionChanged">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -292,24 +292,24 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" x:Name="border"
-                                                CornerRadius="50 0 0 50"
-                                                BorderThickness="2" Margin="5">
+                                            CornerRadius="50 0 0 50"
+                                            BorderThickness="2" Margin="5">
                                         <ContentPresenter />
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver"
-                                                     Value="True">
+                                                 Value="True">
                                             <Setter Property="Background"
-                                                        Value="{DynamicResource PrimaryHueLightBrush}"
-                                                        TargetName="border" />
+                                                    Value="{DynamicResource PrimaryHueLightBrush}"
+                                                    TargetName="border" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Background"
-                                                        TargetName="border"
-                                                        Value="{DynamicResource PrimaryHueMidBrush}" />
+                                                    TargetName="border"
+                                                    Value="{DynamicResource PrimaryHueMidBrush}" />
                                             <Setter Property="FontSize" Value="20" />
                                             <Setter Property="FontWeight"
-                                                        Value="Bold" />
+                                                    Value="Bold" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -321,8 +321,8 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center"
-                                                         Foreground="{DynamicResource SecondaryHueMidBrush}"
-                                                         VerticalAlignment="Center" />
+                                                     Foreground="{DynamicResource SecondaryHueMidBrush}"
+                                                     VerticalAlignment="Center" />
                             <TextBlock Text="{Binding RemoteEndPoint}" />
                         </StackPanel>
 

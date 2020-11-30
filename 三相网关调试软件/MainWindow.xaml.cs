@@ -21,18 +21,6 @@ using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class DialogsViewModel : ObservableObject
-    {
-        public RelayCommand OpenSkinViewDialogCommand { get; set; }
-
-        public DialogsViewModel()
-        {
-            OpenSkinViewDialogCommand=new RelayCommand(() =>
-            {
-                DialogHost.Show(new SkinView(), "Root");
-            });
-        }
-    }
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -107,7 +95,7 @@ namespace 三相智慧能源网关调试软件
             StrongReferenceMessenger.Default.Register<string, string>(this, "PlayReceiveFlashing",
                 (sender, arg) =>
                 {
-                   DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
                         BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
                     });
@@ -115,19 +103,17 @@ namespace 三相智慧能源网关调试软件
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
                 ((recipient, message) =>
                 {
-
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
                         BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
                     });
-
                 }));
 
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 ((recipient, message) =>
                 {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
                         BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
                     });
                 }));
@@ -135,8 +121,8 @@ namespace 三相智慧能源网关调试软件
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
                 ((recipient, message) =>
                 {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
                         BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
                     });
                 }));
@@ -149,6 +135,10 @@ namespace 三相智慧能源网关调试软件
                         BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
                     });
                 }));
+
+
+            StrongReferenceMessenger.Default.Register<string, string>(this, "Snackbar",
+                (recipient, message) => { MainSnackbar.MessageQueue.Enqueue(message); });
         }
 
 
@@ -298,7 +288,6 @@ namespace 三相智慧能源网关调试软件
 
         private void ButtonCosemEditor_OnClick(object sender, RoutedEventArgs e)
         {
-            SnackbarThree.MessageQueue.Enqueue("Wow, easy!");
             new CosemObjectsManagement() {Owner = this}.Show();
         }
     }

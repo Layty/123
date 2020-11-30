@@ -14,11 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnimation", "myAnimation\MyAnimation.csproj", "{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfInstanceValue", "WpfInstanceValue\WpfInstanceValue.csproj", "{A2B746CB-B673-42C8-8BE5-208C84EDF291}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTransmit", "YmodernClassLibrary\FileTransmit.csproj", "{08060170-2F0F-4C56-82FD-D93BA6F1A56D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppLight", "WpfAppLight\WpfAppLight.csproj", "{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\WcfService.csproj", "{A8823B49-FBE2-47A4-9A74-1B6336D1E018}"
 EndProject
@@ -32,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsStandard", "MyDlmsSta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncfusionWpfApp1", "SyncfusionWpfApp1\SyncfusionWpfApp1.csproj", "{ACA940B1-19F0-4123-95D8-530A1C78F285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDlmsNetCore", "MyDlmsNetCore\MyDlmsNetCore.csproj", "{448C7247-83E5-485C-815C-840FEEB23CF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsNetCore", "MyDlmsNetCore\MyDlmsNetCore.csproj", "{448C7247-83E5-485C-815C-840FEEB23CF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,18 +52,10 @@ Global
 		{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFA4A472-60B0-47B1-B5B5-730F4782EB4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2B746CB-B673-42C8-8BE5-208C84EDF291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2B746CB-B673-42C8-8BE5-208C84EDF291}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2B746CB-B673-42C8-8BE5-208C84EDF291}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2B746CB-B673-42C8-8BE5-208C84EDF291}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08060170-2F0F-4C56-82FD-D93BA6F1A56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08060170-2F0F-4C56-82FD-D93BA6F1A56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08060170-2F0F-4C56-82FD-D93BA6F1A56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08060170-2F0F-4C56-82FD-D93BA6F1A56D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9BFDF03-F9B5-4E61-BF8D-51CBAD3C33F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8823B49-FBE2-47A4-9A74-1B6336D1E018}.Release|Any CPU.ActiveCfg = Release|Any CPU

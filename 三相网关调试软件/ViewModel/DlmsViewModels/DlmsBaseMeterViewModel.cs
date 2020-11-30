@@ -122,44 +122,44 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始搞事情");
                 InitCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读工厂模式");
                 ReadFactoryCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读软件版本");
                 GetSoftVersionCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("进入工厂模式");
                 EnterFactorCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读工厂模式");
                 ReadFactoryCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("进入升级模式");
                 EnterUpgradeModeCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("请开始你的表演");
             });
             OneKeyLeaveCommand = new RelayCommand(async () =>
             {
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始收拾");
                 InitCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读软件版本");
                 GetSoftVersionCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("设置捕获时间60s");
                 SetCapturePeriodCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("退出工厂模式");
                 QuitFactorCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读工厂模式");
                 ReadFactoryCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("事了拂袖去");
                 DisconnectCommand.Execute(null);
-                await Task.Delay(500);
+                await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("深藏功与名");
             });
         }

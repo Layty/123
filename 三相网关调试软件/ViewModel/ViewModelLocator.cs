@@ -2,20 +2,33 @@ using System;
 using Autofac;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Extensions.DependencyInjection;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class ViewModelLocator
     {
+//        protected void ConfigureServices(ServiceCollection services)
+//        {
+//            services.AddSingleton<DataViewModel>();
+//            services.AddSingleton<DlmsSettingsViewModel>();
+//            services.AddSingleton<DlmsClient>();
+//        }
+
         public ViewModelLocator()
         {
-          
-       
+//            //Microsoft
+//            var serviceCollection = new ServiceCollection();
+//            ConfigureServices(serviceCollection);
+//            var ser = serviceCollection.BuildServiceProvider();
+
+      
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
                 #region Dlms相关服务
+
                 SimpleIoc.Default.Register<DlmsSettingsViewModel>();
                 SimpleIoc.Default.Register<DlmsClient>();
                 SimpleIoc.Default.Register<DataViewModel>();
@@ -34,6 +47,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<UserLoginViewModel>(); //用户登录
                 SimpleIoc.Default.Register<ColorToolViewModel>(); //程序调色板，皮肤
                 SimpleIoc.Default.Register<SkinViewModel>(true); //程序调色板，皮肤，开机直接应用
+                SimpleIoc.Default.Register<SnackbarViewModel>();
 
                 #endregion
 
@@ -82,7 +96,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             }
         }
 
-        public UserLoginViewModel UserLoginViewModel1 => ServiceProvider.Instance.Get<UserLoginViewModel>();
+
         public DialogsViewModel DialogsViewModel => ServiceLocator.Current.GetInstance<DialogsViewModel>();
 
         #region 主程序界面相关
@@ -94,6 +108,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public SkinViewModel Skin => ServiceLocator.Current.GetInstance<SkinViewModel>();
 
         public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
+        public SnackbarViewModel SnackbarViewModel => ServiceLocator.Current.GetInstance<SnackbarViewModel>();
 
         #endregion
 

@@ -27,14 +27,16 @@ namespace MyDlmsStandard.ApplicationLay.Set
         {
             CosemAttributeDescriptor = cosemAttributeDescriptor;
             AccessSelection = accessSelection;
-          
+            CosemAttributeDescriptorWithSelection = new CosemAttributeDescriptorWithSelection(CosemAttributeDescriptor, AccessSelection);
         }
 
         public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor, DlmsDataItem value)
         {
             CosemAttributeDescriptor = cosemAttributeDescriptor;
             Value = value;
-          
+            CosemAttributeDescriptorWithSelection = new CosemAttributeDescriptorWithSelection(CosemAttributeDescriptor, AccessSelection);
+
+
         }
 
         public string ToPduStringInHex()

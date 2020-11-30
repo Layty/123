@@ -5,17 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              DataContext="{Binding Source={StaticResource Locator} ,Path=TftpServer}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <hc:Card>
+    <materialDesign:Card>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0">
-                <hc:TextBox  Text="{Binding TftpServerDirectory ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                <TextBox  Text="{Binding TftpServerDirectory ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                 <UniformGrid Columns="2">
                     <Button x:Name="ButtonBrowse" Content="Browse" Margin="5" Command="{Binding BrowseCommand}" />
                     <Button x:Name="ButtonOpen" Content="Open" Margin="5" Command="{Binding OpenDialogCommand}"/>
@@ -29,5 +30,5 @@
             <TextBox Grid.Column="1" x:Name="TextBoxLog" />
         </Grid>
 
-    </hc:Card>
+    </materialDesign:Card>
 </UserControl>

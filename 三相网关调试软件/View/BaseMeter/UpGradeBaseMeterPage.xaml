@@ -102,10 +102,7 @@
                         <ProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" Value="{Binding CurrentCount}"
                                      Height="30"
                                      Name="ProgressBar" />
-                    
-                        <hc:WaveProgressBar Margin="4" Maximum="{Binding FileSize}" Minimum="0" ShowText="False"
-                                        Value="{Binding CurrentCount}" 
-                                        Name="ProgressBarWave" />
+
                         
                         <TextBlock Text="{Binding ElementName=ProgressBar,Path=Value}" Margin="5" />
                         <TextBlock Text="{Binding ElementName=ProgressBar,Path=Maximum}" Margin="5" />
