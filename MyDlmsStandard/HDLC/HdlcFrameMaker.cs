@@ -6,14 +6,28 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.HDLC
 {
+    public enum FrameKind
+    {
+        FkI,
+        FkUI,
+        FkRNR,
+        FkRR,
+        FkSNRM,
+        FkDISC,
+        FkUA,
+        FkDM,
+        FkFRMR
+    }
     public class HdlcFrameMaker
     {
+        
+
         private readonly ushort _serverAddress;
         private readonly byte _clientAddress;
         private readonly DLMSInfo _info;
 
         public Hdlc46Frame Hdlc46Frame { get; set; }
-
+        public Command LastCommand { get; set; }
 
         public HdlcFrameMaker(ushort serverAddress, byte clientAddress, DLMSInfo info)
         {
@@ -55,7 +69,7 @@ namespace MyDlmsStandard.HDLC
             return snrmFrame.ToArray();
         }
 
-        public Command LastCommand { get; set; }
+     
 
         public byte[] DisconnectRequest()
         {

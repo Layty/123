@@ -81,7 +81,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                                     var request = new RestRequest(Method.GET);
                                     IRestResponse responseWebApi = client.Execute(request);
                                     var getCosemObject =
-                                        JsonConvert.DeserializeObject<CosemObjectEdit>(responseWebApi.Content);
+                                        JsonConvert.DeserializeObject<CosemObjectEditModel>(responseWebApi.Content);
                                     if (getCosemObject != null)
                                     {
                                         captureObjectDefinition.Description = getCosemObject.Name;

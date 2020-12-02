@@ -218,7 +218,8 @@
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="DispatcherHelper.cs" />
-    <Compile Include="Model\CosemObject.cs" />
+    <Compile Include="Model\CosemObjectEditModel.cs" />
+    <Compile Include="Model\HeartBeatFrame.cs" />
     <Compile Include="Model\IIC\IicParameter.cs" />
     <Compile Include="ViewModel\DialogsViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\CosemObjectViewModel.cs" />

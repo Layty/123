@@ -625,7 +625,7 @@ namespace MyDlmsStandard.ApplicationLay
                             //TODO 判断ValueString 的 OBIS格式后对Value进行赋值
                             break;
                         default:
-                            Value = ValueString.StringToByte();
+                            Value = ValueString;
                             break;
                     }
 

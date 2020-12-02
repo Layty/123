@@ -1,5 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Common;
 using MyDlmsStandard.Wrapper;
 
 
@@ -9,17 +10,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
     {
         private DlmsSettingsViewModel DlmsSettingsViewModel { get; }
 
-        public NetFrame NetFrame
+        public WrapperFrame WrapperFrame
         {
-            get => _netFrame;
+            get => _wrapperFrame;
             set
             {
-                _netFrame = value;
+                _wrapperFrame = value;
                 OnPropertyChanged();
             }
         }
 
-        private NetFrame _netFrame;
+        private WrapperFrame _wrapperFrame;
 
 
         public NetFrameMaker(DlmsSettingsViewModel settingsViewModel)
@@ -29,19 +30,22 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private void InitWrapperHeader()
         {
-            NetFrame = new NetFrame()
+            WrapperFrame = new WrapperFrame()
             {
-                Version = new AxdrIntegerUnsigned16("1"),
-                SourceAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ClientAddress.ToString("X4"))),
-                DestAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ServerAddress.ToString("X4"))),
+                WrapperHeader = new WrapperHeader()
+                {
+                    Version = new AxdrIntegerUnsigned16("1"),
+                    SourceAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ClientAddress.ToString("X4"))),
+                    DestAddress = new AxdrIntegerUnsigned16((DlmsSettingsViewModel.ServerAddress.ToString("X4"))),
+                }
             };
         }
 
         public byte[] InvokeApdu(byte[] apduBytes)
         {
             InitWrapperHeader();
-            NetFrame.DLMSApduDataBytes = apduBytes;
-            return NetFrame.ToPduBytes();
+            WrapperFrame.WrapperData = apduBytes;
+            return WrapperFrame.ToPduStringInHex().StringToByte();
         }
     }
 }

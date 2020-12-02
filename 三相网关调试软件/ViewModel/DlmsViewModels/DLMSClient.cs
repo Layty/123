@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -181,7 +177,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public async Task<GetResponse> GetRequestAndWaitResponse(CosemAttributeDescriptor cosemAttributeDescriptor,
             GetRequestType getRequestType = GetRequestType.Normal)
         {
-            var getRequest = new GetRequest();
+            getRequest = new GetRequest();
             switch (getRequestType)
             {
                 case GetRequestType.Normal:

@@ -233,10 +233,10 @@ namespace DataNotification.ViewModel
             try
             {
                 var s = bytes.ByteToString();
-                var netFrame = new NetFrame();
+                var netFrame = new WrapperFrame();
                 if (!netFrame.PduStringInHexConstructor(ref s)) return;
 
-                var s1 = netFrame.DLMSApduDataBytes.ByteToString();
+                var s1 = netFrame.WrapperData.ByteToString();
                 var dataNotification = new MyDlmsStandard.ApplicationLay.DataNotification.DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
@@ -370,8 +370,9 @@ namespace DataNotification.ViewModel
 
             try
             {
+                var pduString = bytes.ByteToString();
                 var heart = new HeartBeatFrame();
-                var result = heart.PduBytesToConstructor(bytes);
+                var result = heart.PduStringInHexConstructor(ref pduString);
                 if (result)
                 {
                     heart.OverturnDestinationSource();
@@ -389,7 +390,6 @@ namespace DataNotification.ViewModel
 
         public void Select(Socket clientSocket)
         {
-//            DLMSClient.CurrentSocket = clientSocket;
             CurrentSocketClient = clientSocket;
         }
     }

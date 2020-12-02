@@ -13,8 +13,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
     {
         public CosemObjectViewModel()
         {
-            CurrentCosemObjectEdit = new CosemObjectEdit();
-            CosemObjects = new ObservableCollection<CosemObjectEdit>();
+            CurrentCosemObjectEdit = new CosemObjectEditModel();
+            CosemObjects = new ObservableCollection<CosemObjectEditModel>();
 
             GetAllCosemObjectsCommand = new RelayCommand(() =>
             {
@@ -26,7 +26,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     IRestResponse response = client.Execute(request);
                     CosemObjects =
-                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEdit>>(response.Content);
+                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEditModel>>(response.Content);
                 }
                 catch (Exception e)
                 {
@@ -41,7 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     IRestResponse response = client.Execute(request);
                     CosemObjects.Clear();
-                    var getCosemObject = JsonConvert.DeserializeObject<CosemObjectEdit>(response.Content);
+                    var getCosemObject = JsonConvert.DeserializeObject<CosemObjectEditModel>(response.Content);
                     if (getCosemObject != null)
                     {
                         CosemObjects.Add(getCosemObject);
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     IRestResponse response = client.Execute(request);
                     CosemObjects.Clear();
                     CosemObjects =
-                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEdit>>(response.Content);
+                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEditModel>>(response.Content);
                 }
                 catch (Exception e)
                 {
@@ -77,7 +77,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 try
                 {
                     CosemObjects =
-                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEdit>>(response.Content);
+                        JsonConvert.DeserializeObject<ObservableCollection<CosemObjectEditModel>>(response.Content);
                 }
                 catch (Exception e)
                 {
@@ -106,7 +106,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     Console.WriteLine(e);
                 }
             });
-            UpdateCommand = new RelayCommand<CosemObjectEdit>((t) =>
+            UpdateCommand = new RelayCommand<CosemObjectEditModel>((t) =>
             {
                 try
                 {
@@ -127,7 +127,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     Console.WriteLine(e);
                 }
             });
-            DeleteCommand = new RelayCommand<CosemObjectEdit>(t =>
+            DeleteCommand = new RelayCommand<CosemObjectEditModel>(t =>
             {
                 try
                 {
@@ -162,7 +162,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         //    request.AddHeader("Content-Type", "application/json");
         //}
 
-        public ObservableCollection<CosemObjectEdit> CosemObjects
+        public ObservableCollection<CosemObjectEditModel> CosemObjects
         {
             get => _cosemObjects;
             set
@@ -172,10 +172,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private ObservableCollection<CosemObjectEdit> _cosemObjects;
+        private ObservableCollection<CosemObjectEditModel> _cosemObjects;
 
 
-        public CosemObjectEdit CurrentCosemObjectEdit
+        public CosemObjectEditModel CurrentCosemObjectEdit
         {
             get => _currentCosemObjectEdit;
             set
@@ -185,12 +185,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private CosemObjectEdit _currentCosemObjectEdit;
+        private CosemObjectEditModel _currentCosemObjectEdit;
 
 
         public RelayCommand AddCommand { get; set; }
-        public RelayCommand<CosemObjectEdit> UpdateCommand { get; set; }
-        public RelayCommand<CosemObjectEdit> DeleteCommand { get; set; }
+        public RelayCommand<CosemObjectEditModel> UpdateCommand { get; set; }
+        public RelayCommand<CosemObjectEditModel> DeleteCommand { get; set; }
 
         public RelayCommand<string> GetByObisCommand { get; set; }
 

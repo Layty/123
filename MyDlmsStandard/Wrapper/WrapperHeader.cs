@@ -1,44 +1,45 @@
 ﻿using MyDlmsStandard.Axdr;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.Wrapper
 {
-    public class NetFrame : IToPduStringInHex, IPduStringInHexConstructor
+    public class WrapperHeader : IToPduStringInHex, IPduStringInHexConstructor
     {
+        /// <summary>
+        /// 版本号
+        /// </summary>
         public AxdrIntegerUnsigned16 Version { get; set; }
-
+        /// <summary>
+        /// 源地址
+        /// </summary>
         public AxdrIntegerUnsigned16 SourceAddress { get; set; }
+        /// <summary>
+        /// 目的地址
+        /// </summary>
         public AxdrIntegerUnsigned16 DestAddress { get; set; }
-        AxdrIntegerUnsigned16 Length { get; set; }
-        public byte[] DLMSApduDataBytes { get; set; }
+        /// <summary>
+        /// WrapperData帧的字节长度，与WrapperData相关
+        /// </summary>
+        public AxdrIntegerUnsigned16 Length { get; set; }
 
-
-        public NetFrame()
-        {
-        }
-
-
-        public void OverturnDestinationSource()
-        {
-            var tm = DestAddress;
-            DestAddress = SourceAddress;
-            SourceAddress = tm;
-        }
 
         public string ToPduStringInHex()
         {
             return Version.ToPduStringInHex() + SourceAddress.ToPduStringInHex() + DestAddress.ToPduStringInHex() +
-                   DLMSApduDataBytes.Length.ToString("X4") + DLMSApduDataBytes.ByteToString();
+                   Length.ToPduStringInHex();
         }
-
-        public byte[] ToPduBytes()
-        {
-            return ToPduStringInHex().StringToByte();
-        }
-
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
+            if (string.IsNullOrEmpty(pduStringInHex))
+            {
+                return false;
+            }
+
+            if (pduStringInHex.Length <= 8)
+            {
+                return false;
+            }
+
             Version = new AxdrIntegerUnsigned16();
             if (!Version.PduStringInHexConstructor(ref pduStringInHex))
             {
@@ -62,12 +63,6 @@ namespace MyDlmsStandard.Wrapper
             {
                 return false;
             }
-
-            if (Length.GetEntityValue() != pduStringInHex.StringToByte().Length)
-            {
-                return false;
-            }
-            DLMSApduDataBytes = pduStringInHex.StringToByte();
 
             return true;
         }

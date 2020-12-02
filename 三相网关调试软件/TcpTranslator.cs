@@ -4,6 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
 using MyDlmsStandard.Wrapper;
+using 三相智慧能源网关调试软件.Common;
+using 三相智慧能源网关调试软件.Model;
+using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 
 namespace 三相智慧能源网关调试软件
@@ -142,16 +146,16 @@ namespace 三相智慧能源网关调试软件
                     if (IsNeedToConvert12HeartBeatTo8)
                     {
                         var frame = new HeartBeatFrame();
-                        var t = frame.PduBytesToConstructor(arg2);
+                        var pduString = arg2.ByteToString();
+                        var t = frame.PduStringInHexConstructor(ref pduString);
                         if (t)
                         {
-                            var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
-                            if (len == 0x0F) //12位转8位
+                            if (frame.WrapperHeader.Length.GetEntityValue() == 0x0F) //12位转8位
                             {
                                 _meterHeight4ByteDictionary[meterSocket] =
                                     frame.MeterAddressBytes.Take(4).ToArray(); //保留高位4地址后续用于补全
                                 frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
-                                arg2 = frame.ToPduBytes();
+                                arg2 = frame.ToPduStringInHex().StringToByte();
                             }
                         }
                     }
@@ -169,19 +173,20 @@ namespace 三相智慧能源网关调试软件
                 {
                     if (IsNeedToConvert12HeartBeatTo8)
                     {
-                        var frame = new HeartBeatFrame();
-                        var t = frame.PduBytesToConstructor(arg2);
+                        var heartBeatFrame = new HeartBeatFrame();
+                        var pduString = arg2.ByteToString();
+                        var t = heartBeatFrame.PduStringInHexConstructor(ref pduString);
                         if (t)
                         {
-                            var len = BitConverter.ToInt16(frame.LengthBytes.Reverse().ToArray(), 0);
-                            if (len == 0x0B)
+                           
+                            if (heartBeatFrame.WrapperHeader.Length.GetEntityValue() == 0x0B)
                             {
                                 // 8位转12位
                                 var list = new List<byte>();
                                 list.AddRange(_meterHeight4ByteDictionary[socket.Key]); //添加原保留的高位地址
-                                list.AddRange(frame.MeterAddressBytes);
-                                frame.MeterAddressBytes = list.ToArray();
-                                arg2 = frame.ToPduBytes();
+                                list.AddRange(heartBeatFrame.MeterAddressBytes);
+                                heartBeatFrame.MeterAddressBytes = list.ToArray();
+                                arg2 = heartBeatFrame.ToPduStringInHex().StringToByte();
                             }
                         }
                     }

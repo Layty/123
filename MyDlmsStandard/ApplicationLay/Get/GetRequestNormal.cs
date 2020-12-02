@@ -38,31 +38,6 @@ namespace MyDlmsStandard.ApplicationLay.Get
             AttributeDescriptorWithSelection = attributeDescriptorWithSelection;
         }
 
-//        public byte[] ToPduBytes()
-//        {
-//            List<byte> pduBytes = new List<byte>();
-//            pduBytes.Add((byte) GetRequestType);
-//            pduBytes.Add(InvokeIdAndPriority.GetEntityValue());
-//            if (AttributeDescriptor != null)
-//            {
-//                pduBytes.AddRange(AttributeDescriptor.ToPduStringInHex().StringToByte());
-//                pduBytes.Add(0x00);
-//            }
-//
-//            if (AccessSelection != null)
-//            {
-//                pduBytes.Add(0x01);
-//                pduBytes.AddRange(AccessSelection.ToPduStringInHex().StringToByte());
-//            }
-//
-//            if (AttributeDescriptorWithSelection != null)
-//            {
-//                pduBytes.AddRange(AttributeDescriptorWithSelection.ToPduStringInHex().StringToByte());
-//            }
-//
-//            return pduBytes.ToArray();
-//        }
-
         public string ToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();

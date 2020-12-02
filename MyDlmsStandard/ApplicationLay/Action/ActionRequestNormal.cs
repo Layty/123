@@ -10,7 +10,7 @@ namespace MyDlmsStandard.ApplicationLay.Action
         [XmlIgnore] protected ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
     
     
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority1 { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public CosemMethodDescriptor CosemMethodDescriptor { get; set; }
 
         public DlmsDataItem MethodInvocationParameters { get; set; }
@@ -19,26 +19,20 @@ namespace MyDlmsStandard.ApplicationLay.Action
         {
             CosemMethodDescriptor = new CosemMethodDescriptor();
             MethodInvocationParameters = new DlmsDataItem();
-       
-
-            InvokeIdAndPriority1 = new AxdrIntegerUnsigned8("C1");
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8("C1");
         }
         public ActionRequestNormal(CosemMethodDescriptor cosemMethodDescriptor,
             DlmsDataItem methodInvocationParameters)
         {
             CosemMethodDescriptor = cosemMethodDescriptor;
             MethodInvocationParameters = methodInvocationParameters;
-        
-
-            InvokeIdAndPriority1=new AxdrIntegerUnsigned8("C1");
+            InvokeIdAndPriority=new AxdrIntegerUnsigned8("C1");
         }
 
         public ActionRequestNormal(CosemMethodDescriptor cosemMethodDescriptor)
         {
             CosemMethodDescriptor = cosemMethodDescriptor;
-       
-
-            InvokeIdAndPriority1 = new AxdrIntegerUnsigned8("C1");
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8("C1");
         }
 
       
@@ -47,7 +41,7 @@ namespace MyDlmsStandard.ApplicationLay.Action
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("01");
-            stringBuilder.Append(InvokeIdAndPriority1.ToPduStringInHex());
+            stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             stringBuilder.Append(CosemMethodDescriptor.ToPduStringInHex());
             if (MethodInvocationParameters != null)
             {

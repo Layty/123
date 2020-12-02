@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NLog;
@@ -16,9 +17,11 @@ using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
+  
     public class TcpServerViewModel : ObservableObject
     {
         public TcpServerHelper TcpServerHelper
@@ -196,7 +199,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             PowerOff,
             ByPass,
         }
-
+       
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
@@ -261,10 +264,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             try
             {
                 var s = bytes.ByteToString();
-                var netFrame = new NetFrame();
+                var netFrame = new WrapperFrame();
                 if (!netFrame.PduStringInHexConstructor(ref s)) return;
 
-                var s1 = netFrame.DLMSApduDataBytes.ByteToString();
+                var s1 = netFrame.WrapperData.ByteToString();
                 var dataNotification = new DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
@@ -403,14 +406,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
             try
             {
                 var heart = new HeartBeatFrame();
-                var result = heart.PduBytesToConstructor(bytes);
+                var pduString = bytes.ByteToString();
+                var result = heart.PduStringInHexConstructor(ref pduString);
                 if (result)
                 {
                     heart.OverturnDestinationSource();
-
                     await Task.Delay(HeartBeatDelayTime);
-
-                    TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
+                    TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduStringInHex().StringToByte());
                 }
             }
             catch (Exception e)

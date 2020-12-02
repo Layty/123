@@ -28,8 +28,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsStandard", "MyDlmsSta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncfusionWpfApp1", "SyncfusionWpfApp1\SyncfusionWpfApp1.csproj", "{ACA940B1-19F0-4123-95D8-530A1C78F285}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsNetCore", "MyDlmsNetCore\MyDlmsNetCore.csproj", "{448C7247-83E5-485C-815C-840FEEB23CF2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,10 +78,6 @@ Global
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Release|Any CPU.Build.0 = Release|Any CPU
-		{448C7247-83E5-485C-815C-840FEEB23CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{448C7247-83E5-485C-815C-840FEEB23CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{448C7247-83E5-485C-815C-840FEEB23CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{448C7247-83E5-485C-815C-840FEEB23CF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

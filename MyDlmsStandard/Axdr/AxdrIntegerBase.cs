@@ -29,7 +29,7 @@ namespace MyDlmsStandard.Axdr
 
         public  bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            if (pduStringInHex.Length < Length)
+            if (pduStringInHex.Length < Length * 2)
             {
                 return false;
             }
