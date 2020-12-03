@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerUnsigned8 : AxdrIntegerBase
+    public class AxdrIntegerUnsigned8 : AxdrIntegerBase<byte>
     {
         [XmlIgnore] public override int Length => 1;
 
@@ -29,8 +29,12 @@ namespace MyDlmsStandard.Axdr
             throw new ArgumentException("The length not match type");
         }
 
+        public AxdrIntegerUnsigned8(byte unsigned8Value)
+        {
+            Value = unsigned8Value.ToString("X2");
+        }
 
-        public byte GetEntityValue()
+        public override byte GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {

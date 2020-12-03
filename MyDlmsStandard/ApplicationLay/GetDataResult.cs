@@ -37,8 +37,7 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 pduStringInHex = pduStringInHex.Substring(2);
                 Data = new DlmsDataItem();
-                DataAccessResult = new AxdrIntegerUnsigned8();
-                DataAccessResult.Value = "00";
+                DataAccessResult = new AxdrIntegerUnsigned8 {Value = "00"};
                 return Data.PduStringInHexConstructor(ref pduStringInHex);
             }
 

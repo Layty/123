@@ -30,7 +30,7 @@
         GeneralBlockTransfer = 224,
         AccessRequest = 217,
         AccessResponse = 218,
-        DataNotification = 0xF,
+        DataNotification = 0x0F,
         GloGetRequest = 200,
         GloGetResponse = 204,
         GloSetRequest = 201,

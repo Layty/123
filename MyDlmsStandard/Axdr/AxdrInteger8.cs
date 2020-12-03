@@ -2,18 +2,12 @@
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerInteger8 :  AxdrIntegerBase
+    public class AxdrIntegerInteger8 :  AxdrIntegerBase<sbyte>
     {
        public override int Length => 1;
-       
 
-        public AxdrIntegerInteger8()
+       public AxdrIntegerInteger8()
         {
-        }
-
-        public AxdrIntegerInteger8(sbyte value)
-        {
-            Value = value.ToString("X2");
         }
 
         public AxdrIntegerInteger8(string hexString)
@@ -33,9 +27,12 @@ namespace MyDlmsStandard.Axdr
             throw new ArgumentException("The length not match type");
         }
 
+        public AxdrIntegerInteger8(sbyte value)
+        {
+            Value = value.ToString("X2");
+        }
 
-
-        public sbyte GetEntityValue()
+        public override sbyte GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {

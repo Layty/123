@@ -108,7 +108,6 @@ namespace 三相智慧能源网关调试软件
         public event Action<Socket, byte[]> ReceiveBytes;
         public event Action<Socket, byte[]> SendBytesToClient;
 
-    
 
         protected virtual void OnNotifyNewClient(Socket clientSocket)
         {
@@ -118,28 +117,24 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             ReceiveBytes?.Invoke(clientSocket, bytes);
-//            Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
-
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
         }
 
-        
+
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
-
             StrongReferenceMessenger.Default.Send(t, "ServerSendDataEvent");
-//            Messenger.Default.Send((clientSocket, bytes), "ServerSendDataEvent");
         }
 
         private void OnNotifyErrorMsg(string msg)
         {
             this.ErrorMsg?.Invoke(msg);
-            //            Messenger.Default.Send(msg, "ServerErrorEvent");
+
             StrongReferenceMessenger.Default.Send(msg, "ServerErrorEvent");
         }
 
@@ -166,6 +161,7 @@ namespace 三相智慧能源网关调试软件
             ProtocolType = protocolType;
             SocketClientList = new ObservableCollection<Socket>();
         }
+
         /// <summary>
         /// 获取当前计算机的主机IPV4地址
         /// </summary>

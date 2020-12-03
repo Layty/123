@@ -7,13 +7,51 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
       mc:Ignorable="d"
-  
+      xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
       Title="CoverPage">
+
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation
+                        Duration="0:0:10" From="0" To="360" RepeatBehavior="Forever"
+                        Storyboard.TargetName="Ball2"
+                        Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" />
+                    <DoubleAnimation
+                        Duration="0:0:10" From="360" To="0" RepeatBehavior="Forever"
+                        Storyboard.TargetName="Ball3"
+                        Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
     <Grid>
-         <materialDesign:Card> 
-             <!-- <Image Source="../Image/伊利斯逐星.jpg"  Stretch="Fill" Margin="5"/>  -->
-            <myAnimation:TwoBall></myAnimation:TwoBall>
-         </materialDesign:Card> 
+        <materialDesign:Card>
+           
+            <Grid>
+                <!-- <Image Source="../Image/伊利斯逐星.jpg"  Stretch="Fill" Margin="5"/>  -->
+                <!-- <mde:OversizedNumberSpinner Value="2" Min="0" Max="4" /> -->
+                <myAnimation:TwoBall />
+                <myAnimation:TwoBall RenderTransformOrigin="0.5,0.5">
+                    <myAnimation:TwoBall.RenderTransform>
+                        <RotateTransform Angle="90" />
+                    </myAnimation:TwoBall.RenderTransform>
+                </myAnimation:TwoBall>
+                <myAnimation:TwoBall RenderTransformOrigin="0.5,0.5" x:Name="Ball2">
+                    <myAnimation:TwoBall.RenderTransform>
+                        <RotateTransform />
+                    </myAnimation:TwoBall.RenderTransform>
+                </myAnimation:TwoBall>
+                <myAnimation:TwoBall RenderTransformOrigin="0.5,0.5" x:Name="Ball3">
+                    <myAnimation:TwoBall.RenderTransform>
+                        <RotateTransform />
+                    </myAnimation:TwoBall.RenderTransform>
+                </myAnimation:TwoBall>
+            </Grid>
+
+
+        </materialDesign:Card>
 
     </Grid>
 </Page>

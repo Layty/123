@@ -2,7 +2,7 @@
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerUnsigned16 : AxdrIntegerBase
+    public class AxdrIntegerUnsigned16 : AxdrIntegerBase<ushort>
     {
         public override int Length => 2;
 
@@ -27,9 +27,12 @@ namespace MyDlmsStandard.Axdr
             throw new ArgumentException("The length not match type");
         }
 
+        public AxdrIntegerUnsigned16(ushort ushortValue)
+        {
+            Value = ushortValue.ToString("X4");
+        }
 
-
-        public ushort GetEntityValue()
+        public override ushort GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {

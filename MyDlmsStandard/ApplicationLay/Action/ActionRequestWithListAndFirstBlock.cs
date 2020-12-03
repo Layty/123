@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard.ApplicationLay.Action
 {
-    public class ActionRequestWithListAndFirstBlock : IToPduBytes
+    public class ActionRequestWithListAndFirstBlock 
     {
        
 

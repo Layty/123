@@ -23,14 +23,14 @@ namespace 三相智慧能源网关调试软件.MyControl
         {
             var target= Template.FindName("MyEllipse", this) as EllipseGeometry;
             target.Center = Mouse.GetPosition(this);
-            var animation = new DoubleAnimation()
+            var animation = new DoubleAnimation
             {
                 From = 0,
                 To = 150,
                 Duration = new Duration(TimeSpan.FromSeconds(1))
             };
             target.BeginAnimation(EllipseGeometry.RadiusXProperty, animation);
-            var animation2 = new DoubleAnimation()
+            var animation2 = new DoubleAnimation
             {
                 From = 0.3,
                 To = 0,

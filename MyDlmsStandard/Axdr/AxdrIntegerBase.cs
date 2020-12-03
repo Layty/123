@@ -3,11 +3,14 @@ using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Axdr
-{//T L V 
+{ //T L V 
 
-    public abstract class AxdrIntegerBase : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
+    public abstract class AxdrIntegerBase<T> : IToPduStringInHex, IPduStringInHexConstructor,
+        INotifyPropertyChanged,IGetEntityValue<T> where T : struct
     {
+       
         [XmlIgnore] public virtual int Length { get; set; }
+
         [XmlAttribute]
         public string Value
         {
@@ -21,7 +24,8 @@ namespace MyDlmsStandard.Axdr
 
         private string _value;
 
-        public  string ToPduStringInHex()
+       
+        public string ToPduStringInHex()
         {
             return Value;
         }
@@ -34,10 +38,12 @@ namespace MyDlmsStandard.Axdr
                 return false;
             }
 
-            Value = pduStringInHex.Substring(0, Length*2);
+            Value = pduStringInHex.Substring(0, Length * 2);
             pduStringInHex = pduStringInHex.Substring(Length * 2);
             return true;
         }
+
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -45,5 +51,12 @@ namespace MyDlmsStandard.Axdr
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual T GetEntityValue()
+        {
+            return new T();
+        }
+
+
     }
 }

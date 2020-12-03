@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerUnsigned32 : AxdrIntegerBase
+    public class AxdrIntegerUnsigned32 : AxdrIntegerBase<uint>
     {
         [XmlIgnore] public override int Length => 4;
 
@@ -12,18 +12,18 @@ namespace MyDlmsStandard.Axdr
         {
         }
 
-        public AxdrIntegerUnsigned32(string s)
+        public AxdrIntegerUnsigned32(string hexString)
         {
-            if (s.Length != 8)
+            if (hexString.Length != 8)
             {
                 throw new ArgumentException("The length not match type");
             }
 
-            Value = s;
+            Value = hexString;
         }
 
 
-        public uint GetEntityValue()
+        public override uint GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {

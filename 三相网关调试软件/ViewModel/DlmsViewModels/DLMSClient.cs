@@ -20,7 +20,6 @@ using MyDlmsStandard.Ber;
 using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
 using MySerialPortMaster;
-using NLog;
 using 三相智慧能源网关调试软件.Common;
 
 
@@ -45,7 +44,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         #endregion
 
-        public Logger Logger = LogManager.GetLogger("XML");
+
         public bool IsAuthenticationRequired { get; set; }
         public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
 
@@ -338,6 +337,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public async Task<byte[]> ActionRequest(ActionRequest actionRequest)
         {
+            XmlHelper.XmlCommon(actionRequest);
+            return await HandlerSendData(
+                (MyDlmsStandard.Common.Common.StringToByte(actionRequest.ToPduStringInHex())));
+        }
+
+        public async Task<byte[]> ActionRequestAndWaitResponse(CosemMethodDescriptor cosemMethodDescriptor,
+            DlmsDataItem dlmsDataItem)
+        {
+            var actionRequest = new ActionRequest()
+            {
+                ActionRequestNormal = new ActionRequestNormal(cosemMethodDescriptor,
+                    dlmsDataItem)
+            };
             XmlHelper.XmlCommon(actionRequest);
             return await HandlerSendData(
                 (MyDlmsStandard.Common.Common.StringToByte(actionRequest.ToPduStringInHex())));

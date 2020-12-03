@@ -5,7 +5,6 @@ using System.Linq;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
 
-//using System.Windows;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
 {

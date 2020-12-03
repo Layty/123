@@ -61,14 +61,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             EModeViewModel = new EModeViewModel(SerialPortViewModel.SerialPortMaster); //近红外
 
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+
             EModeViewModel = Client.EModeViewModel;
+
             InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
             DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
                 var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
-                if (response != null )
+                if (response?.GetResponseNormal.Result.Data != null)
                 {
                     SoftVersion = response.GetResponseNormal.Result.Data.ValueString;
                 }
@@ -77,7 +79,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
-                if (response != null)
+                if (response?.GetResponseNormal.Result.Data != null)
                 {
                     FactoryStatus = response.GetResponseNormal.Result.Data.ValueString;
                 }
@@ -85,7 +87,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             EnterFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000");//8192
+                DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000"); //8192
                 await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
             });
             QuitFactorCommand = new RelayCommand(async () =>
@@ -103,7 +105,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var cosem = new CosemProfileGeneric("1.0.99.1.0.255")
                 {
-                    CapturePeriod = new AxdrIntegerUnsigned32("00000060")
+                    CapturePeriod = new AxdrIntegerUnsigned32("0000003C")//60s
                 };
                 var dlmsData = new DlmsDataItem(DataType.UInt32, cosem.CapturePeriod.Value);
 
@@ -112,13 +114,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             ClearAllCommand = new RelayCommand(async () =>
             {
                 var cosem = new ScriptTable();
-               var actionRequest = new ActionRequest()
-                {
-                    ActionRequestNormal = new ActionRequestNormal(cosem.GetScriptExecuteCosemMethodDescriptor(),
-                        new DlmsDataItem(DataType.UInt16, "0001")
-                    )
-                };
-                await Client.ActionRequest(actionRequest);
+                var value = new DlmsDataItem(DataType.UInt16, "0001");
+                await Client.ActionRequestAndWaitResponse(cosem.GetScriptExecuteCosemMethodDescriptor(),
+                    value);
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {
@@ -168,13 +166,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         #region Command
 
-
-
         /// <summary>
         /// 初始化命令，根据是否使用21E,或者使用HDLC46进行初始化通信,包含SNRM,AARQ
         /// </summary>
         public RelayCommand InitCommand { get; set; }
-   
 
 
         /// <summary>

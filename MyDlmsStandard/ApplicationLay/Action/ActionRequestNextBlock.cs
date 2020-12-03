@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard.ApplicationLay.Action
 {
-    public class ActionRequestNextBlock : IToPduBytes
+    public class ActionRequestNextBlock 
     {
         public byte[] ToPduBytes()
         {

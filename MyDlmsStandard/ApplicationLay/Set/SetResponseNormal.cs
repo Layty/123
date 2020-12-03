@@ -9,7 +9,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
     {
         [XmlIgnore] public SetResponseType SetResponseType { get; set; }//需要标注XmlIgnore，不然XML序列化时报错
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
-        private AxdrIntegerUnsigned8 _result { get; set; }
+        private AxdrIntegerUnsigned8 _result;
         public DataAccessResult Result { get; set; }
 
         public string ToPduStringInHex()
@@ -33,16 +33,14 @@ namespace MyDlmsStandard.ApplicationLay.Set
             {
                 return false;
             }
-
+            
             _result = new AxdrIntegerUnsigned8();
             if (!_result.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
-            else
-            {
-                Result = (DataAccessResult) _result.GetEntityValue();
-            }
+
+            Result = (DataAccessResult) _result.GetEntityValue();
 
 
             return true;

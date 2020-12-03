@@ -2,30 +2,22 @@
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerBoolean : AxdrIntegerBase
+    /// <summary>
+    /// bool类型继承自Unsigned8,重写GetEntityValue方法 返回bool类型
+    /// </summary>
+    public class AxdrIntegerBoolean : AxdrIntegerUnsigned8
     {
-        public override int Length => 1;
-
         public AxdrIntegerBoolean()
         {
         }
-
-        public AxdrIntegerBoolean(string hexStringValue)
+        public AxdrIntegerBoolean(string hexStringValue) : base(hexStringValue)
         {
-            if (hexStringValue.Length != 2)
-            {
-                throw new ArgumentException("The length not match type");
-            }
-
-            Value = hexStringValue;
+        }
+        public AxdrIntegerBoolean(byte boolByte) : base(boolByte)
+        {
         }
 
-        public AxdrIntegerBoolean(byte boolByte)
-        {
-            Value = boolByte.ToString("X2").PadLeft(2, '0');
-        }
-
-        public bool GetEntityValue()
+        public new bool GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {

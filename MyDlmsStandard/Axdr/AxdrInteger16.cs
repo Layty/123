@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerInteger16 : AxdrIntegerBase
+    public class AxdrIntegerInteger16 : AxdrIntegerBase<short>
     {
         [XmlIgnore] public override int Length => 2;
 
@@ -21,9 +21,12 @@ namespace MyDlmsStandard.Axdr
 
             Value = hexString;
         }
+        public AxdrIntegerInteger16(short shortValue)
+        {
+            Value = shortValue.ToString("X4");
+        }
 
-
-        public short GetEntityValue()
+        public override short GetEntityValue()
         {
             if (string.IsNullOrEmpty(Value))
             {
