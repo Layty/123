@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Text;
+
 namespace MySerialPortMaster
 {
-    public static class Common
+     internal static class Common
     {
         
         ///  <summary>  

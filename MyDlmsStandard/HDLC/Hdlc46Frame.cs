@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.HDLC
 {
@@ -100,6 +101,7 @@ namespace MyDlmsStandard.HDLC
 
         public bool ParsePdu()
         {
+            ///
             return true;
         }
     }
@@ -147,7 +149,9 @@ namespace MyDlmsStandard.HDLC
 
         public byte[] GetFrameFormatField(int count)
         {
-            return new byte[] {0xA0, Convert.ToByte(count)};
+            FrameFormatField=new HDLCFrameFormatField(){FrameLengthSubField = (ushort)count};
+            return FrameFormatField.ToHexPdu().StringToByte();
+            //   return new byte[] {0xA0, Convert.ToByte(count)};
         }
 
 
@@ -169,22 +173,11 @@ namespace MyDlmsStandard.HDLC
         public Hdlc46Frame(ushort destAddress1, byte sourceAddress1)
         {
             FrameFormatField = new HDLCFrameFormatField();
-            this.DestAddress1 = new AAddress {Size = 2, Upper = 0x01, Lower = destAddress1 }; //
+            this.DestAddress1 = new AAddress {Size = 2, Upper = 0x01, Lower = destAddress1}; //
             SourceAddress1 = new AAddress {Upper = sourceAddress1, Size = 1};
             CurrentReceiveSequenceNumber = 0;
             CurrentSendSequenceNumber = 0;
             LlcHeadFrameBytes = HdlcLlc.LLCSendBytes;
-        }
-
-
-        public int CurrentReceiveSequenceNumber
-        {
-            get => _currentReceiveSequenceNumber;
-            set
-            {
-                bool flag = value >= 8;
-                _currentReceiveSequenceNumber = flag ? 0 : value;
-            }
         }
 
 
@@ -198,11 +191,21 @@ namespace MyDlmsStandard.HDLC
             }
         }
 
-        private int _currentReceiveSequenceNumber;
 
         private int _currentSendSequenceNumber;
 
-        private byte _sourceAddress;
+        public int CurrentReceiveSequenceNumber
+        {
+            get => _currentReceiveSequenceNumber;
+            set
+            {
+                bool flag = value >= 8;
+                _currentReceiveSequenceNumber = flag ? 0 : value;
+            }
+        }
+
+        private int _currentReceiveSequenceNumber;
+
         public byte[] Hcs = new byte[2];
         public byte[] Fcs = new byte[2];
 

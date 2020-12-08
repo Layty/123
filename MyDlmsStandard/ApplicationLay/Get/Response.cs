@@ -17,7 +17,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
             StringBuilder stringBuilder = new StringBuilder();
             if (AssociationRequest!=null)
             {
-                stringBuilder.Append(AssociationRequest.ToPduBytes());
+                stringBuilder.Append(AssociationRequest.ToPduStringInHex());
             }
             if (GetRequest != null)
             {

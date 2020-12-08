@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Ber;
+using MyDlmsStandard.Common;
 
 
 namespace MyDlmsStandard.ApplicationLay.Association
@@ -31,10 +32,14 @@ namespace MyDlmsStandard.ApplicationLay.Association
         {
             ApplicationContextName = new ApplicationContextName();
             MechanismName = new MechanismName();
-            SenderACSERequirements = new BerBitString();
-            AuthenticationValue = new AuthenticationValue(passWorld);
+            SenderACSERequirements = new BerBitString()
+            {
+                Value ="1"
+            };
+            AuthenticationValue = new AuthenticationValue(passWorld){CharString = new BerGraphicString(){Value = passWorld.ByteToString()}};
             CallingApTitle = new CallingAPTitle(systemTitle);
             InitiateRequest = new InitiateRequest(maxReceivePduSize, dlmsVersion, conformance);
+           UserInformation=new BerOctetString(){Value = InitiateRequest.ToPduBytes().ByteToString()};
         }
 
 
@@ -52,6 +57,11 @@ namespace MyDlmsStandard.ApplicationLay.Association
             {
                 stringBuilder.Append("A1" + ApplicationContextName.ToPduStringInHex());
             }
+
+            if (CallingApTitle!=null)
+            {
+                stringBuilder.Append(CallingApTitle.ToPduBytes().ByteToString());
+            }
            
           
             if (SenderACSERequirements != null)
@@ -68,8 +78,9 @@ namespace MyDlmsStandard.ApplicationLay.Association
             }
             if (UserInformation != null)
             {
-                string str = UserInformation.ToPduStringInHex();
-                stringBuilder.Append("BE" + str);
+                stringBuilder.Append(InitiateRequest.ToPduBytes().ByteToString());
+//                string str = UserInformation.ToPduStringInHex();
+//                stringBuilder.Append("BE" + str);
             }
             BerOctetString berOctetString3 = new BerOctetString();
             berOctetString3.Value = stringBuilder.ToString();

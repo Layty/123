@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
@@ -44,7 +45,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         #endregion
 
-
+        protected void OnReportSnackbar(string message)
+        {
+            StrongReferenceMessenger.Default.Send(message, "Snackbar");
+        }
         public bool IsAuthenticationRequired { get; set; }
         public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
 
@@ -56,15 +60,24 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <returns></returns>
         private async Task<byte[]> PhysicalLayerSendData(byte[] sendBytes)
         {
+          
             var returnBytes = new byte[] { };
-            if (DlmsSettingsViewModel.CommunicationType == CommunicationType.SerialPort)
+            try
             {
-                returnBytes = await PortMaster.SendAndReceiveReturnDataAsync(sendBytes);
+                if (DlmsSettingsViewModel.CommunicationType == CommunicationType.SerialPort)
+                {
+                    returnBytes = await PortMaster.SendAndReceiveReturnDataAsync(sendBytes);
+                }
+                else if (DlmsSettingsViewModel.CommunicationType == CommunicationType.FrontEndProcess)
+                {
+                    returnBytes = await Socket.SendDataToClientAndWaitReceiveData(CurrentSocket, sendBytes);
+                }
             }
-            else if (DlmsSettingsViewModel.CommunicationType == CommunicationType.FrontEndProcess)
+            catch (Exception e)
             {
-                returnBytes = await Socket.SendDataToClientAndWaitReceiveData(CurrentSocket, sendBytes);
+                OnReportSnackbar(e.Message);
             }
+          
 
             return returnBytes;
         }
@@ -73,7 +86,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             if (parseBytes == null || parseBytes.Length == 0)
             {
-                StrongReferenceMessenger.Default.Send("未收到数据帧", "Snackbar");
+                OnReportSnackbar("未收到响应帧");
                 return null;
             }
 
@@ -97,6 +110,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <returns></returns>
         public async Task<byte[]> InitRequest()
         {
+            
             HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel.ServerAddress,
                 (byte) DlmsSettingsViewModel.ClientAddress, DlmsSettingsViewModel.DlmsInfo);
             byte[] bytes = null;
@@ -121,9 +135,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
                     bytes = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApduHex(aarq.ToPduStringInHex()));
                     bytes = HowToTakeReplyApduData(bytes);
-                    var result = bytes.ByteToString();
-                    if (result != null)
+                    if (bytes != null)
                     {
+                        var result = MyDlmsStandard.Common.Common.ByteToString(bytes);
                         var ass = new AssociationResponse();
                         if (ass.PduStringInHexConstructor(ref result))
                         {
@@ -143,9 +157,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
                 XmlHelper.XmlCommon(aarq);
                 bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduStringInHex().StringToByte()));
-                var result = bytes.ByteToString();
+              
                 if (bytes != null)
                 {
+                    var result = MyDlmsStandard.Common.Common.ByteToString(bytes);
                     var ass = new AssociationResponse();
                     if (ass.PduStringInHexConstructor(ref result))
                     {
@@ -292,18 +307,18 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             var data = dataResult.ByteToString("");
             if (!getResponse.PduStringInHexConstructor(ref data))
             {
-                StrongReferenceMessenger.Default.Send("解析响应帧失败", "Snackbar");
+                OnReportSnackbar("解析响应帧失败");
                 return null;
             }
 
             XmlHelper.XmlCommon(getResponse);
-            if (getResponse.GetResponseNormal != null)
-            {
-                if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
-                {
-                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
-                }
-            }
+//            if (getResponse.GetResponseNormal != null)
+//            {
+//                if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
+//                {
+//                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
+//                }
+//            }
 
 
             return getResponse;

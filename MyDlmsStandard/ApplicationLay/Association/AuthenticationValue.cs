@@ -4,7 +4,7 @@ using MyDlmsStandard.Ber;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AuthenticationValue:IToPduStringInHex
+    public class AuthenticationValue : IToPduStringInHex
     {
         public string Value { get; set; }
         public BerBitString BitString { get; set; }
@@ -14,14 +14,13 @@ namespace MyDlmsStandard.ApplicationLay.Association
 
         public AuthenticationValue()
         {
-            
         }
+
         public AuthenticationValue(byte[] passwordHex)
         {
             this.passwordHex = passwordHex;
         }
 
-      
 
         public string ToPduStringInHex()
         {
@@ -34,10 +33,12 @@ namespace MyDlmsStandard.ApplicationLay.Association
             {
                 text = "81" + BitString.ToPduStringInHex();
             }
+
             if (string.IsNullOrEmpty(text))
             {
                 return "";
             }
+
             return (text.Length / 2).ToString("X2") + text;
         }
 
@@ -48,6 +49,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
             {
                 return false;
             }
+
             pduStringInHex = pduStringInHex.Substring(2);
             if (pduStringInHex.StartsWith("80"))
             {
@@ -55,12 +57,14 @@ namespace MyDlmsStandard.ApplicationLay.Association
                 CharString = new BerGraphicString();
                 return CharString.PduStringInHexConstructor(ref pduStringInHex);
             }
+
             if (pduStringInHex.StartsWith("81"))
             {
                 pduStringInHex = pduStringInHex.Substring(2);
                 BitString = new BerBitString();
                 return BitString.PduStringInHexConstructor(ref pduStringInHex);
             }
+
             return false;
         }
     }

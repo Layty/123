@@ -2,12 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NLog;
 using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.Properties;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;

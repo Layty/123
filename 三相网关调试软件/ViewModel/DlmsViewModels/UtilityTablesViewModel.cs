@@ -610,12 +610,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
                         if (getResponse != null)
                         {
-                            if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
+                            if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
                             {
-                                t.DataForShow = MyConvert.HowToDisplayOctetString(
-                                    Common.Common.StringToByte(getResponse.GetResponseNormal.Result.Data.Value.ToString()),
-                                    OctetStringDisplayFormat.Obis);
-                                t.LogicalName = t.DataForShow;
+                                if (getResponse.GetResponseNormal.Result.Data.DataType == DataType.OctetString)
+                                {
+                                    t.DataForShow = MyConvert.HowToDisplayOctetString(
+                                        Common.Common.StringToByte(getResponse.GetResponseNormal.Result.Data.Value
+                                            .ToString()),
+                                        OctetStringDisplayFormat.Obis);
+                                    t.LogicalName = t.DataForShow;
+                                }
                             }
                         }
                     });
@@ -625,8 +629,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         var response = await Client.GetRequestAndWaitResponse(t.GetTableIdAttributeDescriptor());
                         if (response != null)
                         {
-                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
-                            t.TableId.Value = t.DataForShow;
+                            if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")
+                            {
+                                t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                                t.TableId.Value = t.DataForShow;
+                            }
                         }
                     }
                 );
@@ -636,8 +643,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         var response = await Client.GetRequestAndWaitResponse(t.GetLengthAttributeDescriptor());
                         if (response != null)
                         {
-                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
-                            t.Length.Value = t.DataForShow;
+                            if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")
+                            {
+                                t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                                t.Length.Value = t.DataForShow;
+                            }
                         }
                     }
                 );
@@ -647,16 +657,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         var response = await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor());
                         if (response != null)
                         {
-                            response.GetResponseNormal.Result.Data.OctetStringDisplayFormat =
-                                OctetStringDisplayFormat.Ascii;
-                            t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
-                            t.Buffer.Value = t.DataForShow;
-                            var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));
-                            var daa = d as DiYaGuiDataModel;
+                            if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                             {
-                                if (daa != null)
+                                response.GetResponseNormal.Result.Data.OctetStringDisplayFormat =
+                                    OctetStringDisplayFormat.Ascii;
+                                t.DataForShow = response.GetResponseNormal.Result.Data.ValueString;
+                                t.Buffer.Value = t.DataForShow;
+                                var d = JsonConvert.DeserializeObject(t.DataForShow, typeof(DiYaGuiDataModel));
+                                var daa = d as DiYaGuiDataModel;
                                 {
-                                    DiYaGuiDataModels.Add(daa);
+                                    if (daa != null)
+                                    {
+                                        DiYaGuiDataModels.Add(daa);
+                                    }
                                 }
                             }
                         }

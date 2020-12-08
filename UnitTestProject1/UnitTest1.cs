@@ -76,7 +76,7 @@ namespace UnitTestProject1
             string str =
                 "61 29 A1 09 06 07 60 85 74 05 08 01 01 A2 03 02 01 01 A3 05 A1 03 02 01 00 BE 10 04 0E 08 00 06 5F 1F 04 00 00 3E 9D 08 00 00 07 B1 F3 7E";
             var bytes = str.StringToByte();
-            new AssociationResponse().PduBytesToConstructor(bytes);
+            new AssociationResponse().PduStringInHexConstructor(ref str);
         }
 
         [TestMethod]

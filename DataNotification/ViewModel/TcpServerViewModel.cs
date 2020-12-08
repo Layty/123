@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using DataNotification.Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
@@ -16,6 +17,7 @@ using NLog;
 
 namespace DataNotification.ViewModel
 {
+  
     public class TcpServerViewModel : ObservableObject
     {
         public TcpServerHelper TcpServerHelper
@@ -70,19 +72,13 @@ namespace DataNotification.ViewModel
         public RelayCommand<Socket> SelectSocketCommand { get; set; }
 
 
-//        public DlmsClient DLMSClient
-//        {
-//            get => _dlmsClient;
-//            set
-//            {
-//                _dlmsClient = value;
-//                OnPropertyChanged();
-//            }
-//        }
-//
-//        private DlmsClient _dlmsClient;
+      
 
+ 
 
+        /// <summary>
+        /// 是否自动响应47心跳帧
+        /// </summary>
         public bool IsAutoResponseHeartBeat
         {
             get => _isAutoResponseHeartBeat;
@@ -95,7 +91,14 @@ namespace DataNotification.ViewModel
 
         private bool _isAutoResponseHeartBeat;
 
+     
+     
 
+     
+
+        /// <summary>
+        /// 是否开启转发
+        /// </summary>
         public bool IsNeedTranslator
         {
             get => _isNeedTranslator;
@@ -109,6 +112,9 @@ namespace DataNotification.ViewModel
         private bool _isNeedTranslator;
 
 
+        /// <summary>
+        /// 心跳帧延时响应时间(ms)
+        /// </summary>
         public int HeartBeatDelayTime
         {
             get => _heartBeatDelayTime;
@@ -136,17 +142,21 @@ namespace DataNotification.ViewModel
 
         public TcpServerViewModel()
         {
+            IsAutoResponseHeartBeat = true;
             HeartBeatDelayTime = 1000;
             var ip = TcpServerHelper.GetHostIp();
             TcpServerHelper = new TcpServerHelper(ip, 8881);
-            IsAutoResponseHeartBeat = true;
-//            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
-            TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes1;
+            
+            TcpServerHelper.ReceiveBytes += CalcTcpServerHelper_ReceiveBytes;
 
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
-
-            StartListen = new RelayCommand(() => { TcpServerHelper.StartListen(); });
+           
+            StartListen = new RelayCommand(() =>
+            {
+              
+                    TcpServerHelper.StartListen();
+            });
             DisConnectServerCommand = new RelayCommand(TcpServerHelper.CloseSever);
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
             SendDataToServerCommand = new RelayCommand(() =>
@@ -157,10 +167,7 @@ namespace DataNotification.ViewModel
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
         }
 
-        private void TcpServerHelper_ReceiveBytes1(Socket arg1, byte[] arg2)
-        {
-            CalcTcpServerHelper_ReceiveBytes(arg1, arg2);
-        }
+       
 
         public enum AlarmType
         {
@@ -168,7 +175,7 @@ namespace DataNotification.ViewModel
             PowerOff,
             ByPass,
         }
-
+       
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
@@ -274,6 +281,10 @@ namespace DataNotification.ViewModel
                         }
                     }
                 }
+                else
+                {
+                    return;
+                }
             }
             catch (Exception e)
             {
@@ -370,16 +381,14 @@ namespace DataNotification.ViewModel
 
             try
             {
-                var pduString = bytes.ByteToString();
                 var heart = new HeartBeatFrame();
+                var pduString = bytes.ByteToString();
                 var result = heart.PduStringInHexConstructor(ref pduString);
                 if (result)
                 {
                     heart.OverturnDestinationSource();
-
                     await Task.Delay(HeartBeatDelayTime);
-
-                    TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduBytes());
+                    TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduStringInHex().StringToByte());
                 }
             }
             catch (Exception e)
@@ -390,6 +399,7 @@ namespace DataNotification.ViewModel
 
         public void Select(Socket clientSocket)
         {
+          
             CurrentSocketClient = clientSocket;
         }
     }
