@@ -10,7 +10,7 @@ namespace MyDlmsStandard.ApplicationLay
         /// <summary>
         /// 方法ID
         /// </summary>
-        public AxdrIntegerInteger8 CosemObjectMethodId { get; set; }
+        public AxdrInteger8 CosemObjectMethodId { get; set; }
 
         public int Length => CalculateLength();
 
@@ -40,7 +40,7 @@ namespace MyDlmsStandard.ApplicationLay
         }
 
         public CosemMethodDescriptor(AxdrIntegerUnsigned16 cosemClassId, AxdrOctetStringFixed cosemObjectInstanceId,
-            AxdrIntegerInteger8 cosemObjectMethodId)
+            AxdrInteger8 cosemObjectMethodId)
         {
             CosemClassId = cosemClassId;
             CosemObjectInstanceId = cosemObjectInstanceId;
@@ -67,7 +67,7 @@ namespace MyDlmsStandard.ApplicationLay
                 return false;
             }
 
-            CosemObjectMethodId = new AxdrIntegerInteger8();
+            CosemObjectMethodId = new AxdrInteger8();
             if (!CosemObjectMethodId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

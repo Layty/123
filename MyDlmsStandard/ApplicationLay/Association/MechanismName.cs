@@ -1,9 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class MechanismName:IToPduBytes
+    public class MechanismName
     {
         [XmlAttribute] public string Value { get; set; } = "LS1";
 
@@ -36,28 +37,21 @@ namespace MyDlmsStandard.ApplicationLay.Association
             }
             return "";
         }
-
-        public byte[] ToPduBytes()
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            //var appApduContentList = new List<byte>();
-            //appApduContentList.AddRange(new byte[]
-            //{
-            //    0x8B, //标签([11],IMPLICIT,Context -specific)的编码
-            //    0x07 //标记组件的值域的长度的编码
-            //});
-            //appApduContentList.AddRange(new byte[]
-            //{
-            //    0x60,
-            //    0x85,
-            //    0x74,
-            //    0x05,
-            //    0x08,
-            //    0x02,
-            //    0x01 //OBJECTIDENTIFIER的值的编码: low-level-security-mechanism-name(1), high-level-security-mechanism-name(5)
-            //});
-       
-           // return appApduContentList.ToArray();
-            return ("8B"+ToPduStringInHex()).StringToByte();
+            if (pduStringInHex.Length < 16)
+            {
+                return false;
+            }
+            if (pduStringInHex.StartsWith("07608574050802"))
+            {
+                pduStringInHex = pduStringInHex.Substring(14);
+                int num = Convert.ToInt32(pduStringInHex.Substring(0, 2), 16);
+                pduStringInHex = pduStringInHex.Substring(2);
+                Value = "LS" + num.ToString();
+                return true;
+            }
+            return false;
         }
     }
 }

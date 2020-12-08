@@ -1,81 +1,79 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-
-//using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Ber;
 
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AssociationRequest : IToPduBytes
+    public class AssociationRequest
     {
+        [XmlIgnore] public Command Command => Command.Aarq;
+        public BerBitString ProtocolVersion { get; set; }
         public ApplicationContextName ApplicationContextName { get; set; }
-        public CallingAPTitle CallingAPTitle { get; set; }
-        public SenderACSERequirements SenderACSERequirements { get; set; }
+     
+        public CallingAPTitle CallingApTitle { get; set; }
+        public BerBitString SenderACSERequirements { get; set; }
         public MechanismName MechanismName { get; set; }
-        public CallingAuthenticationValue CallingAuthenticationValue { get; set; }
+        public AuthenticationValue AuthenticationValue { get; set; }
+
+        public BerOctetString UserInformation { get; set; }
         public InitiateRequest InitiateRequest { get; set; }
 
         public AssociationRequest()
         {
         }
 
-        public AssociationRequest(byte[] passWorld, ushort maxReceivePduSize, byte dlmsVersion,string systemTitle,Conformance conformance)
+        public AssociationRequest(byte[] passWorld, ushort maxReceivePduSize, byte dlmsVersion, string systemTitle,
+            Conformance conformance)
         {
             ApplicationContextName = new ApplicationContextName();
             MechanismName = new MechanismName();
-            SenderACSERequirements = new SenderACSERequirements();
-            CallingAuthenticationValue = new CallingAuthenticationValue(passWorld);
-            CallingAPTitle = new CallingAPTitle(systemTitle);
-            InitiateRequest = new InitiateRequest(maxReceivePduSize, dlmsVersion,conformance);
+            SenderACSERequirements = new BerBitString();
+            AuthenticationValue = new AuthenticationValue(passWorld);
+            CallingApTitle = new CallingAPTitle(systemTitle);
+            InitiateRequest = new InitiateRequest(maxReceivePduSize, dlmsVersion, conformance);
         }
 
-//        public AssociationRequest(DlmsSettingsViewModel dlmsSettingsViewModel)
-//        {
-//            ApplicationContextName = new ApplicationContextName();
-//            MechanismName = new MechanismName();
-//            SenderACSERequirements = new SenderACSERequirements();
-//            CallingAuthenticationValue = new CallingAuthenticationValue(dlmsSettingsViewModel);
-//            CallingAPTitle = new CallingAPTitle(dlmsSettingsViewModel.SystemTitle);
-//            InitiateRequest = new InitiateRequest(dlmsSettingsViewModel);
-//        }
 
-        /// <summary>
-        /// Application Association Request 应用连接请求    
-        ///对应 Application Association Response 应用连接响应
-        /// </summary>
-        /// <returns>Application Association Request报文字节</returns>
+  
 
-        public byte[] ToPduBytes()
+        public string ToPduStringInHex()
         {
-            List<byte> appApduAssociationRequest = new List<byte>();
-            if (ApplicationContextName != null)
-                appApduAssociationRequest.AddRange(ApplicationContextName.ToPduBytes());
-            if (CallingAPTitle != null)
-            {
-                appApduAssociationRequest.AddRange(CallingAPTitle.ToPduBytes());
-            }
+            StringBuilder stringBuilder=new StringBuilder();
 
+            if (ProtocolVersion != null)
+            {
+                stringBuilder.Append("80" + ProtocolVersion.ToPduStringInHex());
+            }
+            if (ApplicationContextName != null)
+            {
+                stringBuilder.Append("A1" + ApplicationContextName.ToPduStringInHex());
+            }
+           
+          
             if (SenderACSERequirements != null)
             {
-                appApduAssociationRequest.AddRange(SenderACSERequirements.ToPduBytes());
+                stringBuilder.Append("8A" + SenderACSERequirements.ToPduStringInHex());
             }
-
             if (MechanismName != null)
             {
-                appApduAssociationRequest.AddRange(MechanismName.ToPduBytes());
+                stringBuilder.Append("8B" + MechanismName.ToPduStringInHex());
             }
-
-            if (CallingAuthenticationValue != null)
+            if (AuthenticationValue != null)
             {
-                appApduAssociationRequest.AddRange(CallingAuthenticationValue.ToPduBytes());
+                stringBuilder.Append("AC" + AuthenticationValue.ToPduStringInHex());
             }
-
-            if (InitiateRequest != null)
+            if (UserInformation != null)
             {
-                appApduAssociationRequest.AddRange(InitiateRequest.ToPduBytes());
+                string str = UserInformation.ToPduStringInHex();
+                stringBuilder.Append("BE" + str);
             }
-            appApduAssociationRequest.InsertRange(0, new byte[] { (byte)Command.Aarq, (byte)appApduAssociationRequest.Count });
-            return appApduAssociationRequest.ToArray();
+            BerOctetString berOctetString3 = new BerOctetString();
+            berOctetString3.Value = stringBuilder.ToString();
+            return "60" + berOctetString3.ToPduStringInHex();
         }
     }
 }

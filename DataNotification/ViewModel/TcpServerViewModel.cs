@@ -172,7 +172,7 @@ namespace DataNotification.ViewModel
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
-            public AxdrIntegerOctetString CosemLogicalDeviceName { get; set; }
+            public AxdrOctetString CosemLogicalDeviceName { get; set; }
             public AxdrIntegerUnsigned32 AlarmDescriptor1 { get; set; }
             public AxdrIntegerUnsigned32 AlarmDescriptor2 { get; set; }
 
@@ -185,7 +185,7 @@ namespace DataNotification.ViewModel
                     var pid = Items[0].Value.ToString();
                     if (!PushId.PduStringInHexConstructor(ref pid)) return false;
                     var deviceName = Items[1].ToPduStringInHex().Substring(2);
-                    CosemLogicalDeviceName = new AxdrIntegerOctetString();
+                    CosemLogicalDeviceName = new AxdrOctetString();
                     if (!CosemLogicalDeviceName.PduStringInHexConstructor(ref deviceName)) return false;
                     var descriptor1 = Items[2].Value.ToString();
                     AlarmDescriptor1 = new AxdrIntegerUnsigned32();

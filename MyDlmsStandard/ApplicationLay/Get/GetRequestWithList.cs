@@ -5,7 +5,7 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetRequestWithList : IGetRequest,IToPduStringInHex
+    public class GetRequestWithList : IGetRequest
     {
         [XmlIgnore] public GetRequestType GetRequestType { get;} = GetRequestType.WithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
@@ -55,7 +55,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
 //            return pduBytes.ToArray();
 //        }
 
-        public string ToPduStringInHex()
+        public string GetRequestToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("03");

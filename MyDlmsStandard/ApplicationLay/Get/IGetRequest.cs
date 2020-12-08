@@ -7,6 +7,6 @@ namespace MyDlmsStandard.ApplicationLay.Get
     {
         GetRequestType GetRequestType { get; }
         AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
-        string ToPduStringInHex();
+        string GetRequestToPduStringInHex();
     }
 }

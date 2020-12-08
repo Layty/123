@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Ber
 {
-    public class BerOctetString : IToPduStringInHex, IPduStringInHexConstructor
+    public class BerOctetString 
     {
         [XmlAttribute] public string Value { get; set; }
 

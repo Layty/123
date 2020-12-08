@@ -279,7 +279,7 @@ namespace MyDlmsStandard.ApplicationLay
                     case "0F":
                         DataType = DataType.Int8;
                         Value = pduStringInHex.Substring(2, 2);
-                        AxdrIntegerInteger8 i8 = new AxdrIntegerInteger8(Value.ToString());
+                        AxdrInteger8 i8 = new AxdrInteger8(Value.ToString());
                         ValueString = i8.GetEntityValue().ToString();
                         pduStringInHex = pduStringInHex.Substring(4);
                         break;

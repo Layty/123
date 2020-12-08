@@ -15,18 +15,18 @@ namespace MyDlmsStandard.ApplicationLay.Get
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("C0");
-
+         
             if (GetRequestNormal != null)
             {
-                stringBuilder.Append(GetRequestNormal.ToPduStringInHex());
+                stringBuilder.Append(GetRequestNormal.GetRequestToPduStringInHex());
             }
             else if (GetRequestNext != null)
             {
-                stringBuilder.Append(GetRequestNext.ToPduStringInHex());
+                stringBuilder.Append(GetRequestNext.GetRequestToPduStringInHex());
             }
             else if (GetRequestWithList != null)
             {
-                stringBuilder.Append(GetRequestWithList.ToPduStringInHex());
+                stringBuilder.Append(GetRequestWithList.GetRequestToPduStringInHex());
             }
 
             return stringBuilder.ToString();

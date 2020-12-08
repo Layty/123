@@ -32,7 +32,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private AxdrIntegerUnsigned32 _length;
 
-        public AxdrIntegerOctetString Buffer
+        public AxdrOctetString Buffer
         {
             get => _buffer;
             set
@@ -42,7 +42,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             }
         }
 
-        private AxdrIntegerOctetString _buffer;
+        private AxdrOctetString _buffer;
 
 
         public CosemUtilityTables()
@@ -50,7 +50,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.UtilityTables);
             TableId = new AxdrIntegerUnsigned16();
             Length = new AxdrIntegerUnsigned32();
-            Buffer = new AxdrIntegerOctetString();
+            Buffer = new AxdrOctetString();
         }
 
         public CosemUtilityTables(string logicName) : this()

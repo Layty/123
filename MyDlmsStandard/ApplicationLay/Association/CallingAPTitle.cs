@@ -8,7 +8,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
     /// <summary>
     /// Calling-AP-Title(carries the System title)
     /// </summary>
-    public class CallingAPTitle : IToPduBytes, IPduBytesToConstructor
+    public class CallingAPTitle 
     {
         [XmlAttribute] public string Value { get; set; } = "00000000000000000000";
 
@@ -35,16 +35,6 @@ namespace MyDlmsStandard.ApplicationLay.Association
             return list.ToArray();
         }
 
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            var len = pduBytes[0];
-            if (len != (pduBytes.Length - 1))
-            {
-                return false;
-            }
-
-            Value = pduBytes.Skip(1).ToArray().ByteToString().Trim();
-            return true;
-        }
+       
     }
 }

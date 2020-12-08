@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard.ApplicationLay.Association
 {
-    internal enum TranslatorGeneralTags
+    public enum TranslatorGeneralTags
     {
         ApplicationContextName = 161,
         NegotiatedQualityOfService = 48640,

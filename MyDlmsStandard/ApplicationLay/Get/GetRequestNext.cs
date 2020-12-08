@@ -4,29 +4,19 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetRequestNext : IGetRequest,IToPduStringInHex
+    public class GetRequestNext : IGetRequest
     {
         [XmlIgnore] public GetRequestType GetRequestType { get; } = GetRequestType.Next;
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }=new AxdrIntegerUnsigned8("C1");
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; } = new AxdrIntegerUnsigned8("C1");
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
 
         public GetRequestNext()
         {
-            
         }
 
-//        public byte[] ToPduBytes()
-//        {
-//            List<byte> pduBytes = new List<byte>();
-//            pduBytes.Add((byte) GetRequestType);
-//            pduBytes.AddRange(InvokeIdAndPriority.ToPduStringInHex().StringToByte());
-//            pduBytes.AddRange(BlockNumber.ToPduStringInHex().StringToByte());
-//            return pduBytes.ToArray();
-//        }
-
-        public string ToPduStringInHex()
+        public string GetRequestToPduStringInHex()
         {
-            return "02"+ InvokeIdAndPriority.ToPduStringInHex() + BlockNumber.ToPduStringInHex();
+            return "02" + InvokeIdAndPriority.ToPduStringInHex() + BlockNumber.ToPduStringInHex();
         }
     }
 }

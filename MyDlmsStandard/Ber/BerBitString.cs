@@ -6,6 +6,33 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.Ber
 {
+    public class BerGraphicString
+    {
+        [XmlAttribute]
+        public string Value { get; set; }
+
+        public string ToPduStringInHex()
+        {
+            if (Value.Length % 2 != 0)
+            {
+                return "";
+            }
+            return (Value.Length / 2).ToString("X2") + Value;
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            int num = Convert.ToInt32(pduStringInHex.Substring(0, 2), 16);
+            if (num * 2 + 2 > pduStringInHex.Length)
+            {
+                return false;
+            }
+            pduStringInHex = pduStringInHex.Substring(2);
+            Value = pduStringInHex.Substring(0, num * 2);
+            pduStringInHex = pduStringInHex.Substring(num * 2);
+            return true;
+        }
+    }
     public class BerBitString:IToPduStringInHex,IPduStringInHexConstructor
     {
         [XmlAttribute] public string Value { get; set; }

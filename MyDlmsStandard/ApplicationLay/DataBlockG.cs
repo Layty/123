@@ -20,7 +20,7 @@ namespace MyDlmsStandard.ApplicationLay
         /// <summary>
         /// 未加工的数据，最终完成所有块传输后，需要将所有RawData进行拼接后解析
         /// </summary>
-        public AxdrIntegerOctetString RawData { get; set; }
+        public AxdrOctetString RawData { get; set; }
         /// <summary>
         /// 数据访问结果，为00代表失败，01代表成功
         /// </summary>
@@ -69,7 +69,7 @@ namespace MyDlmsStandard.ApplicationLay
             if (a == "00")
             {
                 pduStringInHex = pduStringInHex.Substring(2);
-                RawData = new AxdrIntegerOctetString();
+                RawData = new AxdrOctetString();
                 return RawData.PduStringInHexConstructor(ref pduStringInHex);
             }
 

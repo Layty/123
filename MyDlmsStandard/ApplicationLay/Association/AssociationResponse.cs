@@ -1,98 +1,123 @@
-﻿using System.Linq;
+﻿using System;
 using System.Xml.Serialization;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Ber;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AssociationResponse : IPduBytesToConstructor
+    public class AssociationResponse 
     {
       [XmlIgnore] public Command Command { get; set; } = Command.Aare;
 
         public BerBitString ProtocolVersion { get; set; }
         public ApplicationContextName ApplicationContextName { get; set; }
-        public AssociationResult AssociationResult { get; set; }
-      
-    
+        public BerInteger AssociationResult { get; set; }
+        
         public ResultSourceDiagnostic ResultSourceDiagnostic { get; set; }
         public BerOctetString RespondingAPTitle { get;set; }
         public BerBitString ResponderAcseRequirements { get; set; }
         public MechanismName MechanismName { get; set; }
-        public CallingAuthenticationValue RespondingAuthenticationValue { get; set; }
+        public AuthenticationValue RespondingAuthenticationValue { get; set; }
 
-        public InitiateResponse InitiateResponse { get; set; }
-       // public BerOctetString UserInformation { get; set; }
-        public bool PduBytesToConstructor(byte[] pduBytes)
-        {
-            if (pduBytes[0] != (byte) Command.Aare)
-            {
-                return false;
-            }
-
-            if (pduBytes[1] < 16 || pduBytes[1] + 1 > pduBytes.Length)
-            {
-                return false;
-            }
-
-            var data = pduBytes.Skip(2).ToArray();
-            while (data.Length != 0)
-            {
-                var sw = data[0] & 0x1F;
-                switch (sw)
-                {
-                    case 0:
-                        
-                        break;
-                    case 1:
-                        ApplicationContextName = new ApplicationContextName();
-                        
-                        if (!ApplicationContextName.PduBytesToConstructor(data.Take(11).ToArray()))
-                        {
-                            return false;
-                        }
-
-                        data = data.Skip(11).ToArray();
-                        break;
-                    case 2:
-                        AssociationResult = new AssociationResult();
-                        if (!AssociationResult.PduBytesToConstructor(data.Take(5).ToArray()))
-                        {
-                            return false;
-                        }
-
-                        data = data.Skip(5).ToArray();
-                        break;
-                    case 3:
-                        ResultSourceDiagnostic=new ResultSourceDiagnostic();
-                        if (!ResultSourceDiagnostic.PduBytesToConstructor(data.Take(7).ToArray()))
-                        {
-                            return false;
-                        }
-                        data = data.Skip(7).ToArray();
-                        break;
-                    case 30:
-                        
-                        InitiateResponse=new InitiateResponse();
-                         if (!InitiateResponse.PduBytesToConstructor(data))
-                        {
-                            return false;
-                        }
-                        data = new byte[]{};
-                        break;
-                        
-                }
-            }
-
-//            using (StringWriter stringWriter = new StringWriter())
-//            {
-//                XmlSerializer xmlSerializer = new XmlSerializer(typeof(AssociationResponse));
-//                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-//                ns.Add("", "");
-//                xmlSerializer.Serialize(stringWriter, this, ns);
-//                var loggg = ServiceLocator.Current.GetInstance<DMLSXMLLog>();
-//                loggg.XmlLog = stringWriter.ToString();
-//            }
-            return true;
-        }
-    }
+        public BerOctetString UserInformation { get; set; }
+		public bool PduStringInHexConstructor(ref string pduStringInHex)
+		{
+			string a = pduStringInHex.Substring(0, 2);
+			if (a != "61")
+			{
+				return false;
+			}
+			int num = Convert.ToInt32(pduStringInHex.Substring(2, 2), 16);
+			if (num < 16 || num * 2 + 2 > pduStringInHex.Length)
+			{
+				return false;
+			}
+			pduStringInHex = pduStringInHex.Substring(4);
+			while (!string.IsNullOrEmpty(pduStringInHex))
+			{
+				a = pduStringInHex.Substring(0, 2);
+				pduStringInHex = pduStringInHex.Substring(2);
+				switch (Convert.ToInt32(a, 16) & 0x1F)
+				{
+					case 0:
+						ProtocolVersion = new BerBitString();
+						if (!ProtocolVersion.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 1:
+						ApplicationContextName = new ApplicationContextName();
+						if (!ApplicationContextName.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 2:
+                        AssociationResult = new BerInteger();
+						if (!pduStringInHex.StartsWith("0302"))
+						{
+							return false;
+						}
+						pduStringInHex = pduStringInHex.Substring(4);
+						if (!AssociationResult.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 3:
+						ResultSourceDiagnostic = new ResultSourceDiagnostic();
+						if (!ResultSourceDiagnostic.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 4:
+						pduStringInHex = pduStringInHex.Substring(2);
+						if (pduStringInHex.StartsWith("04"))
+						{
+							pduStringInHex = pduStringInHex.Substring(2);
+							RespondingAPTitle = new BerOctetString();
+							if (!RespondingAPTitle.PduStringInHexConstructor(ref pduStringInHex))
+							{
+								return false;
+							}
+							break;
+						}
+						return false;
+					case 8:
+						ResponderAcseRequirements = new BerBitString();
+						if (!ResponderAcseRequirements.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 9:
+						MechanismName = new MechanismName();
+						if (!MechanismName.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 10:
+						RespondingAuthenticationValue = new AuthenticationValue();
+						if (!RespondingAuthenticationValue.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					case 30:
+						UserInformation = new BerOctetString();
+						if (!UserInformation.PduStringInHexConstructor(ref pduStringInHex))
+						{
+							return false;
+						}
+						break;
+					default:
+						return false;
+				}
+			}
+			return true;
+		}
+	}
 }

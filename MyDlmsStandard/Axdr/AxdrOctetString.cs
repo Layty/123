@@ -2,13 +2,13 @@
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerOctetString : AxdrStringBase
+    public class AxdrOctetString : AxdrStringBase
     {
-        public AxdrIntegerOctetString()
+        public AxdrOctetString()
         {
         }
 
-        public AxdrIntegerOctetString(string octetString)
+        public AxdrOctetString(string octetString)
         {
             Value = octetString;
         }

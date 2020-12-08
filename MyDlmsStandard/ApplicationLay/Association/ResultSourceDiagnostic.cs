@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using MyDlmsStandard.Ber;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class ResultSourceDiagnostic : IToPduBytes, IPduBytesToConstructor
-
+    public class ResultSourceDiagnostic 
     {
         public BerInteger AcseServiceUser { get; set; }
         public BerInteger AcseServiceProvider { get; set; }
@@ -71,50 +68,51 @@ namespace MyDlmsStandard.ApplicationLay.Association
             return "";
         }
 
-        public byte[] ToPduBytes()
+
+        public string ToPduStringInHex()
         {
-            List<byte> list = new List<byte>();
+            StringBuilder stringBuilder = new StringBuilder();
             if (AcseServiceUser != null)
             {
-                list.AddRange(new byte[] {0xA1, 0x03, 0x02});
-                list.AddRange(AcseServiceUser.ToPduStringInHex().StringToByte());
-                list.Insert(0, (byte) list.Count);
+                stringBuilder.Append("A1");
+                stringBuilder.Append("03");
+                stringBuilder.Append("02");
+                stringBuilder.Append(AcseServiceUser.ToPduStringInHex());
+                return stringBuilder.Length.ToString("X2") + stringBuilder.ToString();
             }
-
             if (AcseServiceProvider != null)
             {
-                list.AddRange(new byte[] {0xA2, 0x03, 0x02});
-                list.AddRange(AcseServiceProvider.ToPduStringInHex().StringToByte());
-                list.Insert(0, (byte) list.Count);
+                stringBuilder.Append("A2");
+                stringBuilder.Append("03");
+                stringBuilder.Append("02");
+                stringBuilder.Append(AcseServiceProvider.ToPduStringInHex());
+                return stringBuilder.Length.ToString("X2") + stringBuilder.ToString();
             }
-
-            return list.ToArray();
+            return "";
         }
-
-        public bool PduBytesToConstructor(byte[] pduBytes)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            if (pduBytes[0] != 0xA3) return false;
-            if (pduBytes[1] > pduBytes.Length - 2) return false;
-            pduBytes = pduBytes.Skip(2).ToArray();
-            var pdustring = pduBytes.ToArray().ByteToString("");
-            if (pdustring.StartsWith("A10302"))
+            string value = pduStringInHex.Substring(0, 2);
+            int num = Convert.ToInt32(value, 16);
+            if (num * 2 + 2 > pduStringInHex.Length)
             {
-                var data= pduBytes.Skip(3).ToArray();
-               var datastring = data.ByteToString("");
-                AcseServiceUser =new BerInteger();
-                return AcseServiceUser.PduStringInHexConstructor(ref datastring);
+                return false;
             }
-
-            if (pdustring.StartsWith("A20302"))
+            pduStringInHex = pduStringInHex.Substring(2);
+            if (pduStringInHex.StartsWith("A10302"))
             {
-                var data = pduBytes.Skip(3).ToArray();
-                var datastring = data.ByteToString("");
+                pduStringInHex = pduStringInHex.Substring(6);
                 AcseServiceUser = new BerInteger();
-                return AcseServiceProvider.PduStringInHexConstructor(ref datastring);
+                return AcseServiceUser.PduStringInHexConstructor(ref pduStringInHex);
             }
-
+            if (pduStringInHex.StartsWith("A20302"))
+            {
+                pduStringInHex = pduStringInHex.Substring(6);
+                AcseServiceProvider = new BerInteger();
+                return AcseServiceProvider.PduStringInHexConstructor(ref pduStringInHex);
+            }
             return false;
         }
-     
+
     }
 }

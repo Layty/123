@@ -22,7 +22,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
        public Conformance NegotiatedConformance { get; set; }
 
         public AxdrIntegerUnsigned16 ServerMaxReceivePduSize { get; set; }
-        public AxdrIntegerInteger16 VaaName { get; set; }
+        public AxdrInteger16 VaaName { get; set; }
 
 
         public bool PduBytesToConstructor(byte[] pduBytes)
@@ -54,7 +54,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
                         pduStringInHex = pduStringInHex.Substring(8);
                         ServerMaxReceivePduSize = new AxdrIntegerUnsigned16();
                         ServerMaxReceivePduSize.PduStringInHexConstructor(ref pduStringInHex);
-                        VaaName = new AxdrIntegerInteger16();
+                        VaaName = new AxdrInteger16();
                         VaaName.PduStringInHexConstructor(ref pduStringInHex);
                         return true;
                     }

@@ -4,9 +4,9 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponse : IToPduStringInHex, IPduStringInHexConstructor, IDlmsCommand
+    public class GetResponse : IPduStringInHexConstructor, IDlmsCommand
     {
-        [XmlIgnore] public Command Command { get; } = Command.GetResponse;
+        [XmlIgnore] public Command Command => Command.GetResponse;
         public GetResponseNormal GetResponseNormal { get; set; }
         public GetResponseWithDataBlock GetResponseWithDataBlock { get; set; }
         public GetResponseWithList GetResponseWithList { get; set; }
@@ -67,10 +67,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
                 return GetResponseWithList.PduStringInHexConstructor(ref pduStringInHex);
             }
 
-
             return false;
-//            }
-//            return false;
         }
     }
 }

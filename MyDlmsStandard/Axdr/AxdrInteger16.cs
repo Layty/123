@@ -3,16 +3,16 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrIntegerInteger16 : AxdrIntegerBase<short>
+    public class AxdrInteger16 : AxdrIntegerBase<short>
     {
         [XmlIgnore] public override int Length => 2;
 
 
-        public AxdrIntegerInteger16()
+        public AxdrInteger16()
         {
         }
 
-        public AxdrIntegerInteger16(string hexString)
+        public AxdrInteger16(string hexString)
         {
             if (hexString.Length != 4)
             {
@@ -21,7 +21,7 @@ namespace MyDlmsStandard.Axdr
 
             Value = hexString;
         }
-        public AxdrIntegerInteger16(short shortValue)
+        public AxdrInteger16(short shortValue)
         {
             Value = shortValue.ToString("X4");
         }

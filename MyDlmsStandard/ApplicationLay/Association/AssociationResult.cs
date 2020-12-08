@@ -5,7 +5,7 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AssociationResult : IPduBytesToConstructor
+    public class AssociationResult 
     {
         [XmlAttribute] public string Value { get; set; }
 

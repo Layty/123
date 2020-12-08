@@ -43,7 +43,10 @@ namespace MyDlmsStandard.Axdr
             return true;
         }
 
-        
+        public virtual T GetEntityValue()
+        {
+            return default;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -52,10 +55,7 @@ namespace MyDlmsStandard.Axdr
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual T GetEntityValue()
-        {
-            return new T();
-        }
+      
 
 
     }

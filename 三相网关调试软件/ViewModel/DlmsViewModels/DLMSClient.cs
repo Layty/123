@@ -10,12 +10,12 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
-using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Association;
 using MyDlmsStandard.ApplicationLay.Get;
-using MyDlmsStandard.ApplicationLay.Release;
 using MyDlmsStandard.ApplicationLay.Set;
+using MyDlmsStandard.ApplicationLay.Action;
+using MyDlmsStandard.ApplicationLay.Release;
 using MyDlmsStandard.Ber;
 using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
@@ -97,6 +97,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <returns></returns>
         public async Task<byte[]> InitRequest()
         {
+            HdlcFrameMaker = new HdlcFrameMaker(DlmsSettingsViewModel.ServerAddress,
+                (byte) DlmsSettingsViewModel.ClientAddress, DlmsSettingsViewModel.DlmsInfo);
             byte[] bytes = null;
             if (DlmsSettingsViewModel.InterfaceType == InterfaceType.HDLC)
             {
@@ -117,12 +119,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     AssociationRequest aarq = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
                         DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                         DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
-                    bytes = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApdu(aarq.ToPduBytes()));
+                    bytes = await PhysicalLayerSendData(HdlcFrameMaker.InvokeApduHex(aarq.ToPduStringInHex()));
                     bytes = HowToTakeReplyApduData(bytes);
-                    if (bytes != null)
+                    var result = bytes.ByteToString();
+                    if (result != null)
                     {
                         var ass = new AssociationResponse();
-                        if (ass.PduBytesToConstructor(bytes))
+                        if (ass.PduStringInHexConstructor(ref result))
                         {
                             XmlHelper.XmlCommon(ass);
                         }
@@ -139,11 +142,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                     DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
                 XmlHelper.XmlCommon(aarq);
-                bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduBytes()));
+                bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduStringInHex().StringToByte()));
+                var result = bytes.ByteToString();
                 if (bytes != null)
                 {
                     var ass = new AssociationResponse();
-                    if (ass.PduBytesToConstructor(bytes))
+                    if (ass.PduStringInHexConstructor(ref result))
                     {
                         XmlHelper.XmlCommon(ass);
                     }
@@ -281,12 +285,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        public async Task<byte[]> GetRequest(CosemAttributeDescriptor cosemAttributeDescriptor)
-        {
-            getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
-            return await HandlerSendData(getRequest.ToPduStringInHex());
-        }
-
 
         private GetResponse HandleGetResponse(byte[] dataResult)
         {
@@ -335,12 +333,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             return HandleSetResponse(dataResult);
         }
 
-        public async Task<byte[]> ActionRequest(ActionRequest actionRequest)
-        {
-            XmlHelper.XmlCommon(actionRequest);
-            return await HandlerSendData(
-                (MyDlmsStandard.Common.Common.StringToByte(actionRequest.ToPduStringInHex())));
-        }
 
         public async Task<byte[]> ActionRequestAndWaitResponse(CosemMethodDescriptor cosemMethodDescriptor,
             DlmsDataItem dlmsDataItem)

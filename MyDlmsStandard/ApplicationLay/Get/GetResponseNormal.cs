@@ -4,9 +4,9 @@ using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponseNormal : IToPduStringInHex, IPduStringInHexConstructor, IGetResponse
+    public class GetResponseNormal : IGetResponse
     {
-        [XmlIgnore] public GetResponseType GetResponseType { get; } = GetResponseType.Normal;
+        [XmlIgnore] public GetResponseType GetResponseType => GetResponseType.Normal;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
 
         public GetDataResult Result { get; set; }

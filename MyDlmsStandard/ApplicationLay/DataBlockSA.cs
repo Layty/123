@@ -8,7 +8,7 @@ namespace MyDlmsStandard.ApplicationLay
     {
         public AxdrIntegerBoolean LastBlock { get; set; }
         public AxdrIntegerUnsigned32 BlockNumber { get; set; }
-        public AxdrIntegerOctetString RawData { get; set; }
+        public AxdrOctetString RawData { get; set; }
 
         [XmlIgnore] public int Length => CalculateLength();
 
@@ -61,7 +61,7 @@ namespace MyDlmsStandard.ApplicationLay
                 return false;
             }
 
-            RawData = new AxdrIntegerOctetString();
+            RawData = new AxdrOctetString();
             if (!RawData.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

@@ -3,27 +3,33 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class ExceptionResponse : IPduStringInHexConstructor
+    public class ExceptionResponse : IPduStringInHexConstructor, IDlmsCommand
     {
-        [XmlIgnore] public Command Command { get; set; } = Command.ExceptionResponse;
+        [XmlIgnore] public Command Command => Command.ExceptionResponse;
 
         public StateError StateError { get; set; }
         public ServiceError ServiceError { get; set; }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            
+            if (string.IsNullOrEmpty(pduStringInHex))
+            {
+                return false;
+            }
+
             if (pduStringInHex.Substring(0, 2) != "D8")
             {
                 return false;
             }
+
             pduStringInHex = pduStringInHex.Substring(2);
-            StateError =new StateError();
+            StateError = new StateError();
             if (!StateError.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
-            ServiceError=new ServiceError();
+
+            ServiceError = new ServiceError();
             if (!ServiceError.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
@@ -38,12 +44,11 @@ namespace MyDlmsStandard.ApplicationLay.Get
         public const int ServiceNotAllowed = 1;
 
         public const int ServiceUnknown = 2;
-        [XmlAttribute]
-        public string Value { get; set; }
+        [XmlAttribute] public string Value { get; set; }
 
         public bool PduStringInHexConstructor(ref string Data)
         {
-            switch (Data.Substring(0,2))
+            switch (Data.Substring(0, 2))
             {
                 case "01":
                     Value = "ServiceNotAllowed";
@@ -52,8 +57,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
                     Value = "ServiceUnknown";
                     break;
                 default:
-                   return false;
-                  
+                    return false;
             }
 
             Data = Data.Substring(2);
@@ -74,11 +78,11 @@ namespace MyDlmsStandard.ApplicationLay.Get
         public const int DecipheringError = 5;
 
         public const int InvocationCounterError = 6;
-       [XmlAttribute]
-        public string Value { get; set; }
+        [XmlAttribute] public string Value { get; set; }
+
         public bool PduStringInHexConstructor(ref string Data)
         {
-            switch (Data.Substring(0,2))
+            switch (Data.Substring(0, 2))
             {
                 case "01":
                     Value = "OperationNotPossible";
@@ -100,11 +104,10 @@ namespace MyDlmsStandard.ApplicationLay.Get
                     break;
                 default:
                     return false;
-                    
             }
+
             Data = Data.Substring(2);
             return true;
         }
-
     }
 }

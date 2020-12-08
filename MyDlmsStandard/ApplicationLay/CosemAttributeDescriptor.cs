@@ -15,7 +15,7 @@ namespace MyDlmsStandard.ApplicationLay
         /// <summary>
         /// 属性ID
         /// </summary>
-        public AxdrIntegerInteger8 AttributeId { get; set; }
+        public AxdrInteger8 AttributeId { get; set; }
 
         public int Length => CalculateLength();
 
@@ -41,7 +41,7 @@ namespace MyDlmsStandard.ApplicationLay
         {
         }
 
-        public CosemAttributeDescriptor(AxdrIntegerUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrIntegerInteger8 attributeId)
+        public CosemAttributeDescriptor(AxdrIntegerUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrInteger8 attributeId)
         {
             ClassId = classId;
             InstanceId = instanceId;
@@ -71,7 +71,7 @@ namespace MyDlmsStandard.ApplicationLay
                 return false;
             }
 
-            AxdrIntegerInteger8 cosemObjectAttributeId = new AxdrIntegerInteger8();
+            AxdrInteger8 cosemObjectAttributeId = new AxdrInteger8();
             if (!cosemObjectAttributeId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
