@@ -200,7 +200,7 @@ namespace 三相智慧能源网关调试软件
                 SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
                 SocketServer.Bind(IpEndPoint);
-                SocketServer.Listen(5);
+                SocketServer.Listen(500);
                 OnNotifyStatusMsg($"监听{IpEndPoint}成功");
                 IsStarted = true;
                 StartListenServerAsync(SocketServer);

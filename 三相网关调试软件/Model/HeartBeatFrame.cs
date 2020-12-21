@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
 
 namespace 三相智慧能源网关调试软件.Model
@@ -14,6 +15,12 @@ namespace 三相智慧能源网关调试软件.Model
 
         public HeartBeatFrame()
         {
+            this.WrapperHeader=new WrapperHeader()
+            {
+                DestAddress = new AxdrIntegerUnsigned16("0001"),
+                SourceAddress = new AxdrIntegerUnsigned16("0001"),
+                Version = new AxdrIntegerUnsigned16("0002")
+            };
         }
 
         public new string ToPduStringInHex()

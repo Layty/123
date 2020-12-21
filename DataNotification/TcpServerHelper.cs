@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using MyDlmsStandard.Common;
 using NLog;
 
 namespace DataNotification
@@ -82,6 +83,17 @@ namespace DataNotification
 
         private ObservableCollection<Socket> _socketClientList;
 
+        public ObservableCollection<(string, string)> SocketClientListAndIp
+        {
+            get => _socketClientListAndIp;
+            set
+            {
+                _socketClientListAndIp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<(string, string)> _socketClientListAndIp;
 
         public int ResponseTimeOut
         {
@@ -115,9 +127,25 @@ namespace DataNotification
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
             ReceiveBytes?.Invoke(clientSocket, bytes);
-//            Messenger.Default.Send((clientSocket, bytes), "ServerReceiveDataEvent");
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
+            var str = bytes.ByteToString();
+//            HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
+//            if (heartBeatFrame.PduStringInHexConstructor(ref str))
+//            {
+//                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+//                {
+//                    foreach (var valueTuple in SocketClientListAndIp)
+//                    {
+//                        if (valueTuple.Item1 != clientSocket.RemoteEndPoint.ToString())
+//                        {
+//                            SocketClientListAndIp.Add((clientSocket.RemoteEndPoint.ToString(),
+//                                Encoding.Default.GetString(bytes)));
+//                        }
+//                    }
+//                });
+//            }
+
 
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
         }
@@ -134,7 +162,6 @@ namespace DataNotification
             var t = p.ToTuple();
 
             StrongReferenceMessenger.Default.Send(t, "ServerSendDataEvent");
-//            Messenger.Default.Send((clientSocket, bytes), "ServerSendDataEvent");
         }
 
         private void OnNotifyErrorMsg(string msg)
@@ -157,6 +184,7 @@ namespace DataNotification
             SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
             SocketClientList = new ObservableCollection<Socket>();
+            SocketClientListAndIp = new ObservableCollection<(string, string)>();
         }
 
         public TcpServerHelper(string listenIpAddress, int listenPort, ProtocolType protocolType = ProtocolType.Tcp)
@@ -165,6 +193,7 @@ namespace DataNotification
             ListenPort = listenPort;
             ProtocolType = protocolType;
             SocketClientList = new ObservableCollection<Socket>();
+            SocketClientListAndIp=new ObservableCollection<(string, string)>();
         }
 
         public static string GetHostIp()
@@ -201,7 +230,7 @@ namespace DataNotification
                 SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
                 SocketServer.Bind(IpEndPoint);
-                SocketServer.Listen(5);
+                SocketServer.Listen(5000);
                 OnNotifyStatusMsg($"监听{IpEndPoint}成功");
                 IsStarted = true;
                 StartListenServerAsync(SocketServer);

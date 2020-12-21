@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -29,6 +30,11 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
             ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket = (Socket) ListBox.SelectedItem;
             ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
                 ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
+        }
+
+        private void ButtonConfig_OnClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"ncpa.cpl");
         }
     }
 }

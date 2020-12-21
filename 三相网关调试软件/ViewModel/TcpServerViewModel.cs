@@ -196,6 +196,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             None,
             PowerOff,
             ByPass,
+            烟感and水浸
         }
        
         public class CustomAlarm : DlmsStructure
@@ -286,18 +287,30 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                         if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
                         {
-                            switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
+                            switch (alarmViewModel.CustomAlarm.PushId.Value)
                             {
-                                case "02000000":
-                                    alarmViewModel.AlarmType = AlarmType.ByPass;
+                                case "0004190900FF":
+                                    //停电上报相关
+                                    switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
+                                    {
+                                        case "02000000":
+                                            alarmViewModel.AlarmType = AlarmType.ByPass;
+                                            break;
+                                        case "00000001":
+                                            alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                            break;
+                                        default:
+                                            alarmViewModel.AlarmType = AlarmType.None;
+                                            break;
+                                    }
                                     break;
-                                case "00000001":
-                                    alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                case "0005190900FF":
+                                    //水浸烟感上报相关
+                                    alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
-                                default:
-                                    alarmViewModel.AlarmType = AlarmType.None;
-                                    break;
+                                    
                             }
+                           
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }

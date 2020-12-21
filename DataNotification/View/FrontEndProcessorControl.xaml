@@ -8,17 +8,17 @@
              mc:Ignorable="d"
              DataContext="{Binding  Source={StaticResource Locator} ,Path=TcpServerViewModel}">
     <Grid>
-        <materialDesign:Card UniformCornerRadius="5" >
+        <materialDesign:Card UniformCornerRadius="5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="250" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <GroupBox Header="服务端" Margin="3">
                             <StackPanel>
@@ -63,67 +63,114 @@
                                             IsEnabled="{Binding TcpServerHelper.IsStarted}" Margin="3">
                                         停止
                                     </Button>
+                                    <Button x:Name="ButtonConfig" Margin="5,0"
+                                            Click="ButtonConfig_OnClick">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="网络中心" />
+                                            <materialDesign:PackIcon Kind="Settings" />
+                                        </StackPanel>
+
+                                    </Button>
+
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>
 
                         <GroupBox Header="客户端" Grid.Column="1" HorizontalAlignment="Stretch" Margin="3">
                             <StackPanel>
+
                                 <!-- <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint,StringFormat='当前选中{0}'}" /> -->
-                                <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合"
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         ItemsSource="{Binding TcpServerHelper.SocketClientList}"
-                                         BorderThickness="2">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding RemoteEndPoint}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+
+                                <!-- <ListBox x:Name="ListBox2" materialDesign:HintAssist.Hint="客户端集合" -->
+                                <!--          materialDesign:HintAssist.IsFloating="True" -->
+                                <!--          ItemsSource="{Binding TcpServerHelper.SocketClientList,UpdateSourceTrigger=PropertyChanged}" -->
+                                <!--          BorderThickness="2"> -->
+                                <!--     <ListBox.ItemTemplate> -->
+                                <!--         <DataTemplate> -->
+                                <!--             <StackPanel Orientation="Horizontal"> -->
+                                <!--                 <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center" -->
+                                <!--                                          VerticalAlignment="Center" /> -->
+                                <!-- -->
+                                <!--                 <TextBlock Text="{Binding  RemoteEndPoint}" /> -->
+                                <!-- -->
+                                <!-- -->
+                                <!--             </StackPanel> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </ListBox.ItemTemplate> -->
+                                <!-- </ListBox> -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Margin="5"
+                                               Text="当前总链接数" />
+                                    <TextBlock Margin="5"
+                                               Text="{Binding  TcpServerHelper.SocketClientList.Count}" />
+                                    <TextBlock Margin="5"
+                                               Text="历史识别总数" />
+                                    <TextBlock Margin="5"
+                                               Text="{Binding ElementName=ListBox,Path=Items.Count,UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <!-- <TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint,StringFormat='当前选中{0}'}" /> -->
+                                    <ListBox x:Name="ListBox" materialDesign:HintAssist.Hint="客户端集合"
+                                             materialDesign:HintAssist.IsFloating="True"
+
+                                             BorderThickness="2">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="Star" HorizontalAlignment="Center"
+                                                                             VerticalAlignment="Center" />
+
+                                                    <TextBlock Text="{Binding }" />
+
+
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </ScrollViewer>
                             </StackPanel>
+
 
                         </GroupBox>
                     </Grid>
-                    <GroupBox Header="主动上报" Grid.Row="1" Margin="3">
+                    <GroupBox Header="主动上报" Grid.Row="1" Margin="3" MinHeight="200">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Auto">
+                                          HorizontalScrollBarVisibility="Auto">
                             <ItemsControl ItemsSource="{Binding Alarms}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <materialDesign:Card UniformCornerRadius="2">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="NotificationsActive"
-                                                                         HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center" Foreground="Red" />
+                                                                             HorizontalAlignment="Center"
+                                                                             VerticalAlignment="Center"
+                                                                             Foreground="Red" />
                                                 <TextBox Text="{Binding DateTime}"
-                                                         materialDesign:HintAssist.Hint="DateTime"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="DateTime"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding IpAddress}"
-                                                         materialDesign:HintAssist.Hint="IpAddress"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="IpAddress"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding   AlarmDateTime}"
-                                                         materialDesign:HintAssist.Hint="AlarmDateTime"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="AlarmDateTime"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding CustomAlarm.PushId.Value}"
-                                                         materialDesign:HintAssist.Hint="PushId"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="PushId"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding CustomAlarm.CosemLogicalDeviceName.Value}"
-                                                         materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding CustomAlarm.AlarmDescriptor1.Value}"
-                                                         materialDesign:HintAssist.Hint="AlarmDescriptor1"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="AlarmDescriptor1"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding CustomAlarm.AlarmDescriptor2.Value}"
-                                                         materialDesign:HintAssist.Hint="AlarmDescriptor2"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="AlarmDescriptor2"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                                 <TextBox Text="{Binding AlarmType}"
-                                                         materialDesign:HintAssist.Hint="AlarmType"
-                                                         Background="{DynamicResource PrimaryHueLightBrush}"
-                                                         materialDesign:HintAssist.IsFloating="True" Margin="2" />
+                                                             materialDesign:HintAssist.Hint="AlarmType"
+                                                             Background="{DynamicResource PrimaryHueLightBrush}"
+                                                             materialDesign:HintAssist.IsFloating="True" Margin="2" />
                                             </StackPanel>
                                         </materialDesign:Card>
 
