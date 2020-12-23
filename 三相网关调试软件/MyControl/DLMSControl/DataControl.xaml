@@ -1,19 +1,25 @@
-﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.DLMSControl.DataControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"
-             DataContext="{Binding Source={StaticResource Locator},Path=DataViewModel}">
+﻿<UserControl
+    x:Class="三相智慧能源网关调试软件.MyControl.DLMSControl.DataControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding Source={StaticResource Locator}, Path=DataViewModel}"
+    mc:Ignorable="d">
     <materialDesign:Card>
-        <DataGrid ItemsSource="{Binding DataCollection}" AutoGenerateColumns="False"
-                  FrozenColumnCount="2" CanUserResizeColumns="False"
-                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                  CanUserSortColumns="False"
-                  materialDesign:DataGridAssist.CellPadding="14 8 8 8"
-                  materialDesign:DataGridAssist.ColumnHeaderPadding="18"
-                  HorizontalGridLinesBrush="{StaticResource PrimaryHueDarkBrush}" GridLinesVisibility="Horizontal">
+        <DataGrid
+            materialDesign:DataGridAssist.CellPadding="14 8 8 8"
+            materialDesign:DataGridAssist.ColumnHeaderPadding="18"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            CanUserSortColumns="False"
+            FrozenColumnCount="2"
+            GridLinesVisibility="Horizontal"
+            HorizontalGridLinesBrush="{StaticResource PrimaryHueDarkBrush}"
+            HorizontalScrollBarVisibility="Auto"
+            ItemsSource="{Binding DataCollection}"
+            VerticalScrollBarVisibility="Auto">
             <DataGrid.ItemTemplate>
                 <ItemContainerTemplate>
                     <VirtualizingStackPanel VirtualizationMode="Recycling" />
@@ -28,7 +34,10 @@
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="操作区" Width="120" CanUserReorder="False">
+                <DataGridTemplateColumn
+                    Width="120"
+                    CanUserReorder="False"
+                    Header="操作区">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -36,92 +45,109 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Content="Get" Margin="0 0" Grid.Column="0" x:Name="ButtonGet" Height="40"
-                                        Width="40"
-                                        Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.GetValueCommand }"
-                                        CommandParameter="{Binding }" />
-                                <Button Content="Set" Margin="5 0" Grid.Column="1" x:Name="ButtonSet" Height="40"
-                                        Width="40"
-                                        Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=DataContext.SetValueCommand }"
-                                        CommandParameter="{Binding }" />
+                                <Button
+                                    x:Name="ButtonGet"
+                                    Grid.Column="0"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0,0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetValueCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="Get"
+                                    Style="{StaticResource MaterialDesignFloatingActionButton}" />
+                                <Button
+                                    x:Name="ButtonSet"
+                                    Grid.Column="1"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="5,0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SetValueCommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="Set"
+                                    Style="{StaticResource MaterialDesignFloatingActionButton}" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                    Binding="{Binding DataName }" materialDesign:TextBlockAssist.AutoToolTip="True"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Header="DataName" Width="120" />
-                <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
-                                    Binding="{Binding ClassId.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Header="ClassId" />
-                <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Binding="{Binding LogicalName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                    Header="LogicName" />
-                <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Binding="{Binding Attr.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="Attr" />
+                <DataGridTextColumn
+                    Width="120"
+                    materialDesign:TextBlockAssist.AutoToolTip="True"
+                    Binding="{Binding DataName}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource CenterAlignmentStyle}"
+                    Header="DataName" />
+                <DataGridTextColumn
+                    Binding="{Binding ClassId.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource LeftAlignmentStyle}"
+                    Header="ClassId" />
+                <DataGridTextColumn
+                    Binding="{Binding LogicalName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource LeftAlignmentStyle}"
+                    Header="LogicName" />
+                <DataGridTextColumn
+                    Binding="{Binding Attr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource LeftAlignmentStyle}"
+                    Header="Attr" />
 
-                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                    Binding="{Binding LastResult}" Width="100"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Header="Result" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding LastResult}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource CenterAlignmentStyle}"
+                    Header="Result" />
 
-                <DataGridTextColumn ElementStyle="{StaticResource CenterAlignmentStyle}"
-                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-                                    Binding="{Binding Value.DataType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="DataType" />
+                <DataGridTextColumn
+                    Binding="{Binding Value.DataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
+                    ElementStyle="{StaticResource CenterAlignmentStyle}"
+                    Header="DataType" />
 
-                <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Width="150"
-                                    Binding="{Binding Value.Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="Value" />
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding Value.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ElementStyle="{StaticResource LeftAlignmentStyle}"
+                    Header="Value" />
 
-                <DataGridTextColumn ElementStyle="{StaticResource LeftAlignmentStyle}" Width="150"
-                                    Binding="{Binding Value.ValueString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    Header="FormattedDisplay" />
-                <DataGridComboBoxColumn Header="OctetString"
-                                        SelectedValueBinding="{Binding  Value.OctetStringDisplayFormat ,UpdateSourceTrigger=PropertyChanged}">
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding Value.ValueString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ElementStyle="{StaticResource LeftAlignmentStyle}"
+                    Header="FormattedDisplay" />
+                <DataGridComboBoxColumn Header="OctetString" SelectedValueBinding="{Binding Value.OctetStringDisplayFormat, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style />
                     </DataGridComboBoxColumn.CellStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="ItemsSource"
-                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.OctetStringDisplayFormatArray }" />
+                            <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.OctetStringDisplayFormatArray}" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="HorizontalAlignment" Value="Center" />
                             <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="ItemsSource"
-                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.OctetStringDisplayFormatArray }" />
+                            <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.OctetStringDisplayFormatArray}" />
 
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridComboBoxColumn Header="UInt32"
-                                        SelectedValueBinding="{Binding  Value.UInt32ValueDisplayFormat ,UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="UInt32" SelectedValueBinding="{Binding Value.UInt32ValueDisplayFormat, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style />
                     </DataGridComboBoxColumn.CellStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="ItemsSource"
-                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.UInt32ValueDisplayFormatArray }" />
+                            <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.UInt32ValueDisplayFormatArray}" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="HorizontalAlignment" Value="Center" />
                             <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="ItemsSource"
-                                    Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},Path=DataContext.UInt32ValueDisplayFormatArray }" />
+                            <Setter Property="ItemsSource" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.UInt32ValueDisplayFormatArray}" />
 
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>

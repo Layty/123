@@ -88,6 +88,22 @@
                                     <Button x:Name="ButtonConfig" Click="ButtonConfig_OnClick">
                                         <materialDesign:PackIcon Kind="Settings" />
                                     </Button>
+                                    <TextBox
+                                        x:Name="TextBoxIP"
+                                        Width="100"
+                                        materialDesign:HintAssist.Hint="输入探测IP"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Text="192.168.1.92" />
+                                    <TextBox
+                                        x:Name="TextBoxIPResult"
+                                        Width="100"
+                                        materialDesign:HintAssist.Hint="探测结果"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Text="{Binding IpDetectResult}" />
+                                    <Button
+                                        Command="{Binding IpDetectCommand}"
+                                        CommandParameter="{Binding ElementName=TextBoxIP, Path=Text}"
+                                        Content="探测" />
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>

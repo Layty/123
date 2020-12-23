@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using NLog;
@@ -160,6 +161,21 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private ObservableCollection<AlarmViewModel> _alarms;
 
 
+        public bool IpDetectResult
+        {
+            get => _IpDetectResult;
+            set { _IpDetectResult = value; OnPropertyChanged(); }
+        }
+        private bool _IpDetectResult;
+
+        public RelayCommand<string> IpDetectCommand
+        {
+            get => _ipDetectCommand;
+            set { _ipDetectCommand = value; OnPropertyChanged(); }
+        }
+        private RelayCommand<string> _ipDetectCommand;
+
+
         public TcpServerViewModel()
         {
             IsAutoResponseHeartBeat = true;
@@ -187,6 +203,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             Alarms = new ObservableCollection<AlarmViewModel>();
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
+            IpDetectCommand=new RelayCommand<string>(t=> IpDetectResult=PingIp(t));
         }
 
        
@@ -436,6 +453,27 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             DLMSClient.CurrentSocket = clientSocket;
             CurrentSocketClient = clientSocket;
+        }
+        /// <summary>
+        /// ping ip,测试能否ping通
+        /// </summary>
+        /// <param name="strIP">IP地址</param>
+        /// <returns></returns>
+        private bool PingIp(string strIP)
+        {
+            bool bRet = false;
+            try
+            {
+                Ping pingSend = new Ping();
+                PingReply reply = pingSend.Send(strIP, 1000);
+                if (reply.Status == IPStatus.Success)
+                    bRet = true;
+            }
+            catch (Exception)
+            {
+                bRet = false;
+            }
+            return bRet;
         }
     }
 }
