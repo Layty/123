@@ -171,9 +171,11 @@ namespace DataNotification.ViewModel
 
         public enum AlarmType
         {
-            None,
+            Unknown,
             PowerOff,
             ByPass,
+            烟感and水浸,
+            风机控制
         }
        
         public class CustomAlarm : DlmsStructure
@@ -264,18 +266,31 @@ namespace DataNotification.ViewModel
 
                         if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
                         {
-                            switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
+                            switch (alarmViewModel.CustomAlarm.PushId.Value)
                             {
-                                case "02000000":
-                                    alarmViewModel.AlarmType = AlarmType.ByPass;
+                                case "04190900FF":
+                                    switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
+                                    {
+                                        case "02000000":
+                                            alarmViewModel.AlarmType = AlarmType.ByPass;
+                                            break;
+                                        case "00000001":
+                                            alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                            break;
+                                        default:
+                                            alarmViewModel.AlarmType = AlarmType.Unknown;
+                                            break;
+                                    }
                                     break;
-                                case "00000001":
-                                    alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                case "05190900FF":
+                                    alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
+                                case "06190900FF":
+                                    alarmViewModel.AlarmType = AlarmType.风机控制; break;
                                 default:
-                                    alarmViewModel.AlarmType = AlarmType.None;
-                                    break;
+                                    alarmViewModel.AlarmType = AlarmType.Unknown;break;
                             }
+                           
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }

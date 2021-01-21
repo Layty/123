@@ -5,24 +5,32 @@ using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using CommonServiceLocator;
+using GalaSoft.MvvmLight.Ioc;
 using NLog;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using MyDlmsStandard.ApplicationLay.DataNotification;
+using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
-  
     public class TcpServerViewModel : ObservableObject
     {
+        public RelayCommand StartTaskCommand { get; set; }
+        public RelayCommand StopTaskCommand { get; set; }
+        public TaskCenterViewModel TaskCenter { get; set; }
+
         public TcpServerHelper TcpServerHelper
         {
             get => _tcpServerHelper;
@@ -163,16 +171,26 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public bool IpDetectResult
         {
-            get => _IpDetectResult;
-            set { _IpDetectResult = value; OnPropertyChanged(); }
+            get => _ipDetectResult;
+            set
+            {
+                _ipDetectResult = value;
+                OnPropertyChanged();
+            }
         }
-        private bool _IpDetectResult;
+
+        private bool _ipDetectResult;
 
         public RelayCommand<string> IpDetectCommand
         {
             get => _ipDetectCommand;
-            set { _ipDetectCommand = value; OnPropertyChanged(); }
+            set
+            {
+                _ipDetectCommand = value;
+                OnPropertyChanged();
+            }
         }
+
         private RelayCommand<string> _ipDetectCommand;
 
 
@@ -182,7 +200,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             HeartBeatDelayTime = 1000;
             var ip = TcpServerHelper.GetHostIp();
             TcpServerHelper = new TcpServerHelper(ip, 8881);
-            
+
             TcpServerHelper.ReceiveBytes += CalcTcpServerHelper_ReceiveBytes;
 
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
@@ -203,19 +221,63 @@ namespace 三相智慧能源网关调试软件.ViewModel
             });
             Alarms = new ObservableCollection<AlarmViewModel>();
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
-            IpDetectCommand=new RelayCommand<string>(t=> IpDetectResult=PingIp(t));
+            IpDetectCommand = new RelayCommand<string>(t => IpDetectResult = PingIp(t));
+
+            TaskCenter = new TaskCenterViewModel();
+            StartTaskCommand = new RelayCommand(()=>
+            {
+                TaskCenter.StartTask(); TaskCenter.Timer.Elapsed += Timer_Elapsed;
+            });
+            StopTaskCommand = new RelayCommand(()=>
+            {
+                TaskCenter.StopTask(); TaskCenter.Timer.Elapsed -= Timer_Elapsed;
+            });
+            //            DLMSClient = SimpleIoc.Default.GetInstance<DlmsClient>();
+          //  DLMSClient = ServiceLocator.Current.GetInstance<DlmsClient>();
+//          DLMSClient=new DlmsClient(){};
         }
 
-       
+        private async void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (TcpServerHelper.SocketClientList.Count != 0)
+            {
+//                TaskCenter.Timer.Elapsed -= Timer_Elapsed;
+                CustomCosemProfileGenericModel cosemProfileGenericModel = new CustomCosemProfileGenericModel("1.0.99.1.0.255");
+
+                cosemProfileGenericModel.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
+                {
+                    RestrictingObject = new CaptureObjectDefinition()
+                        { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
+                    FromValue = new DlmsDataItem(DataType.OctetString,
+                        new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, 5, 0))).GetDateTimeBytes()
+                            .ByteToString()),
+                    ToValue = new DlmsDataItem(DataType.OctetString,
+                        new CosemClock(DateTime.Now).GetDateTimeBytes().ByteToString()),
+                    SelectedValues = new List<CaptureObjectDefinition>()
+                };
+                Console.WriteLine(cosemProfileGenericModel.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
+                var ddd = ServiceLocator.Current.GetInstance<DlmsClient>();
+                ddd.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
+                ddd.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
+                await ddd.InitRequest();
+               await Task.Delay(2000);
+                var response =
+                  await  ddd.GetRequestAndWaitResponseArray(cosemProfileGenericModel.GetBufferAttributeDescriptorWithSelectionByRange());
+
+                await Task.Delay(2000);
+                await ddd.ReleaseRequest(true);
+            }
+        }
 
         public enum AlarmType
         {
-            None,
+            Unknown,
             PowerOff,
             ByPass,
-            烟感and水浸
+            烟感and水浸,
+            风机控制
         }
-       
+
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
@@ -317,17 +379,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                             alarmViewModel.AlarmType = AlarmType.PowerOff;
                                             break;
                                         default:
-                                            alarmViewModel.AlarmType = AlarmType.None;
+                                            alarmViewModel.AlarmType = AlarmType.Unknown;
                                             break;
                                     }
+
                                     break;
                                 case "0005190900FF":
                                     //水浸烟感上报相关
                                     alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
-                                    
+                                case "06190900FF":
+                                    //风机控制上报相关
+                                    alarmViewModel.AlarmType = AlarmType.风机控制;
+                                    break;
+                                default:
+                                    alarmViewModel.AlarmType = AlarmType.Unknown;
+                                    break;
                             }
-                           
+
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }
@@ -454,6 +523,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             DLMSClient.CurrentSocket = clientSocket;
             CurrentSocketClient = clientSocket;
         }
+
         /// <summary>
         /// ping ip,测试能否ping通
         /// </summary>
@@ -473,6 +543,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 bRet = false;
             }
+
             return bRet;
         }
     }

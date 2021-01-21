@@ -30,7 +30,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #region Dlms相关服务
 
                 SimpleIoc.Default.Register<DlmsSettingsViewModel>();
-                SimpleIoc.Default.Register<DlmsClient>();
+                SimpleIoc.Default.Register<DlmsClient>(true);
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
@@ -61,7 +61,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<NetLogViewModel>();
                 SimpleIoc.Default.Register<XMLLogViewModel>();
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
-
+             
                 #endregion
 
                 #region 三相网关特有业务

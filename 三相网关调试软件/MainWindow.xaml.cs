@@ -138,7 +138,10 @@ namespace 三相智慧能源网关调试软件
 
 
             StrongReferenceMessenger.Default.Register<string, string>(this, "Snackbar",
-                (recipient, message) => { MainSnackbar.MessageQueue.Enqueue(message); });
+                (recipient, message) =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => { MainSnackbar.MessageQueue.Enqueue(message); });
+                });
         }
 
 

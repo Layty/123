@@ -18,6 +18,7 @@
 
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -305,7 +306,13 @@
                         </GroupBox>
                     </Expander>
 
-
+                    <Expander Grid.Row="4" Header="曲线任务中心">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding TaskCenter.Period}" Width="100"></TextBox>
+                            <Button Command="{Binding StartTaskCommand}" Content="StartTask" />
+                            <Button Command="{Binding StopTaskCommand}" Content="StopTask" />
+                        </StackPanel>
+                    </Expander>
                 </Grid>
             </ScrollViewer>
 

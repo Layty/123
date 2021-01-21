@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using CommonServiceLocator;
@@ -7,7 +8,9 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -40,6 +43,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByRangeCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByEntryCommand { get; set; }
+
+        public RelayCommand<CustomCosemProfileGenericModel> GetBufferByClockCommand { get; set; }
+
         public DlmsClient Client { get; set; }
 
         public ProfileGenericViewModel()
@@ -171,6 +177,77 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 t.Buffer.Clear();
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry());
+                StringBuilder stringBuilder = new StringBuilder();
+                if (response != null)
+                {
+                    if (response.Count == 1)
+                    {
+                        var ttttt = (DLMSArray) response[0].GetResponseNormal.Result.Data.Value;
+
+                        if (ttttt.DataType == DataType.Array)
+                        {
+                            DLMSArray array = ttttt;
+                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            foreach (var item in array.Items)
+                            {
+                                structures.Add((DlmsStructure) item.Value);
+                            }
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var getResponse in response)
+                        {
+                            stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
+                        }
+
+                        var strr = stringBuilder.ToString();
+                        DlmsDataItem vDataItem = new DlmsDataItem();
+
+                        var foo = vDataItem.PduStringInHexConstructor(ref strr);
+                        if (!foo)
+                        {
+                            return;
+                        }
+
+                        if (vDataItem.DataType == DataType.Array)
+                        {
+                            DLMSArray array = (DLMSArray) vDataItem.Value;
+                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            foreach (var item in array.Items)
+                            {
+                                structures.Add((DlmsStructure) item.Value);
+                            }
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
+                        }
+                    }
+
+
+                    ;
+                }
+            });
+
+            GetBufferByClockCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            {
+                t.Buffer.Clear();
+                t.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
+                {
+                    RestrictingObject = new CaptureObjectDefinition()
+                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
+                    FromValue = new DlmsDataItem(DataType.OctetString,
+                        new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, 5, 0))).GetDateTimeBytes()
+                            .ByteToString()),
+                    ToValue = new DlmsDataItem(DataType.OctetString,
+                        new CosemClock(DateTime.Now).GetDateTimeBytes().ByteToString()),
+                    SelectedValues = new List<CaptureObjectDefinition>()
+                };
+                Console.WriteLine(t.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
+                var response =
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange());
+
                 StringBuilder stringBuilder = new StringBuilder();
                 if (response != null)
                 {

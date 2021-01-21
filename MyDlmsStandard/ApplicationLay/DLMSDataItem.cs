@@ -375,7 +375,7 @@ namespace MyDlmsStandard.ApplicationLay
                         break;
                     case "01":
                         DataType = DataType.Array;
-                     
+
                         DLMSArray array = new DLMSArray();
                         if (!array.PduStringInHexConstructor(ref pduStringInHex))
                         {
@@ -451,7 +451,18 @@ namespace MyDlmsStandard.ApplicationLay
 
                 case DataType.Array:
                 {
-                    DLMSArray dlmsArray = (DLMSArray) Value;
+                    DLMSArray dlmsArray = new DLMSArray();
+                    var temp = Value.ToString();
+                    if (dlmsArray.PduStringInHexConstructor(ref temp))
+                    {
+                        return dlmsArray.ToPduStringInHex();
+                    }
+                    else
+                    {
+                       dlmsArray= Value as DLMSArray;
+                    }
+
+                //     DLMSArray dlmsArray = (DLMSArray) Value;
                     return dlmsArray.ToPduStringInHex();
                 }
 

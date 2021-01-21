@@ -10,17 +10,30 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
     public class CosemProfileGeneric : CosemObject, IDlmsBase
     {
-        public List<DlmsStructure> Buffer//2
+        /// <summary>
+        /// 曲线buffer,属性2
+        /// </summary>
+        public List<DlmsStructure> Buffer
         {
             get => _buffer;
-            set { _buffer = value; OnPropertyChanged(); }
+            set
+            {
+                _buffer = value;
+                OnPropertyChanged();
+            }
         }
+
         private List<DlmsStructure> _buffer;
 
-
+        /// <summary>
+        /// 捕获对象，属性3
+        /// </summary>
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
-            new ObservableCollection<CaptureObjectDefinition>(); //3
+            new ObservableCollection<CaptureObjectDefinition>();
 
+        /// <summary>
+        /// 捕获周期，单位为秒，属性4
+        /// </summary>
         public AxdrIntegerUnsigned32 CapturePeriod
         {
             get => _capturePeriod;
@@ -34,7 +47,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         private AxdrIntegerUnsigned32 _capturePeriod = new AxdrIntegerUnsigned32();
 
         //5
-
+        /// <summary>
+        /// 排序方法，属性5，DefaultValue=SortMethod.FiFo
+        /// </summary>
         [DefaultValue(SortMethod.FiFo)]
         public SortMethod SortMethod
         {
@@ -48,7 +63,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private SortMethod _sortMethod;
 
-        //6
+        /// <summary>
+        /// 排序对象，属性6，排序对象为捕获对象的一个子集，实际应该默认的话以时间排序对象；Clock:8-0.0.1.0.0.255-2
+        /// </summary>
         public CaptureObjectDefinition SortObject
         {
             get => _sortObject;
@@ -62,13 +79,12 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         private CaptureObjectDefinition _sortObject;
 
 
-        public int SortAttributeIndex { get; set; }
-        public int SortDataIndex { get; set; }
+       
 
         public AccessRange AccessSelector { get; set; }
 
         /// <summary>
-        /// 加载的条目数 //7
+        /// 已使用的条目数，属性7
         /// </summary>
 
         public AxdrIntegerUnsigned32 EntriesInUse
@@ -85,7 +101,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
 
         /// <summary>
-        /// 保持最大条目数   //Attribute=8
+        /// 保持最大条目数  ，属性8
         /// </summary>
         public AxdrIntegerUnsigned32 ProfileEntries
         {
@@ -105,28 +121,31 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ProfileGeneric);
 
             SortMethod = SortMethod.FiFo;
-            ProfileGenericEntryDescriptor=new ProfileGenericEntryDescriptor();
-            ProfileGenericRangeDescriptor=new ProfileGenericRangeDescriptor();
+            ProfileGenericEntryDescriptor = new ProfileGenericEntryDescriptor();
+            ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor();
             Buffer = new List<DlmsStructure>();
         }
 
         public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }
 
         public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor { get; set; }
+
         public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
-        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
-        {
-            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
-                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"), ProfileGenericEntryDescriptor.ToDlmsDataItem()));
-        }
+      
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()
         {
             return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
-                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"), ProfileGenericRangeDescriptor.ToDlmsDataItem()));
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
+                    ProfileGenericRangeDescriptor.ToDlmsDataItem()));
         }
-
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
+        {
+            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
+                    ProfileGenericEntryDescriptor.ToDlmsDataItem()));
+        }
         public CosemAttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);
 
         public CosemAttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
@@ -140,6 +159,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public CosemMethodDescriptor GetResetMethodDescriptor() => GetCosemMethodDescriptor(1);
         public CosemMethodDescriptor GetCaptureMethodDescriptor() => GetCosemMethodDescriptor(2);
+
         string[] IDlmsBase.GetNames()
         {
             return new string[8]

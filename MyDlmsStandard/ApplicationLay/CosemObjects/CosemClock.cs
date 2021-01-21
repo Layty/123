@@ -177,7 +177,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                //throw new Exception(e.Message);
             }
 
             return result;

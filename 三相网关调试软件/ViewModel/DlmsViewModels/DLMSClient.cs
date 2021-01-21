@@ -52,6 +52,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public bool IsAuthenticationRequired { get; set; }
         public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
 
+        public event EventHandler<byte[]> TcpSend;
 
         /// <summary>
         /// 如何选择物理通道进行发送数据
@@ -71,6 +72,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 else if (DlmsSettingsViewModel.CommunicationType == CommunicationType.FrontEndProcess)
                 {
                     returnBytes = await Socket.SendDataToClientAndWaitReceiveData(CurrentSocket, sendBytes);
+                    
                 }
             }
             catch (Exception e)
@@ -158,7 +160,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 XmlHelper.XmlCommon(aarq);
                 bytes = await PhysicalLayerSendData(NetFrameMaker.InvokeApdu(aarq.ToPduStringInHex().StringToByte()));
               
-                if (bytes != null)
+                if (bytes != null&&bytes.Length!=0)
                 {
                     var result = MyDlmsStandard.Common.Common.ByteToString(bytes);
                     var ass = new AssociationResponse();
@@ -259,11 +261,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             var dataResult = await HandlerSendData(getRequest.ToPduStringInHex());
 
             var re = HandleGetResponse(dataResult);
-            if (re.GetResponseNormal != null)
+            if (re?.GetResponseNormal != null)
             {
                 getResponses.Add(re);
                 return getResponses;
             }
+
 
             await HowToHandleBlockNumber(getResponses, re);
 
@@ -312,14 +315,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
 
             XmlHelper.XmlCommon(getResponse);
-//            if (getResponse.GetResponseNormal != null)
-//            {
-//                if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
-//                {
-//                    getResponse.GetResponseNormal.Result.Data.UpdateDisplayFormat();
-//                }
-//            }
-
 
             return getResponse;
         }
@@ -465,5 +460,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             return PortMaster.SendAndReceiveReturnDataAsync(HdlcFrameMaker.SetEnterUpGradeMode(256));
         }
+
+       
     }
 }
