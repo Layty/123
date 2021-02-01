@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
@@ -12,6 +13,7 @@ using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -21,15 +23,16 @@ using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using Quartz;
+using Quartz.Impl;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class TcpServerViewModel : ObservableObject
     {
-        public RelayCommand StartTaskCommand { get; set; }
-        public RelayCommand StopTaskCommand { get; set; }
-        public TaskCenterViewModel TaskCenter { get; set; }
+     
+     
 
         public TcpServerHelper TcpServerHelper
         {
@@ -193,7 +196,47 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand<string> _ipDetectCommand;
 
+        public RelayCommand StartTaskCommand { get; set; }
+        public RelayCommand StopTaskCommand { get; set; }
+        public JobCenter JobCenter { get; set; }
 
+        private IScheduler scheduler { get; set; }
+
+      public  class MyClass:ObservableObject
+        {
+        
+            public string IpString
+            {
+                get => _IpString;
+                set { _IpString = value; OnPropertyChanged(); }
+            }
+            private string _IpString;
+
+          
+
+            public string MeterAddress
+            {
+                get => _MeterAddress;
+                set { _MeterAddress = value; OnPropertyChanged(); }
+            }
+            private string _MeterAddress;
+
+
+            public bool IsCheck
+            {
+                get => _isCheck;
+                set { _isCheck = value; OnPropertyChanged(); }
+            }
+            private bool _isCheck;
+
+         
+        }
+        public ObservableCollection<MyClass> ListBoxExtend
+        {
+            get => _ListBoxExtend;
+            set { _ListBoxExtend = value; OnPropertyChanged(); }
+        }
+        private ObservableCollection<MyClass> _ListBoxExtend;
         public TcpServerViewModel()
         {
             IsAutoResponseHeartBeat = true;
@@ -223,52 +266,82 @@ namespace 三相智慧能源网关调试软件.ViewModel
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
             IpDetectCommand = new RelayCommand<string>(t => IpDetectResult = PingIp(t));
 
-            TaskCenter = new TaskCenterViewModel();
-            StartTaskCommand = new RelayCommand(()=>
-            {
-                TaskCenter.StartTask(); TaskCenter.Timer.Elapsed += Timer_Elapsed;
-            });
-            StopTaskCommand = new RelayCommand(()=>
-            {
-                TaskCenter.StopTask(); TaskCenter.Timer.Elapsed -= Timer_Elapsed;
-            });
-            //            DLMSClient = SimpleIoc.Default.GetInstance<DlmsClient>();
-          //  DLMSClient = ServiceLocator.Current.GetInstance<DlmsClient>();
-//          DLMSClient=new DlmsClient(){};
-        }
 
-        private async void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (TcpServerHelper.SocketClientList.Count != 0)
+//            JobCenter = ServiceLocator.Current.GetInstance<JobCenter>();
+            JobCenter = new JobCenter();
+            StartTaskCommand = new RelayCommand(async () =>
             {
-//                TaskCenter.Timer.Elapsed -= Timer_Elapsed;
-                CustomCosemProfileGenericModel cosemProfileGenericModel = new CustomCosemProfileGenericModel("1.0.99.1.0.255");
+                StdSchedulerFactory factory = new StdSchedulerFactory();
+                //创建任务调度器
+                scheduler = await factory.GetScheduler();
 
-                cosemProfileGenericModel.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
+                await scheduler.ScheduleJob(JobCenter.CreateJobDetail(), JobCenter.CreateTrigger());
+                //启动任务调度器
+                await scheduler.Start();
+            });
+            StopTaskCommand = new RelayCommand(() => { scheduler.Shutdown(); });
+            ListBoxExtend=new ObservableCollection<MyClass>();
+            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
+                (recipient, message) =>
                 {
-                    RestrictingObject = new CaptureObjectDefinition()
-                        { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
-                    FromValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, 5, 0))).GetDateTimeBytes()
-                            .ByteToString()),
-                    ToValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(DateTime.Now).GetDateTimeBytes().ByteToString()),
-                    SelectedValues = new List<CaptureObjectDefinition>()
-                };
-                Console.WriteLine(cosemProfileGenericModel.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
-                var ddd = ServiceLocator.Current.GetInstance<DlmsClient>();
-                ddd.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
-                ddd.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
-                await ddd.InitRequest();
-               await Task.Delay(2000);
-                var response =
-                  await  ddd.GetRequestAndWaitResponseArray(cosemProfileGenericModel.GetBufferAttributeDescriptorWithSelectionByRange());
+                    HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
+                    var str = message.Item2.ByteToString();
+                    if (heartBeatFrame.PduStringInHexConstructor(ref str))
+                    {
+                        var strAdd = Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes);
+                        if (ListBoxExtend.Count == 0)
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                ListBoxExtend.Add(new MyClass()
+                                {
+                                    IpString = message.Item1.RemoteEndPoint.ToString(),
+                                    MeterAddress = strAdd,
+                                    IsCheck = false
+                                });
+                            });
+                        }
+                        else
+                        {
+                            var boo = false;
+                            for (int i = 0; i < ListBoxExtend.Count; i++)
+                            {
+                                if (ListBoxExtend[i].MeterAddress.Contains(strAdd))
+                                {
+                                    boo = false;
+                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                        {
+                                            //socket链接可能会变，但表号唯一,此处进行更新最新的Socket链接
+                                            ListBoxExtend[i].IpString = message.Item1.RemoteEndPoint.ToString();
+                                        });
+                                    break;
+                                }
+                                else
+                                {
+                                    boo = true;
 
-                await Task.Delay(2000);
-                await ddd.ReleaseRequest(true);
-            }
+                                }
+                            }
+
+                            if (boo)
+                            {
+                                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                {
+                                    ListBoxExtend.Add(new MyClass()
+                                    {
+                                        IpString = message.Item1.RemoteEndPoint.ToString(),
+                                        MeterAddress =strAdd,
+                                        IsCheck = false
+                                            
+                                    });
+                                });
+                            }
+                        }
+                    }
+                });
         }
 
+        
         public enum AlarmType
         {
             Unknown,

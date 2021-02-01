@@ -560,7 +560,8 @@
                             x:Name="Frame"
                             Content="{Binding CurrentPage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
-                            NavigationUIVisibility="Hidden" />
+                            NavigationUIVisibility="Visible" />
+
                     </materialDesign:Card>
 
                     <GridSplitter
@@ -581,9 +582,14 @@
                             <TabControl x:Name="TabControl">
                                 <TabItem>
                                     <TabItem.Header>
+                                        <materialDesign:PackIcon Kind="Logout" />
+                                    </TabItem.Header>
+                                    <myControl:SocketAndMeterAddressMapping />
+                                </TabItem>
+                                <TabItem>
+                                    <TabItem.Header>
                                         <materialDesign:PackIcon Kind="SerialPort" />
                                     </TabItem.Header>
-
                                     <myControl:SerialPortLogger />
                                 </TabItem>
                                 <TabItem>

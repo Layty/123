@@ -197,16 +197,40 @@
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetBufferByEntryCommand, Mode=TwoWay}"
                                                 CommandParameter="{Binding}"
                                                 Content="GetByEntry" />
-                                            <DatePicker
-                                                Name="DatePickerFrom"
-                                                materialDesign:HintAssist.Hint="Pick Date"
-                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                                            <StackPanel Margin="5">
+                                                <DatePicker
+                                                    Name="DatePickerFrom"
+                                                    materialDesign:HintAssist.Hint="Pick Date"
+                                                    SelectedDate="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    SelectedDateFormat="Long"
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
-                                            <materialDesign:TimePicker
-                                                Name="TimePickerFrom"
-                                                Is24Hours="True"
-                                                IsInvalidTextAllowed="False"
-                                                WithSeconds="True" />
+                                                <materialDesign:TimePicker
+                                                    Name="TimePickerFrom"
+                                                    Is24Hours="True"
+                                                    IsInvalidTextAllowed="False"
+                                                    SelectedTime="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                    WithSeconds="True" />
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <DatePicker
+                                                    Name="DatePickerTo"
+                                                    materialDesign:HintAssist.Hint="Pick Date"
+                                                    SelectedDate="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    SelectedDateFormat="Long"
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                                                <materialDesign:TimePicker
+                                                    Name="TimePickerTo"
+                                                    Is24Hours="True"
+                                                    IsInvalidTextAllowed="False"
+                                                    SelectedTime="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    SelectedTimeFormat="Long"
+                                                    Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                    WithSeconds="True" />
+                                            </StackPanel>
+
                                             <Button
                                                 Margin="5,0"
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetBufferByClockCommand, Mode=TwoWay}"

@@ -20,6 +20,7 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
         {
             InitializeComponent();
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -53,4 +54,6 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
             }
         }
     }
+
+   
 }

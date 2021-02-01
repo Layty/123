@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
@@ -22,6 +23,7 @@ using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Common;
+using 三相智慧能源网关调试软件.Model;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -40,7 +42,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         #region 物理通道资源
 
         private SerialPortMaster PortMaster { get; set; }
-        private TcpServerHelper Socket { get; set; }
+        public TcpServerHelper Socket { get; set; }
         public Socket CurrentSocket { get; set; }
 
         #endregion
@@ -434,7 +436,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private GetRequest getRequest { get; set; }
 
-
+      
         public DlmsClient()
         {
             DlmsSettingsViewModel = ServiceLocator.Current.GetInstance<DlmsSettingsViewModel>();
@@ -453,6 +455,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             InitRequestCommand = new RelayCommand(async () => { await InitRequest(); });
             ReleaseRequestCommand = new RelayCommand(async () => { await ReleaseRequest(true); });
             getRequest = new GetRequest();
+
+
+     
         }
 
 

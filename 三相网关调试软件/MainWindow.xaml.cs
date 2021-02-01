@@ -168,39 +168,6 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private void PlaySendFlashing(string obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
-        private void PlayReceiveFlashing(string obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
-
-        private void PlayNetSendFlashing((Socket, byte[]) obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
-
-
-        private void PlayNetReceiveFlashing((Socket, byte[]) obj)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-            });
-        }
 
         private void Timer_Tick(object sender, EventArgs e)
         {

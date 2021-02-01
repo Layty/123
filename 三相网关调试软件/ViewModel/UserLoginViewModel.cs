@@ -1,5 +1,7 @@
-﻿using System;
+﻿
+using System;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.UserLoginServiceReference;
@@ -60,7 +62,20 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             //         LoginCommand = new RelayCommand(LoginFormWcfServer);
 
-            LoginCommand = new RelayCommand(LoginWebApi);
+            LoginCommand = new RelayCommand(() =>
+            {
+#if DEBUG
+   LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                    LoginModel.LoginResult = true;
+                    StrongReferenceMessenger.Default.Send("ni hao ya da shuai bi", "Snackbar");
+                    LoginModel.Report = "登录成功";
+#else
+                LoginWebApi();
+#endif
+
+
+
+            });
             ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
             SaveUserInfoToResourceCommand = new RelayCommand(SaveUserInfoToResource);
         }

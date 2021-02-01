@@ -48,6 +48,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public DlmsClient Client { get; set; }
 
+
+       
+
+
         public ProfileGenericViewModel()
         {
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
@@ -61,7 +65,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 ProfileGenericCollection.Add(new CustomCosemProfileGenericModel(dataTable.Rows[i][0].ToString())
                     {ProfileGenericName = dataTable.Rows[i][1].ToString()});
             }
-
+           
 
             GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
@@ -238,10 +242,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     RestrictingObject = new CaptureObjectDefinition()
                         {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
                     FromValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, 5, 0))).GetDateTimeBytes()
+                        new CosemClock(t.FromDateTime).GetDateTimeBytes()
                             .ByteToString()),
                     ToValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(DateTime.Now).GetDateTimeBytes().ByteToString()),
+                        new CosemClock(t.ToDateTime).GetDateTimeBytes().ByteToString()),
                     SelectedValues = new List<CaptureObjectDefinition>()
                 };
                 Console.WriteLine(t.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
