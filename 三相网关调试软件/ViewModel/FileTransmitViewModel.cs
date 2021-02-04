@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
+
 using CommonServiceLocator;
 using FileTransmit;
 using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Win32;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -369,7 +370,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 Filter = "二进制文件(*.bin)|*.bin|所有文件(*.*)|*.*"
             };
-            if (openFileDialog.ShowDialog() == DialogResult.Yes)
+            if (openFileDialog.ShowDialog() == true)
             {
                 FileName = openFileDialog.FileName;
                 Settings.Default.BaseMeterUpGradeFile = FileName;
