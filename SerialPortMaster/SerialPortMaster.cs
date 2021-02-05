@@ -296,6 +296,8 @@ namespace MySerialPortMaster
                 try
                 {
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
+                    SerialPort.DiscardInBuffer();
+                    SerialPort.DiscardOutBuffer();
                     _stopwatch1.Restart();
                     SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
                     OnDataSend(sendBytes);
@@ -315,6 +317,8 @@ namespace MySerialPortMaster
                 {
                     if (!IsOpen) SerialPort.Open(); //如果串口关闭则打开
                     var sendBytes = Encoding.Default.GetBytes(sendString);
+                    SerialPort.DiscardInBuffer();
+                    SerialPort.DiscardOutBuffer();
                     SerialPort.Write(sendBytes, 0, sendBytes.Length); //发送数据 
                     OnDataSend(sendBytes);
                 }
