@@ -307,22 +307,31 @@
                         </GroupBox>
                     </Expander>
 
-                    <Expander Grid.Row="4" Header="曲线任务">
-                        <StackPanel Orientation="Horizontal">
-                            <Button
-                                Margin="5"
-                                Command="{Binding StartTaskCommand}"
-                                Content="StartTask" />
-                            <Button
-                                Margin="5"
-                                Command="{Binding StopTaskCommand}"
-                                Content="StopTask" />
-                            <ListBox />
+                    <Expander Grid.Row="4" Header="任务中心">
+                        <StackPanel>
+                            <GroupBox Header="曲线任务">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding StartTaskCommand}"
+                                        Content="StartTask"
+                                        IsEnabled="{Binding JobCenter.IsJobStart, Converter={StaticResource InverseBooleanConverter}}" />
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding StopTaskCommand}"
+                                        Content="StopTask"
+                                        IsEnabled="{Binding JobCenter.IsJobStart}" />
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="背光任务">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="StartTask" />
+                                </StackPanel>
+                            </GroupBox>
                         </StackPanel>
                     </Expander>
-                    <Expander Grid.Row="5" Header="背光任务">
+                    <Expander Grid.Row="5" Header="其他">
                         <Button Content="StartServer" />
-
                     </Expander>
                 </Grid>
             </ScrollViewer>

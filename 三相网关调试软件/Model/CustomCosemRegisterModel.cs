@@ -43,7 +43,7 @@ namespace 三相智慧能源网关调试软件.Model
             {
                 return "";
             }
-
+            
             var index = Convert.ToSByte(ScalarUnit.Scalar.Value.ToString(), 16);
             var value = Convert.ToUInt32(Value.Value.ToString(), 16);
             double point = 1;

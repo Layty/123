@@ -229,6 +229,7 @@
     <Compile Include="Model\CosemObjectEditModel.cs" />
     <Compile Include="Model\HeartBeatFrame.cs" />
     <Compile Include="Model\IIC\IicParameter.cs" />
+    <Compile Include="Model\EnergyProfileGenericJob.cs" />
     <Compile Include="Model\TaskCenterViewModel.cs" />
     <Compile Include="MyControl\DLMSControl\CloseWarning.xaml.cs">
       <DependentUpon>CloseWarning.xaml</DependentUpon>
@@ -668,7 +669,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="ENetX64.dll">

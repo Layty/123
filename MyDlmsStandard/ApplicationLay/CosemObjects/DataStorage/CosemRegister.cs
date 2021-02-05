@@ -206,7 +206,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             LogicalName = logicName;
         }
 
-        public CosemAttributeDescriptor GetScalar_UnitAttributeDescriptor() => GetCosemAttributeDescriptor(3);
+        public virtual CosemAttributeDescriptor GetScalar_UnitAttributeDescriptor() => GetCosemAttributeDescriptor(3);
 
         public CosemMethodDescriptor GetResetMethodDescriptor() => GetCosemMethodDescriptor(1);
 

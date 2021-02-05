@@ -49,9 +49,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public DlmsClient Client { get; set; }
 
 
-       
-
-
         public ProfileGenericViewModel()
         {
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
@@ -65,7 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 ProfileGenericCollection.Add(new CustomCosemProfileGenericModel(dataTable.Rows[i][0].ToString())
                     {ProfileGenericName = dataTable.Rows[i][1].ToString()});
             }
-           
+
 
             GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {

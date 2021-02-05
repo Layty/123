@@ -4,7 +4,9 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
     public class ProfileGenericRangeDescriptor : IToDlmsDataItem
-    {
+    {/// <summary>
+    /// 捕获对象：限制对象
+    /// </summary>
         public CaptureObjectDefinition RestrictingObject { get; set; }
         public DlmsDataItem FromValue { get; set; }
         public DlmsDataItem ToValue { get; set; }

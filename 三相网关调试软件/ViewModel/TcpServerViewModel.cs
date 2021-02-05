@@ -31,9 +31,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class TcpServerViewModel : ObservableObject
     {
-     
-     
-
         public TcpServerHelper TcpServerHelper
         {
             get => _tcpServerHelper;
@@ -200,43 +197,61 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public RelayCommand StopTaskCommand { get; set; }
         public JobCenter JobCenter { get; set; }
 
-        private IScheduler scheduler { get; set; }
 
-      public  class MyClass:ObservableObject
+        public class MyClass : ObservableObject
         {
-        
             public string IpString
             {
                 get => _IpString;
-                set { _IpString = value; OnPropertyChanged(); }
+                set
+                {
+                    _IpString = value;
+                    OnPropertyChanged();
+                }
             }
+
             private string _IpString;
 
-          
 
             public string MeterAddress
             {
                 get => _MeterAddress;
-                set { _MeterAddress = value; OnPropertyChanged(); }
+                set
+                {
+                    _MeterAddress = value;
+                    OnPropertyChanged();
+                }
             }
+
             private string _MeterAddress;
 
 
             public bool IsCheck
             {
                 get => _isCheck;
-                set { _isCheck = value; OnPropertyChanged(); }
+                set
+                {
+                    _isCheck = value;
+                    OnPropertyChanged();
+                }
             }
-            private bool _isCheck;
 
-         
+            private bool _isCheck;
         }
+
         public ObservableCollection<MyClass> ListBoxExtend
         {
             get => _ListBoxExtend;
-            set { _ListBoxExtend = value; OnPropertyChanged(); }
+            set
+            {
+                _ListBoxExtend = value;
+                OnPropertyChanged();
+            }
         }
+
         private ObservableCollection<MyClass> _ListBoxExtend;
+
+
         public TcpServerViewModel()
         {
             IsAutoResponseHeartBeat = true;
@@ -269,18 +284,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 //            JobCenter = ServiceLocator.Current.GetInstance<JobCenter>();
             JobCenter = new JobCenter();
-            StartTaskCommand = new RelayCommand(async () =>
-            {
-                StdSchedulerFactory factory = new StdSchedulerFactory();
-                //创建任务调度器
-                scheduler = await factory.GetScheduler();
-
-                await scheduler.ScheduleJob(JobCenter.CreateJobDetail(), JobCenter.CreateTrigger());
-                //启动任务调度器
-                await scheduler.Start();
-            });
-            StopTaskCommand = new RelayCommand(() => { scheduler.Shutdown(); });
-            ListBoxExtend=new ObservableCollection<MyClass>();
+            StartTaskCommand = new RelayCommand(() => { JobCenter.Start(); });
+            StopTaskCommand = new RelayCommand(() => { JobCenter.Shutdown(); });
+            ListBoxExtend = new ObservableCollection<MyClass>();
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>
                 {
@@ -310,16 +316,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                 {
                                     boo = false;
                                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                        {
-                                            //socket链接可能会变，但表号唯一,此处进行更新最新的Socket链接
-                                            ListBoxExtend[i].IpString = message.Item1.RemoteEndPoint.ToString();
-                                        });
+                                    {
+                                        //socket链接可能会变，但表号唯一,此处进行更新最新的Socket链接
+                                        ListBoxExtend[i].IpString = message.Item1.RemoteEndPoint.ToString();
+                                    });
                                     break;
                                 }
                                 else
                                 {
                                     boo = true;
-
                                 }
                             }
 
@@ -330,9 +335,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                     ListBoxExtend.Add(new MyClass()
                                     {
                                         IpString = message.Item1.RemoteEndPoint.ToString(),
-                                        MeterAddress =strAdd,
+                                        MeterAddress = strAdd,
                                         IsCheck = false
-                                            
                                     });
                                 });
                             }
@@ -341,7 +345,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 });
         }
 
-        
+
         public enum AlarmType
         {
             Unknown,

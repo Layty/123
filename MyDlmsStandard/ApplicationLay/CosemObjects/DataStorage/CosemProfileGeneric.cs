@@ -209,13 +209,13 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public virtual void Reset()
         {
-            DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
+           // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
 //            ActionExecute(1, dataItem);
         }
 
         public void Capture()
         {
-            DlmsDataItem dataItem = new DlmsDataItem(DataType.Int8) {Value = "00"};
+           // DlmsDataItem dataItem = new DlmsDataItem(DataType.Int8) {Value = "00"};
 //            ActionExecute(2, dataItem);
         }
 

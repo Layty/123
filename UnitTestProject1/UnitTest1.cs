@@ -45,20 +45,20 @@ namespace UnitTestProject1
             IicHarmonicData iicHarmonicDataIa = new IicHarmonicData();
             IicHarmonicData iicHarmonicDataIb = new IicHarmonicData();
             IicHarmonicData iicHarmonicDataIc = new IicHarmonicData();
-            var resultUa = iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
-            var resultUb = iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
-            var resultUc = iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
-            var resultIa = iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
-            var resultIb = iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
-            var resultIc = iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
+            iicHarmonicDataUa.ParseData(bytes.Skip(2).Take(42).ToArray());
+            iicHarmonicDataUb.ParseData(bytes.Skip(44).Take(42).ToArray());
+            iicHarmonicDataUc.ParseData(bytes.Skip(86).Take(42).ToArray());
+            iicHarmonicDataIa.ParseData(bytes.Skip(128).Take(42).ToArray());
+            iicHarmonicDataIb.ParseData(bytes.Skip(170).Take(42).ToArray());
+            iicHarmonicDataIc.ParseData(bytes.Skip(212).Take(42).ToArray());
         }
 
         [TestMethod]
         public void TestExcel()
         {
             ExcelHelper excel = new ExcelHelper("DLMS设备信息");
-            var sheetName = excel.GetDataFromExcelWithAppointSheetNames();
-            var table = excel.GetExcelDataTable("Register");
+            excel.GetDataFromExcelWithAppointSheetNames();
+            excel.GetExcelDataTable("Register");
         }
 
 
@@ -67,7 +67,7 @@ namespace UnitTestProject1
         {
             ENetMessageBuilder messageMaker = new ENetMessageBuilder(ENetEventType.运行状态字);
             messageMaker.Timestamp = 1593316175641;
-            var tRequest = messageMaker.GetRequest();
+            messageMaker.GetRequest();
         }
 
         [TestMethod]
@@ -84,9 +84,9 @@ namespace UnitTestProject1
         {
             string str =
                 "A0 A0 2E00 18 02 09 2040 00 00 00 02 35 00 00 01 40 00 00 00 00 0E 00 79 0001 00 00 AA 15 00 000113 06 00 00000170 02 0201 00 00AA83 E5";
-            
+
             var load = new LoadIdentificationViewModel.LoadDataParse();
-            if (load.Parse(str.Replace(" ","")))
+            if (load.Parse(str.Replace(" ", "")))
             {
                 var LoadDataFormat = load.ToString();
             }

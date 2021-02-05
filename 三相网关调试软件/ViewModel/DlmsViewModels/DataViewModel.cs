@@ -30,16 +30,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public RelayCommand<CustomCosemDataModel> GetLogicNameCommand { get; set; }
 
-      
 
         public RelayCommand<CustomCosemDataModel> GetValueCommand { get; set; }
 
-     
 
         public RelayCommand<CustomCosemDataModel> SetValueCommand { get; set; }
-       
 
-   
 
         public DlmsClient Client { get; set; }
 
@@ -84,10 +80,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
-                    if (t.LastResult!=ErrorCode.Ok)
+                    if (t.LastResult != ErrorCode.Ok)
                     {
-                       return; 
+                        return;
                     }
+
                     var tt = requestAndWaitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
                     t.Value.PduStringInHexConstructor(ref tt);
                 }
