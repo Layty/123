@@ -90,6 +90,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<CosemObjectViewModel>();
 
                 SimpleIoc.Default.Register<DialogsViewModel>();
+                
             }
         }
 

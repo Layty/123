@@ -8,8 +8,6 @@ using MyWebApi.Entities;
 
 namespace MyWebApi.Services
 {
- 
-
     public class CosemRepository : ICosemRepository
     {
         private readonly CosemObjectDbContext _dbContext;
@@ -61,7 +59,7 @@ namespace MyWebApi.Services
 
         public async Task<IEnumerable<CosemObject>> GetCosemObjectsByClassIdAsync(int classId)
         {
-            if (classId==0)
+            if (classId == 0)
             {
                 throw new ArgumentNullException(nameof(classId));
             }

@@ -27,14 +27,26 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// <summary>
         /// 提供“Extended register”的具体日期和时间信息,以指示属性value 捕获的 时间。
         /// </summary>
-        public  AxdrOctetString CaptureTime
+        public AxdrOctetString CaptureTime
         {
             get => _captureTime;
-            set { _captureTime = value; OnPropertyChanged(); }
+            set
+            {
+                _captureTime = value;
+                OnPropertyChanged();
+            }
         }
+
         private AxdrOctetString _captureTime;
         public virtual CosemAttributeDescriptor GetStatusAttributeDescriptor() => GetCosemAttributeDescriptor(4);
         public virtual CosemAttributeDescriptor GetCaptureTimeAttributeDescriptor() => GetCosemAttributeDescriptor(5);
+
+        public virtual CosemMethodDescriptor GetResetMethodDescriptor(DlmsDataItem data) => GetCosemMethodDescriptor(1);
+
+        public void Reset(DlmsDataItem data)
+        {
+            Value = data;
+        }
         public CosemExtendedRegister(string logicName) : base(logicName)
         {
             LogicalName = logicName;

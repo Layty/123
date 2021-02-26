@@ -79,8 +79,6 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         private CaptureObjectDefinition _sortObject;
 
 
-       
-
         public AccessRange AccessSelector { get; set; }
 
         /// <summary>
@@ -121,18 +119,18 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ProfileGeneric);
 
             SortMethod = SortMethod.FiFo;
-            ProfileGenericEntryDescriptor = new ProfileGenericEntryDescriptor();
+
             ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor();
+            ProfileGenericEntryDescriptor = new ProfileGenericEntryDescriptor();
             Buffer = new List<DlmsStructure>();
         }
 
-        public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }
 
         public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor { get; set; }
+        public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }
 
         public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 
-      
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()
         {
@@ -140,12 +138,14 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
                     ProfileGenericRangeDescriptor.ToDlmsDataItem()));
         }
+
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
         {
             return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                     ProfileGenericEntryDescriptor.ToDlmsDataItem()));
         }
+
         public CosemAttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);
 
         public CosemAttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
@@ -162,7 +162,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         string[] IDlmsBase.GetNames()
         {
-            return new string[8]
+            return new[]
             {
                 LogicalName,
                 "Buffer",
@@ -209,14 +209,18 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public virtual void Reset()
         {
-           // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
+            EntriesInUse.Value = "00000000";
+            Buffer = new List<DlmsStructure>();
+            // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
 //            ActionExecute(1, dataItem);
         }
 
-        public void Capture()
+        public void Capture(DlmsStructure dlmsStructure)
         {
-           // DlmsDataItem dataItem = new DlmsDataItem(DataType.Int8) {Value = "00"};
-//            ActionExecute(2, dataItem);
+            // EntriesInUse.Value + 1;
+            Buffer.Add(dlmsStructure);
+            // DlmsDataItem dataItem = new DlmsDataItem(DataType.Int8) {Value = "00"};
+            //            ActionExecute(2, dataItem);
         }
 
         #endregion

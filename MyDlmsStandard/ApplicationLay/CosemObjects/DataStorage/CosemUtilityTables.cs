@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
@@ -48,6 +49,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public CosemUtilityTables()
         {
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.UtilityTables);
+            Version = 0;
             TableId = new AxdrIntegerUnsigned16();
             Length = new AxdrIntegerUnsigned32();
             Buffer = new AxdrOctetString();
@@ -62,6 +64,52 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public CosemAttributeDescriptor GetTableIdAttributeDescriptor() => GetCosemAttributeDescriptor(2);
         public CosemAttributeDescriptor GetLengthAttributeDescriptor() => GetCosemAttributeDescriptor(3);
         public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByOffsetAccess()
+        {
+            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
+                    CosemUtilityTablesBufferOffsetSelector.ToDlmsDataItem()));
+        }
+
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByIndexAccess()
+        {
+            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+                new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
+                    CosemUtilityTablesBufferIndexSelector.ToDlmsDataItem()));
+        }
+
+        public OffsetSelector CosemUtilityTablesBufferOffsetSelector { get; set; }
+        public IndexSelector CosemUtilityTablesBufferIndexSelector { get; set; }
+
+        public class OffsetSelector : IToDlmsDataItem
+        {
+            /// <summary>
+            /// 访问区起始位置的偏移量(字节数),偏移量相对于表的开始
+            /// </summary>
+            public AxdrIntegerUnsigned32 Offset { get; set; }
+
+            /// <summary>
+            /// 请求或传输的字节数
+            /// </summary>
+            public AxdrIntegerUnsigned16 Count { get; set; }
+
+            public DlmsDataItem ToDlmsDataItem()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class IndexSelector : IToDlmsDataItem
+        {
+            public List<AxdrIntegerUnsigned16> Index { get; set; }
+            public AxdrIntegerUnsigned16 Count { get; set; }
+
+            public DlmsDataItem ToDlmsDataItem()
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         string[] IDlmsBase.GetNames() => new[]
         {

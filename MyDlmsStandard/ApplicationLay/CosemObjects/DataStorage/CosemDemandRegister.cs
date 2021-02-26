@@ -1,4 +1,5 @@
-﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using System;
+using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
 
@@ -104,11 +105,30 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
 
         public CosemMethodDescriptor GetNextPeriodMethodDescriptor() => GetCosemMethodDescriptor(2);
+
         public CosemDemandRegister(string logicName) : base(logicName)
         {
-            this.Version = 0;
+            Version = 0;
             LogicalName = logicName;
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.DemandRegister);
+        }
+
+        public void Reset(DlmsDataItem data)
+        {
+            CurrentAverageValue = new DlmsDataItem();
+            LastAverageValue = new DlmsDataItem();
+            //CaptureTime=DateTime.Now();
+            // StartTimeCurrent == DateTime.Now();
+            base.Reset(data);
+        }
+
+        public void Next_period()
+        {
+            CaptureTime = new AxdrOctetString(); //赋值为当前时间触发方法的实际时间
+            StartTimeCurrent = new AxdrOctetString(); //赋值为当前时间触发方法的实际时间
+
+            LastAverageValue = CurrentAverageValue;
+            CurrentAverageValue = new DlmsDataItem(); //赋值为零
         }
     }
 }

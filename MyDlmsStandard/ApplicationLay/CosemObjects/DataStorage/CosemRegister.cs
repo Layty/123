@@ -112,8 +112,8 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             dictionary.Add(35, "V");
             dictionary.Add(36, "V/m");
             dictionary.Add(37, "F");
-            dictionary.Add(38, "Ʊ");
-            dictionary.Add(39, "Ʊm²/m");
+            dictionary.Add(38, "Ω");
+            dictionary.Add(39, "Ωm²/m");
             dictionary.Add(40, "Wb");
             dictionary.Add(41, "T");
             dictionary.Add(42, "A/m");

@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "三相智慧能源网关调试软件", "三相网关调试软件\三相智慧能源网关调试软件.csproj", "{A885422F-B044-41AE-9139-1C384FC2367D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A8823B49-FBE2-47A4-9A74-1B6336D1E018} = {A8823B49-FBE2-47A4-9A74-1B6336D1E018}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{31E1DC0B-2A22-4B14-96D9-1692382E2530}"
 EndProject
@@ -20,17 +17,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\Wc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tftp.Net", "tftp.net-master\tftp.net-master\Tftp.Net\Tftp.Net.csproj", "{A3F0DE15-AC97-428D-830C-4F9721EE3627}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebApi", "MyWebApi\MyWebApi.csproj", "{02906BAC-CC38-4F52-899C-857235E97401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebApi", "MyWebApi\MyWebApi.csproj", "{83825AA1-AC78-4EF1-B80A-CBD3CD87AAE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataNotification", "DataNotification\DataNotification.csproj", "{6AD7434E-28AA-46DA-BD61-E90BE3774E0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsStandard", "MyDlmsStandard\MyDlmsStandard.csproj", "{D5AE777A-85D2-4E8E-92D1-66F2374E22B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDlmsStandard", "MyDlmsStandard\MyDlmsStandard.csproj", "{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncfusionWpfApp1", "SyncfusionWpfApp1\SyncfusionWpfApp1.csproj", "{ACA940B1-19F0-4123-95D8-530A1C78F285}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTestTcpServer", "ConsoleAppTestTcpServer\ConsoleAppTestTcpServer.csproj", "{CC93F4E5-DBC0-42C4-A3AC-EF40FDF613F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{A85DC1C4-699B-4D91-AC58-09CE75CCCEF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{2C55D771-2F0A-4199-8974-B2415B8B80DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,18 +63,18 @@ Global
 		{A3F0DE15-AC97-428D-830C-4F9721EE3627}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3F0DE15-AC97-428D-830C-4F9721EE3627}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3F0DE15-AC97-428D-830C-4F9721EE3627}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02906BAC-CC38-4F52-899C-857235E97401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02906BAC-CC38-4F52-899C-857235E97401}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02906BAC-CC38-4F52-899C-857235E97401}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02906BAC-CC38-4F52-899C-857235E97401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83825AA1-AC78-4EF1-B80A-CBD3CD87AAE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83825AA1-AC78-4EF1-B80A-CBD3CD87AAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83825AA1-AC78-4EF1-B80A-CBD3CD87AAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83825AA1-AC78-4EF1-B80A-CBD3CD87AAE3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6AD7434E-28AA-46DA-BD61-E90BE3774E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6AD7434E-28AA-46DA-BD61-E90BE3774E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AD7434E-28AA-46DA-BD61-E90BE3774E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AD7434E-28AA-46DA-BD61-E90BE3774E0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5AE777A-85D2-4E8E-92D1-66F2374E22B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5AE777A-85D2-4E8E-92D1-66F2374E22B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5AE777A-85D2-4E8E-92D1-66F2374E22B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5AE777A-85D2-4E8E-92D1-66F2374E22B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA940B1-19F0-4123-95D8-530A1C78F285}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,10 +83,10 @@ Global
 		{CC93F4E5-DBC0-42C4-A3AC-EF40FDF613F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC93F4E5-DBC0-42C4-A3AC-EF40FDF613F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC93F4E5-DBC0-42C4-A3AC-EF40FDF613F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A85DC1C4-699B-4D91-AC58-09CE75CCCEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A85DC1C4-699B-4D91-AC58-09CE75CCCEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A85DC1C4-699B-4D91-AC58-09CE75CCCEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A85DC1C4-699B-4D91-AC58-09CE75CCCEF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C55D771-2F0A-4199-8974-B2415B8B80DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C55D771-2F0A-4199-8974-B2415B8B80DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C55D771-2F0A-4199-8974-B2415B8B80DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C55D771-2F0A-4199-8974-B2415B8B80DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

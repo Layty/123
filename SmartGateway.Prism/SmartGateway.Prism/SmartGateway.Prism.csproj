@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>SmartGateway.Prism</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartGateway.Prism.Core\SmartGateway.Prism.Core.csproj" />
+    <ProjectReference Include="..\Modules\SmartGateway.Prism.Modules.ModuleName\SmartGateway.Prism.Modules.ModuleName.csproj" />
+    <ProjectReference Include="..\Services\SmartGateway.Prism.Services.Interfaces\SmartGateway.Prism.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\SmartGateway.Prism.Services\SmartGateway.Prism.Services.csproj" />
+  </ItemGroup>
+</Project>
