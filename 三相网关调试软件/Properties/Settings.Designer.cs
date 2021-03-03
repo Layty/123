@@ -217,18 +217,6 @@ namespace 三相智慧能源网关调试软件.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DLMS设备信息.xls")]
-        public string ExcelFileName {
-            get {
-                return ((string)(this["ExcelFileName"]));
-            }
-            set {
-                this["ExcelFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data$")]
         public string DlmsDataSheetName {
             get {
@@ -284,6 +272,18 @@ namespace 三相智慧能源网关调试软件.Properties {
             }
             set {
                 this["WebApiUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DLMS设备信息.xls")]
+        public string ExcelFileName {
+            get {
+                return ((string)(this["ExcelFileName"]));
+            }
+            set {
+                this["ExcelFileName"] = value;
             }
         }
     }

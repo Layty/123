@@ -126,8 +126,22 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         }
 
 
-        public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor { get; set; }
-        public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor { get; set; }
+        public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor
+        {
+            get => _ProfileGenericRangeDescriptor;
+            set { _ProfileGenericRangeDescriptor = value; OnPropertyChanged(); }
+        }
+        private ProfileGenericRangeDescriptor _ProfileGenericRangeDescriptor;
+
+
+        public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor
+        {
+            get => _ProfileGenericEntryDescriptor;
+            set { _ProfileGenericEntryDescriptor = value; OnPropertyChanged(); }
+        }
+        private ProfileGenericEntryDescriptor _ProfileGenericEntryDescriptor;
+
+     
 
         public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
 

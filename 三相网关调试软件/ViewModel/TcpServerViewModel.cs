@@ -6,26 +6,20 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using CommonServiceLocator;
-using GalaSoft.MvvmLight.Ioc;
 using NLog;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
-using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using MyDlmsStandard.ApplicationLay.DataNotification;
-using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
-using Quartz;
-using Quartz.Impl;
 using 三相智慧能源网关调试软件.Model;
+
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -193,11 +187,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand<string> _ipDetectCommand;
 
-        public RelayCommand StartTaskCommand { get; set; }
-        public RelayCommand StopTaskCommand { get; set; }
-        public JobCenter JobCenter { get; set; }
-
-
         public class MyClass : ObservableObject
         {
             public string IpString
@@ -282,10 +271,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
             IpDetectCommand = new RelayCommand<string>(t => IpDetectResult = PingIp(t));
 
 
-//            JobCenter = ServiceLocator.Current.GetInstance<JobCenter>();
-            JobCenter = new JobCenter();
-            StartTaskCommand = new RelayCommand(() => { JobCenter.Start(); });
-            StopTaskCommand = new RelayCommand(() => { JobCenter.Shutdown(); });
             ListBoxExtend = new ObservableCollection<MyClass>();
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>

@@ -49,5 +49,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyDlmsStandard\MyDlmsStandard.csproj">
+      <Project>{1EAE0F1C-7416-4CD3-B9D0-20065DB998F4}</Project>
+      <Name>MyDlmsStandard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\三相网关调试软件\三相智慧能源网关调试软件.csproj">
+      <Project>{A885422F-B044-41AE-9139-1C384FC2367D}</Project>
+      <Name>三相智慧能源网关调试软件</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

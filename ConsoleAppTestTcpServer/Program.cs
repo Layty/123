@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Model;
 

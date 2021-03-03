@@ -10,7 +10,6 @@ using MyDlmsStandard.Wrapper;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
- 
     public class ClockViewModel : ObservableObject
     {
         public DlmsClient Client { get; set; }

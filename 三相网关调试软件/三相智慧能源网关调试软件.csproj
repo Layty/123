@@ -234,6 +234,9 @@
     <Compile Include="MyControl\DLMSControl\CloseWarning.xaml.cs">
       <DependentUpon>CloseWarning.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\DLMSControl\JobCenter.xaml.cs">
+      <DependentUpon>JobCenter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\SocketAndMeterAddressMapping.xaml.cs">
       <DependentUpon>SocketAndMeterAddressMapping.xaml</DependentUpon>
     </Compile>
@@ -244,6 +247,7 @@
     <Compile Include="TcpTranslator.cs" />
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\XMLLogViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\NetFrameMaker.cs" />
     <Compile Include="ENetClientHelper.cs" />
@@ -439,6 +443,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyControl\DLMSControl\DisconnectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\DLMSControl\JobCenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

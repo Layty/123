@@ -1,9 +1,21 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Windows.Controls;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.Model
 {
+    public class NewMenuModel : MenuModel
+    {
+        public string ItemName { get; set; }
+        public List<NewMenuModel> SubMenuModel { get; set; }
+        
+    }
     public class MenuModel : ObservableObject
     {
+    
         private string _assembly;
 
         public string Assembly

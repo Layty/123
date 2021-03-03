@@ -50,9 +50,6 @@
     <Setting Name="Title" Type="System.String" Scope="User">
       <Value Profile="(Default)">TO DO</Value>
     </Setting>
-    <Setting Name="ExcelFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DLMS设备信息.xls</Value>
-    </Setting>
     <Setting Name="DlmsDataSheetName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data$</Value>
     </Setting>
@@ -67,6 +64,9 @@
     </Setting>
     <Setting Name="WebApiUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost:5000/api</Value>
+    </Setting>
+    <Setting Name="ExcelFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DLMS设备信息.xls</Value>
     </Setting>
   </Settings>
 </SettingsFile>

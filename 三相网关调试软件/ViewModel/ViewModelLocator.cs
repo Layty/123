@@ -9,16 +9,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class ViewModelLocator
     {
-//        protected void ConfigureServices(ServiceCollection services)
-//        {
-//            services.AddSingleton<DataViewModel>();
-//            services.AddSingleton<DlmsSettingsViewModel>();
-//            services.AddSingleton<DlmsClient>();
-//        }
+        protected void ConfigureServices(ServiceCollection services)
+        {
+            services.AddSingleton<DataViewModel>();
+            services.AddSingleton<DlmsSettingsViewModel>();
+            services.AddSingleton<DlmsClient>();
+        }
 
         public ViewModelLocator()
         {
-           
+          
 
       
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -59,6 +59,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<XMLLogViewModel>();
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
                 SimpleIoc.Default.Register<DlmsClient>(true);
+                SimpleIoc.Default.Register<JobCenterViewModel>();
                 #endregion
 
                 #region 三相网关特有业务
@@ -140,7 +141,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
         public TftpClientViewModel TftpClient => ServiceLocator.Current.GetInstance<TftpClientViewModel>();
         public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
-
+        public JobCenterViewModel JobCenterViewModel => ServiceLocator.Current.GetInstance<JobCenterViewModel>();
         #endregion
 
         #region 计量芯相关业务

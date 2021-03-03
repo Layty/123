@@ -74,19 +74,19 @@ namespace 三相智慧能源网关调试软件
             builder.RegisterType<UserLoginViewModel>();
         }
 
-//        protected void ConfigureServices()
-//        {
-//            AutofacLocator autofacLocator = new AutofacLocator(); //创建IOC容器
-//            autofacLocator.Register(); //注册服务
-//         //  BootStrapper.Initialize(autofacLocator);
-//        }
+        protected void ConfigureServices()
+        {
+            AutofacLocator autofacLocator = new AutofacLocator(); //创建IOC容器
+            autofacLocator.Register(); //注册服务
+           BootStrapper.Initialize(autofacLocator);
+        }
 
       
         protected override void OnStartup(StartupEventArgs e)
         {
             _cracker.Cracker();
             DispatcherHelper.Initialize();
-           // ConfigureServices();
+           ConfigureServices();
 
       
 
