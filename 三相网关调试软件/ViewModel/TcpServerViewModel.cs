@@ -335,6 +335,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             Unknown,
             PowerOff,
+            PowerOn,
             ByPass,
             烟感and水浸,
             风机控制
@@ -439,6 +440,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                             break;
                                         case "00000001":
                                             alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                            break;
+                                        case "00000004":
+                                            alarmViewModel.AlarmType = AlarmType.PowerOn;
                                             break;
                                         default:
                                             alarmViewModel.AlarmType = AlarmType.Unknown;

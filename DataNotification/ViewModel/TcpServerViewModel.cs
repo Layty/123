@@ -173,6 +173,7 @@ namespace DataNotification.ViewModel
         {
             Unknown,
             PowerOff,
+            PowerOn,
             ByPass,
             烟感and水浸,
             风机控制
@@ -276,6 +277,9 @@ namespace DataNotification.ViewModel
                                             break;
                                         case "00000001":
                                             alarmViewModel.AlarmType = AlarmType.PowerOff;
+                                            break;
+                                        case "00000004":
+                                            alarmViewModel.AlarmType = AlarmType.PowerOn;
                                             break;
                                         default:
                                             alarmViewModel.AlarmType = AlarmType.Unknown;

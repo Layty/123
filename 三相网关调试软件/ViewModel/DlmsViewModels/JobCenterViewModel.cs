@@ -10,7 +10,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Matchers;
-using 三相智慧能源网关调试软件.Model;
+using 三相智慧能源网关调试软件.Model.Jobs;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -193,6 +193,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 .WithCronSchedule("0 2 0 * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
                 .Build();
 
+            //测试任务
+            IJobDetail testJobDetail = JobBuilder.Create<TestJob>().WithIdentity("TestJob").Build();
+            ITrigger testTrigger = TriggerBuilder.Create().WithIdentity("TestJobTrigger").WithSimpleSchedule((builder =>
+                {
+                    builder.WithIntervalInSeconds(5).RepeatForever();
+                } )).Build();
+            await Scheduler.ScheduleJob(testJobDetail, testTrigger);
+
 
             await Scheduler.ScheduleJob(energyJobDetail, energyTrigger);
             await Scheduler.ScheduleJob(powerJobDetail, powerTrigger);
@@ -305,6 +313,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private void UpdateJobList()
         {
+          
             JobMessages = new ObservableCollection<JobMessage>();
             NameList = Scheduler.GetJobGroupNames().GetAwaiter().GetResult();
             var nList = NameList.ToList();
@@ -339,8 +348,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     
                 }
 
-
-                JobMessages.Add(data);
+                DispatcherHelper.CheckBeginInvokeOnUI(() => {
+                    JobMessages.Add(data);
+                });
+               
             }
         }
 

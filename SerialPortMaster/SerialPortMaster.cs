@@ -124,11 +124,11 @@ namespace MySerialPortMaster
                     return;
                 if (value)
                 {
-                    SerialPort.DataReceived += SerialPort_DataReceived;
+                   // SerialPort.DataReceived += SerialPort_DataReceived;
                 }
                 else
                 {
-                    SerialPort.DataReceived -= SerialPort_DataReceived;
+                    //SerialPort.DataReceived -= SerialPort_DataReceived;
                 }
 
                 _isAutoDataReceived = value;
@@ -207,7 +207,7 @@ namespace MySerialPortMaster
         private readonly Stopwatch _stopwatch1 = new Stopwatch();
         public CancellationTokenSource ReceiveTokenSource { get; set; }
 
-        private SerialPort SerialPort { get; set; }
+        public SerialPort SerialPort { get; set; }
 
         public SerialPortLogger SerialPortLogger { get; set; } = new SerialPortLogger();
 
@@ -238,7 +238,7 @@ namespace MySerialPortMaster
                     var tryToReadReceiveData = new byte[SerialPort.BytesToRead];
 
                     SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
-
+                    
                     OnDataReceived(tryToReadReceiveData, null);
                     break;
                 }

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Quartz;
 using Quartz.Impl;
+using 三相智慧能源网关调试软件.Model.Jobs;
 
 namespace 三相智慧能源网关调试软件.Model
 {

@@ -226,11 +226,20 @@
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="DispatcherHelper.cs" />
+    <Compile Include="Model\Jobs\CloseWarmingJob.cs" />
     <Compile Include="Model\CosemObjectEditModel.cs" />
+    <Compile Include="Model\Jobs\DayProfileGenericJob.cs" />
     <Compile Include="Model\HeartBeatFrame.cs" />
+    <Compile Include="Model\Jobs\IBaseJob.cs" />
+    <Compile Include="Model\Jobs\IDataJob.cs" />
     <Compile Include="Model\IIC\IicParameter.cs" />
-    <Compile Include="Model\EnergyProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\EnergyProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\IProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\MonthProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\PowerProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\ProfileGenericJobBase.cs" />
     <Compile Include="Model\TaskCenterViewModel.cs" />
+    <Compile Include="Model\Jobs\TestJob.cs" />
     <Compile Include="MyControl\DLMSControl\CloseWarning.xaml.cs">
       <DependentUpon>CloseWarning.xaml</DependentUpon>
     </Compile>
