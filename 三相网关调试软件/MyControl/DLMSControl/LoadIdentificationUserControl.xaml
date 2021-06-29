@@ -24,6 +24,7 @@
                         Margin="2"
                         Header="给定时间和块数的访问">
                         <StackPanel>
+                            <TextBlock Text="{Binding CustomCosemLoadIdentificationModel.LogicalName}" />
                             <DatePicker
                                 Name="DatePicker"
                                 Margin="5"

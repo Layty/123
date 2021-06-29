@@ -197,7 +197,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             IJobDetail testJobDetail = JobBuilder.Create<TestJob>().WithIdentity("TestJob").Build();
             ITrigger testTrigger = TriggerBuilder.Create().WithIdentity("TestJobTrigger").WithSimpleSchedule((builder =>
                 {
-                    builder.WithIntervalInSeconds(5).RepeatForever();
+                    builder.WithIntervalInSeconds(10).RepeatForever();
                 } )).Build();
             await Scheduler.ScheduleJob(testJobDetail, testTrigger);
 
@@ -343,7 +343,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     }
                     else if (Scheduler.GetTrigger(triggerKey).Result is ISimpleTrigger)
                     {
-                        data.NextTriggerTime = "未知";
+                         var simple=(ISimpleTrigger)Scheduler.GetTrigger(triggerKey).Result;
+                        
+                       
+                        data.NextTriggerTime = simple.RepeatInterval.Duration().ToString();
                     }
                     
                 }

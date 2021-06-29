@@ -58,7 +58,8 @@ namespace 三相智慧能源网关调试软件.Model
             {
                 Items = new[]
                 {
-                    new DlmsDataItem(DataType.OctetString, timerBerOctetString.ToPduStringInHex()),
+                  //  new DlmsDataItem(DataType.OctetString, timerBerOctetString.ToPduStringInHex()),这个是错误的
+                     new DlmsDataItem(DataType.OctetString, timerBerOctetString.Value),
                     new DlmsDataItem(DataType.UInt16, "0001"),
                 }
             };
