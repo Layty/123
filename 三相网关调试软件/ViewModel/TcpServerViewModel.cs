@@ -454,7 +454,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                                     //水浸烟感上报相关
                                     alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
-                                case "06190900FF":
+                                case "0006190900FF":
                                     //风机控制上报相关
                                     alarmViewModel.AlarmType = AlarmType.风机控制;
                                     break;

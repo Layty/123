@@ -269,7 +269,7 @@ namespace DataNotification.ViewModel
                         {
                             switch (alarmViewModel.CustomAlarm.PushId.Value)
                             {
-                                case "04190900FF":
+                                case "0004190900FF":
                                     switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
                                     {
                                         case "02000000":
@@ -286,10 +286,10 @@ namespace DataNotification.ViewModel
                                             break;
                                     }
                                     break;
-                                case "05190900FF":
+                                case "0005190900FF":
                                     alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
-                                case "06190900FF":
+                                case "0006190900FF":
                                     alarmViewModel.AlarmType = AlarmType.风机控制; break;
                                 default:
                                     alarmViewModel.AlarmType = AlarmType.Unknown;break;

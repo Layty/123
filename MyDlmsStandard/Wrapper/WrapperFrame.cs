@@ -6,6 +6,7 @@ namespace MyDlmsStandard.Wrapper
 {
     public class WrapperFrame : IToPduStringInHex, IPduStringInHexConstructor
     {
+
         public WrapperHeader WrapperHeader;
 
         public byte[] WrapperData { get; set; }
