@@ -64,7 +64,7 @@ namespace 三相智慧能源网关调试软件
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly LierdaCracker _cracker = new LierdaCracker();
+        //private readonly LierdaCracker _cracker = new LierdaCracker();
 
         /// <summary>
         /// 启动项注册
@@ -84,7 +84,7 @@ namespace 三相智慧能源网关调试软件
       
         protected override void OnStartup(StartupEventArgs e)
         {
-            _cracker.Cracker();
+          //  _cracker.Cracker();
             DispatcherHelper.Initialize();
            ConfigureServices();
 

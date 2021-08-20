@@ -89,7 +89,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
                 SimpleIoc.Default.Register<CosemObjectViewModel>();
-
+                SimpleIoc.Default.Register<MeterDataViewModel>();
                 SimpleIoc.Default.Register<DialogsViewModel>();
                 
             }
@@ -172,7 +172,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             ServiceLocator.Current.GetInstance<IicDataViewModel>();
 
         public CosemObjectViewModel CosemObjectViewModel => ServiceLocator.Current.GetInstance<CosemObjectViewModel>();
-
+        public MeterDataViewModel MeterDataViewModel => ServiceLocator.Current.GetInstance<MeterDataViewModel>();
         #endregion
 
         public static void Cleanup()

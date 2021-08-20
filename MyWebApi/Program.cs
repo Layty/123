@@ -41,8 +41,22 @@ namespace MyWebApi
                     logger.LogError(e, "Database Migration Error!");
                 }
             }
+            using (var scope1 = host.Services.CreateScope())
+            {
+                try
+                {
+                    var userLoginDbContext = scope1.ServiceProvider.GetService<MeterDbContext>();
+                    userLoginDbContext.Database.EnsureCreated();
+                    userLoginDbContext.Database.Migrate();
+                }
+                catch (Exception e)
+                {
+                    var logger = scope1.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(e, "UserLogin Database Migration Error!");
+                }
+            }
 
-          
+
 
             host.Run();
         }

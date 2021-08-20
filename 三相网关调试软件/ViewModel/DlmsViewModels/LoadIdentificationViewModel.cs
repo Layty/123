@@ -156,13 +156,22 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             if (loadDataBytes != null)
             {
-                LoadOriginalDataHex = loadDataBytes.GetResponseNormal.Result.Data.Value.ToString();
-          //      LoadOriginalDataHex = LoadOriginalDataHex.Substring(2); //去掉长度
-                var load = new LoadDataParse();
-                if (load.Parse(LoadOriginalDataHex))
+                if (loadDataBytes.GetResponseNormal!=null&&loadDataBytes.GetResponseNormal.Result.Data!= null)
                 {
-                    LoadDataFormat = load.ToString();
+                    LoadOriginalDataHex = loadDataBytes.GetResponseNormal.Result.Data.Value.ToString();
+                    //      LoadOriginalDataHex = LoadOriginalDataHex.Substring(2); //去掉长度
+                    var load = new LoadDataParse();
+                    if (load.Parse(LoadOriginalDataHex))
+                    {
+                        LoadDataFormat = load.ToString();
+                    }
                 }
+                else
+                {
+                    LoadDataFormat = loadDataBytes.GetResponseNormal.Result.DataAccessError.Value;
+                }
+               
+          
             }
         }
 

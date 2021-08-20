@@ -34,7 +34,9 @@ namespace MyDlmsStandard.ApplicationLay
 //    [XmlInclude(typeof(DlmsCompactArray))]
     public class DlmsDataItem : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
     {
-        [XmlAttribute]
+       // [XmlAttribute]
+        [XmlIgnore]
+      
         public OctetStringDisplayFormat OctetStringDisplayFormat
         {
             get => _octetStringDisplayFormat;
@@ -48,7 +50,8 @@ namespace MyDlmsStandard.ApplicationLay
 
         private OctetStringDisplayFormat _octetStringDisplayFormat = OctetStringDisplayFormat.Original;
 
-        [XmlAttribute]
+       // [XmlAttribute]
+        [XmlIgnore]
         public UInt32ValueDisplayFormat UInt32ValueDisplayFormat
         {
             get => _uInt32ValueDisplayFormat;
@@ -459,10 +462,10 @@ namespace MyDlmsStandard.ApplicationLay
                     }
                     else
                     {
-                       dlmsArray= Value as DLMSArray;
+                        dlmsArray = Value as DLMSArray;
                     }
 
-                //     DLMSArray dlmsArray = (DLMSArray) Value;
+                    //     DLMSArray dlmsArray = (DLMSArray) Value;
                     return dlmsArray.ToPduStringInHex();
                 }
 

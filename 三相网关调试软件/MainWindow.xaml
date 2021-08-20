@@ -340,6 +340,10 @@
                                             x:Name="ButtonCosemEditor"
                                             Click="ButtonCosemEditor_OnClick"
                                             Content="CosemEditor" />
+                                        <Button
+                                            x:Name="ButtonMeterData"
+                                            Click="ButtonMeterData_OnClick"
+                                            Content="MeterData" />
                                         <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
                                     </ListBox>
                                 </materialDesign:PopupBox>

@@ -436,6 +436,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException,
             CancellationToken cancellationToken = new CancellationToken())
         {
+            
             netLogViewModel.MyServerNetLogModel.Log =
                 $"Executed {Scheduler.GetMetaData().Result.NumberOfJobsExecuted} Jobs.  RunningSince{Scheduler.GetMetaData().Result.RunningSince.Value.ToLocalTime()}";
             UpdateJobList();

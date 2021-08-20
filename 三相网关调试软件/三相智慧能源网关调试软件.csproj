@@ -257,6 +257,7 @@
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
     <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\MeterDataViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\XMLLogViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\NetFrameMaker.cs" />
     <Compile Include="ENetClientHelper.cs" />
@@ -368,6 +369,9 @@
     </Compile>
     <Compile Include="View\Management\ENetDataPage.xaml.cs">
       <DependentUpon>ENetDataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MeterDataWindow.xaml.cs">
+      <DependentUpon>MeterDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MsgHostBox.xaml.cs">
       <DependentUpon>MsgHostBox.xaml</DependentUpon>
@@ -552,6 +556,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Management\ENetDataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MeterDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

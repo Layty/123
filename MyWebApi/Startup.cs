@@ -31,6 +31,8 @@ namespace MyWebApi
             services.AddDbContext<CosemObjectDbContext>(option => { option.UseSqlite("Data Source=CosemObjects.db"); });
             services.AddScoped<IUserLoginRepository, UserLoginRepository>();
             services.AddDbContext<UserLoginDbContext>(option => { option.UseSqlite("Data Source=UserLogin.db"); });
+            services.AddScoped<IMeterRepository, MeterRepository>();
+            services.AddDbContext<MeterDbContext>(option => { option.UseSqlite("Data Source = Meter.db"); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

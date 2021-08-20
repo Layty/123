@@ -260,5 +260,10 @@ namespace 三相智慧能源网关调试软件
         {
             new CosemObjectsManagement() {Owner = this}.Show();
         }
+
+        private void ButtonMeterData_OnClick(object sender, RoutedEventArgs e)
+        {
+            new MeterDataWindow() { Owner = this }.Show();
+        }
     }
 }
