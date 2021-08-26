@@ -1,0 +1,1326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAAAAAAAAAQAAAABAAgAAAIAAgAAAAEAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestNextBlock" Collapsed="true">
+    <Position X="25.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestNextBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestNormal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAQAAIAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestNormal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestWithBlock" Collapsed="true">
+    <Position X="28.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestWithBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestWithFirstBlock" Collapsed="true">
+    <Position X="30.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestWithFirstBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestWithList" Collapsed="true">
+    <Position X="32.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestWithList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionRequestWithListAndFirstBlock" Collapsed="true">
+    <Position X="34" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionRequestWithListAndFirstBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponse" Collapsed="true">
+    <Position X="35.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponseNextPBlock" Collapsed="true">
+    <Position X="20" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponseNextPBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponseNormal" Collapsed="true">
+    <Position X="21.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponseNormal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponseWithList" Collapsed="true">
+    <Position X="23.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponseWithList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponseWithOptionalData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAQAAAAoAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponseWithOptionalData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Action.ActionResponseWithPBlock" Collapsed="true">
+    <Position X="27" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Action\ActionResponseWithPBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ActionSpecification" Collapsed="true">
+    <Position X="28.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ActionSpecification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.ApplicationContextName" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAABAAAAAAAAAAAAIAAAAgAAgAEAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\ApplicationContextName.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.AssociationRequest" Collapsed="true">
+    <Position X="32.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAACAQAAAABAAAAAAIAACAMAACAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\Association\AssociationRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.AssociationResponse" Collapsed="true">
+    <Position X="34" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAgAAEABAAAAABAAQAAAAAACAEAACAAAIQAA=</HashCode>
+      <FileName>ApplicationLay\Association\AssociationResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.AssociationResult" Collapsed="true">
+    <Position X="35.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\AssociationResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.AuthenticationValue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAABAAAAAAAAAIAAYAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\AuthenticationValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.CalledApTitle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\CalledApTitle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.CallingAPTitle" Collapsed="true">
+    <Position X="30.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\CallingAPTitle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.InitiateRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACBAAAAAAAAAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\InitiateRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.UserInformation" Collapsed="true">
+    <Position X="27" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\InitiateResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.InitiateResponse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAAAGAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\InitiateResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.MechanismName" Collapsed="true">
+    <Position X="25.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\MechanismName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.ProposedConformance" Collapsed="true">
+    <Position X="35.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\ProposedConformance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.ProposedDlmsVersionNumber" Collapsed="true">
+    <Position X="20" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\ProposedDlmsVersionNumber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Association.ResultSourceDiagnostic" Collapsed="true">
+    <Position X="28.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAACAAAAABAAAAAAAAAAAAIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Association\ResultSourceDiagnostic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CaptureObjectDefinition" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAECgAAAgAABCAAAAAAAAIAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CaptureObjectDefinition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemData" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAgAAAAAAgAAAAAEAAAAAAAAAAACACAAgAAAAAgA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemDemandRegister" Collapsed="true">
+    <Position X="2.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgBAgAAAAEABAAEAAAAAAAAAhABgARJAAiAQAAAAAI=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemDemandRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemExtendedRegister" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAEAAAABAAAAAAAAAAAAAABAAQAAAAAAAAgAAQ=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemExtendedRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemProfileGeneric" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCCAAgIigAAIDAAB0AAACAggABDBARIQAREAAAAAwAI=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemProfileGeneric.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemRegister" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAgAEAAAAAAAAAAAAAgACAiAAAAAAAAAE=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemRegisterActivation" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQQAAAAAAEAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemRegisterActivation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemRegisterTable" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemRegisterTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemUtilityTables" Collapsed="true">
+    <Position X="16.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oBAABAAgAAAAAAABQIAAAERAAAAQBQAAFAAEAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\CosemUtilityTables.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.ProfileGenericEntryDescriptor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAAAAAAAAAAAACAAAAAAAwAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\ProfileGenericEntryDescriptor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.ProfileGenericRangeDescriptor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAAAAAAAAAAgCAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\ProfileGenericRangeDescriptor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.CosemBase" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\CosemBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.CosemClock" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAoCUJCIgkAgGAAAABAICAACAECKECAAEARgQAaI=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\CosemClock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.CosemDisconnectControl" Collapsed="true">
+    <Position X="5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAQAAAAgAAAAAAAAAAAAAAAAACACAAAgAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\CosemDisconnectControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.CosemObject" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAAAAAgAAAgIAAEIAAAAAAAgEAAAIAAAAABAAAACAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\CosemObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.Script" Collapsed="true">
+    <Position X="32.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\Script.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.ScriptAction" Collapsed="true">
+    <Position X="34" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAgAAAAAAAAAAAAAAAACAAIAAQAAAAAIEAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\ScriptAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.ScriptTable" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAQABQAAAAAAAAAAABQAgAAAABAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\ScriptTable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DataNotification.DataNotification" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAABAAAAgAAABQAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DataNotification\DataNotification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DataNotification.NotificationBody" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DataNotification\DataNotification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.ExceptionResponse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAABAAAAABAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\ExceptionResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.StateError" Collapsed="true">
+    <Position X="25.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAoAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\ExceptionResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.ServiceError" Collapsed="true">
+    <Position X="20" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCAAAAAAABAAAAAIAAAAAAAAAAAAgAgAAAAQAg=</HashCode>
+      <FileName>ApplicationLay\Get\ExceptionResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAABAAAAAAIAAAAAAAAAAABAEA=</HashCode>
+      <FileName>ApplicationLay\Get\GetRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetRequestNext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAIAEAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetRequestNext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetRequestNormal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAIAAQAAIAEAAAAAAAAAAAgA=</HashCode>
+      <FileName>ApplicationLay\Get\GetRequestNormal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetRequestWithList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAIAEAAAAAAAQAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetRequestWithList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetResponse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAARAAAIABAAAABAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetResponseNormal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAIAAAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetResponseNormal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetResponseWithDataBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAIAAAAAAAAAAIAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetResponseWithDataBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.GetResponseWithList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAIAAAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\GetResponseWithList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.Request" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAACAAQAAAAACAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\Response.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Get.Response" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>ApplicationLay\Get\Response.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Release.ReleaseRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAABAAAAAAIAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\Release\ReleaseRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Release.ReleaseResponse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAABAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\Release\ReleaseResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQBAQEAAAIAAAAACAAAAABAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequestNormal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABgQAAIAAAAAAQgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequestNormal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequestWithDataBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAIAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequestWithDataBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequestWithFirstDataBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAgAAAIAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequestWithFirstDataBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequestWithList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAQAAQAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequestWithList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetRequestWithListAndFirstDatablock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQAAQAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetRequestWithListAndFirstDatablock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAFAAAAABAAAAAAIQABAAABAAAAAgAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponseForDataBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAgAAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponseForDataBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponseForLastDataBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAgQAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponseForLastDataBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponseForLastDataBlockWithList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAgQAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponseForLastDataBlockWithList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponseNormal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABCAAAAAgQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponseNormal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.Set.SetResponseWithList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAgQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\SetResponseWithList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.AccessParameters" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\AccessParameters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemAttributeDescriptor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAhAAAAEAABAAAAIAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\CosemAttributeDescriptor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemAttributeDescriptorWithSelection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAgAAAAAAAAAAIAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ApplicationLay\CosemAttributeDescriptorWithSelection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemMethodDescriptor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAIAAAhAAAAAAABAAAAIAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ApplicationLay\CosemMethodDescriptor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DataBlockG" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAABAAAAgAAAAAAQIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\DataBlockG.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DataBlockSA" Collapsed="true">
+    <Position X="27" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAhAAAAgAABAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>ApplicationLay\DataBlockSA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DLMSArray" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIACABAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DLMSArray.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DlmsDataItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARAQCJAgAAYACABGIAQAAQBAgAAoARAAAAAgQAgEACA=</HashCode>
+      <FileName>ApplicationLay\DLMSDataItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DLMSInfo" Collapsed="true">
+    <Position X="20" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAFABQAAAAAEIIAGBAAAgAAAAAMAAAAIAAQAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DLMSInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DlmsStructure" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIACABAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DLMSStructure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.DataAccessError" Collapsed="true">
+    <Position X="23.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\GetDataResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.GetDataResult" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAEAQIABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\GetDataResult.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.InvokeIdAndPriority" Collapsed="true">
+    <Position X="23.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAgACAhMAAAAAAAAAAAAAAAAAAAgoAAAAAA=</HashCode>
+      <FileName>ApplicationLay\InvokeIdAndPriority.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.SelectiveAccessDescriptor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAABAAAAAAAAAAAAIAAAACAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\SelectiveAccessDescriptor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrIntegerBoolean" Collapsed="true">
+    <Position X="10.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrBoolean.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrInteger16" Collapsed="true">
+    <Position X="13" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrInteger16.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrInteger32" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrInteger32.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrInteger8" Collapsed="true">
+    <Position X="17.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrInteger8.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrIntegerBase&lt;T&gt;" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAABAIAAAAABAgAAIAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrIntegerBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrOctetString" Collapsed="true">
+    <Position X="10.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axdr\AxdrOctetString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrOctetStringFixed" Collapsed="true">
+    <Position X="6" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAIAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axdr\AxdrOctetStringFixed.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrStringBase" Collapsed="true">
+    <Position X="8.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAhAIAAAAABAgAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Axdr\AxdrStringBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrIntegerUnsigned16" Collapsed="true">
+    <Position X="6.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrUnsigned16.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrIntegerUnsigned32" Collapsed="true">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrUnsigned32.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrIntegerUnsigned8" Collapsed="true">
+    <Position X="10.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\AxdrUnsigned8.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Axdr.AxdrVisibleString" Collapsed="true">
+    <Position X="8.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axdr\AxdrVisibleString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Ber.BerGraphicString" Collapsed="true">
+    <Position X="23.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Ber\BerBitString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Ber.BerBitString" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Ber\BerBitString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Ber.BerInteger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Ber\BerInteger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Ber.BerOctetString" Collapsed="true">
+    <Position X="27" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Ber\BerOctetString.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Common.Common" Collapsed="true">
+    <Position X="34" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAQEAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\Common.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Common.MyConvert" Collapsed="true">
+    <Position X="27" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgMgAAIAAAEABBAAAAIAIAQAAAAAAgAAAAACAAA=</HashCode>
+      <FileName>Common\MyConvert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.IEC21EMode.EModeFrame" Collapsed="true">
+    <Position X="23.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAFAAAAAgwAAQAAAAIAACAAAAQABAABAAAAAEAEEA=</HashCode>
+      <FileName>HDLC\IEC21EMode\EModeFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.IEC21EMode.EModeParser" Collapsed="true">
+    <Position X="25.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HDLC\IEC21EMode\EModeParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.DataCheck" Collapsed="true">
+    <Position X="28.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEAAAAAAAAUABCAAAAAAAAAACIAAAAAAAABACAAAA=</HashCode>
+      <FileName>HDLC\DataCheck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.HdlcLlc" Collapsed="true">
+    <Position X="35.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAABAAAAAAAAAAAAAAAACEAAAAAAAAgAAAAEA=</HashCode>
+      <FileName>HDLC\HDLC_LLC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.HDLCFrameFormatField" Collapsed="true">
+    <Position X="30.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAABCAACAAAAAAAAgAAA=</HashCode>
+      <FileName>HDLC\Hdlc46Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.HDLCControlField" Collapsed="true">
+    <Position X="28.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAACAAAAIAAAAAAABAAAAAA=</HashCode>
+      <FileName>HDLC\Hdlc46Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.Hdlc46Frame" Collapsed="true">
+    <Position X="27" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAQEABAAAAAAAAAAAAACBIAAIAAABAAABAAAIKA=</HashCode>
+      <FileName>HDLC\Hdlc46Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.HdlcFrameMaker" Collapsed="true">
+    <Position X="32.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GkAAAgEAIBAAAAAAAABIhAAABoAIAAKAAICiAAAAAAI=</HashCode>
+      <FileName>HDLC\HdlcFrameMaker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.HDLC.HdlcFrameParser" Collapsed="true">
+    <Position X="34" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQIAABAEAAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HDLC\HdlcFrameParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.OBIS.AbstractObisClass" Collapsed="true">
+    <Position X="20" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtgEAAAA=</HashCode>
+      <FileName>OBIS\AbstractObisClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.OBIS.ObisHelper" Collapsed="true">
+    <Position X="30.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAgAAAAAAEAABAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>OBIS\ObisHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.Wrapper.WrapperFrame" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAQAAABAAAAAAAAAAAAIAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Wrapper\WrapperFrame.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Wrapper.WrapperHeader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAQAAAAAEABAAAAAAABAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrapper\WrapperHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.DLMSCommon" Collapsed="true">
+    <Position X="34" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DLMSCommon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.ScalarUnit" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAIIAABAMAgAAAAQgABAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\ScalarUnit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="MyDlmsStandard.HDLC.AAddress" Collapsed="true">
+    <Position X="20" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAgAAAAAAAAAAAAQAAAQBAAAAAAAAAAAA=</HashCode>
+      <FileName>HDLC\Hdlc46Frame.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.IToDlmsDataItem" Collapsed="true">
+    <Position X="20" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\DataStorage\IToDlmsDataItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.CosemObjects.IDlmsBase" Collapsed="true">
+    <Position X="21.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAgAAAAAAAAAAAAAAAAACACAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\CosemObjects\IDLMSBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.Get.IDlmsCommand" Collapsed="true">
+    <Position X="23.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\IDlmsCommand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.Get.IGetRequest" Collapsed="true">
+    <Position X="27" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\IGetRequest.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.Get.IGetResponse" Collapsed="true">
+    <Position X="28.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAIAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Get\IGetResponse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.Set.ISetRequest" Collapsed="true">
+    <Position X="34" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\ISetRequest.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.Set.ISetResponse" Collapsed="true">
+    <Position X="35.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAgAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\Set\ISetResponse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.IDataType" Collapsed="true">
+    <Position X="20" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\DLMSArray.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.IPduBytesToConstructor" Collapsed="true">
+    <Position X="30.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ApplicationLay\IPduBytesToConstructor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.ApplicationLay.IToPduBytes" Collapsed="true">
+    <Position X="21.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\IToPduBytes.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.Axdr.IGetEntityValue&lt;T&gt;" Collapsed="true">
+    <Position X="25.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Axdr\IGetEntityValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.IPduStringInHexConstructor" Collapsed="true">
+    <Position X="32.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IPduStringInHexConstructor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.IToPduStringInHex" Collapsed="true">
+    <Position X="23.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IToPduStringInHex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.AccessMode" Collapsed="true">
+    <Position X="20" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAEAAQAAAAAAAAAAAgAAAAgAAAAAgAAAAAAAAEAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\AccessMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.AccessRange" Collapsed="true">
+    <Position X="21.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAACAAAAAAAAAAAAAAAAAAAAIACAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\AccessRange.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ActionRequestType" Collapsed="true">
+    <Position X="23.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAEAAAAAAAAAgAAAAAgAAAAAAIAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ActionRequestType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ActionResponseType" Collapsed="true">
+    <Position X="25.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAgAAAAAAIAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ActionResponseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ActionResult" Collapsed="true">
+    <Position X="27" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAYgAAAAAQAAQAgAAAIAAAAgAAAARAAgCABAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ActionResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ApplicationContextNameType" Collapsed="true">
+    <Position X="28.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAJAAAAIAAAAAAAEAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ApplicationContextNameType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.BerType" Collapsed="true">
+    <Position X="30.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABBAARTxMACAAAAAAAgCAQMCAAAgAABEKKAAAACIA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\BerType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ClockStatus" Collapsed="true">
+    <Position X="32.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAJAAAAAAAABAAAEBAAAAEAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ClockStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.Command" Collapsed="true">
+    <Position X="34" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IFlMGChMBEBYQaYkYBKUQASCAsBMgIEAKAAQAQEgBMA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\Command.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.Conformance" Collapsed="true">
+    <Position X="20" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAFAACAAQFEBAAAAQAAAiggAIAIAEAAAAFBEAAAQ=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\Conformance.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ControlMode" Collapsed="true">
+    <Position X="23.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAEgAAAAgAAQAAEAQAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ControlMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ControlState" Collapsed="true">
+    <Position X="25.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ControlState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.DataAccessResult" Collapsed="true">
+    <Position X="27" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEYAAAAEAQAAQAgAAAIAAAAgAAAABAAgDABABAAAQ=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\DataAccessResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.DataType" Collapsed="true">
+    <Position X="28.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAAAAAAIQMACBARAAAAAAAEIBAAABSDEEAAAACAAQg=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\DataType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ErrorCode" Collapsed="true">
+    <Position X="30.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAEQQAAQAAACAIAQAAAgEAKAAAgCBxEAAQAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ErrorCode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.GetRequestType" Collapsed="true">
+    <Position X="34" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\GetRequestType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.GetResponseType" Collapsed="true">
+    <Position X="35.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\GetResponseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ObjectType" Collapsed="true">
+    <Position X="30.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>o1mQBBEGVSSQDuEJUIAAChAhCHABBDAAIQ4YABdJA9E=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ObjectType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.PduType" Collapsed="true">
+    <Position X="34" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQgAAAAAAAAAAEAAAAgAQAAAAAIEABCAEAACAIAAQAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\PduType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.Priority" Collapsed="true">
+    <Position X="35.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\Priority.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ReleaseRequestReason" Collapsed="true">
+    <Position X="20" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAEAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ReleaseRequestReason.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ReleaseResponseReason" Collapsed="true">
+    <Position X="21.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAIAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ReleaseResponseReason.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.RequestTypes" Collapsed="true">
+    <Position X="23.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAk=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\RequestTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ScriptActionType" Collapsed="true">
+    <Position X="25.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ScriptActionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.Security" Collapsed="true">
+    <Position X="27" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEAAgA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\Security.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.ServiceClass" Collapsed="true">
+    <Position X="28.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\ServiceClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.SetRequestType" Collapsed="true">
+    <Position X="30.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAIIAAAAAAAAgAAAAI=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\SetRequestType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.SetResponseType" Collapsed="true">
+    <Position X="32.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAACAIAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\SetResponseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.SortMethod" Collapsed="true">
+    <Position X="34" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAIAAAAAAAAAAAACAQAAAAAAAAQAAAI=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\SortMethod.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.ApplicationLayEnums.UnitEnum" Collapsed="true">
+    <Position X="25.25" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GCQAiiAQZdAAMBgAgICEDBJXAIoMQColCBYggIE+AAA=</HashCode>
+      <FileName>ApplicationLay\ApplicationLayEnums\UnitEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.Association.SourceDiagnostic" Collapsed="true">
+    <Position X="35.75" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAkAAAAgAAAAAACAAAACAhEAAAAAAQAAAAAGAACA=</HashCode>
+      <FileName>ApplicationLay\Association\SourceDiagnostic.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.Association.TranslatorGeneralTags" Collapsed="true">
+    <Position X="21.75" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACxQIEAABgBAUGgEAAIGQAgEAQAEAAQAEAAAAAAoQAA=</HashCode>
+      <FileName>ApplicationLay\Association\TranslatorGeneralTags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.OctetStringDisplayFormat" Collapsed="true">
+    <Position X="32.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQQBAAAAEAAAAQQ=</HashCode>
+      <FileName>ApplicationLay\DLMSDataItem.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ApplicationLay.UInt32ValueDisplayFormat" Collapsed="true">
+    <Position X="23.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAACAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>ApplicationLay\DLMSDataItem.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.Hdlc46CommandType" Collapsed="true">
+    <Position X="20" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgCCIAQAAAA=</HashCode>
+      <FileName>HDLC\Enums\Hdlc46CommandType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.Hdlc46ControlTypes" Collapsed="true">
+    <Position X="21.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAIAACAAAAAAAAAAAAIAAAgSCAAQAAAA=</HashCode>
+      <FileName>HDLC\Enums\Hdlc46ControlTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.Hdlc46ResponseType" Collapsed="true">
+    <Position X="23.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAIAAAAAAAAAAAAAAAIAAAASCAAQAAAA=</HashCode>
+      <FileName>HDLC\Enums\Hdlc46ResponseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.HdlcControlFrame" Collapsed="true">
+    <Position X="25.25" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACSAAAAAIA=</HashCode>
+      <FileName>HDLC\Enums\HdlcControlFrame.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.HdlcFrameType" Collapsed="true">
+    <Position X="27" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAACAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>HDLC\Enums\HdlcFrameType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.Enums.StartProtocolType" Collapsed="true">
+    <Position X="20" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>HDLC\Enums\StartProtocolType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.HDLC.FrameKind" Collapsed="true">
+    <Position X="32.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAgAAAAAAAAAAAAAAAAAEgEBAACAAgAAAAA=</HashCode>
+      <FileName>HDLC\HdlcFrameMaker.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.CommunicationType" Collapsed="true">
+    <Position X="35.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommunicationType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.ConnectionState" Collapsed="true">
+    <Position X="21.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ConnectionState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MyDlmsStandard.InterfaceType" Collapsed="true">
+    <Position X="28.75" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>InterfaceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

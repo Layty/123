@@ -21,13 +21,20 @@ namespace MyDlmsStandard.Wrapper
         /// </summary>
         public AxdrIntegerUnsigned16 Length { get; set; }
 
-
+        /// <summary>
+        /// 组帧
+        /// </summary>
+        /// <returns></returns>
         public string ToPduStringInHex()
         {
             return Version.ToPduStringInHex() + SourceAddress.ToPduStringInHex() + DestAddress.ToPduStringInHex() +
                    Length.ToPduStringInHex();
         }
-
+        /// <summary>
+        /// 解帧
+        /// </summary>
+        /// <param name="pduStringInHex"></param>
+        /// <returns></returns>
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             if (string.IsNullOrEmpty(pduStringInHex))

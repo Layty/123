@@ -11,106 +11,19 @@ namespace MyWebApi.Controllers
     [ApiController]
     public class MeterController : ControllerBase
     {
-        private readonly IMeterRepository _dbContext;
+        private readonly IMeterRepository _meterRepository;
 
-        public MeterController(IMeterRepository dbContext)
+        public MeterController(IMeterRepository meterRepository)
         {
-            _dbContext = dbContext;
+            _meterRepository = meterRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Meter>> GetAllMeter()
         {
-            return await _dbContext.GetMeters();
+            return await _meterRepository.GetMeters();
         }
-
-        [HttpDelete]
-        public async Task<IActionResult> RemoveByMeterId(string meterId)
-        {
-            if (meterId == "")
-            {
-                throw new ArgumentNullException(nameof(meterId));
-            }
-
-            var entity = await _dbContext.GetMeter(meterId);
-            if (entity==null)
-            {
-                return NotFound();
-            }
-            _dbContext.RemoveMeter(meterId);
-            await _dbContext.SaveAsync();
-            return NoContent();
-        }
-
-        [HttpGet("ByMeterId/{meterId}")]
-        public async Task<Meter> GetDataByMeterId(string meterId)
-        {
-            if (meterId == "")
-            {
-                throw new ArgumentException(nameof(meterId));
-            }
-
-            return await _dbContext.GetDataAsync(meterId);
-        }
-
-        [HttpGet("GetEnergyDataByMeterId/{meterId}")]
-        public async Task<IEnumerable<Energy>> GetEnergyDataByMeterId(string meterId)
-        {
-            if (meterId == "")
-            {
-                throw new ArgumentException(nameof(meterId));
-            }
-
-            return await _dbContext.GetEnergyDataAsync(meterId);
-        }
-
-        [HttpPost("CreateEnergyData{meterId}")]
-        public async Task<ActionResult<Energy>> CreateEnergyData(string meterId, [FromBody] List<Energy> energy)
-        {
-            if (meterId == "")
-            {
-                return BadRequest();
-            }
-
-            if (meterId == null)
-            {
-                return BadRequest();
-            }
-
-            if (!await _dbContext.MeterIdExistsAsync(meterId))
-            {
-                return BadRequest();
-            }
-
-            _dbContext.AddEnergyData(meterId, energy);
-            await _dbContext.SaveAsync();
-            return Ok(energy);
-        }
-
-        [HttpPost("CreatePowerData{meterId}")]
-        public async Task<ActionResult<Energy>> CreatePowerData(string meterId, [FromBody] List<Power> powers)
-        {
-            if (meterId == "")
-            {
-                return BadRequest();
-            }
-
-            if (meterId == null)
-            {
-                return BadRequest();
-            }
-
-            if (!await _dbContext.MeterIdExistsAsync(meterId))
-            {
-                return BadRequest();
-            }
-
-            _dbContext.AddPowerData(meterId, powers);
-            await _dbContext.SaveAsync();
-            return Ok(powers);
-        }
-
-        [HttpPost("CreateMeter{meterId}")]
+        [HttpPost("{meterId}")]
         public async Task<ActionResult<Meter>> CreateMeter(string meterId, [FromBody] Meter meterData)
         {
             if (meterId == "")
@@ -123,14 +36,101 @@ namespace MyWebApi.Controllers
                 return BadRequest();
             }
 
-            if (await _dbContext.MeterIdExistsAsync(meterId))
+            if (await _meterRepository.MeterIdExistsAsync(meterId))
             {
                 return BadRequest();
             }
 
-            _dbContext.AddMeter(meterId);
-            await _dbContext.SaveAsync();
+            _meterRepository.AddMeter(meterId);
+            await _meterRepository.SaveAsync();
             return Ok(meterData);
         }
+        [HttpDelete("{meterId}")]
+        public async Task<IActionResult> RemoveByMeterId([FromRoute]string meterId)
+        {
+            if (meterId == "")
+            {
+                throw new ArgumentNullException(nameof(meterId));
+            }
+
+            var entity = await _meterRepository.GetMeter(meterId);
+            if (entity==null)
+            {
+                return NotFound();
+            }
+            _meterRepository.DeleteMeter(meterId);
+            await _meterRepository.SaveAsync();
+            return NoContent();
+        }
+
+        [HttpGet("{meterId}")]
+        public async Task<Meter> GetMeterByMeterId(string meterId)
+        {
+            if (meterId == "")
+            {
+                throw new ArgumentException(nameof(meterId));
+            }
+
+            return await _meterRepository.GetDataAsync(meterId);
+        }
+
+        [HttpGet("EnergyData/{meterId}")]
+        public async Task<IEnumerable<Energy>> GetEnergyDataByMeterId(string meterId)
+        {
+            if (meterId == "")
+            {
+                throw new ArgumentException(nameof(meterId));
+            }
+
+            return await _meterRepository.GetEnergyDataAsync(meterId);
+        }
+
+        [HttpPost("EnergyData/{meterId}")]
+        public async Task<ActionResult<Energy>> CreateEnergyData(string meterId, [FromBody] List<Energy> energy)
+        {
+            if (meterId == "")
+            {
+                return BadRequest();
+            }
+
+            if (meterId == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await _meterRepository.MeterIdExistsAsync(meterId))
+            {
+                return BadRequest();
+            }
+
+            _meterRepository.AddEnergyData(meterId, energy);
+            await _meterRepository.SaveAsync();
+            return Ok(energy);
+        }
+
+        [HttpPost("PowerData/{meterId}")]
+        public async Task<ActionResult<Power>> CreatePowerData(string meterId, [FromBody] List<Power> powers)
+        {
+            if (meterId == "")
+            {
+                return BadRequest();
+            }
+
+            if (meterId == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await _meterRepository.MeterIdExistsAsync(meterId))
+            {
+                return BadRequest();
+            }
+
+            _meterRepository.AddPowerData(meterId, powers);
+            await _meterRepository.SaveAsync();
+            return Ok(powers);
+        }
+
+       
     }
 }

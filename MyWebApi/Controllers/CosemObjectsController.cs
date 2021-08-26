@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MyWebApi.Entities;
 using MyWebApi.Services;
 
@@ -13,18 +14,22 @@ namespace MyWebApi.Controllers
     [ApiController]
     public class CosemObjectsController : ControllerBase
     {
-        private readonly ICosemRepository _dbContext;
+        private readonly ICosemRepository _cosemRepository;
+        private readonly ILogger<CosemObjectsController> _logger;
 
-        public CosemObjectsController(ICosemRepository dbContext)
+        public CosemObjectsController(ICosemRepository cosemRepository,ILogger<CosemObjectsController> logger)
         {
-            _dbContext = dbContext;
+            _cosemRepository = cosemRepository;
+            _logger = logger;
         }
 
         // GET: api/<CosemObjectsController>
         [HttpGet]
         public async Task<IActionResult> GetAllCosemObjects()
         {
-            var cosemObjects = await _dbContext.GetCosemObjectsAsync();
+            var cosemObjects = await _cosemRepository.GetCosemObjectsAsync();
+            _logger.LogInformation("有人请求了GetAllCosemObjects");
+            Console.WriteLine("有人请求了GetAllCosemObjects");
             return new JsonResult(cosemObjects);
         }
 
@@ -37,7 +42,7 @@ namespace MyWebApi.Controllers
                 throw new ArgumentException(nameof(obis));
             }
 
-            return await _dbContext.GetCosemObjectAsync(obis);
+            return await _cosemRepository.GetCosemObjectAsync(obis);
         }
 
         // GET api/<CosemObjectsController>/5
@@ -49,7 +54,7 @@ namespace MyWebApi.Controllers
                 throw new ArgumentException(nameof(name));
             }
 
-            return await _dbContext.GetCosemObjectsByNameAsync(name);
+            return await _cosemRepository.GetCosemObjectsByNameAsync(name);
         }
 
         [HttpGet("ByClassId/{classId}")]
@@ -60,7 +65,7 @@ namespace MyWebApi.Controllers
                 throw new ArgumentException(nameof(classId));
             }
 
-            return await _dbContext.GetCosemObjectsByClassIdAsync(classId);
+            return await _cosemRepository.GetCosemObjectsByClassIdAsync(classId);
         }
 
         // POST api/<CosemObjectsController>
@@ -77,13 +82,13 @@ namespace MyWebApi.Controllers
                 return BadRequest();
             }
 
-            if (await _dbContext.CosemObjectExistsAsync(cosemObject.Obis))
+            if (await _cosemRepository.CosemObjectExistsAsync(cosemObject.Obis))
             {
                 return BadRequest();
             }
 
-            _dbContext.AddCosemObject(cosemObject);
-            await _dbContext.SaveAsync();
+            _cosemRepository.AddCosemObject(cosemObject);
+            await _cosemRepository.SaveAsync();
             return Ok(cosemObject);
         }
 
@@ -96,18 +101,18 @@ namespace MyWebApi.Controllers
             }
             else
             {
-                var isExist = await _dbContext.CosemObjectExistsAsync(obis);
+                var isExist = await _cosemRepository.CosemObjectExistsAsync(obis);
                 if (!isExist)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    var todo = await _dbContext.GetCosemObjectAsync(obis);
+                    var todo = await _cosemRepository.GetCosemObjectAsync(obis);
                     todo.ClassId = cosemObject.ClassId;
                     todo.Name = cosemObject.Name;
-                    _dbContext.UpdateCosemObject(todo);
-                    await _dbContext.SaveAsync();
+                    _cosemRepository.UpdateCosemObject(todo);
+                    await _cosemRepository.SaveAsync();
                     return Ok(todo);
                 }
             }
@@ -117,14 +122,14 @@ namespace MyWebApi.Controllers
         [HttpDelete("{obis}")]
         public async Task<IActionResult> DeleteCosemObjectByObis(string obis)
         {
-            var entity = await _dbContext.GetCosemObjectAsync(obis);
+            var entity = await _cosemRepository.GetCosemObjectAsync(obis);
             if (entity == null)
             {
                 return NotFound();
             }
 
-            _dbContext.DeleteCosemObject(entity);
-            await _dbContext.SaveAsync();
+            _cosemRepository.DeleteCosemObject(entity);
+            await _cosemRepository.SaveAsync();
             return NoContent();
         }
     }

@@ -5,8 +5,10 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
     public interface IDlmsBase
     {
         string[] GetNames();
-        int GetAttributeCount();
-        int GetMethodCount();
+        int AttributeCount { get; }
+
+        int MethodCount { get; }
+
         DataType GetDataType(int index);
     }
 }

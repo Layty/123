@@ -28,7 +28,7 @@ namespace MyWebApi.Services
             _dbContext.Meters.Add(new Meter() {MeterId = meterId});
         }
 
-        public void RemoveMeter(string meterId)
+        public void DeleteMeter(string meterId)
         {
             if (meterId == "")
             {
@@ -105,8 +105,17 @@ namespace MyWebApi.Services
                 throw new ArgumentNullException(nameof(meterId));
             }
 
-            var ttt = _dbContext.Energies.Where(t => meterId == t.MeterId).ToListAsync();
-            return await ttt;
+            return await _dbContext.Energies.Where(t => meterId == t.MeterId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Power>> GetPowerDataAsync(string meterId)
+        {
+            if (meterId == "")
+            {
+                throw new ArgumentNullException(nameof(meterId));
+            }
+
+            return await _dbContext.Powers.Where(t => meterId == t.MeterId).ToListAsync();
         }
 
 

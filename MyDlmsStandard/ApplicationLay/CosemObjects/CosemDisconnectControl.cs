@@ -36,15 +36,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             throw new NotImplementedException();
         }
 
-        public int GetAttributeCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int AttributeCount => throw new NotImplementedException();
 
-        public int GetMethodCount()
-        {
-            throw new NotImplementedException();
-        }
+        public int MethodCount => throw new NotImplementedException();
 
 
         public DataType GetDataType(int index)

@@ -187,32 +187,44 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private RelayCommand<string> _ipDetectCommand;
 
-        public class MyClass : ObservableObject
+        public class MeterIdMatchSocket : ObservableObject
         {
+            public Socket MySocket
+            {
+                get => _MySocket;
+                set
+                {
+                    _MySocket = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            private Socket _MySocket;
+
             public string IpString
             {
-                get => _IpString;
+                get => _ipString;
                 set
                 {
-                    _IpString = value;
+                    _ipString = value;
                     OnPropertyChanged();
                 }
             }
 
-            private string _IpString;
+            private string _ipString;
 
 
-            public string MeterAddress
+            public string MeterId
             {
-                get => _MeterAddress;
+                get => _meterId;
                 set
                 {
-                    _MeterAddress = value;
+                    _meterId = value;
                     OnPropertyChanged();
                 }
             }
 
-            private string _MeterAddress;
+            private string _meterId;
 
 
             public bool IsCheck
@@ -228,17 +240,17 @@ namespace 三相智慧能源网关调试软件.ViewModel
             private bool _isCheck;
         }
 
-        public ObservableCollection<MyClass> ListBoxExtend
+        public ObservableCollection<MeterIdMatchSocket> MeterIdMatchSockets
         {
-            get => _ListBoxExtend;
+            get => _meterIdMatchSockets;
             set
             {
-                _ListBoxExtend = value;
+                _meterIdMatchSockets = value;
                 OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<MyClass> _ListBoxExtend;
+        private ObservableCollection<MeterIdMatchSocket> _meterIdMatchSockets;
 
 
         public TcpServerViewModel()
@@ -267,11 +279,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 TcpServerHelper.SendDataToClient(CurrentSocketClient, CurrentSendMsg.StringToByte());
             });
             Alarms = new ObservableCollection<AlarmViewModel>();
-            SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
+
             IpDetectCommand = new RelayCommand<string>(t => IpDetectResult = PingIp(t));
 
 
-            ListBoxExtend = new ObservableCollection<MyClass>();
+            MeterIdMatchSockets = new ObservableCollection<MeterIdMatchSocket>();
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>
                 {
@@ -280,14 +292,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     if (heartBeatFrame.PduStringInHexConstructor(ref str))
                     {
                         var strAdd = Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes);
-                        if (ListBoxExtend.Count == 0)
+                        if (MeterIdMatchSockets.Count == 0)
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                ListBoxExtend.Add(new MyClass()
+                                MeterIdMatchSockets.Add(new MeterIdMatchSocket()
                                 {
+                                    MySocket = message.Item1,
                                     IpString = message.Item1.RemoteEndPoint.ToString(),
-                                    MeterAddress = strAdd,
+                                    MeterId = strAdd,
                                     IsCheck = false
                                 });
                             });
@@ -295,15 +308,16 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         else
                         {
                             var boo = false;
-                            for (int i = 0; i < ListBoxExtend.Count; i++)
+                            foreach (var myClass in MeterIdMatchSockets)
                             {
-                                if (ListBoxExtend[i].MeterAddress.Contains(strAdd))
+                                if (myClass.MeterId.Contains(strAdd))
                                 {
                                     boo = false;
                                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                     {
                                         //socket链接可能会变，但表号唯一,此处进行更新最新的Socket链接
-                                        ListBoxExtend[i].IpString = message.Item1.RemoteEndPoint.ToString();
+                                        myClass.IpString = message.Item1.RemoteEndPoint.ToString();
+                                        myClass.MySocket = message.Item1;
                                     });
                                     break;
                                 }
@@ -317,10 +331,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             {
                                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                 {
-                                    ListBoxExtend.Add(new MyClass()
+                                    MeterIdMatchSockets.Add(new MeterIdMatchSocket()
                                     {
+                                        MySocket = message.Item1,
                                         IpString = message.Item1.RemoteEndPoint.ToString(),
-                                        MeterAddress = strAdd,
+                                        MeterId = strAdd,
                                         IsCheck = false
                                     });
                                 });
@@ -543,18 +558,6 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
             }
         }
-
-        public IDictionary<Socket, string> SocketAndAddressCollection
-        {
-            get => _socketAndAddressCollection;
-            set
-            {
-                _socketAndAddressCollection = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private IDictionary<Socket, string> _socketAndAddressCollection;
 
 
         /// <summary>

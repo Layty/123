@@ -12,7 +12,13 @@ namespace MyDlmsStandard.ApplicationLay
     public class GetDataResult : IToPduStringInHex, IPduStringInHexConstructor
     {
         public DlmsDataItem Data { get; set; }
+        /// <summary>
+        /// value="00"代表成功，="01"代表失败
+        /// </summary>
         [XmlIgnore] public AxdrIntegerUnsigned8 DataAccessResult { get; set; }
+        /// <summary>
+        /// 当DataAccessResult="01"代表失败时，DataAccessError才有意义
+        /// </summary>
         public DataAccessError DataAccessError { get; set; }
 
         public string ToPduStringInHex()

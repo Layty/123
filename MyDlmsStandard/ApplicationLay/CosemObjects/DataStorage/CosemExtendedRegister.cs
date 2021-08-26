@@ -38,8 +38,8 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         }
 
         private AxdrOctetString _captureTime;
-        public virtual CosemAttributeDescriptor GetStatusAttributeDescriptor() => GetCosemAttributeDescriptor(4);
-        public virtual CosemAttributeDescriptor GetCaptureTimeAttributeDescriptor() => GetCosemAttributeDescriptor(5);
+        public virtual CosemAttributeDescriptor StatusAttributeDescriptor => GetCosemAttributeDescriptor(4);
+        public virtual CosemAttributeDescriptor CaptureTimeAttributeDescriptor => GetCosemAttributeDescriptor(5);
 
         public virtual CosemMethodDescriptor GetResetMethodDescriptor(DlmsDataItem data) => GetCosemMethodDescriptor(1);
 

@@ -2,21 +2,28 @@
 
 namespace MyDlmsStandard.ApplicationLay
 {
+    /// <summary>
+    /// Cosem属性描述
+    /// </summary>
     public class CosemAttributeDescriptor : IPduStringInHexConstructor, IToPduStringInHex
     {
         /// <summary>
         /// 类ID
         /// </summary>
         public AxdrIntegerUnsigned16 ClassId { get; set; }
+
         /// <summary>
         /// OBIS
         /// </summary>
         public AxdrOctetStringFixed InstanceId { get; set; }
+
         /// <summary>
         /// 属性ID
         /// </summary>
         public AxdrInteger8 AttributeId { get; set; }
-
+        /// <summary>
+        /// 长度
+        /// </summary>
         public int Length => CalculateLength();
 
         private int CalculateLength()
@@ -26,14 +33,17 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 num += ClassId.Length;
             }
+
             if (InstanceId != null)
             {
                 num += InstanceId.Length;
             }
+
             if (AttributeId != null)
             {
                 num += AttributeId.Length;
             }
+
             return num;
         }
 
@@ -41,13 +51,13 @@ namespace MyDlmsStandard.ApplicationLay
         {
         }
 
-        public CosemAttributeDescriptor(AxdrIntegerUnsigned16 classId, AxdrOctetStringFixed instanceId, AxdrInteger8 attributeId)
+        public CosemAttributeDescriptor(AxdrIntegerUnsigned16 classId, AxdrOctetStringFixed instanceId,
+            AxdrInteger8 attributeId)
         {
             ClassId = classId;
             InstanceId = instanceId;
             AttributeId = attributeId;
         }
-   
 
 
         public string ToPduStringInHex()
@@ -58,21 +68,21 @@ namespace MyDlmsStandard.ApplicationLay
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            AxdrIntegerUnsigned16 cosemClassId = new AxdrIntegerUnsigned16();
-            if (!cosemClassId.PduStringInHexConstructor(ref pduStringInHex))
+            ClassId = new AxdrIntegerUnsigned16();
+            if (!ClassId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
 
-            AxdrOctetStringFixed cosemObjectInstanceId = new AxdrOctetStringFixed(6);
-            if (!cosemObjectInstanceId.PduStringInHexConstructor(ref pduStringInHex))
+            InstanceId = new AxdrOctetStringFixed(6);
+            if (!InstanceId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            AxdrInteger8 cosemObjectAttributeId = new AxdrInteger8();
-            if (!cosemObjectAttributeId.PduStringInHexConstructor(ref pduStringInHex))
+            AttributeId = new AxdrInteger8();
+            if (!AttributeId.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }

@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetLogicNameCommand = new RelayCommand<CustomCosemDataModel>(async t =>
             {
                 t.Value = new DlmsDataItem();
-                var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
+                var getResponse = await Client.GetRequestAndWaitResponse(t.LogicNameAttributeDescriptor);
                 if (getResponse != null)
                 {
                     t.Value.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;

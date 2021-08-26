@@ -1,14 +1,16 @@
-﻿<Page x:Class="三相智慧能源网关调试软件.View.ServerCenter.TcpClientPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d"
-      d:DesignHeight="850" d:DesignWidth="600"
-      DataContext="{Binding Source={StaticResource Locator} ,Path=TcpClientHelper}"
-      Title="TcpClientPage">
+﻿<Page
+    x:Class="三相智慧能源网关调试软件.View.ServerCenter.TcpClientPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="TcpClientPage"
+    d:DesignHeight="850"
+    d:DesignWidth="600"
+    DataContext="{Binding Source={StaticResource Locator}, Path=TcpClientHelper}"
+    mc:Ignorable="d">
 
     <Grid>
         <materialDesign:Card>
@@ -18,44 +20,71 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="200" />
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <materialDesign:PackIcon Kind="Ethernet" Grid.Row="0" Width="Auto" Height="Auto"
-                                             HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <materialDesign:PackIcon
+                        Grid.Row="0"
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Kind="Ethernet" />
 
-                    <ComboBox Margin="5" Grid.Row="0" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              Grid.Column="1" IsEditable="True"
-                              materialDesign:HintAssist.Hint="网关IP(editable)"
-                              materialDesign:HintAssist.FloatingScale="0.50"
-                              Height="50" FontSize="20"
-                              Text="{Binding TcpClientHelper.ServerIpAddress, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay,ValidatesOnDataErrors=True}">
+                    <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Height="50"
+                        Margin="5"
+                        materialDesign:HintAssist.FloatingScale="0.50"
+                        materialDesign:HintAssist.Hint="网关IP(editable)"
+                        FontSize="20"
+                        IsEditable="True"
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        Text="{Binding TcpClientHelper.ServerIpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
                         <ComboBoxItem>127.0.0.1</ComboBoxItem>
                         <ComboBoxItem>192.168.0.145</ComboBoxItem>
                     </ComboBox>
 
-                    <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" Margin="5" Grid.Row="0"
-                             Grid.Column="2" Height="50"
-                             materialDesign:HintAssist.FloatingScale="0.50"
-                             materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
-                             materialDesign:HintAssist.Hint="端口号" FontSize="20"
-                             Text="{Binding TcpClientHelper.ServerPortNum}" />
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Height="50"
+                        Margin="5"
+                        materialDesign:HintAssist.FloatingScale="0.50"
+                        materialDesign:HintAssist.Hint="端口号"
+                        materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                        FontSize="20"
+                        Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding TcpClientHelper.ServerPortNum}" />
 
-                    <ToggleButton Grid.Column="3" x:Name="ButtonConnect" Command="{Binding ConnectOrDisconnectCommand}"
-                                  IsChecked="{Binding TcpClientHelper.ConnectResult ,Mode=OneWay ,UpdateSourceTrigger=PropertyChanged}"
-                                  Width="50" Height="50"
-                                  Style="{StaticResource MaterialDesignActionLightToggleButton}" Margin="5">
+                    <ToggleButton
+                        x:Name="ButtonConnect"
+                        Grid.Column="3"
+                        Width="50"
+                        Height="50"
+                        Margin="5"
+                        Command="{Binding ConnectOrDisconnectCommand}"
+                        IsChecked="{Binding TcpClientHelper.ConnectResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource MaterialDesignActionLightToggleButton}">
                         <ToggleButton.Content>
                             <materialDesign:PackIcon
-                                Kind="LocalAreaNetworkConnect" Width="30" Height="30" />
+                                Width="30"
+                                Height="30"
+                                Kind="LocalAreaNetworkConnect" />
                         </ToggleButton.Content>
                         <materialDesign:ToggleButtonAssist.OnContent>
                             <materialDesign:PackIcon
-                                Kind="LocalAreaNetworkDisConnect" Width="30" Height="30" />
+                                Width="30"
+                                Height="30"
+                                Kind="LocalAreaNetworkDisConnect" />
                         </materialDesign:ToggleButtonAssist.OnContent>
                     </ToggleButton>
 
@@ -67,20 +96,29 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="TextBoxMsg" Text="root" TextWrapping="Wrap"
-                                 Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Height="100"
-                                 Margin="5" />
-                        <Button Grid.Column="1" Command="{Binding SendMsgCommand}" Content="发送"
-                                Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                CommandParameter="{Binding ElementName=TextBoxMsg,Path=Text,UpdateSourceTrigger=PropertyChanged}"
-                                Margin="5" />
+                        <TextBox Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            x:Name="TextBoxMsg"
+                            Height="100"
+                            Margin="5"
+                            Text="root"
+                            TextWrapping="Wrap" />
+                        <Button
+                            Grid.Column="1"
+                            Margin="5"
+                            Command="{Binding SendMsgCommand}"
+                            CommandParameter="{Binding ElementName=TextBoxMsg, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+                            Content="发送"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}" />
                     </Grid>
 
                 </GroupBox>
-                <Expander Grid.Row="2" Header="三相网关参数调试" IsExpanded="False">
+                <Expander
+                    Grid.Row="2"
+                    Header="三相网关参数调试"
+                    IsExpanded="False">
                     <Grid>
                         <StackPanel Margin="2">
-                            <Button Command="{Binding TryToLoginCommand}" Margin="3">
+                            <Button Margin="3" Command="{Binding TryToLoginCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Key" />
                                     <TextBlock Text="一键登录网关" />
@@ -91,32 +129,48 @@
 
                             <UniformGrid Columns="2">
 
-                                <TextBox materialDesign:HintAssist.Hint="南瑞主站IP" FontSize="20"
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         x:Name="TextBoxAfterHostIP"
-                                         Text="{Binding AfterHostIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
-                                         Margin="3" />
-                                <Button Command="{Binding ReplaceAppParaHostIpCommand}" Content="设置主站IP" Margin="3" />
+                                <TextBox
+                                    x:Name="TextBoxAfterHostIP"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="南瑞主站IP"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterHostIp, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaHostIpCommand}"
+                                    Content="设置主站IP" />
                             </UniformGrid>
                             <UniformGrid Columns="2">
-                                <TextBox materialDesign:HintAssist.Hint="网关IP"
-                                         materialDesign:HintAssist.IsFloating="True"
-                                         Margin="3" FontSize="20"
-                                         x:Name="TextBoxAfterIP"
-                                         Text="{Binding AfterIp,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
-                                <Button Command="{Binding ReplaceAppParaIpAddrCommand}" Content="设置网关IP" Margin="3" />
+                                <TextBox
+                                    x:Name="TextBoxAfterIP"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="网关IP"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterIp, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaIpAddrCommand}"
+                                    Content="设置网关IP" />
                             </UniformGrid>
                             <UniformGrid Columns="2">
-                                <TextBox materialDesign:HintAssist.Hint="默认网关" FontSize="20"
-                                         materialDesign:HintAssist.IsFloating="True" Margin="3"
-                                         x:Name="TextBoxAfterMask"
-                                         Text="{Binding AfterGateway,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" />
-                                <Button Command="{Binding ReplaceAppParaIpGateWayCommand}" Content="设置默认网关" Margin="3" />
+                                <TextBox
+                                    x:Name="TextBoxAfterMask"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="默认网关"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterGateway, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaIpGateWayCommand}"
+                                    Content="设置默认网关" />
                             </UniformGrid>
                             <WrapPanel>
 
 
-                                <Button Command="{Binding ReplaceAllParaCommand}" Margin="3">
+                                <Button Margin="3" Command="{Binding ReplaceAllParaCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="SettingsBox" />
                                         <TextBlock Text="一键设置参数" />
@@ -124,8 +178,10 @@
                                     </StackPanel>
 
                                 </Button>
-                                <Button Command="{Binding SendMsgCommand}" CommandParameter="cat /opt/cfg/AppPara.cfg"
-                                        Margin="3">
+                                <Button
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="cat /opt/cfg/AppPara.cfg">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Eye" />
                                         <TextBlock Text="查看配置文件" />
@@ -133,21 +189,34 @@
                                     </StackPanel>
 
                                 </Button>
-                                <Button Command="{Binding SendMsgCommand}" CommandParameter="reboot" Margin="3">
+                                <Button
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="reboot">
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
-                                                                 VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="Restart" />
                                         <TextBlock Text="重启reboot" />
-                                        <materialDesign:PackIcon Kind="Restart" HorizontalAlignment="Center"
-                                                                 VerticalAlignment="Center" />
+                                        <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="Restart" />
                                     </StackPanel>
 
                                 </Button>
-                                <Button x:Name="ButtonTail" Content="查看IIC通讯日志" Margin="3"
-                                        Command="{Binding SendMsgCommand}"
-                                        CommandParameter="tail -f /opt/bin/base_meter.log" />
-                                <Button x:Name="ButtonExitTail" Content="Control+C" Margin="3"
-                                        Command="{Binding SendMsgControlCCommand}" />
+                                <Button
+                                    x:Name="ButtonTail"
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="tail -f /opt/bin/base_meter.log"
+                                    Content="查看IIC通讯日志" />
+                                <Button
+                                    x:Name="ButtonExitTail"
+                                    Margin="3"
+                                    Command="{Binding SendMsgControlCCommand}"
+                                    Content="Control+C" />
 
                             </WrapPanel>
                         </StackPanel>

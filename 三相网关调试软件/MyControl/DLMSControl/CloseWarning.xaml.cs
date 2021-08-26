@@ -86,13 +86,13 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 
                 GetWarningConfigCommand = new RelayCommand(async () =>
                 {
-                    var t = cosemData.GetValueAttributeDescriptor();
+                    var t = cosemData.ValueAttributeDescriptor;
                     await Client.GetRequestAndWaitResponse(t);
                 });
 
                 SetWarningConfigCommand=new RelayCommand(async () =>
                 {
-                    await Client.SetRequestAndWaitResponse(cosemData.GetValueAttributeDescriptor(),
+                    await Client.SetRequestAndWaitResponse(cosemData.ValueAttributeDescriptor,
                         new DlmsDataItem(DataType.UInt64,"00000000" )
                         );
                 });

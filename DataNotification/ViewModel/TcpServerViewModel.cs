@@ -17,7 +17,6 @@ using NLog;
 
 namespace DataNotification.ViewModel
 {
-  
     public class TcpServerViewModel : ObservableObject
     {
         public TcpServerHelper TcpServerHelper
@@ -72,10 +71,6 @@ namespace DataNotification.ViewModel
         public RelayCommand<Socket> SelectSocketCommand { get; set; }
 
 
-      
-
- 
-
         /// <summary>
         /// 是否自动响应47心跳帧
         /// </summary>
@@ -91,10 +86,6 @@ namespace DataNotification.ViewModel
 
         private bool _isAutoResponseHeartBeat;
 
-     
-     
-
-     
 
         /// <summary>
         /// 是否开启转发
@@ -146,17 +137,13 @@ namespace DataNotification.ViewModel
             HeartBeatDelayTime = 1000;
             var ip = TcpServerHelper.GetHostIp();
             TcpServerHelper = new TcpServerHelper(ip, 8881);
-            
+
             TcpServerHelper.ReceiveBytes += CalcTcpServerHelper_ReceiveBytes;
 
             CurrentSendMsg = "00 02 00 16 00 02 00 0F 00 01 03 30 30 30 30 30 30 30 30 30 30 30 31";
             SelectSocketCommand = new RelayCommand<Socket>(Select);
-           
-            StartListen = new RelayCommand(() =>
-            {
-              
-                    TcpServerHelper.StartListen();
-            });
+
+            StartListen = new RelayCommand(() => { TcpServerHelper.StartListen(); });
             DisConnectServerCommand = new RelayCommand(TcpServerHelper.CloseSever);
             DisConnectClientCommand = new RelayCommand<string>(t => TcpServerHelper.DisConnectClient(t));
             SendDataToServerCommand = new RelayCommand(() =>
@@ -167,7 +154,6 @@ namespace DataNotification.ViewModel
             SocketAndAddressCollection = new ConcurrentDictionary<Socket, string>();
         }
 
-       
 
         public enum AlarmType
         {
@@ -178,7 +164,7 @@ namespace DataNotification.ViewModel
             烟感and水浸,
             风机控制
         }
-       
+
         public class CustomAlarm : DlmsStructure
         {
             public AxdrOctetStringFixed PushId { get; set; }
@@ -285,16 +271,19 @@ namespace DataNotification.ViewModel
                                             alarmViewModel.AlarmType = AlarmType.Unknown;
                                             break;
                                     }
+
                                     break;
                                 case "0005190900FF":
                                     alarmViewModel.AlarmType = AlarmType.烟感and水浸;
                                     break;
                                 case "0006190900FF":
-                                    alarmViewModel.AlarmType = AlarmType.风机控制; break;
+                                    alarmViewModel.AlarmType = AlarmType.风机控制;
+                                    break;
                                 default:
-                                    alarmViewModel.AlarmType = AlarmType.Unknown;break;
+                                    alarmViewModel.AlarmType = AlarmType.Unknown;
+                                    break;
                             }
-                           
+
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }
@@ -418,7 +407,6 @@ namespace DataNotification.ViewModel
 
         public void Select(Socket clientSocket)
         {
-          
             CurrentSocketClient = clientSocket;
         }
     }

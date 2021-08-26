@@ -13,16 +13,16 @@ namespace 三相智慧能源网关调试软件.Model
         }
         public DateTime FromDateTime
         {
-            get => _FromDateTime;
-            set { _FromDateTime = value; OnPropertyChanged(); }
+            get => _fromDateTime;
+            set { _fromDateTime = value; OnPropertyChanged(); }
         }
-        private DateTime _FromDateTime;
+        private DateTime _fromDateTime;
 
         public DateTime ToDateTime
         {
-            get => _ToDateTime;
-            set { _ToDateTime = value; OnPropertyChanged(); }
+            get => _toDateTime;
+            set { _toDateTime = value; OnPropertyChanged(); }
         }
-        private DateTime _ToDateTime;
+        private DateTime _toDateTime;
     }
 }

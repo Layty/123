@@ -19,7 +19,7 @@ namespace 三相智慧能源网关调试软件.Converters
 
         public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return value;
         }
     }
 }

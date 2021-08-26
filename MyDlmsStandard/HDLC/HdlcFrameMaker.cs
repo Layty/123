@@ -305,6 +305,11 @@ namespace MyDlmsStandard.HDLC
             throw new ArgumentException("Invalid address.");
         }
 
+        /// <summary>
+        /// 解析UA帧
+        /// </summary>
+        /// <param name="replyData"></param>
+        /// <returns></returns>
         public bool ParseUaResponse(byte[] replyData)
         {
             if (replyData.Length == 0)
@@ -321,11 +326,9 @@ namespace MyDlmsStandard.HDLC
             {
                 return false;
             }
-
-            var buff = replyData.Skip(8).ToArray();
-            var buff1 = (buff.Take(buff.Length - 3).ToArray());
-
-
+            //TODO  要根据源地址和目的地址的字节数来取
+            //当源地址和目的地址均为1时replyData[5] == 115
+            //replyData[?] == 115;
             return true;
         }
     }

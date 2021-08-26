@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+using MyDlmsStandard.Annotations;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
 
@@ -44,10 +47,18 @@ namespace MyDlmsStandard.ApplicationLay
         DataType DataType { get; }
     }
 
-    public class DLMSArray : IDataType
+    public class DLMSArray : IDataType,INotifyPropertyChanged
     {
         public DataType DataType { get;} = DataType.Array;
-        public DlmsDataItem[] Items { get; set; }
+
+        public DlmsDataItem[] Items
+        {
+            get => _Items;
+            set { _Items = value; OnPropertyChanged();}
+        }
+        private DlmsDataItem[] _Items;
+
+     
 
         public string ToPduStringInHex()
         {
@@ -87,6 +98,14 @@ namespace MyDlmsStandard.ApplicationLay
             }
 
             return true;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

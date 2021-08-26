@@ -1,20 +1,21 @@
-﻿<UserControl x:Class="三相智慧能源网关调试软件.MyControl.UserControlForMenu"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
-             mc:Ignorable="d" x:Name="UserControl"
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="三相智慧能源网关调试软件.MyControl.UserControlForMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
+    x:Name="UserControl"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
             <Setter Property="Padding" Value="8" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="Template">
@@ -30,7 +31,8 @@
                                         <Storyboard>
                                             <DoubleAnimation
                                                 Storyboard.TargetProperty="FontSize"
-                                                To="20" Duration="0:0:0.2" />
+                                                To="20"
+                                                Duration="0:0:0.2" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger.Actions>
@@ -40,8 +42,8 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation
-                                                Storyboard.TargetProperty="FontSize"
                                                 BeginTime="0:0:0.2"
+                                                Storyboard.TargetProperty="FontSize"
                                                 Duration="0:0:0.2" />
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -49,17 +51,12 @@
 
                             </EventTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background"
-                                        Value="{DynamicResource PrimaryHueLightBrush}"
-                                        TargetName="border" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background"
-                                        TargetName="border"
-                                        Value="{DynamicResource PrimaryHueMidBrush}" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
                                 <Setter Property="FontSize" Value="20" />
-                                <Setter Property="FontWeight"
-                                        Value="ExtraBlack" />
+                                <Setter Property="FontWeight" Value="ExtraBlack" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -69,37 +66,41 @@
         <DataTemplate x:Key="MenuListBoxItemDataTemplate" DataType="model:MenuModel">
             <Border>
                 <RadioButton
-                    Style="{DynamicResource MaterialDesignTabRadioButton}"
                     x:Name="RadioButton"
-                    Height="50" Margin="0"
-                    FontSize="{TemplateBinding ListBoxItem.FontSize}"
+                    Height="50"
+                    Margin="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     HorizontalContentAlignment="Left"
                     materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                    Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.SelectCommand,Mode=TwoWay}"
-                    CommandParameter="{Binding}">
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Path=DataContext.SelectCommand, Mode=TwoWay}"
+                    CommandParameter="{Binding}"
+                    FontSize="{TemplateBinding ListBoxItem.FontSize}"
+                    Style="{DynamicResource MaterialDesignTabRadioButton}">
                     <RadioButton.IsChecked>
-                        <Binding Path="IsSelected"
-                                 RelativeSource="{RelativeSource AncestorType=ListBoxItem }"
-                                 Mode="TwoWay" />
+                        <Binding
+                            Mode="TwoWay"
+                            Path="IsSelected"
+                            RelativeSource="{RelativeSource AncestorType=ListBoxItem}" />
                     </RadioButton.IsChecked>
                     <Border>
                         <StackPanel Orientation="Horizontal">
-                            <!-- 图标 -->
-                            <TextBlock Text="{Binding IconFont}"
-                                       FontFamily="/Fonts/#iconfont"
-                                       x:Name="TextBlockIcon"
-                                       Foreground="{Binding Foreground}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
+                            <!--  图标  -->
+                            <TextBlock
+                                x:Name="TextBlockIcon"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="/Fonts/#iconfont"
+                                Foreground="{Binding Foreground}"
+                                Text="{Binding IconFont}" />
 
-                            <!-- 文字 -->
-                            <TextBlock Text="{Binding MenuName}"
-                                       HorizontalAlignment="Center"
-                                       x:Name="TextBlockTitle"
-                                       VerticalAlignment="Center"
-                                       Margin="15 0 0 0" />
+                            <!--  文字  -->
+                            <TextBlock
+                                x:Name="TextBlockTitle"
+                                Margin="15,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{Binding MenuName}" />
 
                         </StackPanel>
                     </Border>
@@ -110,16 +111,19 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <materialDesign:Card x:Name="Card2"  >
-            <Expander  Margin="5" Header="{Binding ElementName=UserControl,Path=Name}"
-                      materialDesign:ExpanderAssist.DownHeaderPadding="20">
+        <materialDesign:Card x:Name="Card2">
+            <Expander
+                Margin="5"
+                materialDesign:ExpanderAssist.HorizontalHeaderPadding="20"
+                Header="{Binding ElementName=UserControl, Path=Name}">
                 <Expander.Content>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListBox ItemsSource="{Binding BaseMeterMenuCollection}"
-                                 SelectedItem="{Binding MenuModel}"
-                                 ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}">
+                        <ListBox
+                            ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}"
+                            ItemsSource="{Binding BaseMeterMenuCollection}"
+                            SelectedItem="{Binding MenuModel}">
                             <ListBox.DataContext>
-                                <Binding Source="{StaticResource Locator}" Path="Menu" />
+                                <Binding Path="Menu" Source="{StaticResource Locator}" />
                             </ListBox.DataContext>
                         </ListBox>
                     </ScrollViewer>

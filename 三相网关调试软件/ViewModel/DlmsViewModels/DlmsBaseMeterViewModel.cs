@@ -69,7 +69,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetSoftVersionCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
-                var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
+                var response = await Client.GetRequestAndWaitResponse(cosem.ValueAttributeDescriptor);
                 if (response?.GetResponseNormal.Result.Data != null)
                 {
                     SoftVersion = response.GetResponseNormal.Result.Data.ValueString;
@@ -78,7 +78,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             ReadFactoryCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
-                var response = await Client.GetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor());
+                var response = await Client.GetRequestAndWaitResponse(cosem.ValueAttributeDescriptor);
                 if (response?.GetResponseNormal.Result.Data != null)
                 {
                     FactoryStatus = response.GetResponseNormal.Result.Data.ValueString;
@@ -88,13 +88,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000"); //8192
-                await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
+                await Client.SetRequestAndWaitResponse(cosem.ValueAttributeDescriptor, dataItem);
             });
             QuitFactorCommand = new RelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 var dataItem = new DlmsDataItem(DataType.UInt16, "0000");
-                await Client.SetRequestAndWaitResponse(cosem.GetValueAttributeDescriptor(), dataItem);
+                await Client.SetRequestAndWaitResponse(cosem.ValueAttributeDescriptor, dataItem);
             });
             EnterUpgradeModeCommand = new RelayCommand(async () =>
             {

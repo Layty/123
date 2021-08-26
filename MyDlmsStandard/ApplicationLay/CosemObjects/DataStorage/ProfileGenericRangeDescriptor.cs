@@ -14,8 +14,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public DlmsDataItem ToDlmsDataItem()
         {
-            DlmsStructure dlmsStructure = new DlmsStructure();
-            dlmsStructure.Items = new DlmsDataItem[4];
+            DlmsStructure dlmsStructure = new DlmsStructure {Items = new DlmsDataItem[4]};
             dlmsStructure.Items[0] = RestrictingObject.ToDlmsDataItem();
             dlmsStructure.Items[1] = FromValue;
             dlmsStructure.Items[2] = ToValue;

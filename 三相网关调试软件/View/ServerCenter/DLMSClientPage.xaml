@@ -340,8 +340,6 @@
                     Content="SerialPort"
                     IsChecked="False"
                     Style="{StaticResource ToggleButtonStyle12}" />
-                <Button Content="ShowDetail" />
-
 
             </StackPanel>
             <ListBox
@@ -351,15 +349,15 @@
                 Grid.Column="0"
                 materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True"
                 DataContext="{Binding Source={StaticResource Locator}, Path=TcpServer}"
-                FontSize="20"
-                ItemsSource="{Binding TcpServerHelper.SocketClientList}"
-                KeyDown="UIElement_OnKeyDown"
+                FontSize="10"
+                ItemsSource="{Binding MeterIdMatchSockets}"
+                MouseLeftButtonDown="ListBox_OnMouseLeftButtonDown"
                 SelectedItem="{Binding DLMSClient.CurrentSocket}"
                 SelectionChanged="Selector_OnSelectionChanged">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel />
+                        <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
@@ -372,7 +370,7 @@
                                         Margin="3"
                                         BorderBrush="{DynamicResource PrimaryHueDarkBrush}"
                                         BorderThickness="2"
-                                        CornerRadius="50 0 0 50">
+                                        CornerRadius="30 0 0 30">
                                         <ContentPresenter />
                                     </Border>
                                     <ControlTemplate.Triggers>
@@ -381,7 +379,7 @@
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
-                                            <Setter Property="FontSize" Value="20" />
+                                            <Setter Property="FontSize" Value="10" />
                                             <Setter Property="FontWeight" Value="Bold" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -389,20 +387,35 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
+
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel KeyDown="UIElement_OnKeyDown" Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Foreground="{DynamicResource SecondaryHueMidBrush}"
                                 Kind="Star" />
-                            <TextBlock Text="{Binding RemoteEndPoint}" />
+                            <StackPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding IpString}" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding MeterId}" />
+                            </StackPanel>
 
+
+                            <!-- <TextBlock VerticalAlignment="Center" Text="{Binding RemoteEndPoint}" /> -->
+                            <!--  <TextBlock VerticalAlignment="Center"  -->
+                            <!--  Text="{Binding RelativeSource={RelativeSource  Mode=FindAncestor ,AncestorType=ItemsControl},Path=DataContext.ListBoxExtend }" />  -->
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+
             </ListBox>
 
             <TabControl Grid.Row="1" Grid.Column="2">

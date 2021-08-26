@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
-using MyDlmsStandard.Wrapper;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Model;
-using 三相智慧能源网关调试软件.ViewModel;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 
 namespace 三相智慧能源网关调试软件
 {
+    /// <summary>
+    /// （适配器）处理12为表地址和8位表地址转换问题，为了兼容旧版本服务器，后续被舍弃
+    /// </summary>
     public class TcpTranslator : ValidateModelBase
     {
         public TcpServerHelper TcpListener { get; set; }

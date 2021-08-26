@@ -26,6 +26,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <Button
@@ -59,8 +60,9 @@
                                 Content="刷新任务状态"
                                 IsEnabled="{Binding IsSchedulerStarted}" />
                         </StackPanel>
+
                         <DataGrid
-                            Grid.Row="2"
+                            Grid.Row="3"
                             CanUserAddRows="False"
                             ItemsSource="{Binding JobMessages}">
                             <DataGrid.ItemTemplate>
@@ -112,7 +114,10 @@
                 </GroupBox>
                 <GroupBox Header="背光任务">
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="执行" Margin="10" Command="{Binding ActionCloseWarningCommand}" />
+                        <Button
+                            Margin="10"
+                            Command="{Binding ActionCloseWarningCommand}"
+                            Content="执行" />
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

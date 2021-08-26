@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 t.CompleteData = "";
                 t.Value = new DlmsDataItem();
-                var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
+                var getResponse = await Client.GetRequestAndWaitResponse(t.ValueAttributeDescriptor);
                 if (getResponse != null)
                 {
                     t.LastResult =
@@ -71,7 +71,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 t.CompleteData = "";
                 t.ScalarUnit = new ScalarUnit();
                 var scalarUnitResponse =
-                    await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
+                    await Client.GetRequestAndWaitResponse(t.ScalarUnitAttributeDescriptor);
                 if (scalarUnitResponse != null)
                 {
                     t.LastResult =
@@ -89,7 +89,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.CompleteData = "";
                     t.Value = new DlmsDataItem();
                     t.ScalarUnit = new ScalarUnit();
-                    var getResponse = await Client.GetRequestAndWaitResponse(t.GetValueAttributeDescriptor());
+                    var getResponse = await Client.GetRequestAndWaitResponse(t.ValueAttributeDescriptor);
 
                     if (getResponse != null)
                     {
@@ -102,7 +102,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         }
 
                         var scalarUnitResponse =
-                            await Client.GetRequestAndWaitResponse(t.GetScalar_UnitAttributeDescriptor());
+                            await Client.GetRequestAndWaitResponse(t.ScalarUnitAttributeDescriptor);
                         if (scalarUnitResponse != null)
                         {
                             t.LastResult =
@@ -124,7 +124,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             SetValueCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
             {
                 t.Value.UpdateValue();
-                var setResponse = await Client.SetRequestAndWaitResponse(t.GetValueAttributeDescriptor(), t.Value);
+                var setResponse = await Client.SetRequestAndWaitResponse(t.ValueAttributeDescriptor, t.Value);
                 if (setResponse != null)
                 {
                     t.LastResult =

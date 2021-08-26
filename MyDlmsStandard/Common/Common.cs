@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.Text;
 
 namespace MyDlmsStandard.Common
@@ -20,6 +21,7 @@ namespace MyDlmsStandard.Common
                 {
                     return null;
                 }
+
                 putStringData = putStringData.Replace(" ", "");
                 var outByteData = new byte[putStringData.Length / 2];
                 for (int i = 0, k = 0; i < putStringData.Length / 2; i++, k += 2)
@@ -36,7 +38,7 @@ namespace MyDlmsStandard.Common
         }
 
         ///  <summary>  
-        /// 字符串 转16进制字符串  
+        /// 普通常规字符串 转16进制字符串  
         ///  </summary>  
         ///  <param name="inString">unico </param>  
         ///  <returns>类似“01 0f” </returns>  
@@ -48,7 +50,8 @@ namespace MyDlmsStandard.Common
         ///  <summary>  
         /// 将指定字节数组转为16进制的字符串  
         ///  </summary>  
-        ///  <param name="inBytes"> 二进制字节 </param>  
+        ///  <param name="inBytes"> 二进制字节 </param>
+        ///  <param name="insertString">间隔中插入的字符串，默认不插入，一般情况可输入空格进行输出" "</param>
         ///  <returns>类似"01 02 0F" </returns>  
         public static string ByteToString(this byte[] inBytes, string insertString = "")
         {
@@ -57,6 +60,7 @@ namespace MyDlmsStandard.Common
             {
                 return "";
             }
+
             try
             {
                 foreach (byte inByte in inBytes)
@@ -83,8 +87,7 @@ namespace MyDlmsStandard.Common
         {
             if (inBytes == null)
             {
-                throw new Exception(@"不能将空数组转换为16进制字符串");
-               
+                throw new ArgumentException(@"不能将空数组转换为16进制字符串", nameof(inBytes));
             }
 
             string stringOut = "";
@@ -94,11 +97,6 @@ namespace MyDlmsStandard.Common
                 {
                     stringOut += inBytes[i].ToString("X2") + " ";
                 }
-
-                //                foreach (byte inByte in inBytes)
-                //                {
-                //                    stringOut = stringOut + $"{inByte:X2}" + " ";
-                //                }
             }
             catch (Exception e)
             {
@@ -107,7 +105,12 @@ namespace MyDlmsStandard.Common
 
             return stringOut.Trim();
         }
-
+        /// <summary>
+        /// 比较两个字节数组是否一一对应相等
+        /// </summary>
+        /// <param name="b1"></param>
+        /// <param name="b2"></param>
+        /// <returns></returns>
         public static bool ByteArraysEqual(byte[] b1, byte[] b2)
         {
             if (b1 == b2) return true;
@@ -117,6 +120,7 @@ namespace MyDlmsStandard.Common
             {
                 if (b1[i] != b2[i]) return false;
             }
+
             return true;
         }
     }

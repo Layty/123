@@ -248,7 +248,11 @@ namespace MyDlmsStandard.Common
 
             return stringBuilder.ToString();
         }
-
+        /// <summary>
+        /// 通过ObjectType 类型的到ClassId 对应的unsigned16
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         public static AxdrIntegerUnsigned16 GetClassIdByObjectType(ObjectType objectType)
         {
             return new AxdrIntegerUnsigned16(((ushort) objectType).ToString("X4"));

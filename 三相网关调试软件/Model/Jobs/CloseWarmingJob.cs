@@ -45,13 +45,13 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         await Task.Delay(2000);
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行读取告警捕获对象" + DataModel.LogicalName;
-                        await tempClient.GetRequestAndWaitResponse(DataModel.GetValueAttributeDescriptor());
+                        await tempClient.GetRequestAndWaitResponse(DataModel.ValueAttributeDescriptor);
                         await Task.Delay(2000);
                         //TODO 这里可加入对返回结果的判断逻辑
                         {
                             netLogViewModel.MyServerNetLogModel.Log =
                                 "正在执行清零操作";
-                            await tempClient.SetRequestAndWaitResponse(DataModel.GetValueAttributeDescriptor(),
+                            await tempClient.SetRequestAndWaitResponse(DataModel.ValueAttributeDescriptor,
                                 new DlmsDataItem(DataType.UInt32, "00000000"));
                             await Task.Delay(2000);
                         }

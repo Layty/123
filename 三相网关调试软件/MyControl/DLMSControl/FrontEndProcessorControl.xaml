@@ -234,7 +234,7 @@
                                 Height="80"
                                 Margin="5"
                                 materialDesign:HintAssist.Hint="自定义发送帧"
-                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                 Text="{Binding CurrentSendMsg}"
                                 TextWrapping="Wrap" />
 

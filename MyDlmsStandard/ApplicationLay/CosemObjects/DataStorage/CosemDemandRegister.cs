@@ -64,15 +64,15 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// </summary>
         public AxdrIntegerUnsigned32 Period
         {
-            get => _Period;
+            get => _period;
             set
             {
-                _Period = value;
+                _period = value;
                 OnPropertyChanged();
             }
         }
 
-        private AxdrIntegerUnsigned32 _Period;
+        private AxdrIntegerUnsigned32 _period;
 
         /// <summary>
         /// 用于计算last_average_value的周期数。
@@ -92,19 +92,19 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private AxdrIntegerUnsigned16 _numberOfPeriods;
 
-        public override CosemAttributeDescriptor GetScalar_UnitAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+        public override CosemAttributeDescriptor ScalarUnitAttributeDescriptor => GetCosemAttributeDescriptor(4);
 
-        public override CosemAttributeDescriptor GetStatusAttributeDescriptor() => GetCosemAttributeDescriptor(5);
+        public override CosemAttributeDescriptor StatusAttributeDescriptor => GetCosemAttributeDescriptor(5);
 
-        public override CosemAttributeDescriptor GetCaptureTimeAttributeDescriptor() => GetCosemAttributeDescriptor(6);
+        public override CosemAttributeDescriptor CaptureTimeAttributeDescriptor => GetCosemAttributeDescriptor(6);
 
-        public CosemAttributeDescriptor GetStartTimeCurrentAttributeDescriptor() => GetCosemAttributeDescriptor(7);
-        public CosemAttributeDescriptor GetPeriodAttributeDescriptor() => GetCosemAttributeDescriptor(8);
+        public CosemAttributeDescriptor StartTimeCurrentAttributeDescriptor => GetCosemAttributeDescriptor(7);
+        public CosemAttributeDescriptor PeriodAttributeDescriptor => GetCosemAttributeDescriptor(8);
 
-        public CosemAttributeDescriptor GetNumberOfPeriodsAttributeDescriptor() => GetCosemAttributeDescriptor(9);
+        public CosemAttributeDescriptor NumberOfPeriodsAttributeDescriptor => GetCosemAttributeDescriptor(9);
 
 
-        public CosemMethodDescriptor GetNextPeriodMethodDescriptor() => GetCosemMethodDescriptor(2);
+        public CosemMethodDescriptor NextPeriodMethodDescriptor => GetCosemMethodDescriptor(2);
 
         public CosemDemandRegister(string logicName) : base(logicName)
         {

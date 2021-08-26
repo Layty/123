@@ -30,8 +30,8 @@
         <Grid Grid.Row="1">
 
        
-        <TextBox VerticalScrollBarVisibility="Auto"  TextChanged="TextBoxBase_OnTextChanged" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
-            x:Name="TextBoxReceive" Text="{Binding XmlLog}" 
+        <TextBox VerticalScrollBarVisibility="Auto"  TextChanged="TextBoxBase_OnTextChanged" 
+            x:Name="TextBoxReceive" Text="{Binding XmlLog}"  Style="{StaticResource MaterialDesignOutlinedTextBox}"
             materialDesign:HintAssist.Hint="XmlLog" 
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                  TextWrapping="Wrap"   BorderThickness="2"  Margin="5"

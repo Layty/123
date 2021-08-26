@@ -1,0 +1,8 @@
+﻿ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'  
+cat /sys/class/net/eth0/address
+--ifconfig输出中提取MAC地址
+
+ifconfig |egrep '[1-9]+\.[1-9]+\.[0-9]+\.[0-9]+'|awk -F: '{print $2}' |cut -d " " -f1|sed -n '1p'
+--匹配IP
+
+ssh root@192.168.1.115

@@ -6,6 +6,9 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
+    /// <summary>
+    /// 通用表
+    /// </summary>
     public class CosemUtilityTables : CosemObject, IDlmsBase
     {
         public AxdrIntegerUnsigned16 TableId
@@ -120,9 +123,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         };
 
 
-        int IDlmsBase.GetAttributeCount() => 4;
+        int IDlmsBase.AttributeCount => 4;
 
-        int IDlmsBase.GetMethodCount() => 0;
+        int IDlmsBase.MethodCount => 0;
 
         DataType IDlmsBase.GetDataType(int attrIndex)
         {

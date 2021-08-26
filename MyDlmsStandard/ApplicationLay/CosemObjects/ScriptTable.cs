@@ -39,9 +39,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             };
         }
 
-        int IDlmsBase.GetAttributeCount() => 2;
+        int IDlmsBase.AttributeCount => 2;
 
-        int IDlmsBase.GetMethodCount() => 1;
+        int IDlmsBase.MethodCount => 1;
 
         DataType IDlmsBase.GetDataType(int index)
         {

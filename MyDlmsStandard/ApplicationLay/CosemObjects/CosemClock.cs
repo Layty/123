@@ -160,7 +160,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             this.DayOfWeek = (byte) dateTime.DayOfWeek;
         }
 
-        public bool DlmsClockParse(byte[] dateTimeBytes)
+        public  bool DlmsClockParse(byte[] dateTimeBytes)
         {
             bool result = false;
             try
@@ -329,11 +329,11 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
                 "Clock Base"
             };
 
-        public int GetAttributeCount() => 9;
+        public int AttributeCount => 9;
 
 
-        public int GetMethodCount() => 6;
-       
+        public int MethodCount => 6;
+
 
         public DataType GetDataType(int index)
         {

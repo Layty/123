@@ -4,18 +4,29 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.Wrapper
 {
+    /// <summary>
+    /// 47协议帧，由WrapperHeader+WrapperData组成
+    /// </summary>
     public class WrapperFrame : IToPduStringInHex, IPduStringInHexConstructor
     {
 
-        public WrapperHeader WrapperHeader;
+        /// <summary>
+        /// 帧头
+        /// </summary>
+        public WrapperHeader WrapperHeader { get; set; }
 
+        /// <summary>
+        /// 帧内容
+        /// </summary>
         public byte[] WrapperData { get; set; }
 
 
         public WrapperFrame()
         {
         }
-
+        /// <summary>
+        /// 翻转源地址和目的地址
+        /// </summary>
         public void OverturnDestinationSource()
         {
             var tt = WrapperHeader.DestAddress;
@@ -27,11 +38,11 @@ namespace MyDlmsStandard.Wrapper
         public string ToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();
-         
+
             if (WrapperHeader != null)
             {
-                WrapperHeader.Length=new AxdrIntegerUnsigned16(WrapperData.Length.ToString("X4"));
-             
+                WrapperHeader.Length = new AxdrIntegerUnsigned16(WrapperData.Length.ToString("X4"));
+
                 stringBuilder.Append(WrapperHeader.ToPduStringInHex());
             }
 
@@ -44,14 +55,14 @@ namespace MyDlmsStandard.Wrapper
         }
 
 
-
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             if (string.IsNullOrEmpty(pduStringInHex))
             {
                 return false;
             }
-            WrapperHeader=new WrapperHeader();
+
+            WrapperHeader = new WrapperHeader();
             if (!WrapperHeader.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;

@@ -2,11 +2,11 @@
 
 namespace MyDlmsStandard.Axdr
 {
-    public class AxdrInteger8 :  AxdrIntegerBase<sbyte>
+    public class AxdrInteger8 : AxdrIntegerBase<sbyte>
     {
-       public override int Length => 1;
+        public override int Length => 1;
 
-       public AxdrInteger8()
+        public AxdrInteger8()
         {
         }
 
@@ -41,8 +41,5 @@ namespace MyDlmsStandard.Axdr
 
             return Convert.ToSByte(Value, 16);
         }
-
-  
-
     }
 }

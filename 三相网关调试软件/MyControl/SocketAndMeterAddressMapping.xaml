@@ -28,13 +28,14 @@
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">
-            <ListBox Style="{StaticResource MaterialDesignCardsListBox}"
+            <ListBox
                 x:Name="ListBoxExtend"
                 materialDesign:HintAssist.Hint="客户端集合"
                 materialDesign:HintAssist.IsFloating="True"
                 BorderThickness="2"
                 DataContext="{Binding Source={StaticResource Locator}, Path=TcpServer}"
-                ItemsSource="{Binding ListBoxExtend}">
+                ItemsSource="{Binding MeterIdMatchSockets}"
+                Style="{StaticResource MaterialDesignCardsListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -71,7 +72,7 @@
                                     Margin="5"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Text="{Binding MeterAddress}" />
+                                    Text="{Binding MeterId}" />
                             </StackPanel>
 
                         </Grid>

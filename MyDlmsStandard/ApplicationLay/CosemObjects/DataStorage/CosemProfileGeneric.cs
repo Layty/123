@@ -13,7 +13,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// <summary>
         /// 曲线buffer,属性2
         /// </summary>
-        public List<DlmsStructure> Buffer
+        public ObservableCollection<DlmsStructure> Buffer
         {
             get => _buffer;
             set
@@ -23,7 +23,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             }
         }
 
-        private List<DlmsStructure> _buffer;
+        private ObservableCollection<DlmsStructure> _buffer;
 
         /// <summary>
         /// 捕获对象，属性3
@@ -122,7 +122,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
             ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor();
             ProfileGenericEntryDescriptor = new ProfileGenericEntryDescriptor();
-            Buffer = new List<DlmsStructure>();
+            Buffer = new ObservableCollection<DlmsStructure>();
         }
 
 
@@ -189,9 +189,9 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             };
         }
 
-        int IDlmsBase.GetAttributeCount() => 8;
+        int IDlmsBase.AttributeCount => 8;
 
-        int IDlmsBase.GetMethodCount() => 2;
+        int IDlmsBase.MethodCount => 2;
 
         public DataType GetDataType(int index)
         {
@@ -224,7 +224,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public virtual void Reset()
         {
             EntriesInUse.Value = "00000000";
-            Buffer = new List<DlmsStructure>();
+            Buffer = new ObservableCollection<DlmsStructure>();
             // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
 //            ActionExecute(1, dataItem);
         }

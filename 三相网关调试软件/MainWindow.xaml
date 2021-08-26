@@ -564,7 +564,7 @@
                             x:Name="Frame"
                             Content="{Binding CurrentPage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
-                            NavigationUIVisibility="Visible" />
+                            NavigationUIVisibility="Hidden" />
 
                     </materialDesign:Card>
 

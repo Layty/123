@@ -29,6 +29,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         private ObservableCollection<CustomCosemProfileGenericModel> _profileGenericCollection;
+
+        public CustomCosemProfileGenericModel CurrentCustomCosemProfileGenericModel
+        {
+            get => _CurrentCustomCosemProfileGenericModel;
+            set
+            {
+                _CurrentCustomCosemProfileGenericModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private CustomCosemProfileGenericModel _CurrentCustomCosemProfileGenericModel;
+
         public RelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> SetCaptureObjectsCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand { get; set; }
@@ -68,7 +81,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetCaptureObjectsAttributeDescriptor()
                 );
-                if (response != null)
+                if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                 {
                     if (response.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
@@ -118,7 +131,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(4));
-                if (response != null)
+                if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                 {
                     response.GetResponseNormal.Result.Data.UInt32ValueDisplayFormat =
                         UInt32ValueDisplayFormat.IntValue;
@@ -134,7 +147,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetEntriesInUseAttributeDescriptor());
-                if (response != null)
+                if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                 {
                     response.GetResponseNormal.Result.Data.UInt32ValueDisplayFormat =
                         UInt32ValueDisplayFormat.IntValue;
@@ -145,7 +158,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetProfileEntriesAttributeDescriptor());
-                if (response != null)
+                if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                 {
                     t.ProfileEntries.Value = response.GetResponseNormal.Result.Data.ValueString;
                 }
@@ -154,7 +167,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetSortMethodAttributeDescriptor());
-                if (response != null)
+                if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                     t.SortMethod = (SortMethod) ushort.Parse(response.GetResponseNormal.Result.Data.ValueString);
             });
 
@@ -176,6 +189,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetBufferByEntryCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
+
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry());
                 StringBuilder stringBuilder = new StringBuilder();
@@ -188,7 +202,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (ttttt.DataType == DataType.Array)
                         {
                             DLMSArray array = ttttt;
-                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
                             foreach (var item in array.Items)
                             {
                                 structures.Add((DlmsStructure) item.Value);
@@ -216,11 +230,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (vDataItem.DataType == DataType.Array)
                         {
                             DLMSArray array = (DLMSArray) vDataItem.Value;
-                            List<DlmsStructure> structures = new List<DlmsStructure>();
-                            foreach (var item in array.Items)
+                            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
+
+
+                            foreach (var dlmsDataItem in array.Items)
                             {
-                                structures.Add((DlmsStructure) item.Value);
+                                structures.Add((DlmsStructure) dlmsDataItem.Value);
                             }
+
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
                         }
@@ -234,6 +251,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetBufferByClockCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
+
                 t.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
                 {
                     RestrictingObject = new CaptureObjectDefinition()
@@ -259,10 +277,22 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (ttttt.DataType == DataType.Array)
                         {
                             DLMSArray array = ttttt;
-                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
+
                             foreach (var item in array.Items)
                             {
                                 structures.Add((DlmsStructure) item.Value);
+                            }
+
+                            if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
+                            {
+                                foreach (var dlmsStructure in structures)
+                                {
+                                    for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                                    {
+                                        dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
+                                    }
+                                }
                             }
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
@@ -287,20 +317,33 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (vDataItem.DataType == DataType.Array)
                         {
                             DLMSArray array = (DLMSArray) vDataItem.Value;
-                            List<DlmsStructure> structures = new List<DlmsStructure>();
+                            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
+
                             foreach (var item in array.Items)
                             {
                                 structures.Add((DlmsStructure) item.Value);
                             }
 
+                            if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
+                            {
+                                foreach (var dlmsStructure in structures)
+                                {
+                                    for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                                    {
+                                        dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
+                                    }
+                                }
+                            }
+
+
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
                         }
                     }
-
-
-                    ;
                 }
             });
+            ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>((t) => { t.Buffer.Clear(); });
         }
+
+        public RelayCommand<CustomCosemProfileGenericModel> ClearBufferCommand { get; set; }
     }
 }
