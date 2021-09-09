@@ -45,7 +45,7 @@ namespace MyDlmsStandard.ApplicationLay
     {
         public DataType DataType { get; } = DataType.Structure;
         public DlmsDataItem[] Items { get; set; }
-        [XmlIgnore] public string[] ItemsNames { get; set; }
+      
         public DlmsStructure()
         {
         }

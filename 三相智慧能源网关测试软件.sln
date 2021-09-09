@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTestTcpServer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{E83BBF5C-4010-4F90-8319-52610D97238E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppBluetooth", "WpfAppBluetooth\WpfAppBluetooth.csproj", "{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,18 @@ Global
 		{E83BBF5C-4010-4F90-8319-52610D97238E}.Release|x64.Build.0 = Release|Any CPU
 		{E83BBF5C-4010-4F90-8319-52610D97238E}.Release|x86.ActiveCfg = Release|Any CPU
 		{E83BBF5C-4010-4F90-8319-52610D97238E}.Release|x86.Build.0 = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x64.Build.0 = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

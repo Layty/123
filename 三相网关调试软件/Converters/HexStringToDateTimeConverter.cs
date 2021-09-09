@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using 三相智慧能源网关调试软件.Common;
 
@@ -9,8 +10,15 @@ namespace 三相智慧能源网关调试软件.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var t = value as DlmsDataItem;
+            if (t?.ValueName != "Clock  time")
+            {
+                return t?.ValueString;
+            }
+
+
             var clock = new CosemClock();
-            string str = value.ToString();
+            string str = t.ValueString.ToString();
             try
             {
                 var b = clock.DlmsClockParse(str.StringToByte());
@@ -23,6 +31,7 @@ namespace 三相智慧能源网关调试软件.Converters
             {
                 Console.WriteLine(e);
             }
+
             return value;
         }
     }

@@ -607,7 +607,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     async t =>
                     {
                         t.DataForShow = "";
-                        var getResponse = await Client.GetRequestAndWaitResponse(t.GetLogicNameAttributeDescriptor());
+                        var getResponse = await Client.GetRequestAndWaitResponse(t.LogicNameAttributeDescriptor);
                         if (getResponse != null)
                         {
                             if (getResponse.GetResponseNormal.Result.DataAccessResult.Value == "00")
@@ -626,7 +626,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 GetMeterAddressData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var response = await Client.GetRequestAndWaitResponse(t.GetTableIdAttributeDescriptor());
+                        var response = await Client.GetRequestAndWaitResponse(t.TableIdAttributeDescriptor);
                         if (response != null)
                         {
                             if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")
@@ -640,7 +640,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 GetDataLengthData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var response = await Client.GetRequestAndWaitResponse(t.GetLengthAttributeDescriptor());
+                        var response = await Client.GetRequestAndWaitResponse(t.LengthAttributeDescriptor);
                         if (response != null)
                         {
                             if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")
@@ -654,7 +654,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 GetBuffData = new RelayCommand<CustomCosemUtilityTablesModel>(async t =>
                     {
                         t.DataForShow = "";
-                        var response = await Client.GetRequestAndWaitResponse(t.GetBufferAttributeDescriptor());
+                        var response = await Client.GetRequestAndWaitResponse(t.BufferAttributeDescriptor);
                         if (response != null)
                         {
                             if (response.GetResponseNormal.Result.DataAccessResult.Value == "00")

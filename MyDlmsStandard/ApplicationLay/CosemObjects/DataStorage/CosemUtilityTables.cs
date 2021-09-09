@@ -63,21 +63,21 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             LogicalName = logicName;
         }
 
-        public CosemAttributeDescriptor GetLogicNameAttributeDescriptor() => GetCosemAttributeDescriptor(1);
-        public CosemAttributeDescriptor GetTableIdAttributeDescriptor() => GetCosemAttributeDescriptor(2);
-        public CosemAttributeDescriptor GetLengthAttributeDescriptor() => GetCosemAttributeDescriptor(3);
-        public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+        public CosemAttributeDescriptor LogicNameAttributeDescriptor => GetCosemAttributeDescriptor(1);
+        public CosemAttributeDescriptor TableIdAttributeDescriptor => GetCosemAttributeDescriptor(2);
+        public CosemAttributeDescriptor LengthAttributeDescriptor => GetCosemAttributeDescriptor(3);
+        public CosemAttributeDescriptor BufferAttributeDescriptor => GetCosemAttributeDescriptor(4);
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByOffsetAccess()
         {
-            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
                     CosemUtilityTablesBufferOffsetSelector.ToDlmsDataItem()));
         }
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByIndexAccess()
         {
-            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                     CosemUtilityTablesBufferIndexSelector.ToDlmsDataItem()));
         }

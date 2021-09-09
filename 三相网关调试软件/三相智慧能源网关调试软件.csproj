@@ -199,6 +199,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Windows">
+      <HintPath>.\Windows.WinMD</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -431,6 +434,9 @@
     <Compile Include="View\Win10NotifyMessage.xaml.cs">
       <DependentUpon>Win10NotifyMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window3dTest.xaml.cs">
+      <DependentUpon>Window3dTest.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -634,6 +640,10 @@
     <Page Include="View\Win10NotifyMessage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window3dTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

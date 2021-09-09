@@ -9,29 +9,22 @@ namespace MyDlmsStandard.ApplicationLay.Get
     {
         [XmlIgnore] public GetRequestType GetRequestType { get; } = GetRequestType.Normal;
 
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
-            = new AxdrIntegerUnsigned8("C1");
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; } = new AxdrIntegerUnsigned8("C1");
 
         public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor AccessSelection { get; set; }
         public CosemAttributeDescriptorWithSelection AttributeDescriptorWithSelection { get; set; }
-
+        
         public GetRequestNormal()
         {
+            
         }
-
         public GetRequestNormal(CosemAttributeDescriptor attributeDescriptor)
         {
             AttributeDescriptor = attributeDescriptor;
         }
 
 
-        public GetRequestNormal(CosemAttributeDescriptor attributeDescriptor,
-            SelectiveAccessDescriptor accessSelection)
-        {
-            AttributeDescriptor = attributeDescriptor;
-            AccessSelection = accessSelection;
-        }
 
         public GetRequestNormal(CosemAttributeDescriptorWithSelection attributeDescriptorWithSelection)
         {

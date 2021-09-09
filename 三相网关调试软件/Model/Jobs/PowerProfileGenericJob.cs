@@ -41,7 +41,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 }
             };
         }
-
+        public List<Power> Powers { get; set; }
         public override async Task Execute(IJobExecutionContext context)
         {
             await base.Execute(context);

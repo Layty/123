@@ -109,7 +109,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 };
                 var dlmsData = new DlmsDataItem(DataType.UInt32, cosem.CapturePeriod.Value);
 
-                await Client.SetRequestAndWaitResponse(cosem.GetCapturePeriodAttributeDescriptor(), dlmsData);
+                await Client.SetRequestAndWaitResponse(cosem.CapturePeriodAttributeDescriptor, dlmsData);
             });
             ClearAllCommand = new RelayCommand(async () =>
             {

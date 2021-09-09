@@ -64,14 +64,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             LoginCommand = new RelayCommand(() =>
             {
-#if DEBUG
+#if !DEBUG
    LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                     LoginModel.LoginResult = true;
                     StrongReferenceMessenger.Default.Send("ni hao ya da shuai bi", "Snackbar");
                     LoginModel.Report = "登录成功";
-#else
+# else
                 LoginWebApi();
-#endif
+# endif
 
 
 

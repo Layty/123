@@ -15,10 +15,11 @@ namespace MyWebApi.Controllers
         {
             _dbContext = dbContext;
         }
+
         [HttpPost]
         public async Task<IActionResult> UserLogin(string userName, string password)
         {
-            var result= await _dbContext.Login(userName, password);
+            var result = await _dbContext.Login(userName, password);
             if (result)
             {
                 Console.WriteLine($"{DateTime.Now} {userName} 登录成功");

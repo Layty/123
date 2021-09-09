@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -46,7 +45,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private AxdrIntegerUnsigned32 _capturePeriod = new AxdrIntegerUnsigned32();
 
-        //5
+  
         /// <summary>
         /// 排序方法，属性5，DefaultValue=SortMethod.FiFo
         /// </summary>
@@ -117,9 +116,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         {
             LogicalName = logicalName;
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ProfileGeneric);
-
             SortMethod = SortMethod.FiFo;
-
             ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor();
             ProfileGenericEntryDescriptor = new ProfileGenericEntryDescriptor();
             Buffer = new ObservableCollection<DlmsStructure>();
@@ -128,51 +125,51 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor
         {
-            get => _ProfileGenericRangeDescriptor;
-            set { _ProfileGenericRangeDescriptor = value; OnPropertyChanged(); }
+            get => _profileGenericRangeDescriptor;
+            set { _profileGenericRangeDescriptor = value; OnPropertyChanged(); }
         }
-        private ProfileGenericRangeDescriptor _ProfileGenericRangeDescriptor;
+        private ProfileGenericRangeDescriptor _profileGenericRangeDescriptor;
 
 
         public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor
         {
-            get => _ProfileGenericEntryDescriptor;
-            set { _ProfileGenericEntryDescriptor = value; OnPropertyChanged(); }
+            get => _profileGenericEntryDescriptor;
+            set { _profileGenericEntryDescriptor = value; OnPropertyChanged(); }
         }
-        private ProfileGenericEntryDescriptor _ProfileGenericEntryDescriptor;
+        private ProfileGenericEntryDescriptor _profileGenericEntryDescriptor;
 
      
 
-        public CosemAttributeDescriptor GetBufferAttributeDescriptor() => GetCosemAttributeDescriptor(2);
+        public CosemAttributeDescriptor BufferAttributeDescriptor => GetCosemAttributeDescriptor(2);
 
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()
         {
-            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
                     ProfileGenericRangeDescriptor.ToDlmsDataItem()));
         }
 
         public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
         {
-            return new CosemAttributeDescriptorWithSelection(GetBufferAttributeDescriptor(),
+            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                     ProfileGenericEntryDescriptor.ToDlmsDataItem()));
         }
 
-        public CosemAttributeDescriptor GetCaptureObjectsAttributeDescriptor() => GetCosemAttributeDescriptor(3);
+        public CosemAttributeDescriptor CaptureObjectsAttributeDescriptor => GetCosemAttributeDescriptor(3);
 
-        public CosemAttributeDescriptor GetCapturePeriodAttributeDescriptor() => GetCosemAttributeDescriptor(4);
+        public CosemAttributeDescriptor CapturePeriodAttributeDescriptor => GetCosemAttributeDescriptor(4);
 
-        public CosemAttributeDescriptor GetSortMethodAttributeDescriptor() => GetCosemAttributeDescriptor(5);
+        public CosemAttributeDescriptor SortMethodAttributeDescriptor => GetCosemAttributeDescriptor(5);
 
-        public CosemAttributeDescriptor GetEntriesInUseAttributeDescriptor() => GetCosemAttributeDescriptor(7);
+        public CosemAttributeDescriptor EntriesInUseAttributeDescriptor => GetCosemAttributeDescriptor(7);
 
-        public CosemAttributeDescriptor GetProfileEntriesAttributeDescriptor() => GetCosemAttributeDescriptor(8);
+        public CosemAttributeDescriptor ProfileEntriesAttributeDescriptor => GetCosemAttributeDescriptor(8);
 
 
-        public CosemMethodDescriptor GetResetMethodDescriptor() => GetCosemMethodDescriptor(1);
-        public CosemMethodDescriptor GetCaptureMethodDescriptor() => GetCosemMethodDescriptor(2);
+        public CosemMethodDescriptor ResetMethodDescriptor => GetCosemMethodDescriptor(1);
+        public CosemMethodDescriptor CaptureMethodDescriptor => GetCosemMethodDescriptor(2);
 
         string[] IDlmsBase.GetNames()
         {

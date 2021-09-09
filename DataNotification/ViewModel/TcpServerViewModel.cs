@@ -289,10 +289,6 @@ namespace DataNotification.ViewModel
                         }
                     }
                 }
-                else
-                {
-                    return;
-                }
             }
             catch (Exception e)
             {

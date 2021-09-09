@@ -36,23 +36,9 @@ namespace MyDlmsStandard.ApplicationLay.DataNotification
             }
 
             NotificationBody = new NotificationBody();
+
+
             if (!NotificationBody.PduStringInHexConstructor(ref pduStringInHex))
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    public class NotificationBody : IPduStringInHexConstructor
-    {
-        public DlmsDataItem DataValue { get; set; }
-
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
-        {
-            DataValue = new DlmsDataItem();
-            if (!DataValue.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }

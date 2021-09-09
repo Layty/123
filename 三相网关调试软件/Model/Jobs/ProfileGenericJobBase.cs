@@ -38,13 +38,15 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
         private CustomCosemProfileGenericModel _customCosemProfileGenericModel;
 
-        public List<Energy> Energy { get; set; }
-        public List<Power> Powers { get; set; }
+
         public List<GetResponse> Responses { get; set; }
         public GetResponse CaptureObjects { get; set; }
 
-        public Dictionary<Socket, GetResponse> CaptureObjectsResponsesBindingSocket { get; set; }=new Dictionary<Socket, GetResponse>();
-        public Dictionary<Socket, List<GetResponse>> DataBufferResponsesBindingSocket { get; set; }=new Dictionary<Socket, List<GetResponse>>();
+        public Dictionary<Socket, GetResponse> CaptureObjectsResponsesBindingSocket { get; set; } =
+            new Dictionary<Socket, GetResponse>();
+
+        public Dictionary<Socket, List<GetResponse>> DataBufferResponsesBindingSocket { get; set; } =
+            new Dictionary<Socket, List<GetResponse>>();
 
         public virtual async Task Execute(IJobExecutionContext context)
         {
@@ -87,8 +89,9 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         await Task.Delay(2000);
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行读取曲线捕获对象\r\n";
                         CaptureObjects = new GetResponse();
-                        CaptureObjects = await tempClient.GetRequestAndWaitResponse(CustomCosemProfileGenericModel
-                            .GetCaptureObjectsAttributeDescriptor());
+                        CaptureObjects =
+                            await tempClient.GetRequestAndWaitResponse(CustomCosemProfileGenericModel
+                                .CaptureObjectsAttributeDescriptor);
                         if (CaptureObjects.GetResponseNormal?.Result.Data.Value != null)
                         {
                             NetLogViewModel.MyServerNetLogModel.Log = "读取曲线捕获对象成功\r\n";
@@ -105,7 +108,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         Responses = new List<GetResponse>();
                         Responses = await tempClient.GetRequestAndWaitResponseArray(CustomCosemProfileGenericModel
                             .GetBufferAttributeDescriptorWithSelectionByRange());
-                        if (Responses!=null)
+                        if (Responses != null)
                         {
                             NetLogViewModel.MyServerNetLogModel.Log = "读取曲线Buffer成功\r\n";
                             DataBufferResponsesBindingSocket.Add(so, Responses);
@@ -115,7 +118,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                             NetLogViewModel.MyServerNetLogModel.Log = "读取曲线Buffer失败\r\n";
                             return;
                         }
-                       
+
                         await Task.Delay(2000);
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行释放请求\r\n";
                         await tempClient.ReleaseRequest(true);

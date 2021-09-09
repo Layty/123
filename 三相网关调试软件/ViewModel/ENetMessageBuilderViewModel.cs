@@ -7,6 +7,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Newtonsoft.Json;
+using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -84,6 +85,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             ENetMessageMaker = new ENetMessageBuilder(ENetEventType.SortVersion);
             ItemsCollection = new ObservableCollection<object>();
+            ResultStr.StringToByte();
             StrongReferenceMessenger.Default.Register<byte[],string>(this, "ENetReceiveDataEvent", (sender,args) =>
             {
                 var base64 = Convert.FromBase64String(Encoding.Default.GetString(args));

@@ -1,4 +1,5 @@
 ﻿using System;
+using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 
@@ -43,9 +44,9 @@ namespace 三相智慧能源网关调试软件.Model
             {
                 return "";
             }
-            
+
             var index = Convert.ToSByte(ScalarUnit.Scalar.Value.ToString(), 16);
-            var value = Convert.ToUInt32(Value.Value.ToString(), 16);
+
             double point = 1;
             switch (index)
             {
@@ -79,7 +80,21 @@ namespace 三相智慧能源网关调试软件.Model
                     ;
             }
 
-            CompleteData = (value * point) + ScalarUnit.UnitDisplay;
+            if (Value.DataType == DataType.Array)
+            {
+                //修复当网关温湿度为array类时,可以解析格式化输出
+                var arry = (DLMSArray) Value.Value;
+                foreach (var item in arry.Items)
+                {
+                    CompleteData += (Convert.ToUInt32(item.Value.ToString(), 16) * point) + ScalarUnit.UnitDisplay+"\r\n";
+                }
+            }
+            else
+            {
+                var value = Convert.ToUInt32(Value.Value.ToString(), 16);
+                CompleteData = (value * point) + ScalarUnit.UnitDisplay;
+            }
+
             return CompleteData;
         }
 

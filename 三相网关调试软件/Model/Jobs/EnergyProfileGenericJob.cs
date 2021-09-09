@@ -17,11 +17,25 @@ using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
+    public interface IWebApi
+    {
+        string BaseUriString { get; set; }
+        string MeterId { get; set; }
+        RestClient RestClient { get; set; }
+        RestRequest RestRequest { get; set; }
+        void InsertData();
+    }
+
     /// <summary>
     /// 1分钟电量曲线任务
     /// </summary>
-    public class EnergyProfileGenericJob : ProfileGenericJobBase
+    public class EnergyProfileGenericJob : ProfileGenericJobBase, IWebApi
     {
+        public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/EnergyData/";
+        public string MeterId { get; set; }
+        public RestClient RestClient { get; set; } = new RestClient();
+        public RestRequest RestRequest { get; set; }
+
         public EnergyProfileGenericJob()
         {
             JobName = "1分钟电量曲线任务";
@@ -45,20 +59,11 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
         public override async Task Execute(IJobExecutionContext context)
         {
             await base.Execute(context);
-            var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
 
-            var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
-                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
             //遍历列表
             await Task.Run(() =>
             {
-                var client =
-                    new RestClient($"{Properties.Settings.Default.WebApiUrl}/Meter/EnergyData/{t.MeterId}");
-                var request = new RestRequest(Method.POST);
-
-                request.AddHeader("Content-Type", "application/json");
-
-                if (base.CaptureObjects != null)
+                if (CaptureObjects != null)
                 {
                     if (CaptureObjects.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
@@ -72,7 +77,6 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
                 Energy = new List<Energy>();
                 StringBuilder stringBuilder = new StringBuilder();
-
                 var responses = Responses;
                 if (responses != null)
                 {
@@ -134,20 +138,44 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                                 {
                                     EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
                                     Id = Guid.NewGuid(),
-                                    MeterId = t.MeterId,
                                     DateTime = clock.ToDateTime()
                                 });
                             }
                         }
                     }
                 }
-                //TODO: 有个bug,当无客户端时也会提示插入数据库成功
-                var str = JsonConvert.SerializeObject(Energy);
-                request.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
-                IRestResponse restResponse = client.Execute(request);
-               
-                NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");
+
+
+                InsertData();
             });
+        }
+
+        public List<Energy> Energy { get; set; }
+
+        public void InsertData()
+        {
+            var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
+            var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
+                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
+            if (t == null)
+            {
+                NetLogViewModel.MyServerNetLogModel.Log = "未找到相应表号,不调用API写数据库";
+                return;
+            }
+
+            if (Energy.Count == 0)
+            {
+                NetLogViewModel.MyServerNetLogModel.Log = "电能数据返回个数为0,不调用API写数据库";
+                return;
+            }
+
+            RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
+            RestRequest = new RestRequest(Method.POST);
+            RestRequest.AddHeader("Content-Type", "application/json");
+            var str = JsonConvert.SerializeObject(Energy);
+            RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
+            IRestResponse restResponse = RestClient.Execute(RestRequest);
+            NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");
         }
     }
 }

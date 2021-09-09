@@ -179,11 +179,78 @@
                 <TabItem Header="DataBuffer">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="100" />
                             <RowDefinition />
+
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
+                        <Button
+                            Grid.Row="0"
+                            Margin="5,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ClearBufferCommand, Mode=TwoWay}"
+                            CommandParameter="{Binding}"
+                            Content="ClearDataBuffer" />
+                        <Grid Grid.Row="1">
                             <TabControl>
+                                <TabItem Header="GetByClock">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
+                                            <DatePicker
+                                                Name="DatePickerFrom"
+                                                Margin="5"
+                                                materialDesign:HintAssist.Hint="Pick Date From"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                FontSize="20"
+                                                SelectedDate="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                SelectedDateFormat="Long"
+                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                                            <materialDesign:TimePicker
+                                                Name="TimePickerFrom"
+                                                Margin="5"
+                                                materialDesign:HintAssist.Hint="Pick Time From"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                FontSize="20"
+                                                Is24Hours="True"
+                                                IsInvalidTextAllowed="False"
+                                                SelectedTime="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                WithSeconds="True" />
+                                        </StackPanel>
+                                        <StackPanel Margin="5" Orientation="Horizontal">
+                                            <DatePicker
+                                                Name="DatePickerTo"
+                                                Margin="5"
+                                                materialDesign:HintAssist.Hint="Pick Date To"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                FontSize="20"
+                                                SelectedDate="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                SelectedDateFormat="Long"
+                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                                            <materialDesign:TimePicker
+                                                Name="TimePickerTo"
+                                                Margin="5"
+                                                materialDesign:HintAssist.Hint="Pick Time To"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                FontSize="20"
+                                                Is24Hours="True"
+                                                IsInvalidTextAllowed="False"
+                                                SelectedTime="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                SelectedTimeFormat="Long"
+                                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                                WithSeconds="True" />
+                                        </StackPanel>
+
+                                        <Button
+                                            Margin="5,0"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetBufferByClockCommand, Mode=TwoWay}"
+                                            CommandParameter="{Binding}"
+                                            Content="GetByClock" />
+
+                                    </StackPanel>
+                                </TabItem>
                                 <TabItem Header="GetByEntry">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.Resources>
@@ -216,106 +283,54 @@
                                             Content="GetByEntry" />
                                     </StackPanel>
                                 </TabItem>
-                                <TabItem Header="GetByClock">
-                                    <StackPanel Orientation="Horizontal">
-
-                                        <StackPanel Orientation="Horizontal">
-                                            <DatePicker
-                                                Name="DatePickerFrom"
-                                                Margin="5"
-                                                materialDesign:HintAssist.Hint="Pick Date From"
-                                                materialDesign:HintAssist.IsFloating="True"
-                                                SelectedDate="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                SelectedDateFormat="Long"
-                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-
-                                            <materialDesign:TimePicker
-                                                Name="TimePickerFrom"
-                                                Margin="5"
-                                                materialDesign:HintAssist.Hint="Pick Time From"
-                                                materialDesign:HintAssist.IsFloating="True"
-                                                Is24Hours="True"
-                                                IsInvalidTextAllowed="False"
-                                                SelectedTime="{Binding FromDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                                WithSeconds="True" />
-                                        </StackPanel>
-                                        <StackPanel Margin="5" Orientation="Horizontal">
-                                            <DatePicker
-                                                Name="DatePickerTo"
-                                                Margin="5"
-                                                materialDesign:HintAssist.Hint="Pick Date To"
-                                                materialDesign:HintAssist.IsFloating="True"
-                                                SelectedDate="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                SelectedDateFormat="Long"
-                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-
-                                            <materialDesign:TimePicker
-                                                Name="TimePickerTo"
-                                                Margin="5"
-                                                materialDesign:HintAssist.Hint="Pick Time To"
-                                                materialDesign:HintAssist.IsFloating="True"
-                                                Is24Hours="True"
-                                                IsInvalidTextAllowed="False"
-                                                SelectedTime="{Binding ToDateTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                SelectedTimeFormat="Long"
-                                                Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                                WithSeconds="True" />
-                                        </StackPanel>
-
-                                        <Button
-                                            Margin="5,0"
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetBufferByClockCommand, Mode=TwoWay}"
-                                            CommandParameter="{Binding}"
-                                            Content="GetByClock" />
-                                        <Button
-                                            Margin="5,0"
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ClearBufferCommand, Mode=TwoWay}"
-                                            CommandParameter="{Binding}"
-                                            Content="Clear" />
-                                    </StackPanel>
-                                </TabItem>
                             </TabControl>
 
 
                         </Grid>
 
-                        <ScrollViewer
-                            Grid.Row="1"
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Auto">
-                            <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding Buffer}">
+                        <ItemsControl
+                            Grid.Row="2"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Buffer}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{StaticResource AttentionToActionBrush}" BorderThickness="2">
+                                                    <StackPanel>
+                                                        <TextBlock
+                                                            Width="{Binding ElementName=TextBlock, Path=Width}"
+                                                            Margin="5,0"
+                                                            FontSize="8"
+                                                            Text="{Binding ValueName}" />
+                                                        <TextBlock
+                                                            x:Name="TextBlock"
+                                                            MinWidth="70"
+                                                            Margin="5,0"
+                                                            Text="{Binding Converter={StaticResource HexStringToDateTimeConverter}}" />
 
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <ItemsControl ItemsSource="{Binding Items}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <VirtualizingStackPanel Orientation="Horizontal" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBox
-                                                        MinWidth="70"
-                                                        Margin="5,0"
-                                                        materialDesign:HintAssist.Hint="{Binding ValueName}"
-                                                        materialDesign:HintAssist.IsFloating="True"
-                                                        Text="{Binding ValueString, Converter={StaticResource HexStringToDateTimeConverter}}" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
 
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
 
                     </Grid>
 
