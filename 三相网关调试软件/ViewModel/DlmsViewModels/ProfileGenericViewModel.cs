@@ -78,7 +78,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
 
 
-            GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+                (t) =>
             {
                 var responses = await Client.GetRequestAndWaitResponseArray(t.CaptureObjectsAttributeDescriptor
                 );
@@ -202,7 +203,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 //                    }
                 }
             });
-            SetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            SetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+                (t) =>
             {
                 List<DlmsDataItem> dataItems = new List<DlmsDataItem>();
 
@@ -226,7 +228,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.CapturePeriod.Value = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            SetCapturePeriodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            SetCapturePeriodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+                (t) =>
             {
                 await Client.SetRequestAndWaitResponse(t.CapturePeriodAttributeDescriptor,
                     new DlmsDataItem(DataType.UInt32, t.CapturePeriod.Value));
@@ -267,7 +270,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     return;
                 }
 
-                var response = await Client.GetRequestAndWaitResponse(t.BufferAttributeDescriptor);
+                var response = await Client.GetRequestAndWaitResponseArray(t.BufferAttributeDescriptor);
+                ParseBuffer(response, t);
             });
             GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
@@ -277,28 +281,33 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetBufferByEntryCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
-
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry());
-
                 ParseBuffer(response, t);
             });
 
             GetBufferByClockCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
+//                t.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
+//                {
+//                    RestrictingObject = new CaptureObjectDefinition()
+//                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
+//                    FromValue = new DlmsDataItem(DataType.OctetString,
+//                        new CosemClock(t.FromDateTime).GetDateTimeBytes()
+//                            .ByteToString()),
+//                    ToValue = new DlmsDataItem(DataType.OctetString,
+//                        new CosemClock(t.ToDateTime).GetDateTimeBytes().ByteToString()),
+//                    SelectedValues = new List<CaptureObjectDefinition>()
+//                };
+                t.ProfileGenericRangeDescriptor.FromValue = new DlmsDataItem(DataType.OctetString,
+                    new CosemClock(t.FromDateTime).GetDateTimeBytes()
+                        .ByteToString());
+                t.ProfileGenericRangeDescriptor.ToValue = new DlmsDataItem(DataType.OctetString,
+                    new CosemClock(t.ToDateTime).GetDateTimeBytes()
+                        .ByteToString());
+                t.ProfileGenericRangeDescriptor.SelectedValues = new List<CaptureObjectDefinition>();
 
-                t.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
-                {
-                    RestrictingObject = new CaptureObjectDefinition()
-                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
-                    FromValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(t.FromDateTime).GetDateTimeBytes()
-                            .ByteToString()),
-                    ToValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(t.ToDateTime).GetDateTimeBytes().ByteToString()),
-                    SelectedValues = new List<CaptureObjectDefinition>()
-                };
                 Console.WriteLine(t.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange());

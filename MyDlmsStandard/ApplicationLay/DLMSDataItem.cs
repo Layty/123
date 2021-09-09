@@ -158,8 +158,13 @@ namespace MyDlmsStandard.ApplicationLay
         public string ValueName
         {
             get => _valueName;
-            set { _valueName = value; OnPropertyChanged(); }
+            set
+            {
+                _valueName = value;
+                OnPropertyChanged();
+            }
         }
+
         private string _valueName;
 
         public DlmsDataItem()

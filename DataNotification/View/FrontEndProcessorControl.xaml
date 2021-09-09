@@ -118,7 +118,7 @@
                                 <!--         </DataTemplate> -->
                                 <!--     </ListBox.ItemTemplate> -->
                                 <!-- </ListBox> -->
-                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
                                     <TextBlock Margin="5" Text="当前总链接数" />
                                     <TextBlock Margin="5" Text="{Binding TcpServerHelper.SocketClientList.Count}" />
                                     <TextBlock Margin="5" Text="历史识别总数" />

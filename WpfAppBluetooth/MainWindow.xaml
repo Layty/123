@@ -37,9 +37,11 @@
                 Command="{Binding StopCommand}"
                 Content="Stop" />
         </StackPanel>
-        <GroupBox Grid.Row="1" Header="BluetoothLeDevices">
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Header="BluetoothLeDevices">
             <DataGrid
-                Grid.Row="1"
                 AutoGenerateColumns="True"
                 CanUserAddRows="False"
                 ItemsSource="{Binding BluetoothLeDevices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -78,21 +80,29 @@
                 x:Name="Services"
                 AutoGenerateColumns="True"
                 CanUserAddRows="False"
-                ItemsSource="{Binding GattDeviceServices, Mode=OneWay}">
+                ItemsSource="{Binding GattDeviceServices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                            
-                                <Button
-                                    Margin="5"
-                                    Command="{Binding RelativeSource={RelativeSource FindAncestor ,AncestorLevel=1, AncestorType={x:Type DataGrid}}, Path=DataContext.FindGattCharacteristicsCommand, Mode=OneTime}"
-                                    CommandParameter="{Binding}"
-                                    Content="FindGattCharacteristics" />
+                                <StackPanel>
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.FindGattCharacteristicsCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="FindGattCharacteristics" />
+                                </StackPanel>
+
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding DeviceId}" />
                 </DataGrid.Columns>
+                <DataGrid.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </DataGrid.ItemsPanel>
             </DataGrid>
         </GroupBox>
         <GroupBox

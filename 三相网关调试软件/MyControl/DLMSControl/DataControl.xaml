@@ -94,13 +94,13 @@
 
                 <DataGridTextColumn
                     Width="100"
-                    Binding="{Binding LastResult}"
+                    Binding="{Binding LastResult, Mode=OneWay}"
                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                     ElementStyle="{StaticResource CenterAlignmentStyle}"
                     Header="Result" />
 
                 <DataGridTextColumn
-                    Binding="{Binding Value.DataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Binding="{Binding Value.DataType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                     ElementStyle="{StaticResource CenterAlignmentStyle}"
                     Header="DataType" />

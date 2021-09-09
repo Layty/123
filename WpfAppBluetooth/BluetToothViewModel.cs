@@ -86,7 +86,7 @@ namespace WpfAppBluetooth
         {
 //            Process.Start("ms-settings:bluetooth");
             BluetoothLeDevices = new ObservableCollection<BluetoothLEDevice>();
-          
+
             ConnectCommand = new RelayCommand<BluetoothLEDevice>(async (t) =>
             {
                 if (t.ConnectionStatus == BluetoothConnectionStatus.Connected)
@@ -148,12 +148,9 @@ namespace WpfAppBluetooth
             {
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
-                    GattCharacteristics.Clear();
+                    GattCharacteristics = new ObservableCollection<GattCharacteristic>();
                 });
-               
-
                 RemoveValueChangedHandler();
-
                 IReadOnlyList<GattCharacteristic> characteristics = null;
                 try
                 {
@@ -194,14 +191,11 @@ namespace WpfAppBluetooth
                     characteristics = new List<GattCharacteristic>();
                 }
 
+
                 foreach (GattCharacteristic c in characteristics)
                 {
-                    GattCharacteristics.Add(c);
-//                    CharacteristicList.Items.Add(new ComboBoxItem
-//                        {Content = DisplayHelpers.GetCharacteristicName(c), Tag = c});
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => { GattCharacteristics.Add(c); });
                 }
-
-                // CharacteristicList.Visibility = Visibility.Visible;
             });
 
             DisConnectCommand = new RelayCommand<BluetoothLEDevice>((t) =>
@@ -310,19 +304,13 @@ namespace WpfAppBluetooth
         private void BleCore_CharacteristicAdded(
             GattCharacteristic gattCharacteristic)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                GattCharacteristics.Add(gattCharacteristic);
-            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { GattCharacteristics.Add(gattCharacteristic); });
         }
 
         private void BleCore_GattDeviceServiceAdded(
             GattDeviceService gattDeviceService)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-            {
-                GattDeviceServices.Add(gattDeviceService);
-            });
+            DispatcherHelper.CheckBeginInvokeOnUI(() => { GattDeviceServices.Add(gattDeviceService); });
         }
 
 
@@ -342,16 +330,16 @@ namespace WpfAppBluetooth
         {
             switch (type)
             {
-            case MsgType.NotifyTxt: break;
-            case MsgType.BleData: break;
-            case MsgType.BleDevice:
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(new Action(() =>
+                case MsgType.NotifyTxt: break;
+                case MsgType.BleData: break;
+                case MsgType.BleDevice:
                 {
-                    BluetoothLeDevices.Add(bluetoothLEDevice);
-                }));
-                break;
-            }
+                    DispatcherHelper.CheckBeginInvokeOnUI(new Action(() =>
+                    {
+                        BluetoothLeDevices.Add(bluetoothLEDevice);
+                    }));
+                }
+                    break;
             }
         }
 
@@ -370,10 +358,7 @@ namespace WpfAppBluetooth
 
         private void BleCore_MessAgeChanged(MsgType type, string message, byte[] data = null)
         {
-            DispatcherHelper.CheckBeginInvokeOnUI(new Action(() =>
-            {
-                Message += message + "\r\n";
-            }));
+            DispatcherHelper.CheckBeginInvokeOnUI(new Action(() => { Message += message + "\r\n"; }));
         }
 
         private RelayCommand _startCommand;
@@ -400,7 +385,8 @@ namespace WpfAppBluetooth
 
         public RelayCommand<BluetoothLEDevice> ConnectCommand { get; set; }
         public RelayCommand<BluetoothLEDevice> DisConnectCommand { get; set; }
-        public RelayCommand<GattDeviceService> FindGattCharacteristicsCommand { get; set; }
+        public RelayCommand<GattDeviceService> FindGattCharacteristicsCommand { get; }
+
         public BluetoothClient BluetoothClient = new BluetoothClient();
 
         public RelayCommand FindCommand => new RelayCommand(async () =>

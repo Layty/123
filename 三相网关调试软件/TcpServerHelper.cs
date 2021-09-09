@@ -188,6 +188,34 @@ namespace 三相智慧能源网关调试软件
             return result;
         }
 
+        public List<string> HostIPlList => GetHostIpList();
+        /// <summary>
+        /// 获取当前计算机的主机IPV4地址
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetHostIpList()
+        {
+            IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress[] addressList = hostEntry.AddressList;
+
+            List<string> stList = new List<string>();
+            if (addressList.Length == 0)
+            {
+                return stList;
+            }
+
+            IPAddress[] array = addressList;
+            foreach (IPAddress iPAddress in array)
+            {
+                if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    stList.Add(iPAddress.ToString());
+                }
+            }
+
+            return stList;
+        }
+
         public void StartListen()
         {
             try

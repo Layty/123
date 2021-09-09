@@ -1,33 +1,20 @@
-using System;
-using Autofac;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Extensions.DependencyInjection;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
     public class ViewModelLocator
     {
-        protected void ConfigureServices(ServiceCollection services)
-        {
-            services.AddSingleton<DataViewModel>();
-            services.AddSingleton<DlmsSettingsViewModel>();
-            services.AddSingleton<DlmsClient>();
-        }
-
         public ViewModelLocator()
         {
-          
-
-      
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
                 #region Dlms相关服务
 
                 SimpleIoc.Default.Register<DlmsSettingsViewModel>();
-               
+
                 SimpleIoc.Default.Register<DataViewModel>();
                 SimpleIoc.Default.Register<RegisterViewModel>();
                 SimpleIoc.Default.Register<ProfileGenericViewModel>();
@@ -60,6 +47,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<SerialPortViewModel>(); //RS485串口
                 SimpleIoc.Default.Register<DlmsClient>(true);
                 SimpleIoc.Default.Register<JobCenterViewModel>();
+
                 #endregion
 
                 #region 三相网关特有业务
@@ -91,7 +79,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 SimpleIoc.Default.Register<CosemObjectViewModel>();
                 SimpleIoc.Default.Register<MeterDataViewModel>();
                 SimpleIoc.Default.Register<DialogsViewModel>();
-                
+
+//                SimpleIoc.Default.ContainsCreated<DialogsViewModel>();
+//                
+//                ServiceLocator.Current.CreateScope().ServiceProvider.GetService<string>();
             }
         }
 
@@ -142,6 +133,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public TftpClientViewModel TftpClient => ServiceLocator.Current.GetInstance<TftpClientViewModel>();
         public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
         public JobCenterViewModel JobCenterViewModel => ServiceLocator.Current.GetInstance<JobCenterViewModel>();
+
         #endregion
 
         #region 计量芯相关业务
@@ -173,6 +165,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public CosemObjectViewModel CosemObjectViewModel => ServiceLocator.Current.GetInstance<CosemObjectViewModel>();
         public MeterDataViewModel MeterDataViewModel => ServiceLocator.Current.GetInstance<MeterDataViewModel>();
+
         #endregion
 
         public static void Cleanup()
