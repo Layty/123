@@ -7,19 +7,6 @@ using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.HDLC
 {
-    public enum FrameKind
-    {
-        FkI,
-        FkUI,
-        FkRNR,
-        FkRR,
-        FkSNRM,
-        FkDISC,
-        FkUA,
-        FkDM,
-        FkFRMR
-    }
-
     public class HdlcFrameMaker
     {
         private readonly ushort _serverAddress;
@@ -34,6 +21,8 @@ namespace MyDlmsStandard.HDLC
             _serverAddress = serverAddress;
             _clientAddress = clientAddress;
             _info = info;
+            Hdlc46Frame = new Hdlc46Frame((byte)_serverAddress,
+                _clientAddress);
         }
 
         public HdlcFrameMaker(byte serverAddress, byte clientAddress, DLMSInfo info)
@@ -41,6 +30,8 @@ namespace MyDlmsStandard.HDLC
             _serverAddress = serverAddress;
             _clientAddress = clientAddress;
             _info = info;
+            Hdlc46Frame = new Hdlc46Frame((byte)_serverAddress,
+                _clientAddress);
         }
 
         public byte[] SNRMRequest(bool snrmContainInfoFlag = true)
@@ -98,7 +89,23 @@ namespace MyDlmsStandard.HDLC
         }
 
         public byte[] InvokeApdu(byte[] apdu)
-        {
+        {  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);              Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
+                _clientAddress);
             List<byte> arrqListBytes = new List<byte>();
             PackagingDestinationAndSourceAddress(arrqListBytes);
             int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +

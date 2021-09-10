@@ -9,12 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CommonServiceLocator;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.View;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
 
@@ -44,8 +40,8 @@ namespace 三相智慧能源网关调试软件
             string speech = Properties.Settings.Default.OpenSound;
             //speechSynthesizer.SpeakAsync(speech);
             this.KeyDown += MainWindow_KeyDown;
-            Timer.Interval = new TimeSpan(500);
-            Timer.Tick += Timer_Tick;
+           // Timer.Interval = new TimeSpan(500);
+           // Timer.Tick += Timer_Tick;
 //            Timer.Start();
 
 

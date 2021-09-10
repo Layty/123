@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using CommonServiceLocator;
 using 三相智慧能源网关调试软件.Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -81,8 +83,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
-                var responses = await Client.GetRequestAndWaitResponseArray(t.CaptureObjectsAttributeDescriptor
-                );
+                var responses = await Client.GetRequestAndWaitResponseArray(t.CaptureObjectsAttributeDescriptor);
                 StringBuilder stringBuilder = new StringBuilder();
                 if (responses != null)
                 {
@@ -175,45 +176,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             }
                         }
                     }
-
-//                    if (array1.PduStringInHexConstructor(ref ar))
-//                    {
-//                        t.CaptureObjects.Clear();
-//                        foreach (var t1 in array1.Items)
-//                        {
-//                            var captureObjectDefinition =
-//                                CaptureObjectDefinition.CreateFromDlmsData(t1);
-//                            if (captureObjectDefinition != null)
-//                            {
-//                                var client = new RestClient(
-//                                    $"{Properties.Settings.Default.WebApiUrl}/CosemObjects/ByObis/{captureObjectDefinition.LogicalName}");
-//                                var request = new RestRequest(Method.GET);
-//                                IRestResponse responseWebApi = client.Execute(request);
-//                                var getCosemObject =
-//                                    JsonConvert.DeserializeObject<CosemObjectEditModel>(responseWebApi
-//                                        .Content);
-//                                if (getCosemObject != null)
-//                                {
-//                                    captureObjectDefinition.Description = getCosemObject.Name;
-//                                }
-//
-//                                t.CaptureObjects.Add(captureObjectDefinition);
-//                            }
-//                        }
-//                    }
                 }
             });
             SetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
-                List<DlmsDataItem> dataItems = new List<DlmsDataItem>();
-
-                foreach (var captureObjectDefinition in t.CaptureObjects)
+                DLMSArray array = new DLMSArray()
                 {
-                    dataItems.Add(captureObjectDefinition.ToDlmsDataItem());
-                }
-
-                DLMSArray array = new DLMSArray() {Items = dataItems.ToArray()};
+                    Items = t.CaptureObjects.Select(captureObjectDefinition => captureObjectDefinition.ToDlmsDataItem())
+                        .ToArray()
+                };
                 await Client.SetRequestAndWaitResponse(t.CaptureObjectsAttributeDescriptor,
                     new DlmsDataItem(DataType.Array, array));
             });
@@ -270,19 +242,23 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     return;
                 }
 
-                var response = await Client.GetRequestAndWaitResponseArray(t.BufferAttributeDescriptor);
+                var response =
+                    await Client.GetRequestAndWaitResponseArray(t.BufferAttributeDescriptor
+                    );
                 ParseBuffer(response, t);
             });
             GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 var response =
-                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange());
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange()
+                    );
             });
             GetBufferByEntryCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
                 var response =
-                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry());
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry()
+                    );
                 ParseBuffer(response, t);
             });
 
@@ -310,7 +286,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                 Console.WriteLine(t.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
                 var response =
-                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange());
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange()
+                    );
 
                 ParseBuffer(response, t);
             });

@@ -148,6 +148,10 @@
                                 Content="ReadBufferAttr" />
                             <Button
                                 Margin="5,0"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Client.CancelCommand, Mode=TwoWay}"
+                                Content="Cancel" />
+                            <Button
+                                Margin="5,0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ClearBufferCommand, Mode=TwoWay}"
                                 CommandParameter="{Binding}"
                                 Content="ClearBuffer" />

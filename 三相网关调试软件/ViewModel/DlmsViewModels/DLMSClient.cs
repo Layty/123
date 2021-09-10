@@ -4,6 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -68,6 +69,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// </summary>
         public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
 
+        public CancellationTokenSource CancellationTokenSource { get; set; }
+        public RelayCommand CancelCommand { get; set; }
 
         /// <summary>
         /// 如何选择物理通道进行发送数据
@@ -216,7 +219,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
 
         public async Task<List<GetResponse>> GetRequestAndWaitResponseArray(
-            CosemAttributeDescriptor cosemAttributeDescriptor,
+            CosemAttributeDescriptor cosemAttributeDescriptor, 
             GetRequestType getRequestType = GetRequestType.Normal)
         {
             List<GetResponse> getResponses = new List<GetResponse>();
@@ -333,8 +336,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private StringBuilder _stringBuilder = new StringBuilder();
 
-        public async Task HowToHandleBlockNumber(List<GetResponse> list, GetResponse response)
+        private async Task HowToHandleBlockNumber(List<GetResponse> list, GetResponse response)
         {
+            if (CancellationTokenSource.Token.IsCancellationRequested)
+            {
+                return;
+            }
+
             if (response?.GetResponseWithDataBlock != null)
             {
                 if (response.GetResponseWithDataBlock.DataBlockG.LastBlock.Value == "00")
@@ -511,6 +519,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             InitRequestCommand = new RelayCommand(async () => { await InitRequest(); });
             ReleaseRequestCommand = new RelayCommand(async () => { await ReleaseRequest(true); });
             getRequest = new GetRequest();
+            CancellationTokenSource = new CancellationTokenSource();
+
+            CancelCommand = new RelayCommand(async () =>
+            {
+                CancellationTokenSource.Cancel();
+                await Task.Delay(2000);
+                CancellationTokenSource = new CancellationTokenSource();
+            });
         }
 
         /// <summary>
