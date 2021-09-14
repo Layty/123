@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
-        mc:Ignorable="d"
+        mc:Ignorable="d" d:Height="100" d:Width="200"
      >
     <Button.Template>
         <ControlTemplate TargetType="Button">

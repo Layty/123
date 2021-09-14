@@ -21,9 +21,8 @@ namespace 三相智慧能源网关调试软件.View
 
         private static void OnPasswordPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            PasswordBox box = sender as PasswordBox;
-            string password = (string) e.NewValue;
-            if (box != null && box.Password != password)
+            string password = (string)e.NewValue;
+            if (sender is PasswordBox box && box.Password != password)
             {
                 box.Password = password;
             }

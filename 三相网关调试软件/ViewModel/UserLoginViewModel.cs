@@ -93,9 +93,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     var client =
                         new RestClient(
                             $"{Settings.Default.WebApiUrl}/UserLogin?userName={LoginModel.UserName}&password={LoginModel.Password}");
-                    var request = new RestRequest(Method.POST);
-                    request.Timeout = 2000;
-                    
+                    var request = new RestRequest(Method.POST) {Timeout = 2000};
+
                     IRestResponse response = client.Execute(request);
                     return response;
                 });

@@ -24,9 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public AnotherCommandImplementation(Action<object> execute, Func<object, bool> canExecute)
         {
-            if (execute == null) throw new ArgumentNullException(nameof(execute));
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute ?? (x => true);
         }
 

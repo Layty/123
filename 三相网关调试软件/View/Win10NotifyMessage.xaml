@@ -8,8 +8,6 @@
         Background="Transparent"
         ResizeMode="NoResize"
         WindowStyle="None"
-
-
         Name="ThisWindow"
         ShowInTaskbar="False"
         Title="Win10NotifyMessage" Height="70" Width="300" Loaded="Window_Loaded">

@@ -11,9 +11,260 @@ using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using System.Management;
+using System.Text.RegularExpressions;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件
 {
+    /// <summary>
+    /// IPProvider 的摘要说明。
+    /// </summary>
+    public class IPProvider
+    {
+        public IPProvider()
+        {
+            //
+            // TODO: 在此处添加构造函数逻辑
+            //
+        }
+
+        /// <summary>
+        /// 设置DNS
+        /// </summary>
+        /// <param name="dns"></param>
+        public static void SetDNS(string[] dns)
+        {
+            SetIPAddress(null, null, null, dns);
+        }
+
+        /// <summary>
+        /// 设置网关
+        /// </summary>
+        /// <param name="getway"></param>
+        public static void SetGetWay(string getway)
+        {
+            SetIPAddress(null, null, new string[] {getway}, null);
+        }
+
+        /// <summary>
+        /// 设置网关
+        /// </summary>
+        /// <param name="getway"></param>
+        public static void SetGetWay(string[] getway)
+        {
+            SetIPAddress(null, null, getway, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址和掩码
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        public static void SetIPAddress(string ip, string submask)
+        {
+            SetIPAddress(new string[] {ip}, new string[] {submask}, null, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址，掩码和网关
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        /// <param name="getway"></param>
+        public static void SetIPAddress(string ip, string submask, string getway)
+        {
+            SetIPAddress(new string[] {ip}, new string[] {submask}, new string[] {getway}, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址，掩码，网关和DNS
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        /// <param name="getway"></param>
+        /// <param name="dns"></param>
+        public static void SetIPAddress(string[] ip, string[] submask, string[] getway, string[] dns)
+        {
+            ManagementClass wmi = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = wmi.GetInstances();
+            ManagementBaseObject inPar = null;
+            ManagementBaseObject outPar = null;
+            foreach (ManagementObject mo in moc)
+            {
+                //如果没有启用IP设置的网络设备则跳过
+                if (!(bool) mo["IPEnabled"])
+                    continue;
+                //设置IP地址和掩码
+                if (ip != null && submask != null)
+                {
+                    inPar = mo.GetMethodParameters("EnableStatic");
+                    inPar["IPAddress"] = ip;
+                    inPar["SubnetMask"] = submask;
+                    outPar = mo.InvokeMethod("EnableStatic", inPar, null);
+                }
+
+                //设置网关地址
+                if (getway != null)
+                {
+                    inPar = mo.GetMethodParameters("SetGateways");
+                    inPar["DefaultIPGateway"] = getway;
+                    outPar = mo.InvokeMethod("SetGateways", inPar, null);
+                }
+
+                //设置DNS地址
+                if (dns != null)
+                {
+                    inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
+                    inPar["DNSServerSearchOrder"] = dns;
+                    outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 启用DHCP服务器
+        /// </summary>
+        public static void EnableDHCP()
+        {
+            ManagementClass wmi = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = wmi.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                //如果没有启用IP设置的网络设备则跳过
+                if (!(bool) mo["IPEnabled"])
+                    continue;
+                //重置DNS为空
+                mo.InvokeMethod("SetDNSServerSearchOrder", null);
+                //开启DHCP
+                mo.InvokeMethod("EnableDHCP", null);
+            }
+        }
+
+        /// <summary>
+        /// 判断是否IP地址格式
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public static bool IsIPAddress(string ip)
+        {
+            string[] arr = ip.Split('.');
+            if (arr.Length != 4)
+                return false;
+            string pattern = @"\d{1,3}";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                string d = arr[i];
+                if (i == 0 && d == "0")
+                    return false;
+                if (!Regex.IsMatch(d, pattern))
+                    return false;
+                if (d != "0")
+                {
+                    d = d.TrimStart('0');
+                    if (d == "")
+                        return false;
+                    if (int.Parse(d) > 255)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+    }
+    /// <summary>
+    /// 能用，不用，目前多个IP容易改错，后续优化
+    /// </summary>
+    public class LocalNetHelper : ObservableObject
+    {
+        public string IPAddress
+        {
+            get => _iPAddress;
+            set
+            {
+                _iPAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _iPAddress="172.32.0.3";
+
+        public string SubnetMask
+        {
+            get => _SubnetMask;
+            set
+            {
+                _SubnetMask = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _SubnetMask="255.255.255.0";
+
+
+        public string SetGateways
+        {
+            get => _SetGateways;
+            set
+            {
+                _SetGateways = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _SetGateways = "172.32.0.1";
+
+
+        public RelayCommand SetNetworkCommand
+        {
+            get => _SetNetworkCommand;
+            set
+            {
+                _SetNetworkCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _SetNetworkCommand;
+
+        public LocalNetHelper()
+        {
+            SetNetworkCommand = new RelayCommand(SetNetworkAdapter);
+        }
+
+        public void SetNetworkAdapter()
+        {
+            ManagementBaseObject inPar = null;
+            ManagementBaseObject outPar = null;
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = mc.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                if (!(bool) mo["IPEnabled"])
+                    continue;
+
+                //设置ip地址和子网掩码
+                inPar = mo.GetMethodParameters("EnableStatic");
+                inPar["IPAddress"] = new string[] {IPAddress}; // 1.备用 2.IP
+                inPar["SubnetMask"] = new string[] {SubnetMask};
+                outPar = mo.InvokeMethod("EnableStatic", inPar, null);
+                
+
+                //设置网关地址
+                inPar = mo.GetMethodParameters("SetGateways");
+                inPar["DefaultIPGateway"] = new string[] {SetGateways}; // 1.网关;2.备用网关
+                outPar = mo.InvokeMethod("SetGateways", inPar, null);
+
+//                //设置DNS
+//                inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
+//                inPar["DNSServerSearchOrder"] = new string[] {"211.97.168.129", "202.102.152.3"}; // 1.DNS 2.备用DNS
+//                outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
+                break;
+            }
+        }
+    }
+
     public class TcpServerHelper : ValidateModelBase
     {
         public bool IsStarted
@@ -189,6 +440,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         public List<string> HostIPlList => GetHostIpList();
+
         /// <summary>
         /// 获取当前计算机的主机IPV4地址
         /// </summary>

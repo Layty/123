@@ -47,12 +47,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         #endregion
 
-
         public DlmsClient Client { get; set; }
         public EModeViewModel EModeViewModel { get; set; }
 
         private SerialPortViewModel SerialPortViewModel { get; set; }
-
 
         public DlmsBaseMeterViewModel()
         {

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net.Sockets;
-using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 using CommonServiceLocator;
 using 三相智慧能源网关调试软件.View;
 using Microsoft.Toolkit.Mvvm.Messaging;
@@ -27,12 +25,11 @@ namespace 三相智慧能源网关调试软件
 
         int _keyState = 0;
 
-        public DispatcherTimer Timer = new DispatcherTimer();
+        // public DispatcherTimer Timer = new DispatcherTimer();
 
-        public readonly ColorAnimation ColorAnimation = new ColorAnimation
-            {Duration = new TimeSpan(2000), From = Colors.Red, To = Colors.White};
+      
 
-        SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
+        //  SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
         public MainWindow()
         {
@@ -40,8 +37,8 @@ namespace 三相智慧能源网关调试软件
             string speech = Properties.Settings.Default.OpenSound;
             //speechSynthesizer.SpeakAsync(speech);
             this.KeyDown += MainWindow_KeyDown;
-           // Timer.Interval = new TimeSpan(500);
-           // Timer.Tick += Timer_Tick;
+            // Timer.Interval = new TimeSpan(500);
+            // Timer.Tick += Timer_Tick;
 //            Timer.Start();
 
 
@@ -80,57 +77,57 @@ namespace 三相智慧能源网关调试软件
 //            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
 //            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
 //            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
-            StrongReferenceMessenger.Default.Register<string, string>(this, "PlaySendFlashing",
-                (sender, arg) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                });
-            StrongReferenceMessenger.Default.Register<string, string>(this, "PlayReceiveFlashing",
-                (sender, arg) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                });
-            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
-                ((recipient, message) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                }));
+            //StrongReferenceMessenger.Default.Register<string, string>(this, "PlaySendFlashing",
+            //    (sender, arg) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    });
+            //StrongReferenceMessenger.Default.Register<string, string>(this, "PlayReceiveFlashing",
+            //    (sender, arg) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    });
+            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
+            //    ((recipient, message) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    }));
 
-            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
-                ((recipient, message) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                }));
+            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
+            //    ((recipient, message) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    }));
 
-            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
-                ((recipient, message) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                }));
+            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
+            //    ((recipient, message) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkNetSend.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    }));
 
-            StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientReceiveDataEvent",
-                ((recipient, message) =>
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
-                    });
-                }));
+            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientReceiveDataEvent",
+            //    ((recipient, message) =>
+            //    {
+            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //        {
+            //            BlkNetReceive.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ColorAnimation);
+            //        });
+            //    }));
 
 
             StrongReferenceMessenger.Default.Register<string, string>(this, "Snackbar",
@@ -167,7 +164,7 @@ namespace 三相智慧能源网关调试软件
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            TextBlockTime.Text = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+            //  TextBlockTime.Text = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
         }
 
         private void ExpandMenu_OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -259,7 +256,7 @@ namespace 三相智慧能源网关调试软件
 
         private void ButtonMeterData_OnClick(object sender, RoutedEventArgs e)
         {
-            new MeterDataWindow() { Owner = this }.Show();
+            new MeterDataWindow() {Owner = this}.Show();
         }
     }
 }

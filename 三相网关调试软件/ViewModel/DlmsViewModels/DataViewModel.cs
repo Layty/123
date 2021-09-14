@@ -49,7 +49,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 DataCollection.Add(new CustomCosemDataModel(dataTable.Rows[i][0].ToString(),
-                        (ObjectType) (int.Parse(dataTable.Rows[i][2].ToString())),
+                        (ObjectType) int.Parse(dataTable.Rows[i][2].ToString()),
                         new AxdrInteger8(sbyte.Parse(dataTable.Rows[i][3].ToString())))
                     {DataName = dataTable.Rows[i][1].ToString()});
             }

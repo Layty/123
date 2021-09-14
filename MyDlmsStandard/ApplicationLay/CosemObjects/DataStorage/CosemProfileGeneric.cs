@@ -150,12 +150,11 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
                     ProfileGenericRangeDescriptor.ToDlmsDataItem()));
         }
 
-        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry()
-        {
-            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry=>
+             new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                     ProfileGenericEntryDescriptor.ToDlmsDataItem()));
-        }
+       
 
         public CosemAttributeDescriptor CaptureObjectsAttributeDescriptor => GetCosemAttributeDescriptor(3);
 
@@ -241,5 +240,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         {
             throw new NotImplementedException();
         }
+     
+
     }
 }

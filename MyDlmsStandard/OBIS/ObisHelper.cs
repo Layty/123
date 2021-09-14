@@ -44,8 +44,7 @@ namespace MyDlmsStandard.OBIS
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < 6; i++)
             {
-                byte b;
-                if (!byte.TryParse(array[i], out b))
+                if (!byte.TryParse(array[i], out byte b))
                 {
                     return "";
                 }
@@ -89,8 +88,7 @@ namespace MyDlmsStandard.OBIS
 
             for (int i = 0; i < array.Length; i++)
             {
-                byte b;
-                if (!byte.TryParse(array[i], out b))
+                if (!byte.TryParse(array[i], out _))
                 {
                     return false;
                 }

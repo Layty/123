@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Ioc;
 using MyDlmsStandard.ApplicationLay;
@@ -20,7 +19,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
     /// <summary>
     /// 15分钟功率曲线任务
     /// </summary>
-    public class PowerProfileGenericJob : ProfileGenericJobBase
+    public class PowerProfileGenericJob : ProfileGenericJobBase, IJobWebApi
     {
         public PowerProfileGenericJob()
         {
@@ -41,111 +40,100 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 }
             };
         }
+
         public List<Power> Powers { get; set; }
+
         public override async Task Execute(IJobExecutionContext context)
         {
             await base.Execute(context);
-            var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
 
-            var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
-                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
             await Task.Run(() =>
             {
-                var client =
-                    new RestClient($"{Properties.Settings.Default.WebApiUrl}/Meter/PowerData/{t.MeterId}");
-                var request = new RestRequest(Method.POST);
-
-                request.AddHeader("Content-Type", "application/json");
-
-                if (base.CaptureObjects != null)
+                if (CaptureObjects != null)
                 {
                     if (CaptureObjects.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
-                        var array = new DLMSArray();
+                        var CaptureObjectsArray = new DLMSArray();
                         var ar = CaptureObjects.GetResponseNormal.Result.Data.ToPduStringInHex();
-                        if (array.PduStringInHexConstructor(ref ar))
-                        {
-                        }
-                    }
-                }
-
-                Powers = new List<Power>();
-                StringBuilder stringBuilder = new StringBuilder();
-
-                var responses = base.Responses;
-                if (responses != null)
-                {
-                    DLMSArray array = null;
-                    if (responses.Count == 1)
-                    {
-                        if (responses[0].GetResponseNormal.Result.Data.DataType == DataType.Array)
-                        {
-                            array = (DLMSArray) responses[0].GetResponseNormal.Result.Data.Value;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var getResponse in responses)
-                        {
-                            stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
-                        }
-
-                        var stringInHex = stringBuilder.ToString();
-                        DlmsDataItem vDataItem = new DlmsDataItem();
-
-                        var foo = vDataItem.PduStringInHexConstructor(ref stringInHex);
-                        if (!foo)
+                        if (!CaptureObjectsArray.PduStringInHexConstructor(ref ar))
                         {
                             return;
                         }
-
-                        if (vDataItem.DataType == DataType.Array)
-                        {
-                            array = (DLMSArray) vDataItem.Value;
-                        }
                     }
+                }
 
-                    if (array != null)
+
+                Powers = new List<Power>();
+                var ttt = ProfileGenericViewModel.ParseBuffer(Responses);
+
+                if (ttt != null)
+                {
+                    foreach (var item in ttt)
                     {
-                        foreach (var item in array.Items)
+                        var dataItems = item.Items;
+                        var clock = new CosemClock();
+                        string dt = dataItems[0].Value.ToString();
+                        var b = clock.DlmsClockParse(dt.StringToByte());
+                        if (b)
                         {
-                            var dataItems = ((DlmsStructure) item.Value).Items;
-                            var clock = new CosemClock();
-                            string dt = dataItems[0].Value.ToString();
-                            var b = clock.DlmsClockParse(dt.StringToByte());
-                            if (b)
+                            PowerCaptureObjects powerCaptureObjects = new PowerCaptureObjects
                             {
-                                PowerCaptureObjects powerCaptureObjects = new PowerCaptureObjects
-                                {
-                                    DateTime = clock.ToDateTime(),
-                                    ImportActivePowerTotal = dataItems[1].ValueString,
-                                    ExportActivePowerTotal = dataItems[2].ValueString,
-                                    A相电压 = dataItems[3].ValueString,
-                                    B相电压 = dataItems[4].ValueString,
-                                    C相电压 = dataItems[5].ValueString,
-                                    A相电流 = dataItems[6].ValueString,
-                                    B相电流 = dataItems[7].ValueString,
-                                    C相电流 = dataItems[8].ValueString
-                                };
+                                DateTime = clock.ToDateTime(),
+                                ImportActivePowerTotal = dataItems[1].ValueString,
+                                ExportActivePowerTotal = dataItems[2].ValueString,
+                                A相电压 = dataItems[3].ValueString,
+                                B相电压 = dataItems[4].ValueString,
+                                C相电压 = dataItems[5].ValueString,
+                                A相电流 = dataItems[6].ValueString,
+                                B相电流 = dataItems[7].ValueString,
+                                C相电流 = dataItems[8].ValueString
+                            };
 
-                                Powers.Add(new Power()
-                                {
-                                    PowerData = JsonConvert.SerializeObject(powerCaptureObjects),
-                                    Id = Guid.NewGuid(),
-                                    MeterId = t.MeterId,
-                                    DateTime = clock.ToDateTime()
-                                });
-                            }
+                            Powers.Add(new Power()
+                            {
+                                PowerData = JsonConvert.SerializeObject(powerCaptureObjects),
+                                Id = Guid.NewGuid(),
+                                DateTime = clock.ToDateTime()
+                            });
                         }
                     }
                 }
 
-                var str = JsonConvert.SerializeObject(Powers);
-                request.AddParameter("CurrentPower", str, ParameterType.RequestBody);
-                IRestResponse restResponse = client.Execute(request);
-                var netLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
-                netLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");
+
+                InsertData();
             });
+        }
+       
+
+        public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/PowerData/";
+        public string MeterId { get; set; }
+        public RestClient RestClient { get; set; } = new RestClient();
+        public RestRequest RestRequest { get; set; }= new RestRequest(Method.POST);
+
+        public void InsertData()
+        {
+            var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
+            var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
+                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
+            if (t == null)
+            {
+                NetLogViewModel.MyServerNetLogModel.Log = "未找到相应表号,不调用API写数据库";
+                return;
+            }
+
+            if (Powers.Count == 0)
+            {
+                NetLogViewModel.MyServerNetLogModel.Log = "电能数据返回个数为0,不调用API写数据库";
+                return;
+            }
+
+            RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
+          
+            RestRequest.AddHeader("Content-Type", "application/json");
+            var str = JsonConvert.SerializeObject(Powers);
+            RestRequest.AddParameter("CurrentPower", str, ParameterType.RequestBody);
+            IRestResponse restResponse = RestClient.Execute(RestRequest);
+            NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");
         }
     }
 }

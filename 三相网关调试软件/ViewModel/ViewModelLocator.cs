@@ -1,5 +1,6 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -83,9 +84,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 //                SimpleIoc.Default.ContainsCreated<DialogsViewModel>();
 //                
 //                ServiceLocator.Current.CreateScope().ServiceProvider.GetService<string>();
+                SimpleIoc.Default.Register<LocalNetHelper>();
+                SimpleIoc.Default.Register<SSHClientViewModel>();
             }
         }
 
+        public SSHClientViewModel SshClientViewModel => ServiceLocator.Current.GetInstance<SSHClientViewModel>();
+        public LocalNetHelper LocalNetHelper => ServiceLocator.Current.GetInstance<LocalNetHelper>();
 
         public DialogsViewModel DialogsViewModel => ServiceLocator.Current.GetInstance<DialogsViewModel>();
 

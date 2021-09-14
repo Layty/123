@@ -101,6 +101,7 @@ namespace 三相智慧能源网关调试软件.Common
 //            var dialog = NetCoreProvider.ResolveNamed<IMsgCenter>("MsgCenter");
 //            var result = await dialog.Show(new { Msg = msg, Color, Icon });
 //            return result;
+
             return true;
         }
     }

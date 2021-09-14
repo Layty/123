@@ -77,9 +77,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=6.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.6.0.0\lib\netstandard2.0\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.6\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -147,6 +144,10 @@
     <Reference Include="Quartz, Version=3.2.4.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.2.4\lib\net461\Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2020.0.1.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2020.0.1\lib\net40\Renci.SshNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=106.12.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.12.0\lib\net452\RestSharp.dll</HintPath>
     </Reference>
@@ -167,6 +168,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Management.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -207,9 +212,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Windows">
-      <HintPath>.\Windows.WinMD</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -245,6 +247,7 @@
     <Compile Include="Model\Jobs\IDataJob.cs" />
     <Compile Include="Model\IIC\IicParameter.cs" />
     <Compile Include="Model\Jobs\EnergyProfileGenericJob.cs" />
+    <Compile Include="Model\Jobs\IJobWebApi.cs" />
     <Compile Include="Model\Jobs\IProfileGenericJob.cs" />
     <Compile Include="Model\Jobs\MonthProfileGenericJob.cs" />
     <Compile Include="Model\Jobs\PowerProfileGenericJob.cs" />
@@ -257,8 +260,14 @@
     <Compile Include="MyControl\DLMSControl\JobCenter.xaml.cs">
       <DependentUpon>JobCenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\SetNetwork.xaml.cs">
+      <DependentUpon>SetNetwork.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\SocketAndMeterAddressMapping.xaml.cs">
       <DependentUpon>SocketAndMeterAddressMapping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyControl\SSHClient.xaml.cs">
+      <DependentUpon>SSHClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DialogsViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\CosemObjectViewModel.cs" />
@@ -369,11 +378,17 @@
     <Compile Include="View\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CommunicationLight.xaml.cs">
+      <DependentUpon>CommunicationLight.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CosemObjectsManagement.xaml.cs">
       <DependentUpon>CosemObjectsManagement.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CoverPage.xaml.cs">
       <DependentUpon>CoverPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginStatus.xaml.cs">
+      <DependentUpon>LoginStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
@@ -513,7 +528,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyControl\SetNetwork.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\SocketAndMeterAddressMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\SSHClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -557,11 +580,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\CommunicationLight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CosemObjectsManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CoverPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

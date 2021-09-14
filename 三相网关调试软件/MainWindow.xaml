@@ -6,8 +6,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
-    xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
-    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl" xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
     x:Name="ThisWindow"
     Title="TODO"
     Width="1024"
@@ -28,8 +27,10 @@
 
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
             <Setter Property="Padding" Value="8" />
             <Setter Property="FontSize" Value="15" />
 
@@ -70,12 +71,13 @@
 
                             </EventTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                <Setter TargetName="border" Property="Background"
+                                        Value="{DynamicResource PrimaryHueLightBrush}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter TargetName="border" Property="Background"
+                                        Value="{DynamicResource PrimaryHueDarkBrush}" />
                                 <Setter Property="FontSize" Value="20" />
-
                                 <Setter Property="FontWeight" Value="ExtraBlack" />
                             </Trigger>
 
@@ -136,7 +138,6 @@
                             x:Name="TextBlockTitle"
                             Margin="1,0,0,0"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
                             Style="{StaticResource CenterAlignmentStyle}"
                             Text="{Binding MenuName}" />
                     </StackPanel>
@@ -147,42 +148,50 @@
 
         </DataTemplate>
         <Storyboard x:Key="MyOpenMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="MyCloseMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-200 0 0 0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.5" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.9" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3"
+                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
@@ -286,34 +295,29 @@
                             FontSize="20"
                             Foreground="{Binding MenuModel.Foreground}"
                             RenderTransformOrigin="0.5,0.5"
-                            Text="{Binding MenuModel.MenuName}">
-                            <!-- <TextBlock.RenderTransform> -->
-                            <!--     <TranslateTransform></TranslateTransform> -->
-                            <!-- </TextBlock.RenderTransform> -->
-                            <!-- <TextBlock.Effect> -->
-                            <!--  <DropShadowEffect Direction="0" Color="{DynamicResource MaterialDesignShadow}" BlurRadius="1" Opacity="0.5"  -->
-                            <!--  RenderingBias="Performance" ShadowDepth="20"  -->
-                            <!--                       ></DropShadowEffect> -->
-                            <!-- </TextBlock.Effect> -->
-
-                        </TextBlock>
+                            Text="{Binding MenuModel.MenuName}" />
                         <!--  窗口操作区  -->
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
 
-                                <materialDesign:Chip Click="ButtonUserLogin_OnClick" Content="{Binding Source={StaticResource Locator}, Path=Login.LoginModel.UserName}">
+                                <materialDesign:Chip Click="ButtonUserLogin_OnClick" 
+                                                     Content="{Binding Source={StaticResource Locator}, Path=Login.LoginModel.UserName}">
                                     <materialDesign:Chip.Icon>
                                         <Image Source="Image/dimi.jpg" />
                                     </materialDesign:Chip.Icon>
                                 </materialDesign:Chip>
 
-                                <myControl:HeartBeatButton
+                                <!--<myControl:HeartBeatButton
                                     x:Name="HeartBeatButton"
                                     Height="30"
                                     HorizontalContentAlignment="Center"
                                     Click="HeartBeatButton_OnClick"
-                                    Content="HelLog" />
-
+                                    Content="HelLog" />-->
+                                <Button  x:Name="HeartBeatButton"
+                                    Height="30" BorderBrush="Transparent" BorderThickness="0" Background="Transparent"
+                                    HorizontalContentAlignment="Center"
+                                    Click="HeartBeatButton_OnClick"
+                                    Content="HelLog" ></Button>
                                 <ToggleButton
                                     x:Name="ToggleButtonLog"
                                     Margin="2,0"
@@ -330,7 +334,8 @@
                                 </ToggleButton>
                                 <materialDesign:PopupBox Margin="2,0" PopupMode="Click">
                                     <ListBox>
-                                        <Button Command="{Binding OpenSkinViewDialogCommand}" DataContext="{Binding Source={StaticResource Locator}, Path=DialogsViewModel}">
+                                        <Button Command="{Binding OpenSkinViewDialogCommand}"
+                                                DataContext="{Binding Source={StaticResource Locator}, Path=DialogsViewModel}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="PaletteOutline" />
                                                 <TextBlock>主题</TextBlock>
@@ -624,93 +629,11 @@
                 Grid.Row="2"
                 Mode="PrimaryMid">
                 <Grid>
-                    <!-- <hc:LoadingLine Foreground="{DynamicResource PrimaryHueLightBrush}" Width="Auto"  /> -->
-                    <StackPanel DataContext="{Binding Source={StaticResource Locator}, Path=Login}" Orientation="Horizontal">
-                        <TextBlock
-                            x:Name="TextBlockTime"
-                            Width="150"
-                            Margin="15,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="DateTime" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{Binding LoginModel.UserName, StringFormat='用户\{0}'}" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{Binding LoginModel.SucceedLoginTime, StringFormat='\{0}'}" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{Binding LoginModel.Report, StringFormat='\{0}'}" />
-                        <UniformGrid Margin="5,0" Columns="2">
-                            <StackPanel
-                                Margin="5,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+               
+                    <StackPanel
                                 Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Ethernet" />
-                                <TextBlock
-                                    Name="BlkNetSend"
-                                    Margin="5,0"
-                                    Foreground="#FFFFFFFF"
-                                    RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="-45" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-
-                                </TextBlock>
-                                <TextBlock
-                                    x:Name="BlkNetReceive"
-                                    Foreground="#FFFFFFFF"
-                                    RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="145" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-                                </TextBlock>
-                            </StackPanel>
-                            <StackPanel
-                                Margin="5,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="SerialPort" />
-                                <TextBlock
-                                    Name="BlkSend"
-                                    Margin="5,0"
-                                    Foreground="#FFFFFFFF"
-                                    RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="-45" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-
-                                </TextBlock>
-                                <TextBlock
-                                    x:Name="BlkReceive"
-                                    Foreground="#FFFFFFFF"
-                                    RenderTransformOrigin="0.5,0.5">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform Angle="145" />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                    <materialDesign:PackIcon Kind="Send" />
-                                </TextBlock>
-                                <StackPanel />
-                            </StackPanel>
-
-                        </UniformGrid>
+                        <view:LoginStatus></view:LoginStatus>
+                        <view:CommunicationLight></view:CommunicationLight>
                         <TextBlock
                             x:Name="TextBlockHaHa"
                             HorizontalAlignment="Center"

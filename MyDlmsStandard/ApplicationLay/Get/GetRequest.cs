@@ -6,7 +6,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
 {
     public class GetRequest : IToPduStringInHex, IDlmsCommand
     {
-        [XmlIgnore] public Command Command { get; } = Command.GetRequest;
+        [XmlIgnore] public  Command Command { get; } = Command.GetRequest;
         public GetRequestNormal GetRequestNormal { get; set; }
         public GetRequestNext GetRequestNext { get; set; }
         public GetRequestWithList GetRequestWithList { get; set; }

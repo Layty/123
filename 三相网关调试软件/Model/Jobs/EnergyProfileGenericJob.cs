@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Ioc;
 using MyDlmsStandard.ApplicationLay;
@@ -17,24 +16,15 @@ using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
-    public interface IWebApi
-    {
-        string BaseUriString { get; set; }
-        string MeterId { get; set; }
-        RestClient RestClient { get; set; }
-        RestRequest RestRequest { get; set; }
-        void InsertData();
-    }
-
     /// <summary>
     /// 1分钟电量曲线任务
     /// </summary>
-    public class EnergyProfileGenericJob : ProfileGenericJobBase, IWebApi
+    public class EnergyProfileGenericJob : ProfileGenericJobBase, IJobWebApi
     {
         public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/EnergyData/";
         public string MeterId { get; set; }
         public RestClient RestClient { get; set; } = new RestClient();
-        public RestRequest RestRequest { get; set; }
+        public RestRequest RestRequest { get; set; } = new RestRequest(Method.POST);
 
         public EnergyProfileGenericJob()
         {
@@ -67,84 +57,51 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 {
                     if (CaptureObjects.GetResponseNormal.Result.Data.DataType == DataType.Array)
                     {
-                        var array = new DLMSArray();
+                        var CaptureObjectsArray = new DLMSArray();
                         var ar = CaptureObjects.GetResponseNormal.Result.Data.ToPduStringInHex();
-                        if (array.PduStringInHexConstructor(ref ar))
+                        if (!CaptureObjectsArray.PduStringInHexConstructor(ref ar))
                         {
+                            return;
                         }
                     }
                 }
 
                 Energy = new List<Energy>();
-                StringBuilder stringBuilder = new StringBuilder();
-                var responses = Responses;
-                if (responses != null)
+                var ttt = ProfileGenericViewModel.ParseBuffer(Responses);
+
+
+                if (ttt != null)
                 {
-                    DLMSArray array = null;
-
-                    if (responses.Count == 1)
+                    foreach (var item in ttt)
                     {
-                        if (responses[0].GetResponseNormal.Result.Data.DataType == DataType.Array)
+                        var dataItems = item.Items;
+                        var clock = new CosemClock();
+                        string dt = dataItems[0].Value.ToString();
+                        var b = clock.DlmsClockParse(dt.StringToByte());
+                        if (b)
                         {
-                            array = (DLMSArray) responses[0].GetResponseNormal.Result.Data.Value;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var getResponse in responses)
-                        {
-                            stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
-                        }
-
-                        var stringInHex = stringBuilder.ToString();
-                        DlmsDataItem vDataItem = new DlmsDataItem();
-
-                        var foo = vDataItem.PduStringInHexConstructor(ref stringInHex);
-                        if (!foo)
-                        {
-                            return;
-                        }
-
-                        if (vDataItem.DataType == DataType.Array)
-                        {
-                            array = (DLMSArray) vDataItem.Value;
-                        }
-                    }
-
-                    if (array != null)
-                    {
-                        foreach (var item in array.Items)
-                        {
-                            var dataItems = ((DlmsStructure) item.Value).Items;
-                            var clock = new CosemClock();
-                            string dt = dataItems[0].Value.ToString();
-                            var b = clock.DlmsClockParse(dt.StringToByte());
-                            if (b)
+                            EnergyCaptureObjects energyCaptureObjects = new EnergyCaptureObjects
                             {
-                                EnergyCaptureObjects energyCaptureObjects = new EnergyCaptureObjects
-                                {
-                                    DateTime = clock.ToDateTime(),
-                                    ImportActiveEnergyTotal = dataItems[1].ValueString,
-                                    ImportActiveEnergyT1 = dataItems[2].ValueString,
-                                    ImportActiveEnergyT2 = dataItems[3].ValueString,
-                                    ImportActiveEnergyT3 = dataItems[4].ValueString,
-                                    ImportActiveEnergyT4 = dataItems[5].ValueString,
-                                    ExportActiveEnergyTotal = dataItems[6].ValueString,
-                                    ImportReactiveEnergyTotal = dataItems[7].ValueString,
-                                    ExportReactiveEnergyTotal = dataItems[8].ValueString
-                                };
+                                DateTime = clock.ToDateTime(),
+                                ImportActiveEnergyTotal = dataItems[1].ValueString,
+                                ImportActiveEnergyT1 = dataItems[2].ValueString,
+                                ImportActiveEnergyT2 = dataItems[3].ValueString,
+                                ImportActiveEnergyT3 = dataItems[4].ValueString,
+                                ImportActiveEnergyT4 = dataItems[5].ValueString,
+                                ExportActiveEnergyTotal = dataItems[6].ValueString,
+                                ImportReactiveEnergyTotal = dataItems[7].ValueString,
+                                ExportReactiveEnergyTotal = dataItems[8].ValueString
+                            };
 
-                                Energy.Add(new Energy()
-                                {
-                                    EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
-                                    Id = Guid.NewGuid(),
-                                    DateTime = clock.ToDateTime()
-                                });
-                            }
+                            Energy.Add(new Energy()
+                            {
+                                EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
+                                Id = Guid.NewGuid(),
+                                DateTime = clock.ToDateTime()
+                            });
                         }
                     }
                 }
-
 
                 InsertData();
             });
@@ -170,7 +127,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             }
 
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
-            RestRequest = new RestRequest(Method.POST);
+          
             RestRequest.AddHeader("Content-Type", "application/json");
             var str = JsonConvert.SerializeObject(Energy);
             RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);

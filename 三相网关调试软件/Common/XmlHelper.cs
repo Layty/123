@@ -8,8 +8,9 @@ using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Common
 {
-    public class XmlHelper
-    {
+    public static class XmlHelper
+    {      
+        public static XMLLogViewModel Logger=ServiceLocator.Current.GetInstance<XMLLogViewModel>();
         public static void XmlCommon<T>(T t) 
         {
             using (StringWriter stringWriter = new StringWriter())
@@ -24,8 +25,7 @@ namespace 三相智慧能源网关调试软件.Common
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
                 {
                     xmlSerializer.Serialize(xmlWriter,t, ns);
-                    var log = ServiceLocator.Current.GetInstance<XMLLogViewModel>();
-                    log.XmlLog = stringWriter + Environment.NewLine + "-----萌萌哒分割线-----\r\n";
+                    Logger.XmlLog = stringWriter + Environment.NewLine + "-----萌萌哒分割线-----\r\n";
                 }
             }
         }

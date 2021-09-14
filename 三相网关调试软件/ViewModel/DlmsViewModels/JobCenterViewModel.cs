@@ -407,17 +407,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     data.Status = (Scheduler.GetTriggerState(triggerKey).Result).ToString();
                     data.TriggerName = triggerKey.Name;
                     data.TriggerGroup = triggerKey.Group;
-                    if (Scheduler.GetTrigger(triggerKey).Result is ICronTrigger)
+                    if (Scheduler.GetTrigger(triggerKey).Result is ICronTrigger cronTrigger)
                     {
-                        var cronTrigger = (ICronTrigger) Scheduler.GetTrigger(triggerKey).Result;
                         CronExpression cronExpression = new CronExpression(cronTrigger.CronExpressionString);
                         data.NextTriggerTime = cronExpression.GetNextValidTimeAfter(DateTime.Now).Value.LocalDateTime
                             .ToLongTimeString();
                     }
-                    else if (Scheduler.GetTrigger(triggerKey).Result is ISimpleTrigger)
+                    else if (Scheduler.GetTrigger(triggerKey).Result is ISimpleTrigger simple)
                     {
-                        var simple = (ISimpleTrigger) Scheduler.GetTrigger(triggerKey).Result;
-
 
                         data.NextTriggerTime = simple.RepeatInterval.Duration().ToString();
                     }

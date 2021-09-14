@@ -82,10 +82,7 @@
         //    }
         //}
 
-        private static void getData(byte input)
-        {
-
-        }
+      
         private static bool CheckFlagIs7E(byte[] inputUaFrameBytes)
         {
             bool flag = inputUaFrameBytes[0] != 126 && inputUaFrameBytes[inputUaFrameBytes.Length - 1] != 126;

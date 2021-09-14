@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using CommonServiceLocator;
 using 三相智慧能源网关调试软件.Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -83,6 +81,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
+                t.CaptureObjects.Clear();
                 var responses = await Client.GetRequestAndWaitResponseArray(t.CaptureObjectsAttributeDescriptor);
                 StringBuilder stringBuilder = new StringBuilder();
                 if (responses != null)
@@ -120,17 +119,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                                     }
                                 }
                             }
-
-//                            DLMSArray array = ttttt;
-//                            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
-//
-//                            foreach (var item in array.Items)
-//                            {
-//                                structures.Add((DlmsStructure) item.Value);
-//                            }
-//
-//
-//                            DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
                         }
                     }
                     else
@@ -245,11 +233,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.BufferAttributeDescriptor
                     );
-                ParseBuffer(response, t);
+
+                var structures = ParseBuffer(response);
+
+                DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
             });
             GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
-                var response =
+                var _ =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange()
                     );
             });
@@ -257,9 +248,20 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 t.Buffer.Clear();
                 var response =
-                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry()
-                    );
-                ParseBuffer(response, t);
+                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry);
+                var structures = ParseBuffer(response);
+                if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
+                {
+                    foreach (var dlmsStructure in structures)
+                    {
+                        for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                        {
+                            dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
+                        }
+                    }
+                }
+
+                DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
             });
 
             GetBufferByClockCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
@@ -284,92 +286,74 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         .ByteToString());
                 t.ProfileGenericRangeDescriptor.SelectedValues = new List<CaptureObjectDefinition>();
 
-                Console.WriteLine(t.ProfileGenericRangeDescriptor.ToDlmsDataItem().ToPduStringInHex());
+
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange()
                     );
 
-                ParseBuffer(response, t);
+                var structures = ParseBuffer(response);
+                if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
+                {
+                    foreach (var dlmsStructure in structures)
+                    {
+                        for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                        {
+                            dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
+                        }
+                    }
+                }
+
+                DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
             });
             ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear(); });
         }
 
 
-        public static void ParseBuffer(List<GetResponse> responses, CosemProfileGeneric t)
+        public static ObservableCollection<DlmsStructure> ParseBuffer(List<GetResponse> responses)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            if (responses != null)
+            DLMSArray array;
+            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
+            if (responses != null && responses.Count != 0)
             {
+                DlmsDataItem vDataItem = new DlmsDataItem();
+                string strr;
                 if (responses.Count == 1)
                 {
-                    var ttttt = (DLMSArray) responses[0].GetResponseNormal.Result.Data.Value;
-
-                    if (ttttt.DataType == DataType.Array)
-                    {
-                        DLMSArray array = ttttt;
-                        ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
-
-                        foreach (var item in array.Items)
-                        {
-                            structures.Add((DlmsStructure) item.Value);
-                        }
-
-                        if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
-                        {
-                            foreach (var dlmsStructure in structures)
-                            {
-                                for (int i = 0; i < dlmsStructure.Items.Length; i++)
-                                {
-                                    dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
-                                }
-                            }
-                        }
-
-                        DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
-                    }
+                    strr = responses[0].GetResponseNormal.Result.Data.ToPduStringInHex();
                 }
                 else
                 {
+                    //返回的是多个响应则进行拼接数据
                     foreach (var getResponse in responses)
                     {
                         stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
                     }
 
-                    var strr = stringBuilder.ToString();
-                    DlmsDataItem vDataItem = new DlmsDataItem();
-
-                    var foo = vDataItem.PduStringInHexConstructor(ref strr);
-                    if (!foo)
-                    {
-                        return;
-                    }
-
-                    if (vDataItem.DataType == DataType.Array)
-                    {
-                        DLMSArray array = (DLMSArray) vDataItem.Value;
-                        ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
-
-                        foreach (var item in array.Items)
-                        {
-                            structures.Add((DlmsStructure) item.Value);
-                        }
-
-                        if (t.CaptureObjects != null && t.CaptureObjects.Count != 0)
-                        {
-                            foreach (var dlmsStructure in structures)
-                            {
-                                for (int i = 0; i < dlmsStructure.Items.Length; i++)
-                                {
-                                    dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
-                                }
-                            }
-                        }
-
-
-                        DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
-                    }
+                    strr = stringBuilder.ToString();
                 }
+
+                //接着对字符串进行解析
+                if (!vDataItem.PduStringInHexConstructor(ref strr))
+                {
+                    return null;
+                }
+
+                if (vDataItem.DataType == DataType.Array)
+                {
+                    array = (DLMSArray) vDataItem.Value;
+                    foreach (var item in array.Items)
+                    {
+                        structures.Add((DlmsStructure) item.Value);
+                    }
+
+                    //将每个捕获对象的描述性文字赋值给ValueName用于界面展示
+                }
+
+                return structures;
             }
+
+            return structures;
         }
 
         public RelayCommand<CustomCosemProfileGenericModel> ClearBufferCommand { get; set; }

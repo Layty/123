@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Quartz;
 using Quartz.Impl;
@@ -29,10 +28,10 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
         //调度器
-        IScheduler scheduler;
+        readonly IScheduler scheduler;
 
         //调度器工厂
-        ISchedulerFactory factory;
+        readonly ISchedulerFactory factory;
 
         public JobCenter()
         {

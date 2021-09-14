@@ -10,10 +10,8 @@
       Background="Transparent"
       Width="300" Height="350"
       DataContext="{Binding Source={StaticResource Locator },Path=Login}"
-      xmlns:viewModel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
-      xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
       Loaded="UserLoginPage_OnLoaded" KeyDown="UserLoginPage_OnKeyDown">
     <Page.Resources>
 
