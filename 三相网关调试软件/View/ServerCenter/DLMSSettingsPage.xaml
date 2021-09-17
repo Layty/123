@@ -91,10 +91,10 @@
                              materialDesign:HintAssist.Hint="ReceiveMaxWindowSizeFromMeter"
                              Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfoFromMeter.ReceiveMaxWindowSize}" />
 
-                    <TextBox Text="{Binding Client.HdlcFrameMaker.Hdlc46Frame.CurrentSendSequenceNumber}"
+                    <TextBox Text="{Binding Client.Hdlc46FrameBase.CurrentSendSequenceNumber}"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="CurrentSendSequenceNumber" />
-                    <TextBox Text="{Binding  Client.HdlcFrameMaker.Hdlc46Frame.CurrentReceiveSequenceNumber}"
+                    <TextBox Text="{Binding  Client.Hdlc46FrameBase.CurrentReceiveSequenceNumber}"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                              materialDesign:HintAssist.Hint="CurrentReceiveSequenceNumber" />
                 </StackPanel>

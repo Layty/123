@@ -367,7 +367,7 @@ namespace 三相智慧能源网关调试软件
 
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-            ReceiveBytes?.Invoke(clientSocket, bytes);
+           ReceiveBytes?.Invoke(clientSocket, bytes);
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
@@ -593,25 +593,27 @@ namespace 三相智慧能源网关调试软件
             OnSendBytesToClient(destinationSocket, bytes);
         }
 
-
+        Stopwatch stopwatch1;
         public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 _returnBytes = null;
                 ReceiveBytes += TcpServerHelper_ReceiveBytes;
                 destinationSocket.Send(bytes);
                 OnSendBytesToClient(destinationSocket, bytes);
-                Stopwatch stopwatch1 = new Stopwatch();
+                stopwatch1 = new Stopwatch();
+               var nowtick= DateTime.Now.Ticks;
                 TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
                 stopwatch1.Start();
+               
+                //占用大量CPU需要优化
                 while (true)
-                {
-                    TimeSpan stopTimeSpan = new TimeSpan(DateTime.Now.Ticks);
-                    TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
-                    if (timeSpan.Seconds >= ResponseTimeOut)
+                {await Task.Delay(100);
+                    TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks- nowtick);
+                   // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
+                    if (elapsed.TotalSeconds >= ResponseTimeOut)
                     {
-//                        ResponseTime = timeSpan.Seconds.ToString();
                         stopwatch1.Reset();
                         OnNotifyStatusMsg($"超时{ResponseTimeOut}秒未响应");
                         break;

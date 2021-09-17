@@ -11,7 +11,7 @@ using 三相智慧能源网关调试软件.View;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
-
+using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -257,6 +257,13 @@ namespace 三相智慧能源网关调试软件
         private void ButtonMeterData_OnClick(object sender, RoutedEventArgs e)
         {
             new MeterDataWindow() {Owner = this}.Show();
+        }
+
+        private void ButtonTime_Click(object sender, RoutedEventArgs e)
+        {
+            new ChangeSystemDateTime().Show();
+
+
         }
     }
 }

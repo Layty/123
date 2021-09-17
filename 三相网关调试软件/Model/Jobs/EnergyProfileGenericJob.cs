@@ -129,7 +129,8 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
           
             RestRequest.AddHeader("Content-Type", "application/json");
-            var str = JsonConvert.SerializeObject(Energy);
+            var str = JsonConvert.SerializeObject(Energy,Formatting.Indented);
+            NetLogViewModel.MyServerNetLogModel.Log = str;
             RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);
             NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");

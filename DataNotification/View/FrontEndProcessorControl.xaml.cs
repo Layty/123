@@ -34,17 +34,18 @@ namespace DataNotification.View
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>
                 {
-                    HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
+                    
                     var str = message.Item2.ByteToString();
-                    if (heartBeatFrame.PduStringInHexConstructor(ref str))
+                    var hbf= HeartBeatFrame.ParseHeartBeatFrame(ref str);
+                    if (hbf != null)
                     {
-                        var strAdd = Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes);
+                        var strAdd = Encoding.Default.GetString(hbf.MeterAddressBytes);
                         if (ListBox.Items.Count == 0)
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
                                 ListBox.Items.Add(message.Item1.RemoteEndPoint + "  <==>  " +
-                                                  Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes));
+                                                  Encoding.Default.GetString(hbf.MeterAddressBytes));
                             });
                         }
                         else
@@ -69,7 +70,7 @@ namespace DataNotification.View
                                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                 {
                                     ListBox.Items.Add(message.Item1.RemoteEndPoint + "  <==>   " +
-                                                      Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes));
+                                                      Encoding.Default.GetString(hbf.MeterAddressBytes));
                                 });
                             }
                         }

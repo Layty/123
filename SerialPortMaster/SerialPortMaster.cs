@@ -387,11 +387,12 @@ namespace MySerialPortMaster
 
         private Task<byte[]> ReceiveDataAsync(CancellationToken token)
         {
-            Task<byte[]> task = Task.Run(() =>
+            Task<byte[]> task = Task.Run(async () =>
             {
                 byte[] receivedBytes = { };
                 while (true)
                 {
+                    await Task.Delay(100);
                     if (SerialPort.BytesToRead != 0)
                     {
                         _stopwatch1.Stop();
@@ -400,7 +401,7 @@ namespace MySerialPortMaster
                         while (true)
                         {
                             var n = SerialPort.BytesToRead;
-                            Thread.Sleep(50);
+                            await Task.Delay(100);
                             var n1 = SerialPort.BytesToRead;
                             if (n != 0 && n1 == n)
                             {

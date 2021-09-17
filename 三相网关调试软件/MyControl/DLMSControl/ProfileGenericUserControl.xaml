@@ -275,7 +275,7 @@
                             ItemsSource="{Binding Buffer}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel />
+                                    <VirtualizingStackPanel VirtualizationMode="Recycling" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>

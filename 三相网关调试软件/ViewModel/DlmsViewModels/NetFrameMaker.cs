@@ -44,7 +44,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public byte[] InvokeApdu(byte[] apduBytes)
         {
             InitWrapperHeader();
-            WrapperFrame.WrapperData = apduBytes;
+            WrapperFrame.WrapperBody.DataBytes = apduBytes;
             return WrapperFrame.ToPduStringInHex().StringToByte();
         }
     }

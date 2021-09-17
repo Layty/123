@@ -232,7 +232,7 @@ namespace DataNotification.ViewModel
                 var netFrame = new WrapperFrame();
                 if (!netFrame.PduStringInHexConstructor(ref s)) return;
 
-                var s1 = netFrame.WrapperData.ByteToString();
+                var s1 = netFrame.WrapperBody.DataBytes.ByteToString();
                 var dataNotification = new MyDlmsStandard.ApplicationLay.DataNotification.DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
@@ -385,10 +385,9 @@ namespace DataNotification.ViewModel
 
             try
             {
-                var heart = new HeartBeatFrame();
                 var pduString = bytes.ByteToString();
-                var result = heart.PduStringInHexConstructor(ref pduString);
-                if (result)
+                var heart = HeartBeatFrame.ParseHeartBeatFrame(ref pduString);
+                if (heart != null)
                 {
                     heart.OverturnDestinationSource();
                     await Task.Delay(HeartBeatDelayTime);

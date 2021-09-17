@@ -15,7 +15,7 @@ namespace 三相智慧能源网关调试软件
         public static Logger Logger = LogManager.GetCurrentClassLogger();
         //private readonly LierdaCracker _cracker = new LierdaCracker();
         protected override void OnStartup(StartupEventArgs e)
-        {
+       {
           //  _cracker.Cracker();
             DispatcherHelper.Initialize();
 

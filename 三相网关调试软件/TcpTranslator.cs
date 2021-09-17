@@ -197,6 +197,8 @@ namespace 三相智慧能源网关调试软件
 
         public void Stop()
         {
+            TcpListener.AcceptNewClient -= TcpListener_AcceptNewClient;
+            TcpListener.ReceiveBytes -= TcpListener_ReceiveBytes;
             TcpListener.CloseSever();
 
             SocketBindingDictionary.Clear();

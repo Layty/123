@@ -45,7 +45,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
         private AxdrIntegerUnsigned32 _capturePeriod = new AxdrIntegerUnsigned32();
 
-  
+
         /// <summary>
         /// 排序方法，属性5，DefaultValue=SortMethod.FiFo
         /// </summary>
@@ -126,35 +126,43 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public ProfileGenericRangeDescriptor ProfileGenericRangeDescriptor
         {
             get => _profileGenericRangeDescriptor;
-            set { _profileGenericRangeDescriptor = value; OnPropertyChanged(); }
+            set
+            {
+                _profileGenericRangeDescriptor = value;
+                OnPropertyChanged();
+            }
         }
+
         private ProfileGenericRangeDescriptor _profileGenericRangeDescriptor;
 
 
         public ProfileGenericEntryDescriptor ProfileGenericEntryDescriptor
         {
             get => _profileGenericEntryDescriptor;
-            set { _profileGenericEntryDescriptor = value; OnPropertyChanged(); }
+            set
+            {
+                _profileGenericEntryDescriptor = value;
+                OnPropertyChanged();
+            }
         }
+
         private ProfileGenericEntryDescriptor _profileGenericEntryDescriptor;
 
-     
 
         public CosemAttributeDescriptor BufferAttributeDescriptor => GetCosemAttributeDescriptor(2);
 
 
-        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange()
-        {
-            return new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByRange =>
+            new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
                     ProfileGenericRangeDescriptor.ToDlmsDataItem()));
-        }
 
-        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry=>
-             new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
+
+        public CosemAttributeDescriptorWithSelection GetBufferAttributeDescriptorWithSelectionByEntry =>
+            new CosemAttributeDescriptorWithSelection(BufferAttributeDescriptor,
                 new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
                     ProfileGenericEntryDescriptor.ToDlmsDataItem()));
-       
+
 
         public CosemAttributeDescriptor CaptureObjectsAttributeDescriptor => GetCosemAttributeDescriptor(3);
 
@@ -240,7 +248,5 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         {
             throw new NotImplementedException();
         }
-     
-
     }
 }

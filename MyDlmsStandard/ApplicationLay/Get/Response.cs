@@ -21,7 +21,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
             if (a=="63")
             {
                 ReleaseResponse=new ReleaseResponse();
-                ReleaseResponse.PduStringInHexConstructor(ref pduStringInHex)
+                ReleaseResponse.PduStringInHexConstructor(ref pduStringInHex);
             }
 
             if (a == "D8")

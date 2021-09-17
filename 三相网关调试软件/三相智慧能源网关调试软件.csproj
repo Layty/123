@@ -237,6 +237,7 @@
     <Compile Include="Converters\FactoryConverter.cs" />
     <Compile Include="Converters\HexStringToDateTimeConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Model\StandardEventCode.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
     <Compile Include="DispatcherHelper.cs" />
     <Compile Include="Model\Jobs\CloseWarmingJob.cs" />
@@ -254,6 +255,9 @@
     <Compile Include="Model\Jobs\ProfileGenericJobBase.cs" />
     <Compile Include="Model\TaskCenterViewModel.cs" />
     <Compile Include="Model\Jobs\TestJob.cs" />
+    <Compile Include="MyControl\ChangeSystemDateTime.xaml.cs">
+      <DependentUpon>ChangeSystemDateTime.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\DLMSControl\CloseWarning.xaml.cs">
       <DependentUpon>CloseWarning.xaml</DependentUpon>
     </Compile>
@@ -472,6 +476,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyControl\ChangeSystemDateTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyControl\DLMSControl\ClockControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -349,6 +349,11 @@
                                             x:Name="ButtonMeterData"
                                             Click="ButtonMeterData_OnClick"
                                             Content="MeterData" />
+                                  
+                                        <Button
+                                            x:Name="ButtonTime"
+                                            Click="ButtonTime_Click"
+                                            Content="Time" />
                                         <Button Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}">GoodBye</Button>
                                     </ListBox>
                                 </materialDesign:PopupBox>

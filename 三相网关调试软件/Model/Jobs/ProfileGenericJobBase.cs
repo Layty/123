@@ -12,6 +12,9 @@ using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
+    /// <summary>
+    /// 曲线采集的父类，定义实现了基本的采集规则
+    /// </summary>
     public abstract class ProfileGenericJobBase : ObservableObject, IProfileGenericJob
     {
         protected ProfileGenericJobBase()
@@ -107,7 +110,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行读取曲线Buffer\r\n";
                         Responses = new List<GetResponse>();
                         Responses = await tempClient.GetRequestAndWaitResponseArray(CustomCosemProfileGenericModel
-                            .GetBufferAttributeDescriptorWithSelectionByRange());
+                            .GetBufferAttributeDescriptorWithSelectionByRange);
                         if (Responses != null)
                         {
                             NetLogViewModel.MyServerNetLogModel.Log = "读取曲线Buffer成功\r\n";

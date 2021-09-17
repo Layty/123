@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MyDlmsStandard.Wrapper.WrapperBody" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrapper\WrapperBody.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Wrapper.WrapperFrame" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="1.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAQAAABAAAAAAAAAgAAIAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Wrapper\WrapperFrame.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="MyDlmsStandard.Wrapper.WrapperHeader" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAQAAAAAEABAAAAAAABAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrapper\WrapperHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.179" Collapsed="true" />
+  </Class>
+  <Interface Name="MyDlmsStandard.Wrapper.IWrapperBody">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrapper\IWrapperBody.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MyDlmsStandard.Wrapper.IWrapperHeader">
+    <Position X="2.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAQAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Wrapper\IWrapperHeader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

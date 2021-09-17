@@ -423,7 +423,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 var netFrame = new WrapperFrame();
                 if (!netFrame.PduStringInHexConstructor(ref s)) return;
 
-                var s1 = netFrame.WrapperData.ByteToString();
+                var s1 = netFrame.WrapperBody.DataBytes.ByteToString();
                 var dataNotification = new DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {

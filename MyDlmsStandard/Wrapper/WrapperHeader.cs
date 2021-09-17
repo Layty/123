@@ -2,7 +2,7 @@
 
 namespace MyDlmsStandard.Wrapper
 {
-    public class WrapperHeader : IToPduStringInHex, IPduStringInHexConstructor
+    public class WrapperHeader : IWrapperHeader
     {
         /// <summary>
         /// 版本号
@@ -73,5 +73,7 @@ namespace MyDlmsStandard.Wrapper
 
             return true;
         }
+
+
     }
 }

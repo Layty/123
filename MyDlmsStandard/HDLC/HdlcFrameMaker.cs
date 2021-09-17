@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.HDLC
 {
@@ -13,7 +12,7 @@ namespace MyDlmsStandard.HDLC
         private readonly byte _clientAddress;
         private readonly DLMSInfo _info;
 
-        public Hdlc46Frame Hdlc46Frame { get; set; }
+        public Hdlc46FrameBase Hdlc46FrameBase { get; set; }
         public Command LastCommand { get; set; }
 
         public HdlcFrameMaker(ushort serverAddress, byte clientAddress, DLMSInfo info)
@@ -21,7 +20,7 @@ namespace MyDlmsStandard.HDLC
             _serverAddress = serverAddress;
             _clientAddress = clientAddress;
             _info = info;
-            Hdlc46Frame = new Hdlc46Frame((byte)_serverAddress,
+            Hdlc46FrameBase = new Hdlc46FrameBase((byte) _serverAddress,
                 _clientAddress);
         }
 
@@ -30,43 +29,13 @@ namespace MyDlmsStandard.HDLC
             _serverAddress = serverAddress;
             _clientAddress = clientAddress;
             _info = info;
-            Hdlc46Frame = new Hdlc46Frame((byte)_serverAddress,
+            Hdlc46FrameBase = new Hdlc46FrameBase((byte) _serverAddress,
                 _clientAddress);
         }
 
-        public byte[] SNRMRequest(bool snrmContainInfoFlag = true)
-        {
-            Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);
-            InitFrameSequenceNumber();
-            List<byte> snrmFrame = new List<byte>();
-            PackagingDestinationAndSourceAddress(snrmFrame);
-            LastCommand = Command.Snrm;
-            snrmFrame.Add((byte) Command.Snrm);
-            byte[] snrmInfo = { };
-            byte hcs = 0;
-            if (snrmContainInfoFlag)
-            {
-                hcs = 2;
-                snrmInfo = _info.GetSnrmInfo();
-            }
-
-            //不包含头尾2个0x7E
-            //FrameFormatField=2，,1/2/4个字节的目的地址字节数，  command=1个字节， hcs字节=2，snrminfo=12, 2个字节FCS,
-            int count = 2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + hcs + snrmInfo.Length + Hdlc46Frame.Fcs.Length;
-            snrmFrame.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
-
-            if (snrmContainInfoFlag)
-            {
-                PackingHcs(snrmFrame);
-                snrmFrame.AddRange(_info.GetSnrmInfo());
-            }
-
-            PackingFcs_And_FrameStartEnd(snrmFrame);
-
-            return snrmFrame.ToArray();
-        }
-
+       
+     
+        
 
         public byte[] DisconnectRequest()
         {
@@ -76,53 +45,10 @@ namespace MyDlmsStandard.HDLC
             disConnect.Add((byte) Command.DisconnectRequest);
             byte count = (byte) (disConnect.Count + 2 + 2); //FCS=2,FrameFormatField=2 ,目的地址=1/2/4，源地址=1
 
-            disConnect.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            disConnect.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(disConnect);
             InitFrameSequenceNumber();
             return disConnect.ToArray();
-        }
-
-        public byte[] InvokeApduHex(string hexApdu)
-        {
-            var t = hexApdu.StringToByte();
-            return InvokeApdu(t);
-        }
-
-        public byte[] InvokeApdu(byte[] apdu)
-        {  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);  Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);              Hdlc46Frame = new Hdlc46Frame((byte) _serverAddress,
-                _clientAddress);
-            List<byte> arrqListBytes = new List<byte>();
-            PackagingDestinationAndSourceAddress(arrqListBytes);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
-            arrqListBytes.Add((byte) ctr);
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + 2 + 3 + apdu.Length +
-                                 2);
-            arrqListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
-
-            PackingHcs(arrqListBytes);
-            arrqListBytes.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
-
-            arrqListBytes.AddRange(apdu);
-
-            PackingFcs_And_FrameStartEnd(arrqListBytes);
-            IncreaseFrameSequenceNumber();
-            return arrqListBytes.ToArray();
         }
 
 
@@ -130,15 +56,15 @@ namespace MyDlmsStandard.HDLC
         {
             List<byte> rlrqListBytes = new List<byte>();
             PackagingDestinationAndSourceAddress(rlrqListBytes);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
+            int ctr = ((Hdlc46FrameBase.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
+                      (Hdlc46FrameBase.CurrentSendSequenceNumber << 1);
 
             rlrqListBytes.Add((byte) ctr);
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + 2 + 3 + 1 + 1 + 3 + 2);
+            byte count = (byte) (2 + Hdlc46FrameBase.DestAddress1.Size + 1 + 1 + 2 + 3 + 1 + 1 + 3 + 2);
 
-            rlrqListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            rlrqListBytes.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingHcs(rlrqListBytes);
-            rlrqListBytes.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
+            rlrqListBytes.AddRange(Hdlc46FrameBase.LlcHeadFrameBytes);
             LastCommand = Command.ReleaseRequest;
             rlrqListBytes.Add((byte) Command.ReleaseRequest); //
             rlrqListBytes.AddRange(new byte[]
@@ -162,7 +88,7 @@ namespace MyDlmsStandard.HDLC
             listUi.Add((byte) Command.UiCommand); //19
             LastCommand = Command.UiCommand;
             byte count = (byte) (listUi.Count + 4); //4=FCS+帧头帧尾
-            listUi.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            listUi.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(listUi);
             return listUi.ToArray();
         }
@@ -171,17 +97,17 @@ namespace MyDlmsStandard.HDLC
         {
             List<byte> getRequest = new List<byte>();
             PackagingDestinationAndSourceAddress(getRequest); //源地址固定一个字节，目的地址1~4个字节
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
+            int ctr = ((Hdlc46FrameBase.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
+                      (Hdlc46FrameBase.CurrentSendSequenceNumber << 1);
             IncreaseFrameSequenceNumber();
             getRequest.Add((byte) ctr);
             //2个起始帧字节,目的地址长度，1个源地址长度+ 1字节ctr  +2个字节Hcs，3个字节LLCHead 13字节+2字节FCS
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + 2 + 3 + pduBytes.Length +
-                                 Hdlc46Frame.Fcs.Length);
+            byte count = (byte) (2 + Hdlc46FrameBase.DestAddress1.Size + 1 + 1 + 2 + 3 + pduBytes.Length +
+                                 Hdlc46FrameBase.Fcs.Length);
 
-            getRequest.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            getRequest.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingHcs(getRequest);
-            getRequest.AddRange(Hdlc46Frame.LlcHeadFrameBytes); //3字节
+            getRequest.AddRange(Hdlc46FrameBase.LlcHeadFrameBytes); //3字节
 
             #region 13字节Apdu
 
@@ -204,15 +130,15 @@ namespace MyDlmsStandard.HDLC
             //7E A0 10 03 03 32 8F 31 E6 E6 00 FF 10   01 00   C4 08 7E 
             List<byte> enterUpgradeMode = new List<byte>();
             PackagingDestinationAndSourceAddress(enterUpgradeMode);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
-                      (Hdlc46Frame.CurrentSendSequenceNumber << 1);
+            int ctr = ((Hdlc46FrameBase.CurrentReceiveSequenceNumber << 1) + 1 << 4) +
+                      (Hdlc46FrameBase.CurrentSendSequenceNumber << 1);
             IncreaseFrameSequenceNumber();
             enterUpgradeMode.Add((byte) ctr);
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 2 + 3 + 2 + 2 + 2 + 2);
+            byte count = (byte) (2 + Hdlc46FrameBase.DestAddress1.Size + 2 + 3 + 2 + 2 + 2 + 2);
 
-            enterUpgradeMode.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            enterUpgradeMode.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingHcs(enterUpgradeMode);
-            enterUpgradeMode.AddRange(Hdlc46Frame.LlcHeadFrameBytes);
+            enterUpgradeMode.AddRange(Hdlc46FrameBase.LlcHeadFrameBytes);
 
             enterUpgradeMode.AddRange(new byte[] {0xFF, 0x10});
             enterUpgradeMode.AddRange(BitConverter.GetBytes(id).Reverse().ToArray());
@@ -225,10 +151,10 @@ namespace MyDlmsStandard.HDLC
         {
             List<byte> rr = new List<byte>();
             PackagingDestinationAndSourceAddress(rr);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 1;
+            int ctr = ((Hdlc46FrameBase.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 1;
             rr.Add((byte) ctr);
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + 2);
-            rr.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            byte count = (byte) (2 + Hdlc46FrameBase.DestAddress1.Size + 1 + 1 + 2);
+            rr.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(rr);
             return rr.ToArray();
         }
@@ -237,37 +163,37 @@ namespace MyDlmsStandard.HDLC
         {
             List<byte> rnrListBytes = new List<byte>();
             PackagingDestinationAndSourceAddress(rnrListBytes);
-            int ctr = ((Hdlc46Frame.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 5;
+            int ctr = ((Hdlc46FrameBase.CurrentReceiveSequenceNumber << 1) + 1 << 4) + 5;
             rnrListBytes.Add((byte) ctr);
-            byte count = (byte) (2 + Hdlc46Frame.DestAddress1.Size + 1 + 1 + 2);
+            byte count = (byte) (2 + Hdlc46FrameBase.DestAddress1.Size + 1 + 1 + 2);
 
-            rnrListBytes.InsertRange(0, Hdlc46Frame.GetFrameFormatField(count));
+            rnrListBytes.InsertRange(0, Hdlc46FrameBase.GetFrameFormatField(count));
             PackingFcs_And_FrameStartEnd(rnrListBytes);
             return rnrListBytes.ToArray();
         }
 
         private void PackagingDestinationAndSourceAddress(List<byte> bytes)
         {
-            bytes.AddRange(Hdlc46Frame.DestAddress1.ToPdu());
-            bytes.AddRange(Hdlc46Frame.SourceAddress1.ToPdu());
+            bytes.AddRange(Hdlc46FrameBase.DestAddress1.ToPdu());
+            bytes.AddRange(Hdlc46FrameBase.SourceAddress1.ToPdu());
         }
 
         private void PackingHcs(List<byte> bytes)
         {
-            Hdlc46Frame.Hcs = DataCheck.CRC16_CCITT(bytes.ToArray(), bytes.Count);
-            bytes.AddRange(Hdlc46Frame.Hcs);
+            Hdlc46FrameBase.Hcs = DataCheck.CRC16_CCITT(bytes.ToArray(), bytes.Count);
+            bytes.AddRange(Hdlc46FrameBase.Hcs);
         }
 
         private void PackingFcs(List<byte> bytes)
         {
-            Hdlc46Frame.Fcs = DataCheck.CRC16_CCITT(bytes.ToArray(), bytes.Count);
-            bytes.AddRange(Hdlc46Frame.Fcs);
+            Hdlc46FrameBase.Fcs = DataCheck.CRC16_CCITT(bytes.ToArray(), bytes.Count);
+            bytes.AddRange(Hdlc46FrameBase.Fcs);
         }
 
         private void PackingFrameStartEnd(List<byte> bytes)
         {
-            bytes.Insert(0, Hdlc46Frame.HdlcFrameStartEnd); //添加帧头
-            bytes.Add(Hdlc46Frame.HdlcFrameStartEnd); //添加帧尾
+            bytes.Insert(0, Hdlc46FrameBase.HdlcFrameStartEnd); //添加帧头
+            bytes.Add(Hdlc46FrameBase.HdlcFrameStartEnd); //添加帧尾
         }
 
         private void PackingFcs_And_FrameStartEnd(List<byte> bytes)
@@ -278,14 +204,14 @@ namespace MyDlmsStandard.HDLC
 
         public void InitFrameSequenceNumber()
         {
-            Hdlc46Frame.CurrentReceiveSequenceNumber = 0;
-            Hdlc46Frame.CurrentSendSequenceNumber = 0;
+            Hdlc46FrameBase.CurrentReceiveSequenceNumber = 0;
+            Hdlc46FrameBase.CurrentSendSequenceNumber = 0;
         }
 
         public void IncreaseFrameSequenceNumber()
         {
-            Hdlc46Frame.CurrentSendSequenceNumber++;
-            Hdlc46Frame.CurrentReceiveSequenceNumber++;
+            Hdlc46FrameBase.CurrentSendSequenceNumber++;
+            Hdlc46FrameBase.CurrentReceiveSequenceNumber++;
         }
 
         internal static object GetHdlcAddress(int value, byte size)
@@ -312,31 +238,6 @@ namespace MyDlmsStandard.HDLC
             throw new ArgumentException("Invalid address.");
         }
 
-        /// <summary>
-        /// 解析UA帧
-        /// </summary>
-        /// <param name="replyData"></param>
-        /// <returns></returns>
-        public bool ParseUaResponse(byte[] replyData)
-        {
-            if (replyData.Length == 0)
-            {
-                return false;
-            }
-
-            if (replyData.First() != 0x7E)
-            {
-                return false;
-            }
-
-            if (replyData.Last() != 0x7E)
-            {
-                return false;
-            }
-            //TODO  要根据源地址和目的地址的字节数来取
-            //当源地址和目的地址均为1时replyData[5] == 115
-            //replyData[?] == 115;
-            return true;
-        }
+       
     }
 }

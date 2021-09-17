@@ -10,7 +10,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
     /// <summary>
     /// 协商请求-AARQ_0x60
     /// </summary>
-    public class AssociationRequest
+    public class AssociationRequest:IToPduStringInHex
     {
         [XmlIgnore] public Command Command => Command.Aarq;
         public BerBitString ProtocolVersion { get; set; }

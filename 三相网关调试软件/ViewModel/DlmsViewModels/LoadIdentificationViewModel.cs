@@ -182,9 +182,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             GetEarliestCommand = new RelayCommand(async () =>
             {
                 var loadDataBytes =
-                    await Client.GetRequestAndWaitResponse(CustomCosemLoadIdentificationModel
+                    await Client.GetRequestAndWaitResponseArray(CustomCosemLoadIdentificationModel
                         .GetEarliestLoadIdentification());
-                ParseData(loadDataBytes);
+                ParseData(loadDataBytes[0]);
             });
             GetLatestCommand = new RelayCommand(async () =>
             {
