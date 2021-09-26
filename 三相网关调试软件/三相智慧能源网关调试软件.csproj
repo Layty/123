@@ -237,9 +237,8 @@
     <Compile Include="Converters\FactoryConverter.cs" />
     <Compile Include="Converters\HexStringToDateTimeConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
-    <Compile Include="Model\StandardEventCode.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
-    <Compile Include="DispatcherHelper.cs" />
+    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Model\Jobs\CloseWarmingJob.cs" />
     <Compile Include="Model\CosemObjectEditModel.cs" />
     <Compile Include="Model\Jobs\DayProfileGenericJob.cs" />
@@ -264,6 +263,9 @@
     <Compile Include="MyControl\DLMSControl\JobCenter.xaml.cs">
       <DependentUpon>JobCenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyControl\Pager.xaml.cs">
+      <DependentUpon>Pager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyControl\SetNetwork.xaml.cs">
       <DependentUpon>SetNetwork.xaml</DependentUpon>
     </Compile>
@@ -274,6 +276,7 @@
       <DependentUpon>SSHClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DialogsViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\Business.cs" />
     <Compile Include="ViewModel\DlmsViewModels\CosemObjectViewModel.cs" />
     <Compile Include="Model\CustomCosemDataModel.cs" />
     <Compile Include="Model\CustomCosemProfileGenericModel.cs" />
@@ -281,11 +284,13 @@
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
     <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\LinkLayer.cs" />
     <Compile Include="ViewModel\DlmsViewModels\MeterDataViewModel.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\Protocol.cs" />
     <Compile Include="ViewModel\DlmsViewModels\XMLLogViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\NetFrameMaker.cs" />
     <Compile Include="ENetClientHelper.cs" />
-    <Compile Include="ExcelHelper.cs" />
+    <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Model\CustomCosemRegisterModel.cs" />
     <Compile Include="Model\ENetConfig\ENetEventType.cs" />
     <Compile Include="Model\ENetConfig\ENetMessageBuilder.cs" />
@@ -521,6 +526,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyControl\NetLogger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyControl\Pager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

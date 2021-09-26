@@ -67,10 +67,22 @@ namespace MyWebApi.Services
             foreach (var energy1 in energy)
             {
                 energy1.MeterId = meterId;
+                if (_dbContext.Energies.Any(t => t.DateTime == energy1.DateTime))
+                {
+                    var t = _dbContext.Energies.FirstOrDefault(t => t.DateTime == energy1.DateTime);
+                    t.EnergyData = energy1.EnergyData;
+                    //更新追踪的，必须改属性，不然调用update会报错
+                    _dbContext.Energies.Update(t);
+                }
+                else {
+                    //要判断是否已存在不然add时会报错
+                    _dbContext.Energies.Add(energy1);
+                }
             }
+            
+           
 
-
-            _dbContext.Energies.AddRange(energy);
+        
         }
 
         public void AddPowerData(string meterId, List<Power> powers)

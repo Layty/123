@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -25,7 +26,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         private ObservableCollection<DlmsStructure> _buffer;
 
         /// <summary>
-        /// 捕获对象，属性3
+        /// 捕获对象集合，属性3
         /// </summary>
         public ObservableCollection<CaptureObjectDefinition> CaptureObjects { get; set; } =
             new ObservableCollection<CaptureObjectDefinition>();
@@ -83,7 +84,6 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// <summary>
         /// 已使用的条目数，属性7
         /// </summary>
-
         public AxdrIntegerUnsigned32 EntriesInUse
         {
             get => _entriesInUse;
@@ -228,7 +228,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public virtual void Reset()
         {
             EntriesInUse.Value = "00000000";
-            Buffer = new ObservableCollection<DlmsStructure>();
+            Buffer.Clear();
             // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
 //            ActionExecute(1, dataItem);
         }

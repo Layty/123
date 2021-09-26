@@ -106,7 +106,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             }
             catch (Exception e)
             {
-             throw new Exception(e.Message);
+               throw new Exception(e.Message);
             }
 
             return this._dateTime;
@@ -172,11 +172,23 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
                 this.DayOfWeek = dateTimeBytes[4];
                 this.Hour = dateTimeBytes[5];
                 this.Minute = dateTimeBytes[6];
-                this.Second = dateTimeBytes[7];
+                this.Second = dateTimeBytes[7]; 
+                string tp = string.Concat(new string[]
+             {
+                this.Year.ToString().PadLeft(4, '0'),
+                this.Month.ToString().PadLeft(2, '0'),
+                this.Day.ToString().PadLeft(2, '0'),
+                this.Hour.ToString().PadLeft(2, '0'),
+                this.Minute.ToString().PadLeft(2, '0'),
+                this.Second.ToString().PadLeft(2, '0')
+             });
+                string dateTimeformat = "yyyyMMddHHmmss";
+                this._dateTime = DateTime.ParseExact(tp, dateTimeformat, CultureInfo.CurrentCulture);
                 result = true;
             }
             catch (Exception e)
             {
+                result = false;
                 //throw new Exception(e.Message);
             }
 

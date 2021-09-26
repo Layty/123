@@ -102,7 +102,7 @@ namespace MyWebApi.Controllers
             {
                 return BadRequest();
             }
-
+          
             _meterRepository.AddEnergyData(meterId, energy);
             await _meterRepository.SaveAsync();
             return Ok(energy);

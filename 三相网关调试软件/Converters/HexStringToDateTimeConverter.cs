@@ -1,12 +1,30 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows.Controls;
+using System.Windows.Data;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.BusinessDefine;
 using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.Converters
 {
+    public class IndexConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            ListBoxItem item = (ListBoxItem)value;
+            ListBox listView = ItemsControl.ItemsControlFromItemContainer(item) as ListBox;
+            int index = listView.ItemContainerGenerator.IndexFromContainer(item) + 1;
+            return index.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public class HexStringToDateTimeConverter : BaseConverter<HexStringToDateTimeConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -17,7 +35,7 @@ namespace 三相智慧能源网关调试软件.Converters
                 return value;
             }
 
-            if (t?.ValueName == "Clock  time")
+            if (t.ValueName == "Clock  time")
             {
                 var clock = new CosemClock();
                 string str = t.ValueString.ToString();
@@ -37,7 +55,7 @@ namespace 三相智慧能源网关调试软件.Converters
                 return str;
             }
 
-            var name = t?.ValueName.Replace(" ", "").ToLower();
+            var name = t.ValueName.Replace(" ", "").ToLower();
             if (name.Contains("eventcode"))
             {
                 try

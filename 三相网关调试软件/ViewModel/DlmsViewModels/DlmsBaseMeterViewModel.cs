@@ -62,9 +62,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             EModeViewModel = Client.EModeViewModel;
 
-            InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
-            DisconnectCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });
-            GetSoftVersionCommand = new RelayCommand(async () =>
+            InitCommand = new AsyncRelayCommand(async () => { await Client.InitRequest(); });
+            DisconnectCommand = new AsyncRelayCommand(async () => { await Client.ReleaseRequest(); });
+            GetSoftVersionCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new CosemData("1.0.0.2.0.255");
                 var response = await Client.GetRequestAndWaitResponse(cosem.ValueAttributeDescriptor);
@@ -73,7 +73,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     SoftVersion = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            ReadFactoryCommand = new RelayCommand(async () =>
+            ReadFactoryCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 var response = await Client.GetRequestAndWaitResponse(cosem.ValueAttributeDescriptor);
@@ -82,24 +82,24 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     FactoryStatus = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            EnterFactorCommand = new RelayCommand(async () =>
+            EnterFactorCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt16, "2000"); //8192
                 await Client.SetRequestAndWaitResponse(cosem.ValueAttributeDescriptor, dataItem);
             });
-            QuitFactorCommand = new RelayCommand(async () =>
+            QuitFactorCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new CosemData("0.0.96.5.0.255");
                 var dataItem = new DlmsDataItem(DataType.UInt16, "0000");
                 await Client.SetRequestAndWaitResponse(cosem.ValueAttributeDescriptor, dataItem);
             });
-            EnterUpgradeModeCommand = new RelayCommand(async () =>
+            EnterUpgradeModeCommand = new AsyncRelayCommand(async () =>
             {
-                //var msg = Hdlc46Executor.HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
+              //  var msg = HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
                 await Client.SetEnterUpGradeMode();
             });
-            SetCapturePeriodCommand = new RelayCommand(async () =>
+            SetCapturePeriodCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new CosemProfileGeneric("1.0.99.1.0.255")
                 {
@@ -109,7 +109,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                 await Client.SetRequestAndWaitResponse(cosem.CapturePeriodAttributeDescriptor, dlmsData);
             });
-            ClearAllCommand = new RelayCommand(async () =>
+            ClearAllCommand = new AsyncRelayCommand(async () =>
             {
                 var cosem = new ScriptTable();
                 var value = new DlmsDataItem(DataType.UInt16, "0001");
@@ -167,20 +167,20 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <summary>
         /// 初始化命令，根据是否使用21E,或者使用HDLC46进行初始化通信,包含SNRM,AARQ
         /// </summary>
-        public RelayCommand InitCommand { get; set; }
+        public AsyncRelayCommand InitCommand { get; set; }
 
 
         /// <summary>
         /// 断开连接命令
         /// </summary>
-        public RelayCommand DisconnectCommand { get; set; }
+        public AsyncRelayCommand DisconnectCommand { get; set; }
 
-        private RelayCommand _getSoftVersionCommand;
+        private AsyncRelayCommand _getSoftVersionCommand;
 
         /// <summary>
         /// 读软件版本
         /// </summary>
-        public RelayCommand GetSoftVersionCommand
+        public AsyncRelayCommand GetSoftVersionCommand
         {
             get => _getSoftVersionCommand;
             set
@@ -190,12 +190,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand _readFactoryCommand;
+        private AsyncRelayCommand _readFactoryCommand;
 
         /// <summary>
         /// 读工厂模式
         /// </summary>
-        public RelayCommand ReadFactoryCommand
+        public AsyncRelayCommand ReadFactoryCommand
         {
             get => _readFactoryCommand;
             set
@@ -205,12 +205,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand _enterFactoryCommand;
+        private AsyncRelayCommand _enterFactoryCommand;
 
         /// <summary>
         /// 进入工厂模式命令
         /// </summary>
-        public RelayCommand EnterFactorCommand
+        public AsyncRelayCommand EnterFactorCommand
         {
             get => _enterFactoryCommand;
             set
@@ -220,12 +220,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand _quitFactoryCommand;
+        private AsyncRelayCommand _quitFactoryCommand;
 
         /// <summary>
         /// 退出工厂模式命令
         /// </summary>
-        public RelayCommand QuitFactorCommand
+        public AsyncRelayCommand QuitFactorCommand
         {
             get => _quitFactoryCommand;
             set
@@ -235,12 +235,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand _setCapturePeriodCommand;
+        private AsyncRelayCommand _setCapturePeriodCommand;
 
         /// <summary>
         /// 设置捕获时间
         /// </summary>
-        public RelayCommand SetCapturePeriodCommand
+        public AsyncRelayCommand SetCapturePeriodCommand
         {
             get => _setCapturePeriodCommand;
             set
@@ -251,12 +251,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
 
-        private RelayCommand _clearAllCommand;
+        private AsyncRelayCommand _clearAllCommand;
 
         /// <summary>
         /// 总清命令
         /// </summary>
-        public RelayCommand ClearAllCommand
+        public AsyncRelayCommand ClearAllCommand
         {
             get => _clearAllCommand;
             set
@@ -266,12 +266,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private RelayCommand _enterUpgradeModeCommand;
+        private AsyncRelayCommand _enterUpgradeModeCommand;
 
         /// <summary>
         /// 进入升级模式命令
         /// </summary>
-        public RelayCommand EnterUpgradeModeCommand
+        public AsyncRelayCommand EnterUpgradeModeCommand
         {
             get => _enterUpgradeModeCommand;
             set

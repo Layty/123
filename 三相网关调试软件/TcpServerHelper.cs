@@ -15,6 +15,7 @@ using System.Management;
 using System.Text.RegularExpressions;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -594,7 +595,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         Stopwatch stopwatch1;
-        public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
+        public async Task<byte[]> SendDataToClientAndWaitReceiveDataAsync(Socket destinationSocket, byte[] bytes)
         {
             return await Task.Run(async () =>
             {

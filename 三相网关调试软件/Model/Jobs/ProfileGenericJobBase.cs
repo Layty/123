@@ -70,7 +70,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         tempClient.CurrentSocket = so;
                         //初始化设置读取方式协议为47协议+以太网
                         tempClient.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
-                        tempClient.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
+                        tempClient.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
 
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行" + JobName + "\r\n";
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行初始化请求\r\n";

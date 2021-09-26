@@ -27,12 +27,14 @@ namespace MyWebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "CosemWebApi", Version = "v1"});
             });
-            services.AddScoped<ICosemRepository, CosemRepository>();
-            services.AddDbContext<CosemObjectDbContext>(option => { option.UseSqlite("Data Source=CosemObjects.db"); });
+
             services.AddScoped<IUserLoginRepository, UserLoginRepository>();
-            services.AddDbContext<UserLoginDbContext>(option => { option.UseSqlite("Data Source=UserLogin.db"); });
+            services.AddDbContext<UserLoginDbContext>(option => { option.UseSqlite(Configuration.GetConnectionString("UserLoginDbContext")); });
+            services.AddScoped<ICosemRepository, CosemRepository>();
+            services.AddDbContext<CosemObjectDbContext>(option => { option.UseSqlite(Configuration.GetConnectionString("CosemObjectDbContext")); });
+           
             services.AddScoped<IMeterRepository, MeterRepository>();
-            services.AddDbContext<MeterDbContext>(option => { option.UseSqlite("Data Source = Meter.db"); });
+            services.AddDbContext<MeterDbContext>(option => { option.UseSqlite(Configuration.GetConnectionString("MeterDbContext")); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

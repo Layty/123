@@ -51,7 +51,7 @@
                                                   Value="{Binding SerialPortMaster.ResponseTimeOut ,Mode=TwoWay}"
                                                   Min="2" Max="10">
                             <materialDesign:RatingBar.ValueItemTemplate>
-                                <DataTemplate DataType="system:Byte">
+                                <DataTemplate DataType="system:Byte" >
                                     <Grid>
                                         <materialDesign:PackIcon
                                             Kind="Star"

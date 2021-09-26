@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard
 {
-    public enum CommunicationType
+    public enum ChanelType
     {
         SerialPort,
         FrontEndProcess

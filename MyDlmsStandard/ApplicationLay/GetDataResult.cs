@@ -63,5 +63,14 @@ namespace MyDlmsStandard.ApplicationLay
 
             return false;
         }
+
+        public bool IsSuccessed()
+        {
+            if (DataAccessResult.Value=="00")
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

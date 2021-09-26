@@ -35,7 +35,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         var tempClient = Client;
                         tempClient.CurrentSocket = so;
                         tempClient.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
-                        tempClient.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
+                        tempClient.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
                         var netLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行" + JobName + "\r\n";

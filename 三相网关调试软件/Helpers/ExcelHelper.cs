@@ -8,7 +8,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
-namespace 三相智慧能源网关调试软件
+namespace 三相智慧能源网关调试软件.Helpers
 {
     public class ExcelHelper
     {
@@ -197,16 +197,16 @@ namespace 三相智慧能源网关调试软件
                 return null;
             }
         }
-   
 
-    /// <summary>
-    /// 将DataTable数据导入到excel中
-    /// </summary>
-    /// <param name="data">要导入的数据</param>
-    /// <param name="isColumnWritten">DataTable的列名是否要导入</param>
-    /// <param name="sheetName">要导入的excel的sheet的名称</param>
-    /// <returns>导入数据行数(包含列名那一行)</returns>
-    public void DataTableToExcel(DataTable data, string sheetName, bool isColumnWritten)
+
+        /// <summary>
+        /// 将DataTable数据导入到excel中
+        /// </summary>
+        /// <param name="data">要导入的数据</param>
+        /// <param name="isColumnWritten">DataTable的列名是否要导入</param>
+        /// <param name="sheetName">要导入的excel的sheet的名称</param>
+        /// <returns>导入数据行数(包含列名那一行)</returns>
+        public void DataTableToExcel(DataTable data, string sheetName, bool isColumnWritten)
         {
             using (FileStream fs = new FileStream(_fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
@@ -269,7 +269,7 @@ namespace 三相智慧能源网关调试软件
 
         public void Export(DataGrid dataGrid, string excelTitle)
         {
-            DataTable dt = new System.Data.DataTable();
+            DataTable dt = new DataTable();
             for (int i = 0;
                 i < dataGrid.Columns.Count;
                 i++)
@@ -291,7 +291,7 @@ namespace 三相智慧能源网关调试软件
                     if (dataGrid.Columns[j].Visibility == Visibility.Visible)
                     {
                         if (dataGrid.Items[i] != null &&
-                            (dataGrid.Columns[j].GetCellContent(dataGrid.Items[i]) as TextBlock) != null) //填充可见列数据  
+                            dataGrid.Columns[j].GetCellContent(dataGrid.Items[i]) as TextBlock != null) //填充可见列数据  
                         {
                             row[columnsIndex] = (dataGrid.Columns[j].GetCellContent(dataGrid.Items[i]) as TextBlock)
                                 .Text;

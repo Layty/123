@@ -58,13 +58,13 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
             if (ToggleButtonSelectChannel.IsChecked == true)
             {
                 ToggleButtonSelectChannel.Content = "Wrapper";
-                Client.DlmsSettingsViewModel.CommunicationType = CommunicationType.FrontEndProcess;
+                Client.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
                 Client.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
             }
             else
             {
                 ToggleButtonSelectChannel.Content = "SerialPort";
-                Client.DlmsSettingsViewModel.CommunicationType = CommunicationType.SerialPort;
+                Client.DlmsSettingsViewModel.CommunicationType = ChanelType.SerialPort;
                 Client.DlmsSettingsViewModel.InterfaceType = InterfaceType.HDLC;
             }
         }

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Threading;
 
-namespace 三相智慧能源网关调试软件
+namespace 三相智慧能源网关调试软件.Helpers
 {
     public static class DispatcherHelper
     {

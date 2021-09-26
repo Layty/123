@@ -14,6 +14,10 @@ using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using RestSharp;
+using System.Data;
+using GalaSoft.MvvmLight.Ioc;
+using System;
+using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -43,32 +47,68 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private CustomCosemProfileGenericModel _currentCustomCosemProfileGenericModel;
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand { get; set; }
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetCaptureObjectsCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> SetCaptureObjectsCommand { get; set; }
-        public RelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand { get; set; }
-        public RelayCommand<CustomCosemProfileGenericModel> SetCapturePeriodCommand { get; set; }
-        public RelayCommand<CustomCosemProfileGenericModel> GetEntriesInUseCommand { get; set; }
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetCapturePeriodCommand { get; set; }
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> SetCapturePeriodCommand { get; set; }
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetEntriesInUseCommand { get; set; }
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetProfileEntriesCommand { get; set; }
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetProfileEntriesCommand { get; set; }
 
-        public RelayCommand<CustomCosemProfileGenericModel> GetSortMethodCommand { get; set; }
-
+        public AsyncRelayCommand<CustomCosemProfileGenericModel> GetSortMethodCommand { get; set; }
+        public RelayCommand<CustomCosemProfileGenericModel> GetAllAttrCommand { get;  set; }
         public RelayCommand<CustomCosemProfileGenericModel> GetAllBufferCommand { get; set; }
 
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByRangeCommand { get; set; }
         public RelayCommand<CustomCosemProfileGenericModel> GetBufferByEntryCommand { get; set; }
-
-        public RelayCommand<CustomCosemProfileGenericModel> GetBufferByClockCommand { get; set; }
-
+        public RelayCommand<CustomCosemProfileGenericModel> ClearBufferCommand { get; set; }
         public DlmsClient Client { get; set; }
-
-
+        public NetLogViewModel NetLogViewModel { get; set; }
+        public RelayCommand<CustomCosemProfileGenericModel> ExportBufferToDataBaseCommand { get; set; }
+     
         public ProfileGenericViewModel()
-        {
+        {                   
+            NetLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
+            Energy = new List<Energy>();
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
             ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
             var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsProfileGenericSheetName);
+            ExportBufferToDataBaseCommand = new RelayCommand<CustomCosemProfileGenericModel>((t) => {
+                Energy = new List<Energy>();                              
+                if (t.Buffer != null)
+                {
+                    foreach (var item in t.Buffer)
+                    {
+                        var dataItems = item.Items;
+                        var clock = new CosemClock();
+                        string dt = dataItems[0].Value.ToString();
+                        var b = clock.DlmsClockParse(dt.StringToByte());
+                        if (b)
+                        {
+                            EnergyCaptureObjects energyCaptureObjects = new EnergyCaptureObjects
+                            {
+                                DateTime = clock.ToDateTime(),
+                                ImportActiveEnergyTotal = dataItems[1].ValueString,
+                                ImportActiveEnergyT1 = dataItems[2].ValueString,
+                                ImportActiveEnergyT2 = dataItems[3].ValueString,
+                                ImportActiveEnergyT3 = dataItems[4].ValueString,
+                                ImportActiveEnergyT4 = dataItems[5].ValueString,
+                                ExportActiveEnergyTotal = dataItems[6].ValueString,
+                                ImportReactiveEnergyTotal = dataItems[7].ValueString,
+                                ExportReactiveEnergyTotal = dataItems[8].ValueString
+                            };
 
+                            Energy.Add(new Energy()
+                            {
+                                EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
+                                Id = Guid.NewGuid(),
+                                DateTime = clock.ToDateTime()
+                            });
+                        }
+                    }
+                }
+                InsertData();
+            });
             ProfileGenericCollection = new ObservableCollection<CustomCosemProfileGenericModel>();
 
             for (int i = 0; i < dataTable.Rows.Count; i++)
@@ -78,7 +118,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
 
 
-            GetCaptureObjectsCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            GetCaptureObjectsCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 t.CaptureObjects.Clear();
@@ -88,6 +128,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     if (responses.Count == 1)
                     {
+                        if (!responses[0].GetResponseNormal.Result.IsSuccessed())
+                        {
+                            return;
+                        }
                         var ttttt = (DLMSArray) responses[0].GetResponseNormal.Result.Data.Value;
 
                         if (ttttt.DataType == DataType.Array)
@@ -177,7 +221,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 await Client.SetRequestAndWaitResponse(t.CaptureObjectsAttributeDescriptor,
                     new DlmsDataItem(DataType.Array, array));
             });
-            GetCapturePeriodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            GetCapturePeriodCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(4));
@@ -188,13 +232,13 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.CapturePeriod.Value = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            SetCapturePeriodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            SetCapturePeriodCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 await Client.SetRequestAndWaitResponse(t.CapturePeriodAttributeDescriptor,
                     new DlmsDataItem(DataType.UInt32, t.CapturePeriod.Value));
             });
-            GetEntriesInUseCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            GetEntriesInUseCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.EntriesInUseAttributeDescriptor);
@@ -205,7 +249,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.EntriesInUse.Value = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            GetProfileEntriesCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            GetProfileEntriesCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.ProfileEntriesAttributeDescriptor);
@@ -214,13 +258,29 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     t.ProfileEntries.Value = response.GetResponseNormal.Result.Data.ValueString;
                 }
             });
-            GetSortMethodCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
+            GetSortMethodCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
             {
                 var response = await Client.GetRequestAndWaitResponse(t.SortMethodAttributeDescriptor);
                 if (response != null && response.GetResponseNormal.Result.DataAccessResult.Value == "00")
                     t.SortMethod = (SortMethod) ushort.Parse(response.GetResponseNormal.Result.Data.ValueString);
             });
+
+            GetAllAttrCommand = new RelayCommand<CustomCosemProfileGenericModel>(async(t) =>
+              {
+                  t.CaptureObjects.Clear();
+                  t.CapturePeriod.Value = string.Empty;
+                  t.EntriesInUse.Value = string.Empty;
+                  t.ProfileEntries.Value = string.Empty;
+                  t.SortMethod = SortMethod.None;
+                  await GetCaptureObjectsCommand.ExecuteAsync(t);
+                  await GetCapturePeriodCommand.ExecuteAsync(t);
+                  await GetEntriesInUseCommand.ExecuteAsync(t);
+                  await GetProfileEntriesCommand.ExecuteAsync(t);
+                  await GetSortMethodCommand.ExecuteAsync(t);
+               
+              });
+
 
             GetAllBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(async
                 (t) =>
@@ -237,37 +297,85 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 var structures = ParseBuffer(response);
                 if (structures != null )
                 {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
+                
+                    
+                        DispatcherHelper.CheckBeginInvokeOnUI(() => { 
+                            t.Buffer = structures;
+                            if (t.Buffer.Count % t.PageSize != 0)
+                            {
+                                t.TotalPage = (t.Buffer.Count / t.PageSize) + 1;
+
+                            }
+                            else
+                            {
+                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                            }
+                           t. FirstPageAction();
+
+                        });
+                  
+                  
                 }
                    
             });
-            GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
-            {
-                var _ =
-                    await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange);
-            });
+           
             GetBufferByEntryCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry);
                 var structures = ParseBuffer(response);
+              
                 if (structures != null && t.CaptureObjects != null && t.CaptureObjects.Count != 0)
                 {
+                    var start = t.ProfileGenericEntryDescriptor.FromSelectedValue;
+                    var end = t.ProfileGenericEntryDescriptor.ToSelectedValue;
+                    //if (start>=0&&end<=start)
+                    //{
+                    //    if (start==0&&end==0)
+                    //    {
+                    //        foreach (var dlmsStructure in structures)
+                    //        {
+                    //            for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                    //            {
+                    //                dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
+                    //            }
+                    //        }
+                    //    }
+                    //    if (start==0)
+                    //    {
+
+                    //    }
+                    //}
                     foreach (var dlmsStructure in structures)
                     {
-                        for (int i = 0; i < dlmsStructure.Items.Length; i++)
+                        for (int i = 0 ; i < dlmsStructure.Items.Length; i++)
                         {
                             dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
                         }
                     }
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
+      
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures;
+                           
+                            if (t.Buffer.Count%t.PageSize!=0)
+                            {
+                                t.TotalPage = (t.Buffer.Count / t.PageSize)+1;
+
+                            }
+                            else
+                            {
+                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                            }
+                            t.FirstPageAction();
+                        });
+                    }
                 }
 
               
             });
 
-            GetBufferByClockCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
+            GetBufferByRangeCommand = new RelayCommand<CustomCosemProfileGenericModel>(async (t) =>
             {
                 t.Buffer.Clear();
 //                t.ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
@@ -303,12 +411,29 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                             dlmsStructure.Items[i].ValueName = t.CaptureObjects[i].Description;
                         }
                     }
-                    DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures; });
+                  //  if (structures.Count<200)
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures;
+                            if (t.Buffer.Count % t.PageSize != 0)
+                            {
+                                t.TotalPage = (t.Buffer.Count / t.PageSize) + 1;
+
+                            }
+                            else
+                            {
+                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                            }
+                            t.FirstPageAction();
+                        });
+                    }
+                   
                 }
 
                
             });
             ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear(); });
+
+           
         }
 
 
@@ -320,10 +445,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             if (responses != null && responses.Count != 0)
             {
                 DlmsDataItem vDataItem = new DlmsDataItem();
-                string strr;
+                string strr="";
                 if (responses.Count == 1)
                 {
-                    strr = responses[0].GetResponseNormal.Result.Data.ToPduStringInHex();
+                    if (responses[0].GetResponseNormal.Result.IsSuccessed())
+                    {
+                        strr = responses[0].GetResponseNormal.Result.Data.ToPduStringInHex();
+                    }
+                   
                 }
                 else
                 {
@@ -359,6 +488,41 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             return structures;
         }
 
-        public RelayCommand<CustomCosemProfileGenericModel> ClearBufferCommand { get; set; }
+        public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/EnergyData/";
+        public string MeterId { get; set; } = "000000003686";
+        //public RestClient RestClient { get; set; } = new RestClient();
+        //public RestRequest RestRequest { get; set; } = new RestRequest(Method.POST);
+        public List<Energy> Energy { get; set; }
+        
+        public void InsertData()
+        {
+
+            //var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
+            //var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
+            //    i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
+            //if (t == null)
+            //{
+            //    NetLogViewModel.MyServerNetLogModel.Log = "未找到相应表号,不调用API写数据库";
+            //    return;
+            //}
+            
+            if (Energy.Count == 0)
+            {
+                NetLogViewModel.MyServerNetLogModel.Log = "电能数据返回个数为0,不调用API写数据库";
+                return;
+            }
+            RestClient RestClient = new RestClient();
+
+            RestClient.BaseUrl = new Uri($"{BaseUriString}{MeterId}");
+            RestRequest RestRequest  = new RestRequest(Method.POST);
+            RestRequest.AddHeader("Content-Type", "application/json");
+            var str = JsonConvert.SerializeObject(Energy, Formatting.Indented);
+            NetLogViewModel.MyServerNetLogModel.Log = str;
+            RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
+            IRestResponse restResponse = RestClient.Execute(RestRequest);
+            NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");
+        }
+
+    
     }
 }

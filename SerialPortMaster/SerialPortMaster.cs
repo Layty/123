@@ -124,11 +124,11 @@ namespace MySerialPortMaster
                     return;
                 if (value)
                 {
-                   // SerialPort.DataReceived += SerialPort_DataReceived;
+                   SerialPort.DataReceived += SerialPort_DataReceived;
                 }
                 else
                 {
-                    //SerialPort.DataReceived -= SerialPort_DataReceived;
+                   SerialPort.DataReceived -= SerialPort_DataReceived;
                 }
 
                 _isAutoDataReceived = value;
@@ -502,7 +502,7 @@ namespace MySerialPortMaster
             StrongReferenceMessenger.Default.Send("", "PlayReceiveFlashing");
             SerialDataReceived?.Invoke(this,
                 new SerialPortEventArgs
-                    {DataBytes = receivedBytes, ResponseTime = responseTime});
+                { DataBytes = receivedBytes, ResponseTime = responseTime });
             SerialPortLogger.HandlerReceiveData(receivedBytes);
         }
 

@@ -38,11 +38,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         SerialPortViewModel.SerialPortMaster.IsAutoDataReceived = true;
                     }
 
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;                  
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;                    
                 }
 
                 _isInitUpGradeSerialPort = value;

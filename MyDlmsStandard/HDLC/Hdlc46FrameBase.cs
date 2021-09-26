@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.HDLC
 {
-    public class Hdlc46FrameBase : IToPduBytes
+ 
+    public class Hdlc46FrameBase : IPduStringInHexConstructor,IToPduStringInHex
     {
         /// <summary>
         /// 起始和结束帧
@@ -35,8 +37,7 @@ namespace MyDlmsStandard.HDLC
         public byte[] GetFrameFormatField(int count)
         {
             FrameFormatField = new HdlcFrameFormatField() {FrameLengthSubField = (ushort) count};
-            return FrameFormatField.ToHexPdu().StringToByte();
-            //   return new byte[] {0xA0, Convert.ToByte(count)};
+            return FrameFormatField.ToHexPdu().StringToByte();                    
         }
 
         public Hdlc46FrameBase(byte destAddress1, byte sourceAddress1, DLMSInfo dlmsInfo) : this(destAddress1,
@@ -193,6 +194,50 @@ namespace MyDlmsStandard.HDLC
             //当源地址和目的地址均为1时replyData[5] == 115
             //replyData[?] == 115;
             return true;
+        }
+        /// <summary>
+        /// 进入基表升级模式
+        /// </summary>
+        /// <param name="id">256进入自定义升级模式</param>
+        /// <returns></returns>
+        public byte[] SetEnterUpGradeMode(ushort id)
+        {
+            //7E A0 10 03 03 32 8F 31 E6 E6 00 FF 10   01 00   C4 08 7E 
+            List<byte> enterUpgradeMode = new List<byte>();
+            PackagingDestinationAndSourceAddress(enterUpgradeMode);
+            int ctr = ((CurrentReceiveSequenceNumber << 1) + 1 << 4) +
+                      (CurrentSendSequenceNumber << 1);
+            IncreaseFrameSequenceNumber();
+            enterUpgradeMode.Add((byte)ctr);
+            byte count = (byte)(2 + DestAddress1.Size + 2 + 3 + 2 + 2 + 2 + 2);
+
+            enterUpgradeMode.InsertRange(0, GetFrameFormatField(count));
+            PackingHcs(enterUpgradeMode);
+            enterUpgradeMode.AddRange(LlcHeadFrameBytes);
+
+            enterUpgradeMode.AddRange(new byte[] { 0xFF, 0x10 });
+            enterUpgradeMode.AddRange(BitConverter.GetBytes(id).Reverse().ToArray());
+
+            PackingFcs_And_FrameStartEnd(enterUpgradeMode);
+            return enterUpgradeMode.ToArray();
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {//7E A0 19 03 03 32 EC C8 E6 E6 00 C0 01 C1 00 01 00 00 60 32 15 FF 02 00 62 C4 7E
+            if (pduStringInHex.Length == 0)
+            {
+                return false;
+            }
+            // TODO:对帧序号校验？
+
+            var pduAndFcsBytes = pduStringInHex.StringToByte().Skip(11).ToArray();
+            Apdu = pduAndFcsBytes.Take(pduAndFcsBytes.Length - 3).ToArray();
+            return true;
+        }
+
+        public string ToPduStringInHex()
+        {
+           return ToPduBytes().ByteToString();
         }
     }
 }

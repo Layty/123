@@ -15,7 +15,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
        
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
-        public Array CommunicationTypeArray => Enum.GetValues(typeof(CommunicationType));
+        public Array CommunicationTypeArray => Enum.GetValues(typeof(ChanelType));
         public Array InterfaceTypeArray => Enum.GetValues(typeof(InterfaceType));
         public InterfaceType InterfaceType { get; set; } 
 
@@ -25,7 +25,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <summary>
         /// 物理层通道类型
         /// </summary>
-        public CommunicationType CommunicationType 
+        public ChanelType CommunicationType 
         {
             get => _communicationType;
             set
@@ -35,7 +35,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private CommunicationType _communicationType;
+        private ChanelType _communicationType;
 
         [DefaultValue(6)]
         public byte DlmsVersion { get; set; }
@@ -178,7 +178,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             DlmsInfoFromMeter=new DLMSInfo();
             
             PasswordString = "33333333";
-            CommunicationType = CommunicationType.SerialPort;
+            CommunicationType = ChanelType.SerialPort;
             InterfaceType = InterfaceType.HDLC;
             StartProtocolType = StartProtocolType.DLMS;
             ClientAddress = 1;

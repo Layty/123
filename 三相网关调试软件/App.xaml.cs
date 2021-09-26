@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using NLog;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
 {

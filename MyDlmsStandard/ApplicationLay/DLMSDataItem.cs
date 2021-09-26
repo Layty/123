@@ -165,7 +165,7 @@ namespace MyDlmsStandard.ApplicationLay
             }
         }
 
-        private string _valueName;
+        private string _valueName="";
 
         public DlmsDataItem()
         {
