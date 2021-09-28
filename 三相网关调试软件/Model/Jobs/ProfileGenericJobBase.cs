@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Ioc;
+using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay.Get;
@@ -19,8 +19,8 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
     {
         protected ProfileGenericJobBase()
         {
-            Client = SimpleIoc.Default.GetInstance<DlmsClient>();
-            NetLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
+            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+            NetLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
         }
 
         public DlmsClient Client { get; set; }

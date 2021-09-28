@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Ioc;
+
 using MyDlmsStandard;
 using NLog;
 using Quartz;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
-
+using CommonServiceLocator;
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
     public class TestJob : IBaseJob
     {
         public TestJob()
         {
-            Client = SimpleIoc.Default.GetInstance<DlmsClient>();
+            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
             JobName = "简单测试任务";
         }
         public async Task Execute(IJobExecutionContext context)
@@ -32,7 +32,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         tempClient.CurrentSocket = so;
                         tempClient.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
                         tempClient.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
-                        var netLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
+                        var netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行" + JobName + "\r\n";
                         netLogViewModel.MyServerNetLogModel.Log =

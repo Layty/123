@@ -160,7 +160,7 @@
                             Grid.Row="0"
                             HorizontalAlignment="Left"
                             Orientation="Horizontal">
-                            <TextBlock Text="{Binding Buffer.Count}" />
+
                             <Button
                                 Margin="5,0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.GetAllBufferCommand, Mode=TwoWay}"
@@ -175,18 +175,7 @@
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ClearBufferCommand, Mode=TwoWay}"
                                 CommandParameter="{Binding}"
                                 Content="ClearBuffer" />
-                            <TextBox
-                                x:Name="MeterId"
-                                Width="100"
-                                Margin="5,0"
-                                materialDesign:HintAssist.Hint="表号"
-                                materialDesign:HintAssist.IsFloating="True"
-                                Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.MeterId, Mode=TwoWay}" />
-                            <Button
-                                Margin="5,0"
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ExportBufferToDataBaseCommand, Mode=TwoWay}"
-                                CommandParameter="{Binding}"
-                                Content="InsertToDataBase" />
+
                         </StackPanel>
 
                         <Grid Grid.Row="1">
@@ -230,7 +219,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
                                                 WithSeconds="True" />
                                         </StackPanel>
-                                        <StackPanel Margin="5" Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
                                             <DatePicker
                                                 Name="DatePickerTo"
                                                 Margin="5"
@@ -267,10 +256,9 @@
                                 <TabItem Header="GetBufferByEntry">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.Resources>
-                                            <Style BasedOn="{StaticResource MaterialDesignOutlinedTextBox}" TargetType="TextBox">
+                                            <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="TextBox">
                                                 <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="VerticalAlignment" Value="Center" />
-
                                             </Style>
                                         </StackPanel.Resources>
                                         <TextBox
@@ -303,21 +291,24 @@
                         <ListBox
                             Grid.Row="3"
                             ItemsSource="{Binding FakeSource, UpdateSourceTrigger=PropertyChanged}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
                             SelectionMode="Multiple">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock
+                                            Margin="5,0"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Text="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Converter={StaticResource IndexConverter}}" />
 
-                                        <ListBox AllowDrop="False" ItemsSource="{Binding Items}">
+                                        <ListBox ItemsSource="{Binding Items}">
 
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
-                                                        <TextBlock Text="{Binding ValueName, Mode=OneWay}" />
+                                                        <TextBlock FontSize="8" Text="{Binding ValueName, Mode=OneWay}" />
                                                         <TextBlock Text="{Binding Converter={StaticResource HexStringToDateTimeConverter}, Mode=OneWay}" />
                                                     </StackPanel>
                                                 </DataTemplate>
@@ -341,27 +332,43 @@
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
-                        <local:Pager
-                            Grid.Row="2"
-                            HorizontalAlignment="Left"
-                            CurrentPage="{Binding CurrentPage, Mode=TwoWay}"
-                            PageSize="{Binding PageSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TotalPage="{Binding TotalPage}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="FirstPage">
-                                    <i:InvokeCommandAction Command="{Binding FirstPageCommand}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="PreviousPage">
-                                    <i:InvokeCommandAction Command="{Binding PreviousPageCommand}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="NextPage">
-                                    <i:InvokeCommandAction Command="{Binding NextPageCommand}" />
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="LastPage">
-                                    <i:InvokeCommandAction Command="{Binding LastPageCommand}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </local:Pager>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <local:Pager
+                                Grid.Row="2"
+                                HorizontalAlignment="Left"
+                                CurrentPage="{Binding CurrentPage, Mode=TwoWay}"
+                                PageSize="{Binding PageSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                TotalCount="{Binding Buffer.Count}"
+                                TotalPage="{Binding TotalPage}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="FirstPage">
+                                        <i:InvokeCommandAction Command="{Binding FirstPageCommand}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviousPage">
+                                        <i:InvokeCommandAction Command="{Binding PreviousPageCommand}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="NextPage">
+                                        <i:InvokeCommandAction Command="{Binding NextPageCommand}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="LastPage">
+                                        <i:InvokeCommandAction Command="{Binding LastPageCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </local:Pager>
+                            <TextBox
+                                x:Name="MeterId"
+                                Width="100"
+                                Margin="5,0"
+                                materialDesign:HintAssist.Hint="表号"
+                                materialDesign:HintAssist.IsFloating="True"
+                                Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.MeterId, Mode=TwoWay}" />
+                            <Button
+                                Margin="5,0"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.ExportBufferToDataBaseCommand, Mode=TwoWay}"
+                                CommandParameter="{Binding}"
+                                Content="InsertToDataBase" />
+                        </StackPanel>
+
                         <!--<ItemsControl
                             Grid.Row="2"
                             HorizontalAlignment="Stretch"

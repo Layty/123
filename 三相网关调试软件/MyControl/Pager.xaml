@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="{x:Type Button}">
@@ -17,8 +18,12 @@
             <Button
                 x:Name="FirstPageButton"
                 Margin="5,0"
-                Click="FirstPageButton_Click">
-                <Path
+                Click="FirstPageButton_Click"
+                ToolTip="PageFirst">
+                <Button.Content>
+                    <md:PackIcon Kind="PageFirst" />
+                </Button.Content>
+                <!--<Path
                     Width="7"
                     Height="10"
                     HorizontalAlignment="Center"
@@ -26,20 +31,24 @@
                     Data="M0,0L0,10 M0,5L6,2 6,8 0,5"
                     Fill="Black"
                     Stroke="Black"
-                    StrokeThickness="1" />
+                    StrokeThickness="2" />-->
             </Button>
             <Button
                 x:Name="PreviousPageButton"
                 Margin="0,0,5,0"
-                Click="PreviousPageButton_Click">
-                <Path
+                Click="PreviousPageButton_Click"
+                ToolTip="PagePrevious">
+                <!--<Path
                     Width="8"
                     Height="8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Data="M0,4L8,0 8,8z"
                     Fill="Black"
-                    Stroke="Black" />
+                    Stroke="Black" />-->
+                <Button.Content>
+                    <md:PackIcon Kind="PagePreviousOutline" />
+                </Button.Content>
             </Button>
             <TextBlock VerticalAlignment="Center">
                 <Run Text="第" />
@@ -49,8 +58,9 @@
             <Button
                 x:Name="NextPageButton"
                 Margin="5,0"
-                Click="NextPageButton_Click">
-                <Path
+                Click="NextPageButton_Click"
+                ToolTip="PageNext">
+                <!--<Path
                     Width="8"
                     Height="8"
                     HorizontalAlignment="Center"
@@ -61,13 +71,17 @@
                     <Path.RenderTransform>
                         <RotateTransform Angle="180" CenterX="4" CenterY="4" />
                     </Path.RenderTransform>
-                </Path>
+                </Path>-->
+                <Button.Content>
+                    <md:PackIcon Kind="PageNextOutline" />
+                </Button.Content>
             </Button>
             <Button
                 x:Name="LastPageButton"
                 Margin="0,0,5,0"
-                Click="LastPageButton_Click">
-                <Path
+                Click="LastPageButton_Click"
+                ToolTip="PageLast">
+                <!--<Path
                     x:Name="MainPath"
                     Width="7"
                     Height="10"
@@ -80,16 +94,30 @@
                     <Path.RenderTransform>
                         <RotateTransform Angle="180" CenterX="3" CenterY="5" />
                     </Path.RenderTransform>
-                </Path>
+                </Path>-->
+                <Button.Content>
+                    <md:PackIcon Kind="PageLast" />
+                </Button.Content>
             </Button>
             <TextBlock VerticalAlignment="Center">
                 <Run Text="共" />
                 <Run x:Name="rTotal" Text="0" />
                 <Run Text="页" />
             </TextBlock>
-            <TextBlock VerticalAlignment="Center" Text="分页条数" />
-            <TextBox x:Name="rPageSize" VerticalAlignment="Center"  TextChanged="rPageSize_TextChanged"/>
-            
+            <TextBlock VerticalAlignment="Center" Text="" />
+
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Text="共" />
+                <Run x:Name="rTotalCount" Text="0" />
+                <Run Text="条" />
+            </TextBlock>
+            <TextBox
+                x:Name="rPageSize"
+                VerticalAlignment="Center"
+                md:HintAssist.Hint="分页条数"
+                md:HintAssist.IsFloating="True"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                TextChanged="rPageSize_TextChanged" />
         </StackPanel>
     </Grid>
 </UserControl>

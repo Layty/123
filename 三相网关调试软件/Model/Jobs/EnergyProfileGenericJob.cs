@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Ioc;
+using CommonServiceLocator;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
@@ -111,7 +111,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
         public void InsertData()
         {
-            var tcpServerViewModel = SimpleIoc.Default.GetInstance<TcpServerViewModel>();
+            var tcpServerViewModel = ServiceLocator.Current.GetInstance<TcpServerViewModel>();
             var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
                 i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
             if (t == null)

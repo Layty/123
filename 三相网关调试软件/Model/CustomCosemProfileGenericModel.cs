@@ -17,7 +17,7 @@ namespace 三相智慧能源网关调试软件.Model
             FromDateTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(5));
             ToDateTime = DateTime.Now;
             CurrentPage = 1;
-
+            PageSize = 50;
             
             _firstPageCommand = new RelayCommand(FirstPageAction);
 

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Ioc;
+using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Quartz;
@@ -163,7 +163,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Scheduler = factory.GetScheduler().Result;
 
             Scheduler.ListenerManager.AddJobListener(this);
-            netLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
+            netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
             // Scheduler.ListenerManager.AddTriggerListener(this);
         }
 

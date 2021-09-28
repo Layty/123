@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace 三相智慧能源网关调试软件.MyControl
 {
@@ -53,6 +42,28 @@ namespace 三相智慧能源网关调试软件.MyControl
             DependencyProperty.Register("PageSize", typeof(string), typeof(Pager), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnPageSizeChanged)));
 
 
+
+        public string TotalCount
+        {
+            get { return (string)GetValue(TotalCountProperty); }
+            set { SetValue(TotalCountProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TotalCount.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TotalCountProperty =
+            DependencyProperty.Register("TotalCount", typeof(string), typeof(Pager), new PropertyMetadata("",new PropertyChangedCallback(OnTotalCountChanged)));
+
+        private static void OnTotalCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Pager p = d as Pager;
+
+            if (p != null)
+            {
+                Run rTotalCount = (Run)p.FindName("rTotalCount");
+
+                rTotalCount.Text = (string)e.NewValue;
+            }
+        }
 
         public Pager()
         {
@@ -126,7 +137,7 @@ namespace 三相智慧能源网关调试软件.MyControl
             {
                 TextBox rPageSize = (TextBox)p.FindName("rPageSize");
 
-                rPageSize.Text = ((string)e.NewValue);
+                rPageSize.Text = (string)e.NewValue;
             }
         }
 

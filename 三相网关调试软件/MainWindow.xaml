@@ -6,7 +6,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
-    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl" xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
+    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
     x:Name="ThisWindow"
     Title="TODO"
     Width="1024"
@@ -27,10 +28,8 @@
 
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}" />
             <Setter Property="Padding" Value="8" />
             <Setter Property="FontSize" Value="15" />
 
@@ -71,12 +70,10 @@
 
                             </EventTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource PrimaryHueLightBrush}" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background"
-                                        Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
                                 <Setter Property="FontSize" Value="20" />
                                 <Setter Property="FontWeight" Value="ExtraBlack" />
                             </Trigger>
@@ -148,50 +145,42 @@
 
         </DataTemplate>
         <Storyboard x:Key="MyOpenMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="MyCloseMenuStoryboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.3" Value="-200 0 0 0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.5" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.7" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="OpenCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame KeyTime="0:0:0.9" Value="3,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard1Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card1" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard2Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card2" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseCard3Storyboard">
-            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3"
-                                              Storyboard.TargetProperty="(FrameworkElement.Margin)">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Card3" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
@@ -300,8 +289,7 @@
                         <Grid x:Name="StackPanelOperatingZone" HorizontalAlignment="Right">
                             <StackPanel Orientation="Horizontal">
 
-                                <materialDesign:Chip Click="ButtonUserLogin_OnClick" 
-                                                     Content="{Binding Source={StaticResource Locator}, Path=Login.LoginModel.UserName}">
+                                <materialDesign:Chip Click="ButtonUserLogin_OnClick" Content="{Binding Source={StaticResource Locator}, Path=Login.LoginModel.UserName}">
                                     <materialDesign:Chip.Icon>
                                         <Image Source="Image/dimi.jpg" />
                                     </materialDesign:Chip.Icon>
@@ -313,11 +301,15 @@
                                     HorizontalContentAlignment="Center"
                                     Click="HeartBeatButton_OnClick"
                                     Content="HelLog" />-->
-                                <Button  x:Name="HeartBeatButton"
-                                    Height="30" BorderBrush="Transparent" BorderThickness="0" Background="Transparent"
+                                <Button
+                                    x:Name="HeartBeatButton"
+                                    Height="30"
                                     HorizontalContentAlignment="Center"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0"
                                     Click="HeartBeatButton_OnClick"
-                                    Content="HelLog" ></Button>
+                                    Content="HelLog" />
                                 <ToggleButton
                                     x:Name="ToggleButtonLog"
                                     Margin="2,0"
@@ -334,8 +326,7 @@
                                 </ToggleButton>
                                 <materialDesign:PopupBox Margin="2,0" PopupMode="Click">
                                     <ListBox>
-                                        <Button Command="{Binding OpenSkinViewDialogCommand}"
-                                                DataContext="{Binding Source={StaticResource Locator}, Path=DialogsViewModel}">
+                                        <Button Command="{Binding OpenSkinViewDialogCommand}" DataContext="{Binding Source={StaticResource Locator}, Path=DialogsViewModel}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="PaletteOutline" />
                                                 <TextBlock>主题</TextBlock>
@@ -349,7 +340,7 @@
                                             x:Name="ButtonMeterData"
                                             Click="ButtonMeterData_OnClick"
                                             Content="MeterData" />
-                                  
+
                                         <Button
                                             x:Name="ButtonTime"
                                             Click="ButtonTime_Click"
@@ -566,17 +557,18 @@
                     </materialDesign:Card>
 
                     <!--  导航页面区  -->
-                    <materialDesign:Card
+                    <!--<materialDesign:Card
                         Grid.Column="1"
                         Width="Auto"
-                        HorizontalAlignment="Stretch">
-                        <Frame
-                            x:Name="Frame"
-                            Content="{Binding CurrentPage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
-                            NavigationUIVisibility="Hidden" />
+                        HorizontalAlignment="Stretch">-->
+                    <Frame
+                        x:Name="Frame"
+                        Grid.Column="1"
+                        Content="{Binding CurrentPage}"
+                        DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
+                        NavigationUIVisibility="Hidden" />
 
-                    </materialDesign:Card>
+                    <!--</materialDesign:Card>-->
 
                     <GridSplitter
                         Grid.Column="1"
@@ -634,11 +626,10 @@
                 Grid.Row="2"
                 Mode="PrimaryMid">
                 <Grid>
-               
-                    <StackPanel
-                                Orientation="Horizontal">
-                        <view:LoginStatus></view:LoginStatus>
-                        <view:CommunicationLight></view:CommunicationLight>
+
+                    <StackPanel Orientation="Horizontal">
+                        <view:LoginStatus />
+                        <view:CommunicationLight />
                         <TextBlock
                             x:Name="TextBlockHaHa"
                             HorizontalAlignment="Center"

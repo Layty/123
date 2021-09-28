@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GalaSoft.MvvmLight.Ioc;
+using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
@@ -76,7 +76,7 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 
             public CloseWarningViewModel()
             {
-                Client = SimpleIoc.Default.GetInstance<DlmsClient>();
+                Client = ServiceLocator.Current.GetInstance<DlmsClient>();
 
                 InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
                 ReleaseCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });

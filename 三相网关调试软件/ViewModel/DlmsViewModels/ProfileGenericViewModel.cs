@@ -15,7 +15,6 @@ using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Data;
-using GalaSoft.MvvmLight.Ioc;
 using System;
 using 三相智慧能源网关调试软件.Helpers;
 
@@ -68,7 +67,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
      
         public ProfileGenericViewModel()
         {                   
-            NetLogViewModel = SimpleIoc.Default.GetInstance<NetLogViewModel>();
+            NetLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
             Energy = new List<Energy>();
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
             ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
@@ -431,7 +430,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                
             });
-            ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear(); });
+            ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear();t.FakeSource.Clear(); });
 
            
         }
