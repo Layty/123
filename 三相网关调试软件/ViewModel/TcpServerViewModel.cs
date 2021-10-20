@@ -18,7 +18,6 @@ using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
-using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -287,11 +286,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>
                 {
-                    HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
-                    var str = message.Item2.ByteToString();
-                    if (heartBeatFrame.PduStringInHexConstructor(ref str))
+                    var heartBeatFrame = Wrapper47FrameFactory.CreateHeartBeatFrame(message.Item2);
+                    if (heartBeatFrame != null)
                     {
-                        var strAdd = Encoding.Default.GetString(heartBeatFrame.MeterAddressBytes);
+                        var strAdd = heartBeatFrame.GetMeterAddressString();
                         if (MeterIdMatchSockets.Count == 0)
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -571,14 +569,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
             try
             {
-                var heart = new HeartBeatFrame();
-                var pduString = bytes.ByteToString();
-                var result = heart.PduStringInHexConstructor(ref pduString);
-                if (result)
+                var heartBeatFrame = Wrapper47FrameFactory.CreateHeartBeatFrame(bytes);
+
+                if (heartBeatFrame != null)
                 {
-                    heart.OverturnDestinationSource();
+                    heartBeatFrame.WrapperHeader.OverturnDestinationSource();
                     await Task.Delay(HeartBeatDelayTime);
-                    TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduStringInHex().StringToByte());
+                    TcpServerHelper.SendDataToClient(clientSocket, heartBeatFrame.ToPduStringInHex().StringToByte());
                 }
             }
             catch (Exception e)

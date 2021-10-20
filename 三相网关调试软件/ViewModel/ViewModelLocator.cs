@@ -1,5 +1,4 @@
 using CommonServiceLocator;
-//using GalaSoft.MvvmLight.Ioc;
 using Unity;
 using Unity.ServiceLocation;
 using 三相智慧能源网关调试软件.MyControl;
@@ -14,11 +13,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             UnityContainer container = new UnityContainer();
             UnityServiceLocator unityServiceLocator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => unityServiceLocator);
-          //  ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            //  ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
                 #region Dlms相关服务
-                
+
                 container.RegisterSingleton<DlmsSettingsViewModel>();
                 container.RegisterSingleton<DataViewModel>();
                 container.RegisterSingleton<RegisterViewModel>();
@@ -36,11 +35,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
                 #region 主程序界面相关
-                 container.RegisterSingleton<MainViewModel>(); //主窗体
-                 container.RegisterSingleton<MenuViewModel>(); //菜单
-                 container.RegisterSingleton<UserLoginViewModel>(); //用户登录
-                 container.RegisterSingleton<ColorToolViewModel>(); //程序调色板，皮肤
-                 container.RegisterSingleton<SkinViewModel>(); //程序调色板，皮肤，开机直接应用
+
+                container.RegisterSingleton<MainViewModel>(); //主窗体
+                container.RegisterSingleton<MenuViewModel>(); //菜单
+                container.RegisterSingleton<UserLoginViewModel>(); //用户登录
+                container.RegisterSingleton<ColorToolViewModel>(); //程序调色板，皮肤
+                // container.RegisterSingleton<SkinViewModel>(); //程序调色板，皮肤，开机直接应用
+                container.RegisterInstance(new SkinViewModel());
                 container.RegisterSingleton<SnackbarViewModel>();
 
 
@@ -55,6 +56,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
 
                 #region 服务中心相关业务
+
                 container.RegisterSingleton<TelnetViewModel>(); //网关调试登录Telnet客户端
                 container.RegisterSingleton<TcpServerViewModel>(); //网关调试登录Telnet客户端
                 container.RegisterSingleton<TftpServerViewModel>();
@@ -87,41 +89,35 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 //SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //基表DLMS协议
                 //SimpleIoc.Default.Register<FileTransmitViewModel>(); //计量芯升级
                 //SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
+
                 #endregion
 
                 #region 三相网关智能仪表业务
 
                 container.RegisterSingleton<UtilityTablesViewModel>(); //泰昂设备
 
-             //   SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
+                //   SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
+
                 #endregion
 
                 #region 三相网关管理芯相关业务
 
-               container.RegisterSingleton<ENetClientHelper>(); //网关登录使用的ENet客户端
+                container.RegisterSingleton<ENetClientHelper>(); //网关登录使用的ENet客户端
                 container.RegisterSingleton<ENetMessageBuilderViewModel>();
                 //SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
                 //SimpleIoc.Default.Register<ENetMessageBuilderViewModel>();
+
                 #endregion
 
                 #endregion
 
 
                 container.RegisterSingleton<CosemObjectViewModel>();
-                 container.RegisterSingleton<MeterDataViewModel>();
-                 container.RegisterSingleton<DialogsViewModel>();
-              
-                 container.RegisterSingleton<LocalNetHelper>();
+                container.RegisterSingleton<MeterDataViewModel>();
+                container.RegisterSingleton<DialogsViewModel>();
+
+                container.RegisterSingleton<LocalNetHelper>();
                 container.RegisterSingleton<SSHClientViewModel>();
-
-
-                //SimpleIoc.Default.Register<CosemObjectViewModel>();
-                //SimpleIoc.Default.Register<MeterDataViewModel>();
-                //SimpleIoc.Default.Register<DialogsViewModel>();
-
-                //SimpleIoc.Default.Register<LocalNetHelper>();
-                //SimpleIoc.Default.Register<SSHClientViewModel>();
-
             }
         }
 

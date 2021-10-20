@@ -2,8 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
+using MyDlmsStandard.Wrapper;
 using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.Model;
+using HeartBeatFrame = 三相智慧能源网关调试软件.Model.HeartBeatFrame;
 
 
 namespace 三相智慧能源网关调试软件
@@ -27,6 +28,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         private int _localPort;
+
         [Required(ErrorMessage = "不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
             ErrorMessage = "请输入正确的IP地址！")]
@@ -41,6 +43,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         private string _localIp;
+
         [Required(ErrorMessage = "不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
             ErrorMessage = "请输入正确的IP地址！")]
@@ -55,6 +58,7 @@ namespace 三相智慧能源网关调试软件
         }
 
         private string _remoteIp;
+
         [Required(ErrorMessage = "不能为空！")]
         public int RemotePort
         {
@@ -135,8 +139,8 @@ namespace 三相智慧能源网关调试软件
         /// 本地服务器收到表的数据。
         /// </summary>
         /// <param name="meterSocket">表的socket</param>
-        /// <param name="arg2"></param>
-        private void TcpListener_ReceiveBytes(Socket meterSocket, byte[] arg2)
+        /// <param name="bytes"></param>
+        private void TcpListener_ReceiveBytes(Socket meterSocket, byte[] bytes)
         {
             foreach (var socket in SocketBindingDictionary)
             {
@@ -144,22 +148,21 @@ namespace 三相智慧能源网关调试软件
                 {
                     if (IsNeedToConvert12HeartBeatTo8)
                     {
-                        var frame = new HeartBeatFrame();
-                        var pduString = arg2.ByteToString();
-                        var t = frame.PduStringInHexConstructor(ref pduString);
-                        if (t)
+                        var heartBeatFrame = Wrapper47FrameFactory.CreateHeartBeatFrame(bytes);
+
+                        if (heartBeatFrame != null)
                         {
-                            if (frame.WrapperHeader.Length.GetEntityValue() == 0x0F) //12位转8位
+                            if (heartBeatFrame.MeterAddressBytes.Length == 12) //12位转8位
                             {
                                 _meterHeight4ByteDictionary[meterSocket] =
-                                    frame.MeterAddressBytes.Take(4).ToArray(); //保留高位4地址后续用于补全
-                                frame.MeterAddressBytes = frame.MeterAddressBytes.Skip(4).ToArray();
-                                arg2 = frame.ToPduStringInHex().StringToByte();
+                                    heartBeatFrame.MeterAddressBytes.Take(4).ToArray(); //保留高位4地址后续用于补全
+                                heartBeatFrame.MeterAddressBytes = heartBeatFrame.MeterAddressBytes.Skip(4).ToArray();
+                                bytes = heartBeatFrame.ToPduStringInHex().StringToByte();
                             }
                         }
                     }
 
-                    socket.Value?.SendDataToServer(arg2);
+                    socket.Value?.SendDataToServer(bytes);
                 }
             }
         }
@@ -177,7 +180,6 @@ namespace 三相智慧能源网关调试软件
                         var t = heartBeatFrame.PduStringInHexConstructor(ref pduString);
                         if (t)
                         {
-                           
                             if (heartBeatFrame.WrapperHeader.Length.GetEntityValue() == 0x0B)
                             {
                                 // 8位转12位

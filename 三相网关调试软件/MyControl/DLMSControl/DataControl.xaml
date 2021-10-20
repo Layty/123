@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mycontrol="clr-namespace:三相智慧能源网关调试软件.MyControl"
     DataContext="{Binding Source={StaticResource Locator}, Path=DataViewModel}"
     mc:Ignorable="d">
     <materialDesign:Card>
+
         <DataGrid
             materialDesign:DataGridAssist.CellPadding="14 8 8 8"
             materialDesign:DataGridAssist.ColumnHeaderPadding="18"
@@ -154,6 +156,8 @@
                 </DataGridComboBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+
 
     </materialDesign:Card>
 

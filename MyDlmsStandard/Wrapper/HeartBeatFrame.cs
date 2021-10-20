@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MyDlmsStandard;
+using System.Text;
 using MyDlmsStandard.Axdr;
-using MyDlmsStandard.Wrapper;
 
-namespace 三相智慧能源网关调试软件.Model
+namespace MyDlmsStandard.Wrapper
 {
-
-
     /// <summary>
     /// 网关心跳帧，继承自WrapperFrame
     /// </summary>
@@ -15,8 +12,19 @@ namespace 三相智慧能源网关调试软件.Model
     {
         public readonly byte[] HeartBeatFrameType = {0x00, 0x01, 0x03};
         public byte[] MeterAddressBytes { get; set; }
-        
-        public HeartBeatFrame(byte[] meterAddressBytes):this()
+
+        public string GetMeterAddressString()
+        {
+            var add = "";
+            if (MeterAddressBytes != null && MeterAddressBytes.Length != 0)
+            {
+                add = Encoding.Default.GetString(MeterAddressBytes);
+            }
+
+            return add;
+        }
+
+        public HeartBeatFrame(byte[] meterAddressBytes) : this()
         {
             MeterAddressBytes = meterAddressBytes;
         }
@@ -53,7 +61,7 @@ namespace 三相智慧能源网关调试软件.Model
                 return false;
             }
 
-            if (!MyDlmsStandard.Common.Common.ByteArraysEqual(WrapperBody.DataBytes.Take(3).ToArray(),
+            if (!Common.Common.ByteArraysEqual(WrapperBody.DataBytes.Take(3).ToArray(),
                 HeartBeatFrameType))
             {
                 return false;

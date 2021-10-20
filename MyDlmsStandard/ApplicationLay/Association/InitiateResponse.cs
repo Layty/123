@@ -16,7 +16,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
         }
     }
 
-    public class InitiateResponse : IPduBytesToConstructor
+    public class InitiateResponse : IPduBytesToConstructor,IPduStringInHexConstructor
     {
         public AxdrIntegerUnsigned8 NegotiatedDlmsVersionNumber { get; set; }
        public Conformance NegotiatedConformance { get; set; }
@@ -65,5 +65,12 @@ namespace MyDlmsStandard.ApplicationLay.Association
 
             return false;
         }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            return PduBytesToConstructor(pduStringInHex.StringToByte());
+        }
+
+       
     }
 }

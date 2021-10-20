@@ -6,14 +6,265 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using MyDlmsStandard.Common;
 using NLog;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using System.Management;
+using System.Text.RegularExpressions;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
-namespace DataNotification
+namespace 三相智慧能源网关调试软件.Helpers
 {
+    /// <summary>
+    /// IPProvider 的摘要说明。
+    /// </summary>
+    public class IPProvider
+    {
+        public IPProvider()
+        {
+            //
+            // TODO: 在此处添加构造函数逻辑
+            //
+        }
+
+        /// <summary>
+        /// 设置DNS
+        /// </summary>
+        /// <param name="dns"></param>
+        public static void SetDNS(string[] dns)
+        {
+            SetIPAddress(null, null, null, dns);
+        }
+
+        /// <summary>
+        /// 设置网关
+        /// </summary>
+        /// <param name="getway"></param>
+        public static void SetGetWay(string getway)
+        {
+            SetIPAddress(null, null, new string[] { getway }, null);
+        }
+
+        /// <summary>
+        /// 设置网关
+        /// </summary>
+        /// <param name="getway"></param>
+        public static void SetGetWay(string[] getway)
+        {
+            SetIPAddress(null, null, getway, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址和掩码
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        public static void SetIPAddress(string ip, string submask)
+        {
+            SetIPAddress(new string[] { ip }, new string[] { submask }, null, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址，掩码和网关
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        /// <param name="getway"></param>
+        public static void SetIPAddress(string ip, string submask, string getway)
+        {
+            SetIPAddress(new string[] { ip }, new string[] { submask }, new string[] { getway }, null);
+        }
+
+        /// <summary>
+        /// 设置IP地址，掩码，网关和DNS
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="submask"></param>
+        /// <param name="getway"></param>
+        /// <param name="dns"></param>
+        public static void SetIPAddress(string[] ip, string[] submask, string[] getway, string[] dns)
+        {
+            ManagementClass wmi = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = wmi.GetInstances();
+            ManagementBaseObject inPar = null;
+            ManagementBaseObject outPar = null;
+            foreach (ManagementObject mo in moc)
+            {
+                //如果没有启用IP设置的网络设备则跳过
+                if (!(bool)mo["IPEnabled"])
+                    continue;
+                //设置IP地址和掩码
+                if (ip != null && submask != null)
+                {
+                    inPar = mo.GetMethodParameters("EnableStatic");
+                    inPar["IPAddress"] = ip;
+                    inPar["SubnetMask"] = submask;
+                    outPar = mo.InvokeMethod("EnableStatic", inPar, null);
+                }
+
+                //设置网关地址
+                if (getway != null)
+                {
+                    inPar = mo.GetMethodParameters("SetGateways");
+                    inPar["DefaultIPGateway"] = getway;
+                    outPar = mo.InvokeMethod("SetGateways", inPar, null);
+                }
+
+                //设置DNS地址
+                if (dns != null)
+                {
+                    inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
+                    inPar["DNSServerSearchOrder"] = dns;
+                    outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 启用DHCP服务器
+        /// </summary>
+        public static void EnableDHCP()
+        {
+            ManagementClass wmi = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = wmi.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                //如果没有启用IP设置的网络设备则跳过
+                if (!(bool)mo["IPEnabled"])
+                    continue;
+                //重置DNS为空
+                mo.InvokeMethod("SetDNSServerSearchOrder", null);
+                //开启DHCP
+                mo.InvokeMethod("EnableDHCP", null);
+            }
+        }
+
+        /// <summary>
+        /// 判断是否IP地址格式
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public static bool IsIPAddress(string ip)
+        {
+            string[] arr = ip.Split('.');
+            if (arr.Length != 4)
+                return false;
+            string pattern = @"\d{1,3}";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                string d = arr[i];
+                if (i == 0 && d == "0")
+                    return false;
+                if (!Regex.IsMatch(d, pattern))
+                    return false;
+                if (d != "0")
+                {
+                    d = d.TrimStart('0');
+                    if (d == "")
+                        return false;
+                    if (int.Parse(d) > 255)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+    }
+    /// <summary>
+    /// 能用，不用，目前多个IP容易改错，后续优化
+    /// </summary>
+    public class LocalNetHelper : ObservableObject
+    {
+        public string IPAddress
+        {
+            get => _iPAddress;
+            set
+            {
+                _iPAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _iPAddress = "172.32.0.3";
+
+        public string SubnetMask
+        {
+            get => _SubnetMask;
+            set
+            {
+                _SubnetMask = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _SubnetMask = "255.255.255.0";
+
+
+        public string SetGateways
+        {
+            get => _SetGateways;
+            set
+            {
+                _SetGateways = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _SetGateways = "172.32.0.1";
+
+
+        public RelayCommand SetNetworkCommand
+        {
+            get => _SetNetworkCommand;
+            set
+            {
+                _SetNetworkCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _SetNetworkCommand;
+
+        public LocalNetHelper()
+        {
+            SetNetworkCommand = new RelayCommand(SetNetworkAdapter);
+        }
+
+        public void SetNetworkAdapter()
+        {
+            ManagementBaseObject inPar = null;
+            ManagementBaseObject outPar = null;
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = mc.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                if (!(bool)mo["IPEnabled"])
+                    continue;
+
+                //设置ip地址和子网掩码
+                inPar = mo.GetMethodParameters("EnableStatic");
+                inPar["IPAddress"] = new string[] { IPAddress }; // 1.备用 2.IP
+                inPar["SubnetMask"] = new string[] { SubnetMask };
+                outPar = mo.InvokeMethod("EnableStatic", inPar, null);
+
+
+                //设置网关地址
+                inPar = mo.GetMethodParameters("SetGateways");
+                inPar["DefaultIPGateway"] = new string[] { SetGateways }; // 1.网关;2.备用网关
+                outPar = mo.InvokeMethod("SetGateways", inPar, null);
+
+                //                //设置DNS
+                //                inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
+                //                inPar["DNSServerSearchOrder"] = new string[] {"211.97.168.129", "202.102.152.3"}; // 1.DNS 2.备用DNS
+                //                outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
+                break;
+            }
+        }
+    }
+
     public class TcpServerHelper : ValidateModelBase
     {
         public bool IsStarted
@@ -83,18 +334,9 @@ namespace DataNotification
 
         private ObservableCollection<Socket> _socketClientList;
 
-        public ObservableCollection<(string, string)> SocketClientListAndIp
-        {
-            get => _socketClientListAndIp;
-            set
-            {
-                _socketClientListAndIp = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<(string, string)> _socketClientListAndIp;
-
+        /// <summary>
+        /// 超时时间默认2s
+        /// </summary>
         public int ResponseTimeOut
         {
             get => _responseTimeOut;
@@ -117,7 +359,6 @@ namespace DataNotification
         public event Action<Socket, byte[]> ReceiveBytes;
         public event Action<Socket, byte[]> SendBytesToClient;
 
-        public event Action<Socket, byte[]> ReceiveAllBytes;
 
         protected virtual void OnNotifyNewClient(Socket clientSocket)
         {
@@ -129,45 +370,22 @@ namespace DataNotification
             ReceiveBytes?.Invoke(clientSocket, bytes);
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
-            var str = bytes.ByteToString();
-//            HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
-//            if (heartBeatFrame.PduStringInHexConstructor(ref str))
-//            {
-//                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-//                {
-//                    foreach (var valueTuple in SocketClientListAndIp)
-//                    {
-//                        if (valueTuple.Item1 != clientSocket.RemoteEndPoint.ToString())
-//                        {
-//                            SocketClientListAndIp.Add((clientSocket.RemoteEndPoint.ToString(),
-//                                Encoding.Default.GetString(bytes)));
-//                        }
-//                    }
-//                });
-//            }
-
-
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
         }
 
-        protected virtual void OnReceiveAllBytes(Socket clientSocket, byte[] bytes)
-        {
-            ReceiveAllBytes?.Invoke(clientSocket, bytes);
-        }
 
         protected virtual void OnSendBytesToClient(Socket clientSocket, byte[] bytes)
         {
             SendBytesToClient?.Invoke(clientSocket, bytes);
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
-
             StrongReferenceMessenger.Default.Send(t, "ServerSendDataEvent");
         }
 
         private void OnNotifyErrorMsg(string msg)
         {
-            this.ErrorMsg?.Invoke(msg);
-            //            Messenger.Default.Send(msg, "ServerErrorEvent");
+            ErrorMsg?.Invoke(msg);
+
             StrongReferenceMessenger.Default.Send(msg, "ServerErrorEvent");
         }
 
@@ -184,18 +402,14 @@ namespace DataNotification
             SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
             SocketClientList = new ObservableCollection<Socket>();
-            SocketClientListAndIp = new ObservableCollection<(string, string)>();
         }
 
-        public TcpServerHelper(string listenIpAddress, int listenPort, ProtocolType protocolType = ProtocolType.Tcp)
-        {
-            ListenIpAddress = listenIpAddress;
-            ListenPort = listenPort;
-            ProtocolType = protocolType;
-            SocketClientList = new ObservableCollection<Socket>();
-            SocketClientListAndIp = new ObservableCollection<(string, string)>();
-        }
+       
 
+        /// <summary>
+        /// 获取当前计算机的主机IPV4地址
+        /// </summary>
+        /// <returns></returns>
         public static string GetHostIp()
         {
             IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
@@ -218,6 +432,35 @@ namespace DataNotification
             return result;
         }
 
+        public List<string> HostIPlList => GetHostIpList();
+
+        /// <summary>
+        /// 获取当前计算机的主机IPV4地址
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetHostIpList()
+        {
+            IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress[] addressList = hostEntry.AddressList;
+
+            List<string> stList = new List<string>();
+            if (addressList.Length == 0)
+            {
+                return stList;
+            }
+
+            IPAddress[] array = addressList;
+            foreach (IPAddress iPAddress in array)
+            {
+                if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    stList.Add(iPAddress.ToString());
+                }
+            }
+
+            return stList;
+        }
+
         public void StartListen()
         {
             try
@@ -230,7 +473,7 @@ namespace DataNotification
                 SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
                 SocketServer.Bind(IpEndPoint);
-                SocketServer.Listen(5000);
+                SocketServer.Listen(500);
                 OnNotifyStatusMsg($"监听{IpEndPoint}成功");
                 IsStarted = true;
                 StartListenServerAsync(SocketServer);
@@ -255,7 +498,12 @@ namespace DataNotification
 
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
                         var socket1 = clientSocket;
-                        DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Add(socket1); });
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            SpeechSynthesizer speech = new SpeechSynthesizer();
+                            speech.SpeakAsync("有新的连接");
+                            SocketClientList.Add(socket1);
+                        });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyNewClient(clientSocket);
@@ -338,25 +586,28 @@ namespace DataNotification
             OnSendBytesToClient(destinationSocket, bytes);
         }
 
-
-        public async Task<byte[]> SendDataToClientAndWaitReceiveData(Socket destinationSocket, byte[] bytes)
+        Stopwatch stopwatch1;
+        public async Task<byte[]> SendDataToClientAndWaitReceiveDataAsync(Socket destinationSocket, byte[] bytes)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 _returnBytes = null;
                 ReceiveBytes += TcpServerHelper_ReceiveBytes;
                 destinationSocket.Send(bytes);
                 OnSendBytesToClient(destinationSocket, bytes);
-                Stopwatch stopwatch1 = new Stopwatch();
+                stopwatch1 = new Stopwatch();
+                var nowtick = DateTime.Now.Ticks;
                 TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
                 stopwatch1.Start();
+
+                //占用大量CPU需要优化
                 while (true)
                 {
-                    TimeSpan stopTimeSpan = new TimeSpan(DateTime.Now.Ticks);
-                    TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
-                    if (timeSpan.Seconds >= ResponseTimeOut)
+                    await Task.Delay(100);
+                    TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks - nowtick);
+                    // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
+                    if (elapsed.TotalSeconds >= ResponseTimeOut)
                     {
-                        ResponseTime = timeSpan.Seconds.ToString();
                         stopwatch1.Reset();
                         OnNotifyStatusMsg($"超时{ResponseTimeOut}秒未响应");
                         break;
@@ -405,7 +656,7 @@ namespace DataNotification
                 else
                 {
                     var uInt16Length = BitConverter.ToUInt16(bytes.Skip(6).Take(2).Reverse().ToArray(), 0);
-                    if (uInt16Length == (bytes.Length - 8))
+                    if (uInt16Length == bytes.Length - 8)
                     {
                         _listReturnBytes.AddRange(bytes);
                         _returnBytes = _listReturnBytes.ToArray();
@@ -414,7 +665,7 @@ namespace DataNotification
                         _isNeedContinue = false;
                     }
 
-                    if (uInt16Length > (bytes.Length - 8))
+                    if (uInt16Length > bytes.Length - 8)
                     {
                         TotalLength = uInt16Length;
                         NeedReceiveLength = TotalLength - (bytes.Length - 8);

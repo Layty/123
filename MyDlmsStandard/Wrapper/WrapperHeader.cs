@@ -20,7 +20,15 @@ namespace MyDlmsStandard.Wrapper
         /// WrapperData帧的字节长度，与WrapperData相关
         /// </summary>
         public AxdrIntegerUnsigned16 Length { get; set; }
-
+        /// <summary>
+        /// 翻转源地址和目的地址
+        /// </summary>
+        public void OverturnDestinationSource()
+        {
+            var tt = DestAddress;
+            DestAddress = SourceAddress;
+            SourceAddress = tt;
+        }
         /// <summary>
         /// 组帧
         /// </summary>

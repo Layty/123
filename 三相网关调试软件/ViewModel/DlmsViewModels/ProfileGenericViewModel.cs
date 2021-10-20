@@ -149,7 +149,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                                         var client = new RestClient(
                                             $"{Properties.Settings.Default.WebApiUrl}/CosemObjects/ByObis/{captureObjectDefinition.LogicalName}");
                                         var request = new RestRequest(Method.GET);
-                                        IRestResponse responseWebApi = client.Execute(request);
+                                        IRestResponse responseWebApi = await client.ExecuteAsync(request);
                                         var getCosemObject =
                                             JsonConvert.DeserializeObject<CosemObjectEditModel>(responseWebApi
                                                 .Content);
@@ -193,7 +193,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                                     var client = new RestClient(
                                         $"{Properties.Settings.Default.WebApiUrl}/CosemObjects/ByObis/{captureObjectDefinition.LogicalName}");
                                     var request = new RestRequest(Method.GET);
-                                    IRestResponse responseWebApi = client.Execute(request);
+                                    IRestResponse responseWebApi = await client.ExecuteAsync(request);
                                     var getCosemObject =
                                         JsonConvert.DeserializeObject<CosemObjectEditModel>(responseWebApi
                                             .Content);
@@ -300,16 +300,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     
                         DispatcherHelper.CheckBeginInvokeOnUI(() => { 
                             t.Buffer = structures;
-                            if (t.Buffer.Count % t.PageSize != 0)
+                            if (t.Buffer.Count % t.CountPerPage != 0)
                             {
-                                t.TotalPage = (t.Buffer.Count / t.PageSize) + 1;
+                                t.TotalPage = (t.Buffer.Count / t.CountPerPage) + 1;
 
                             }
                             else
                             {
-                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                                t.TotalPage = t.Buffer.Count / t.CountPerPage;
                             }
-                           t. FirstPageAction();
+                            t.Current = 1;
 
                         });
                   
@@ -357,16 +357,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures;
                            
-                            if (t.Buffer.Count%t.PageSize!=0)
+                            if (t.Buffer.Count%t.CountPerPage != 0)
                             {
-                                t.TotalPage = (t.Buffer.Count / t.PageSize)+1;
+                                t.TotalPage = (t.Buffer.Count / t.CountPerPage) +1;
 
                             }
                             else
                             {
-                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                                t.TotalPage = t.Buffer.Count / t.CountPerPage;
                             }
-                            t.FirstPageAction();
+                            t.Current=1;
                         });
                     }
                 }
@@ -413,16 +413,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                   //  if (structures.Count<200)
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() => { t.Buffer = structures;
-                            if (t.Buffer.Count % t.PageSize != 0)
+                            if (t.Buffer.Count % t.CountPerPage != 0)
                             {
-                                t.TotalPage = (t.Buffer.Count / t.PageSize) + 1;
+                                t.TotalPage = (t.Buffer.Count / t.CountPerPage) + 1;
 
                             }
                             else
                             {
-                                t.TotalPage = t.Buffer.Count / t.PageSize;
+                                t.TotalPage = t.Buffer.Count / t.CountPerPage;
                             }
-                            t.FirstPageAction();
+                            t.Current=1;
                         });
                     }
                    
@@ -430,7 +430,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
                
             });
-            ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear();t.FakeSource.Clear(); });
+            ClearBufferCommand = new RelayCommand<CustomCosemProfileGenericModel>(t => { t.Buffer.Clear();t.PaginationCollection.Clear(); });
 
            
         }

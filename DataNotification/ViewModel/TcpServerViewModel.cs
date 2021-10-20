@@ -385,11 +385,10 @@ namespace DataNotification.ViewModel
 
             try
             {
-                var pduString = bytes.ByteToString();
-                var heart = HeartBeatFrame.ParseHeartBeatFrame(ref pduString);
+                var heart = Wrapper47FrameFactory.CreateHeartBeatFrame(bytes);
                 if (heart != null)
                 {
-                    heart.OverturnDestinationSource();
+                    heart.WrapperHeader.OverturnDestinationSource();
                     await Task.Delay(HeartBeatDelayTime);
                     TcpServerHelper.SendDataToClient(clientSocket, heart.ToPduStringInHex().StringToByte());
                 }

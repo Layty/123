@@ -8,6 +8,7 @@
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
     xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
     xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
+    xmlns:wpfdev="https://github.com/yanjinhuagood/WPFDevelopers"
     x:Name="ThisWindow"
     Title="TODO"
     Width="1024"
@@ -268,12 +269,16 @@
                                     Height="Auto"
                                     Kind="MicrosoftVisualStudio" />
                             </TextBlock>
-                            <TextBlock
+                            <wpfdev:SpotLight
+                                FontSize="15"
+                                Foreground="{StaticResource RainBallLinearGradientBrush}"
+                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+                            <!--<TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Foreground="{StaticResource RainBallLinearGradientBrush}"
                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />-->
 
                         </StackPanel>
 
@@ -498,6 +503,7 @@
                                                         ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}"
                                                         ItemsSource="{Binding ManagementMenuCollection}"
                                                         SelectedItem="{Binding MenuModel}"
+                                                        Style="{DynamicResource MaterialDesignCardsListBox}"
                                                         Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                 </ScrollViewer>
 
@@ -522,7 +528,8 @@
                                                     DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                                                     ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}"
                                                     ItemsSource="{Binding BaseMeterMenuCollection}"
-                                                    SelectedItem="{Binding MenuModel}" />
+                                                    SelectedItem="{Binding MenuModel}"
+                                                    Style="{DynamicResource ListBoxStyle311}" />
                                             </ScrollViewer>
 
                                         </Expander.Content>
@@ -585,28 +592,31 @@
                         Width="250"
                         Visibility="Collapsed">
                         <materialDesign:Card>
-                            <TabControl x:Name="TabControl">
+                            <TabControl
+                                x:Name="TabControl"
+                                Margin="0,-1,0,1"
+                                BorderThickness="0">
                                 <TabItem>
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="Logout" />
                                     </TabItem.Header>
-                                    <myControl:SocketAndMeterAddressMapping />
+                                    <myControl:SocketAndMeterAddressMapping Margin="3" />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Kind="SerialPort" />
+                                        <materialDesign:PackIcon Margin="3" Kind="SerialPort" />
                                     </TabItem.Header>
                                     <myControl:SerialPortLogger />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Kind="Ethernet" />
+                                        <materialDesign:PackIcon Margin="3" Kind="Ethernet" />
                                     </TabItem.Header>
                                     <myControl:NetLogger />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Kind="Xml" />
+                                        <materialDesign:PackIcon Margin="3" Kind="Xml" />
                                     </TabItem.Header>
                                     <myControl:XMLLogControl />
                                 </TabItem>

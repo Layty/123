@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using DataNotification.Commom;
-using DataNotification.Model;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using MyDlmsStandard.Wrapper;
 
 namespace DataNotification.View
 {
@@ -34,18 +31,15 @@ namespace DataNotification.View
             StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
                 (recipient, message) =>
                 {
-                    
-                    var str = message.Item2.ByteToString();
-                    var hbf= HeartBeatFrame.ParseHeartBeatFrame(ref str);
-                    if (hbf != null)
+                    var heartBeatFrame = Wrapper47FrameFactory.CreateHeartBeatFrame(message.Item2);
+                    if (heartBeatFrame != null)
                     {
-                        var strAdd = Encoding.Default.GetString(hbf.MeterAddressBytes);
+                        var strAdd = heartBeatFrame.GetMeterAddressString();
                         if (ListBox.Items.Count == 0)
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                ListBox.Items.Add(message.Item1.RemoteEndPoint + "  <==>  " +
-                                                  Encoding.Default.GetString(hbf.MeterAddressBytes));
+                                ListBox.Items.Add(message.Item1.RemoteEndPoint + "  <==>  " + strAdd);
                             });
                         }
                         else
@@ -61,7 +55,6 @@ namespace DataNotification.View
                                 else
                                 {
                                     boo = true;
-                                   
                                 }
                             }
 
@@ -70,7 +63,7 @@ namespace DataNotification.View
                                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                 {
                                     ListBox.Items.Add(message.Item1.RemoteEndPoint + "  <==>   " +
-                                                      Encoding.Default.GetString(hbf.MeterAddressBytes));
+                                                      strAdd);
                                 });
                             }
                         }

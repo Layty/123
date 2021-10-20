@@ -39,16 +39,6 @@ namespace MyDlmsStandard.Wrapper
             WrapperBody = new WrapperBody {DataBytes = new byte[] { }};
         }
 
-        /// <summary>
-        /// 翻转源地址和目的地址
-        /// </summary>
-        public void OverturnDestinationSource()
-        {
-            var tt = WrapperHeader.DestAddress;
-            WrapperHeader.DestAddress = WrapperHeader.SourceAddress;
-            WrapperHeader.SourceAddress = tt;
-        }
-
 
         public virtual string ToPduStringInHex()
         {
