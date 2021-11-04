@@ -30,7 +30,7 @@ namespace DataNotification.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-    
+
             SimpleIoc.Default.Register<TcpServerViewModel>();
             SimpleIoc.Default.Register<NetLogViewModel>();
 

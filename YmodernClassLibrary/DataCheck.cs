@@ -81,7 +81,7 @@ namespace FileTransmit
             {
                 return GetCRC16(param, data);
             }
-            else if (type>=CRCType.CRC32 && type<=CRCType.CRC32_MPEG2)
+            else if (type >= CRCType.CRC32 && type <= CRCType.CRC32_MPEG2)
             {
                 return GetCRC32(param, data);
             }

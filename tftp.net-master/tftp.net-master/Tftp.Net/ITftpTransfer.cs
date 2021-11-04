@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace Tftp.Net
@@ -30,7 +27,7 @@ namespace Tftp.Net
         /// <summary>
         /// Event that will be called once the data transfer is finished.
         /// </summary>
-        event TftpEventHandler OnFinished; 
+        event TftpEventHandler OnFinished;
 
         /// <summary>
         /// Event that will be called if there is an error during the data transfer.

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MyDlmsStandard.Common;
+using System;
 using System.Linq;
 using System.Xml.Serialization;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AssociationResult 
+    public class AssociationResult
     {
         [XmlAttribute] public string Value { get; set; }
 

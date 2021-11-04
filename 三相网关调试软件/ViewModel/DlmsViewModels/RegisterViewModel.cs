@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.Model;
 
@@ -42,16 +42,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public DlmsClient Client { get; set; }
 
 
-        public RegisterViewModel()
+        public RegisterViewModel(ExcelHelper excel ,DlmsClient dlmsClient)
         {
-            ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+      
             var dataTable = excel.GetExcelDataTable("Register$");
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = dlmsClient;
             Registers = new ObservableCollection<CustomCosemRegisterModel>();
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 Registers.Add(new CustomCosemRegisterModel(dataTable.Rows[i][0].ToString())
-                    {RegisterName = dataTable.Rows[i][1].ToString()});
+                { RegisterName = dataTable.Rows[i][1].ToString() });
             }
 
             GetValueCommand = new RelayCommand<CustomCosemRegisterModel>(async (t) =>
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 if (getResponse != null)
                 {
                     t.LastResult =
-                        (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                        (ErrorCode)getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                     t.Value = getResponse.GetResponseNormal.Result.Data;
                     t.CompleteData = t.ParserData();
                 }
@@ -76,7 +76,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 if (scalarUnitResponse != null)
                 {
                     t.LastResult =
-                        (ErrorCode) scalarUnitResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                        (ErrorCode)scalarUnitResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                     var su = scalarUnitResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
                     if (t.ScalarUnit.PduStringInHexConstructor(ref su))
                     {
@@ -95,7 +95,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     if (getResponse != null)
                     {
                         t.LastResult =
-                            (ErrorCode) getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
+                            (ErrorCode)getResponse.GetResponseNormal.Result.DataAccessResult.GetEntityValue();
                         t.Value = getResponse.GetResponseNormal.Result.Data;
                         if (t.LastResult != ErrorCode.Ok)
                         {
@@ -107,7 +107,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                         if (scalarUnitResponse != null)
                         {
                             t.LastResult =
-                                (ErrorCode) scalarUnitResponse.GetResponseNormal.Result.DataAccessResult
+                                (ErrorCode)scalarUnitResponse.GetResponseNormal.Result.DataAccessResult
                                     .GetEntityValue();
                             if (t.LastResult != ErrorCode.Ok)
                             {
@@ -129,7 +129,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 if (setResponse != null)
                 {
                     t.LastResult =
-                        (ErrorCode) setResponse.SetResponseNormal.Result;
+                        (ErrorCode)setResponse.SetResponseNormal.Result;
                 }
             });
         }

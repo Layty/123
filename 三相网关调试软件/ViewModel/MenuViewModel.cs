@@ -1,11 +1,11 @@
 ﻿#define 张诗华
 #undef 张诗华
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Controls;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel
@@ -14,7 +14,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
     {
         public MenuViewModel()
         {
-          
+
             {
 #if 张诗华
                 BaseMeterMenuCollection = new ObservableCollection<MenuModel>()
@@ -79,7 +79,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                     new MenuModel
                     {
-                        MenuName = "TcpClient", FontSize = "20", IconFont = "\xe6ee", 
+                        MenuName = "TcpClient", FontSize = "20", IconFont = "\xe6ee",
                         Assembly = "ServerCenter.TcpClientPage",
                         Foreground = "#FF0000"
                     },
@@ -97,7 +97,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     },
                 };
 
-                ToolsMenuCollection=new ObservableCollection<MenuModel>()
+                ToolsMenuCollection = new ObservableCollection<MenuModel>()
                 {
                     new MenuModel
                     {
@@ -152,7 +152,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public ObservableCollection<MenuModel> ToolsMenuCollection
         {
             get => _toolsMenuCollection;
-            set { _toolsMenuCollection = value; OnPropertyChanged();}
+            set { _toolsMenuCollection = value; OnPropertyChanged(); }
         }
         private ObservableCollection<MenuModel> _toolsMenuCollection;
 

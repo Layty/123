@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿using MyDlmsStandard.Axdr;
+using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.ApplicationLay
 {

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using System.ComponentModel;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件.Common
 {
@@ -98,9 +98,9 @@ namespace 三相智慧能源网关调试软件.Common
                     Color = "#20B2AA";
                     break;
             }
-//            var dialog = NetCoreProvider.ResolveNamed<IMsgCenter>("MsgCenter");
-//            var result = await dialog.Show(new { Msg = msg, Color, Icon });
-//            return result;
+            //            var dialog = NetCoreProvider.ResolveNamed<IMsgCenter>("MsgCenter");
+            //            var result = await dialog.Show(new { Msg = msg, Color, Icon });
+            //            return result;
 
             return true;
         }

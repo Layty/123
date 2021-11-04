@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using NLog;
+using System;
 using System.Net.Sockets;
 using System.Text;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using NLog;
 using 三相智慧能源网关调试软件.Common;
 
 namespace 三相智慧能源网关调试软件.Model
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.Model
         public void HandlerReceiveData(Socket socket, byte[] receiveBytes)
         {
             //根据当前设置的显示格式，进行存储
-            var   dataReceiveForShow =
+            var dataReceiveForShow =
                 IsReceiveFormat16 ? receiveBytes.ByteToString(" ") : Encoding.ASCII.GetString(receiveBytes);
             Log = $"{DateTime.Now:yy-MM-dd HH:mm:ss fff} ReceiveDataEvent 收到 {socket.RemoteEndPoint}数据 <= {dataReceiveForShow}{Environment.NewLine}";
         }
@@ -105,6 +105,6 @@ namespace 三相智慧能源网关调试软件.Model
             NetLogStringBuilder.Clear();
             Log = string.Empty;
         }
-   
+
     }
 }

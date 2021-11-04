@@ -8,7 +8,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
     public class DialogsViewModel : ObservableObject
     {
         public RelayCommand OpenSkinViewDialogCommand { get; set; }
-     
+
 
         public DialogsViewModel()
         {
@@ -16,7 +16,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 DialogHost.Show(new SkinView(), "Root");
             });
-          
+
         }
     }
 }

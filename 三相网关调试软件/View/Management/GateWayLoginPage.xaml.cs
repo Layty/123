@@ -16,7 +16,7 @@ namespace 三相智慧能源网关调试软件.View.Management
         public ENetClientHelper ENetInstance =
             CommonServiceLocator.ServiceLocator.Current.GetInstance<ENetClientHelper>();
 
-    
+
 
         private void ButtonConnect_OnClick(object sender, RoutedEventArgs e)
         {

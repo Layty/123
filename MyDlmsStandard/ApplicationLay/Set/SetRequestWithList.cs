@@ -1,10 +1,10 @@
-﻿using System.Text;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetRequestWithList:ISetRequest
+    public class SetRequestWithList : ISetRequest
     {
         public SetRequestType SetRequestType { get; } = SetRequestType.WithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
@@ -12,7 +12,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
         public DlmsDataItem[] ValueList { get; set; }
         public string ToPduStringInHex()
         {
-			StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("04");
             stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             int num = AttributeDescriptorList.Length;
@@ -52,6 +52,6 @@ namespace MyDlmsStandard.ApplicationLay.Set
                 stringBuilder.Append(dlmsDataItem.ToPduStringInHex());
             }
             return stringBuilder.ToString();
-		}
+        }
     }
 }

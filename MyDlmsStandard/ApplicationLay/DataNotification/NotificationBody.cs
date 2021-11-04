@@ -15,7 +15,7 @@
             return true;
         }
     }
-    public class NotificationBodyV1 
+    public class NotificationBodyV1
     {
         public DlmsDataItem DataValue { get; set; }
 
@@ -25,7 +25,7 @@
         }
         public static NotificationBodyV1 Parse(ref string pduStringInHex)
         {
-           var dataValue = new DlmsDataItem();
+            var dataValue = new DlmsDataItem();
             if (!dataValue.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return null;

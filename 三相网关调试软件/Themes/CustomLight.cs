@@ -64,17 +64,17 @@ namespace 三相智慧能源网关调试软件.Themes
         private ColorAnimation ColorAnimation;
         private void CustomLight_Loaded(object sender, RoutedEventArgs e)
         {
-             ColorAnimation = new ColorAnimation
-                {Duration = new TimeSpan(2000), From = FromColor, To = ToColor};
+            ColorAnimation = new ColorAnimation
+            { Duration = new TimeSpan(2000), From = FromColor, To = ToColor };
         }
-        
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
         }
         public bool IsStart
         {
-            get { return (bool) GetValue(IsStartProperty); }
+            get { return (bool)GetValue(IsStartProperty); }
             set { SetValue(IsStartProperty, value); }
         }
 
@@ -88,12 +88,12 @@ namespace 三相智慧能源网关调试软件.Themes
             {
                 return;
             }
-            Storyboard storyboard=new Storyboard();
-            
+            Storyboard storyboard = new Storyboard();
+
         }
         public string Text
         {
-            get { return (string) GetValue(TextProperty); }
+            get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
 
@@ -104,7 +104,7 @@ namespace 三相智慧能源网关调试软件.Themes
 
         public Color FromColor
         {
-            get { return (Color) GetValue(FromColorProperty); }
+            get { return (Color)GetValue(FromColorProperty); }
             set { SetValue(FromColorProperty, value); }
         }
 
@@ -116,7 +116,7 @@ namespace 三相智慧能源网关调试软件.Themes
 
         public Color ToColor
         {
-            get { return (Color) GetValue(ToColorProperty); }
+            get { return (Color)GetValue(ToColorProperty); }
             set { SetValue(ToColorProperty, value); }
         }
 

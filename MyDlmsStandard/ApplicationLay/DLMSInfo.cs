@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MyDlmsStandard.ApplicationLay
 {
-    public class DLMSInfo 
+    public class DLMSInfo
     {
         internal enum InfoTag : byte
         {
@@ -13,7 +13,7 @@ namespace MyDlmsStandard.ApplicationLay
             WindowSizeTx = 0x07,
             WindowSizeRx = 0x08
         }
-      
+
         public DLMSInfo()
         {
             _formatIdentifier = 0x81;
@@ -59,7 +59,7 @@ namespace MyDlmsStandard.ApplicationLay
                     _transmitMaxInfoFrameLength = 2;
                 }
 
-             
+
             }
         }
 
@@ -82,7 +82,7 @@ namespace MyDlmsStandard.ApplicationLay
                     _receiveMaxInfoFrameLength = 2;
                 }
 
-           
+
             }
         }
 
@@ -99,7 +99,7 @@ namespace MyDlmsStandard.ApplicationLay
                 if (flag)
                 {
                     _transmitMaxWindowSize = value;
-               
+
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace MyDlmsStandard.ApplicationLay
 
         private uint _receiveMaxWindowSize;
 
-     
+
         public uint ReceiveMaxWindowSize
         {
             get => _receiveMaxWindowSize;
@@ -119,7 +119,7 @@ namespace MyDlmsStandard.ApplicationLay
                 if (flag)
                 {
                     _receiveMaxWindowSize = value;
-                 
+
                 }
             }
         }
@@ -136,23 +136,23 @@ namespace MyDlmsStandard.ApplicationLay
                 _groupIdentifier
             };
             //发送最大信息域参数信息
-            info.Add((byte) InfoTag.MaxInfoTx);
-            info.Add((byte) _transmitMaxInfoFrameLength);
+            info.Add((byte)InfoTag.MaxInfoTx);
+            info.Add((byte)_transmitMaxInfoFrameLength);
             info.AddRange(BitConverter.GetBytes(TransmitMaxInfoValue).Reverse());
 
             //接收最大信息域参数信息
-            info.Add((byte) InfoTag.MaxInfoRx);
-            info.Add((byte) _receiveMaxInfoFrameLength);
+            info.Add((byte)InfoTag.MaxInfoRx);
+            info.Add((byte)_receiveMaxInfoFrameLength);
             info.AddRange(BitConverter.GetBytes(ReceiveMaxInfoValue).Reverse());
             //发送最大窗口参数信息
-            info.Add((byte) InfoTag.WindowSizeTx);
-            info.Add((byte) _transmitMaxWindowFrameLength);
+            info.Add((byte)InfoTag.WindowSizeTx);
+            info.Add((byte)_transmitMaxWindowFrameLength);
             info.AddRange(BitConverter.GetBytes(TransmitMaxWindowSize).Reverse());
             //接收最大窗口参数信息
-            info.Add((byte) InfoTag.WindowSizeRx);
-            info.Add((byte) _receiveMaxWindowFrameLength);
+            info.Add((byte)InfoTag.WindowSizeRx);
+            info.Add((byte)_receiveMaxWindowFrameLength);
             info.AddRange(BitConverter.GetBytes(ReceiveMaxWindowSize).Reverse());
-            _groupLength = (byte) (info.Count - 2);
+            _groupLength = (byte)(info.Count - 2);
             info.Insert(2, _groupLength);
             return info.ToArray();
         }

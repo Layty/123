@@ -1,63 +1,78 @@
-﻿<Page x:Class="三相智慧能源网关调试软件.View.ServerCenter.DlmsSettingsPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-      xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
-      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-      mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="DLMSSettingsPage">
+﻿<Page
+    x:Class="三相智慧能源网关调试软件.View.ServerCenter.DlmsSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:三相智慧能源网关调试软件.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    Title="DLMSSettingsPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <Page.DataContext>
-        <Binding Source="{StaticResource Locator}" Path="DlmsBaseMeterViewModel" />
+        <Binding Path="DlmsBaseMeterViewModel" Source="{StaticResource Locator}" />
     </Page.DataContext>
     <Grid>
 
-        <TabControl>
+        <TabControl TabStripPlacement="Top">
+
             <TabItem Header="SerialPort">
                 <myControl:SerialPortControl />
             </TabItem>
             <TabItem Header="FrontEndProcessor">
                 <dlmsControl:FrontEndProcessorControl />
             </TabItem>
+            <TabItem Header="JobCenter">
+                <dlmsControl:JobCenter />
+            </TabItem>
+
             <TabItem Header="Other Parameters">
                 <StackPanel>
                     <TextBox
-                        Text="{Binding  Client.DlmsSettingsViewModel.ClientAddress,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="SourceAddress"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                        materialDesign:HintAssist.Hint="SourceAddress" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="DestAddress"
-                             Text="{Binding  Client.DlmsSettingsViewModel.ServerAddress,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" />
-                    <TextBox Text="{Binding  Client.DlmsSettingsViewModel.PasswordString}"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="Password" />
+                        Text="{Binding Client.DlmsSettingsViewModel.ClientAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="DestAddress"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Password"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.PasswordString}" />
                     <TextBlock Text="{Binding Client.DlmsSettingsViewModel.LastCommand}" />
 
-                    <TextBox Text="{Binding  Client.DlmsSettingsViewModel.DlmsVersion}"
-                             materialDesign:HintAssist.Hint="DLMSVersion"
-                             materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox ItemsSource="{Binding Client.DlmsSettingsViewModel.StartProtocolArray}"
-                              SelectedItem="{Binding Client.DlmsSettingsViewModel.StartProtocolType,Mode=TwoWay}"
-                              materialDesign:HintAssist.Hint="StartProtocolType"
-                              materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox ItemsSource="{Binding Client.DlmsSettingsViewModel.CommunicationTypeArray}"
-                              SelectedItem="{Binding Client.DlmsSettingsViewModel.CommunicationType,Mode=TwoWay}"
-                              materialDesign:HintAssist.Hint="CommunicationType"
-                              materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox ItemsSource="{Binding Client.DlmsSettingsViewModel.InterfaceTypeArray}"
-                              SelectedItem="{Binding Client.DlmsSettingsViewModel.InterfaceType,Mode=TwoWay}"
-                              materialDesign:HintAssist.Hint="InterfaceType"
-                              materialDesign:HintAssist.IsFloating="True" />
                     <TextBox
-                        Text="{Binding Client.DlmsSettingsViewModel.NegotiateBaud,UpdateSourceTrigger=PropertyChanged}"
-                        materialDesign:HintAssist.Hint="NegotiateBaud" materialDesign:HintAssist.IsFloating="True" />
+                        materialDesign:HintAssist.Hint="DLMSVersion"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsVersion}" />
+                    <ComboBox
+                        materialDesign:HintAssist.Hint="StartProtocolType"
+                        materialDesign:HintAssist.IsFloating="True"
+                        ItemsSource="{Binding Client.DlmsSettingsViewModel.StartProtocolArray}"
+                        SelectedItem="{Binding Client.DlmsSettingsViewModel.StartProtocolType, Mode=TwoWay}" />
+                    <ComboBox
+                        materialDesign:HintAssist.Hint="CommunicationType"
+                        materialDesign:HintAssist.IsFloating="True"
+                        ItemsSource="{Binding Client.DlmsSettingsViewModel.CommunicationTypeArray}"
+                        SelectedItem="{Binding Client.DlmsSettingsViewModel.CommunicationType, Mode=TwoWay}" />
+                    <ComboBox
+                        materialDesign:HintAssist.Hint="InterfaceType"
+                        materialDesign:HintAssist.IsFloating="True"
+                        ItemsSource="{Binding Client.DlmsSettingsViewModel.InterfaceTypeArray}"
+                        SelectedItem="{Binding Client.DlmsSettingsViewModel.InterfaceType, Mode=TwoWay}" />
                     <TextBox
-                        Text="{Binding  Client.DlmsSettingsViewModel.StartBaud,UpdateSourceTrigger=PropertyChanged}"
-                        materialDesign:HintAssist.Hint="StartBaud" materialDesign:HintAssist.IsFloating="True" />
+                        materialDesign:HintAssist.Hint="NegotiateBaud"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding Client.DlmsSettingsViewModel.NegotiateBaud, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="StartBaud"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding Client.DlmsSettingsViewModel.StartBaud, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
             </TabItem>
@@ -65,65 +80,77 @@
 
                 <StackPanel>
 
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="TransmitMaxInfoValue"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfo.TransmitMaxInfoValue}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="TransmitMaxWindowSize"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfo.TransmitMaxWindowSize}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="ReceiveMaxInfoValue"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfo.ReceiveMaxInfoValue}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="ReceiveMaxWindowSize"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfo.ReceiveMaxWindowSize}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="TransmitMaxInfoValue"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfo.TransmitMaxInfoValue}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="TransmitMaxWindowSize"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfo.TransmitMaxWindowSize}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="ReceiveMaxInfoValue"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfo.ReceiveMaxInfoValue}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="ReceiveMaxWindowSize"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfo.ReceiveMaxWindowSize}" />
 
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="TransmitMaxInfoValueFromMeter"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfoFromMeter.TransmitMaxInfoValue}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="TransmitMaxWindowSizeFromMeter"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfoFromMeter.TransmitMaxWindowSize}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="ReceiveMaxInfoValueFromMeter"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfoFromMeter.ReceiveMaxInfoValue}" />
-                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="ReceiveMaxWindowSizeFromMeter"
-                             Text="{Binding  Client.DlmsSettingsViewModel.DlmsInfoFromMeter.ReceiveMaxWindowSize}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="TransmitMaxInfoValueFromMeter"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfoFromMeter.TransmitMaxInfoValue}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="TransmitMaxWindowSizeFromMeter"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfoFromMeter.TransmitMaxWindowSize}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="ReceiveMaxInfoValueFromMeter"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfoFromMeter.ReceiveMaxInfoValue}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="ReceiveMaxWindowSizeFromMeter"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.DlmsSettingsViewModel.DlmsInfoFromMeter.ReceiveMaxWindowSize}" />
 
-                    <TextBox Text="{Binding Client.Hdlc46FrameBase.CurrentSendSequenceNumber}"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="CurrentSendSequenceNumber" />
-                    <TextBox Text="{Binding  Client.Hdlc46FrameBase.CurrentReceiveSequenceNumber}"
-                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                             materialDesign:HintAssist.Hint="CurrentReceiveSequenceNumber" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="CurrentSendSequenceNumber"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.Hdlc46FrameBase.CurrentSendSequenceNumber}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="CurrentReceiveSequenceNumber"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding Client.Hdlc46FrameBase.CurrentReceiveSequenceNumber}" />
                 </StackPanel>
 
             </TabItem>
             <TabItem Header="Application Layer Parameters">
 
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding Client.DlmsSettingsViewModel.UseLogicalNameReferencing}"
-                              Content="UseLogicalNameReferencing" />
-                    <TextBox Text="{Binding Client.DlmsSettingsViewModel.SystemTitle}"
-                             materialDesign:HintAssist.Hint="SystemTitle"
-                             materialDesign:HintAssist.IsFloating="True" />
-                    <TextBox Text="{Binding Client.DlmsSettingsViewModel.MaxReceivePduSize}"
-                             materialDesign:HintAssist.Hint="MaxReceivePduSize"
-                             materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox SelectedItem="{Binding Client.DlmsSettingsViewModel.Priority}"
-                              Style="{StaticResource MaterialDesignComboBox}"
-                              ItemsSource="{Binding Client.DlmsSettingsViewModel.PriorityArray}"
-                              materialDesign:HintAssist.Hint="Priority"
-                              materialDesign:HintAssist.IsFloating="True" />
-                    <ComboBox SelectedItem="{Binding Client.DlmsSettingsViewModel.ServiceClass}"
-                              ItemsSource="{Binding Client.DlmsSettingsViewModel.ServiceClassArray}"
-                              materialDesign:HintAssist.Hint="ServiceClass"
-                              materialDesign:HintAssist.IsFloating="True" />
+                    <CheckBox Content="UseLogicalNameReferencing" IsChecked="{Binding Client.DlmsSettingsViewModel.UseLogicalNameReferencing}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="SystemTitle"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding Client.DlmsSettingsViewModel.SystemTitle}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="MaxReceivePduSize"
+                        materialDesign:HintAssist.IsFloating="True"
+                        Text="{Binding Client.DlmsSettingsViewModel.MaxReceivePduSize}" />
+                    <ComboBox
+                        materialDesign:HintAssist.Hint="Priority"
+                        materialDesign:HintAssist.IsFloating="True"
+                        ItemsSource="{Binding Client.DlmsSettingsViewModel.PriorityArray}"
+                        SelectedItem="{Binding Client.DlmsSettingsViewModel.Priority}"
+                        Style="{StaticResource MaterialDesignComboBox}" />
+                    <ComboBox
+                        materialDesign:HintAssist.Hint="ServiceClass"
+                        materialDesign:HintAssist.IsFloating="True"
+                        ItemsSource="{Binding Client.DlmsSettingsViewModel.ServiceClassArray}"
+                        SelectedItem="{Binding Client.DlmsSettingsViewModel.ServiceClass}" />
                     <TextBox Text="{Binding Client.DlmsSettingsViewModel.ProposedConformance}" />
 
-                    <ListBox SelectionMode="Multiple"
-                             ItemsSource="{Binding Client.DlmsSettingsViewModel.ProposedConformanceArray}" />
+                    <ListBox ItemsSource="{Binding Client.DlmsSettingsViewModel.ProposedConformanceArray}" SelectionMode="Multiple" />
                     <ListBox />
                 </StackPanel>
 

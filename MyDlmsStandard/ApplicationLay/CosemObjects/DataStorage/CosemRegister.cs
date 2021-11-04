@@ -20,14 +20,14 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         {
             LogicalName = logicName;
         }
-        
+
         public virtual CosemAttributeDescriptor ScalarUnitAttributeDescriptor => GetCosemAttributeDescriptor(3);
 
         public CosemMethodDescriptor ResetMethodDescriptor => GetCosemMethodDescriptor(1);
 
         public override string[] GetNames()
         {
-            return new[] {LogicalName, "Value", "Scalar_Unit"};
+            return new[] { LogicalName, "Value", "Scalar_Unit" };
         }
 
         public override int AttributeCount => 3;

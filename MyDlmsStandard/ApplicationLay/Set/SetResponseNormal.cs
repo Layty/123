@@ -1,7 +1,7 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
@@ -33,14 +33,14 @@ namespace MyDlmsStandard.ApplicationLay.Set
             {
                 return false;
             }
-            
+
             _result = new AxdrIntegerUnsigned8();
             if (!_result.PduStringInHexConstructor(ref pduStringInHex))
             {
                 return false;
             }
 
-            Result = (DataAccessResult) _result.GetEntityValue();
+            Result = (DataAccessResult)_result.GetEntityValue();
 
 
             return true;

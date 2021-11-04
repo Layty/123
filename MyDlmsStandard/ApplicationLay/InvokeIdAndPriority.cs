@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System;
 using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay
 {
@@ -35,7 +35,7 @@ namespace MyDlmsStandard.ApplicationLay
         [XmlAttribute] public ServiceClass ServiceClass { get; set; } //0 = Unconfirmed, 1 = Confirmed
         [XmlAttribute] public Priority Priority { get; set; } //0=normal,1=high
 
-     
+
 
         [XmlAttribute]
         public string OriginalHexValue { get; set; }
@@ -96,7 +96,7 @@ namespace MyDlmsStandard.ApplicationLay
                 ServiceClass = ServiceClass.UnConfirmed;
             }
 
-            InvokeId = (byte) (value & 0xF);
+            InvokeId = (byte)(value & 0xF);
             Value = GetInvoke_Id_And_Priority();
         }
 

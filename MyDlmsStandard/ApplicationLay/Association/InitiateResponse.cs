@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System;
+using System.Linq;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
@@ -16,10 +16,10 @@ namespace MyDlmsStandard.ApplicationLay.Association
         }
     }
 
-    public class InitiateResponse : IPduBytesToConstructor,IPduStringInHexConstructor
+    public class InitiateResponse : IPduBytesToConstructor, IPduStringInHexConstructor
     {
         public AxdrIntegerUnsigned8 NegotiatedDlmsVersionNumber { get; set; }
-       public Conformance NegotiatedConformance { get; set; }
+        public Conformance NegotiatedConformance { get; set; }
 
         public AxdrIntegerUnsigned16 ServerMaxReceivePduSize { get; set; }
         public AxdrInteger16 VaaName { get; set; }
@@ -50,7 +50,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
                         pduStringInHex = pduStringInHex.Substring(6);
                         var nego = pduStringInHex.Substring(0, 8).StringToByte();
                         var negovalue = BitConverter.ToUInt32(nego.Reverse().ToArray(), 0);
-                        NegotiatedConformance = (Conformance) negovalue;
+                        NegotiatedConformance = (Conformance)negovalue;
                         pduStringInHex = pduStringInHex.Substring(8);
                         ServerMaxReceivePduSize = new AxdrIntegerUnsigned16();
                         ServerMaxReceivePduSize.PduStringInHexConstructor(ref pduStringInHex);
@@ -71,6 +71,6 @@ namespace MyDlmsStandard.ApplicationLay.Association
             return PduBytesToConstructor(pduStringInHex.StringToByte());
         }
 
-       
+
     }
 }

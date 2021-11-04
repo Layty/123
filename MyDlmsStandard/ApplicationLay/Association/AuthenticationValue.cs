@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using MyDlmsStandard.Ber;
+﻿using MyDlmsStandard.Ber;
+using System;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {

@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿using MyDlmsStandard.Ber;
+using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.Ber;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {

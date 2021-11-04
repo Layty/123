@@ -1,6 +1,6 @@
-﻿using System;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
+using System;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
@@ -11,7 +11,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         public sbyte AttributeIndex { get; set; }
         public ushort DataIndex { get; set; }
 
-        public string Description { get;set; }
+        public string Description { get; set; }
 
         public DlmsDataItem ToDlmsDataItem()
         {
@@ -34,7 +34,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 
             DlmsStructure dlmsStructure = new DlmsStructure();
             var structure = ddi.ToPduStringInHex();
-           
+
             dlmsStructure.PduStringInHexConstructor(ref structure);
             if (dlmsStructure.Items.Length != 4)
             {

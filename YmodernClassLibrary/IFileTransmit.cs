@@ -4,7 +4,7 @@ namespace FileTransmit
 {
     public delegate void PacketEventHandler(object sender, PacketEventArgs e);
 
-   public interface IFileTransmit : ITransmitUart
+    public interface IFileTransmit : ITransmitUart
     {
         event EventHandler StartSend;
         event EventHandler StartReceive;

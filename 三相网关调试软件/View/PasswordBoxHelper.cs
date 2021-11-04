@@ -7,7 +7,7 @@ namespace 三相智慧能源网关调试软件.View
     {
         public static string GetPassword(DependencyObject obj)
         {
-            return (string) obj.GetValue(PasswordProperty);
+            return (string)obj.GetValue(PasswordProperty);
         }
 
         public static void SetPassword(DependencyObject obj, string value)

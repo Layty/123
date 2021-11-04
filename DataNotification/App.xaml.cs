@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using NLog;
 
 namespace DataNotification
 {
@@ -12,12 +12,12 @@ namespace DataNotification
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
-     
+
 
 
         protected override void OnStartup(StartupEventArgs e)
         {
-        
+
             DispatcherHelper.Initialize();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;

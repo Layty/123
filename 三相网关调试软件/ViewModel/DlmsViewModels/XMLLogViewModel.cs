@@ -1,7 +1,7 @@
-﻿using System.Text;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using NLog;
+using System.Text;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -10,17 +10,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public Logger Logger = LogManager.GetLogger("XML");
 
         private readonly StringBuilder _xmlLogStringBuilder = new StringBuilder();
-//        public string XmlLogAppend  
-//        {
-//            get => _xmlLogStringBuilder.ToString();
-//            set { _xmlLogStringBuilder.Append(value); RaisePropertyChanged(); }
-//        }
+        //        public string XmlLogAppend  
+        //        {
+        //            get => _xmlLogStringBuilder.ToString();
+        //            set { _xmlLogStringBuilder.Append(value); RaisePropertyChanged(); }
+        //        }
 
         public string XmlLog
         {
             get
             {
-//                return _XmlLogString;
+                //                return _XmlLogString;
                 return _xmlLogStringBuilder.ToString();
             }
             set
@@ -41,7 +41,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-//        private string _XmlLogString;
+        //        private string _XmlLogString;
 
         private int _keepMaxSendAndReceiveDataLength = 5000;
 
@@ -72,7 +72,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
 
         public RelayCommand ClearAllDataCommand { get; set; }
-     
+
 
         public XMLLogViewModel()
         {

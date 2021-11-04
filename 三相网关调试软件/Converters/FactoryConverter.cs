@@ -8,11 +8,11 @@ namespace 三相智慧能源网关调试软件.Converters
 {
     public class FactoryConverter : IValueConverter
     {
-        public  object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
             {
-                var t=  int.TryParse(value.ToString(),out int result);
+                var t = int.TryParse(value.ToString(), out int result);
                 if (t)
                 {
                     if (result >= 8192)

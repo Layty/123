@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using Tftp.Net.Channel;
-using Tftp.Net.Transfer.States;
 using Tftp.Net.Transfer;
 
 namespace Tftp.Net
@@ -33,8 +30,8 @@ namespace Tftp.Net
         /// <param name="ip">Address of the server that you want connect to.</param>
         /// <param name="port">Port on the server that you want connect to (default: 69)</param>
         public TftpClient(IPAddress ip, int port)
-            : this(new IPEndPoint(ip, port)) 
-        { 
+            : this(new IPEndPoint(ip, port))
+        {
         }
 
         /// <summary>

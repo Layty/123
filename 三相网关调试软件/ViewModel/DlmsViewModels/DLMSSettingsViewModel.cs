@@ -1,31 +1,31 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.HDLC.Enums;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     public class DlmsSettingsViewModel : ObservableObject
     {
-       
+
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array CommunicationTypeArray => Enum.GetValues(typeof(ChanelType));
         public Array InterfaceTypeArray => Enum.GetValues(typeof(InterfaceType));
-        public InterfaceType InterfaceType { get; set; } 
+        public InterfaceType InterfaceType { get; set; }
 
-        public StartProtocolType StartProtocolType { get; set; } 
+        public StartProtocolType StartProtocolType { get; set; }
         public ConnectionState Connected { get; set; }
 
         /// <summary>
         /// 物理层通道类型
         /// </summary>
-        public ChanelType CommunicationType 
+        public ChanelType CommunicationType
         {
             get => _communicationType;
             set
@@ -93,7 +93,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// </summary>
         internal Conformance NegotiatedConformance = 0;
         public Array ProposedConformanceArray { get; set; } = Enum.GetValues(typeof(Conformance));
-      
+
 
 
         public bool AutoIncreaseInvokeID { get; set; }
@@ -115,9 +115,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private string _passwordString ;
+        private string _passwordString;
 
-     
+
 
 
         public ushort ClientAddress
@@ -128,7 +128,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         private ushort _clientAddress;
 
 
-     
+
 
         public ushort ServerAddress
         {
@@ -159,7 +159,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public DLMSInfo DlmsInfoFromMeter { get; set; }
 
 
-        public string SystemTitle { get=> _systemTitle;
+        public string SystemTitle
+        {
+            get => _systemTitle;
             set { _systemTitle = value; OnPropertyChanged(); }
         }
         private string _systemTitle;
@@ -171,12 +173,12 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Priority = Priority.High;
             ServiceClass = ServiceClass.Confirmed;
             MaxServerPDUSize = MaxReceivePduSize = DefaultMaxReceivePduSize;
-           // ProposedConformance = (Conformance) 0x7E1F;
+            // ProposedConformance = (Conformance) 0x7E1F;
             ProposedConformance = GetInitialConformance(true);
 
             DlmsInfo = new DLMSInfo();
-            DlmsInfoFromMeter=new DLMSInfo();
-            
+            DlmsInfoFromMeter = new DLMSInfo();
+
             PasswordString = "33333333";
             CommunicationType = ChanelType.SerialPort;
             InterfaceType = InterfaceType.HDLC;
@@ -206,6 +208,6 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             get => _startBaud;
             set { _startBaud = value; OnPropertyChanged(); }
         }
-        private int _startBaud ;
+        private int _startBaud;
     }
 }

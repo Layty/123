@@ -81,7 +81,7 @@ namespace WpfAppBluetooth
                 deviceWatcher.Added += DeviceWatcher_Added;
                 deviceWatcher.Stopped += DeviceWatcher_Stopped;
                 deviceWatcher.Start();
-                
+
                 string msg = "自动发现设备中..";
 
                 ValueChanged(MsgType.NotifyTxt, msg);

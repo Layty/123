@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
@@ -11,6 +7,10 @@ using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using Quartz;
 using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
@@ -30,7 +30,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
                 {
                     RestrictingObject = new CaptureObjectDefinition()
-                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
+                    { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
                     FromValue = new DlmsDataItem(DataType.OctetString,
                         new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, Period, 0, 0))).GetDateTimeBytes()
                             .ByteToString()),
@@ -103,12 +103,12 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 InsertData();
             });
         }
-       
+
 
         public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/PowerData/";
         public string MeterId { get; set; }
         public RestClient RestClient { get; set; } = new RestClient();
-        public RestRequest RestRequest { get; set; }= new RestRequest(Method.POST);
+        public RestRequest RestRequest { get; set; } = new RestRequest(Method.POST);
 
         public void InsertData()
         {
@@ -128,7 +128,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             }
 
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
-          
+
             RestRequest.AddHeader("Content-Type", "application/json");
             var str = JsonConvert.SerializeObject(Powers);
             RestRequest.AddParameter("CurrentPower", str, ParameterType.RequestBody);

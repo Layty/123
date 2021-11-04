@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.IO;
 using System.Net;
-using Tftp.Net.Transfer;
-using Tftp.Net.Transfer.States;
-using Tftp.Net.Channel;
 using System.Threading;
+using Tftp.Net.Channel;
 using Tftp.Net.Trace;
+using Tftp.Net.Transfer.States;
 
 namespace Tftp.Net.Transfer
 {
@@ -135,19 +130,19 @@ namespace Tftp.Net.Transfer
         public int RetryCount { get; set; }
         public virtual TftpTransferMode TransferMode { get; set; }
         public object UserContext { get; set; }
-        public virtual TimeSpan RetryTimeout 
+        public virtual TimeSpan RetryTimeout
         {
             get { return TimeSpan.FromSeconds(NegotiatedOptions != null ? NegotiatedOptions.Timeout : ProposedOptions.Timeout); }
             set { ThrowExceptionIfTransferAlreadyStarted(); ProposedOptions.Timeout = value.Seconds; }
         }
 
-        public virtual long ExpectedSize 
+        public virtual long ExpectedSize
         {
             get { return NegotiatedOptions != null ? NegotiatedOptions.TransferSize : ProposedOptions.TransferSize; }
             set { ThrowExceptionIfTransferAlreadyStarted(); ProposedOptions.TransferSize = value; }
         }
 
-        public virtual int BlockSize 
+        public virtual int BlockSize
         {
             get { return NegotiatedOptions != null ? NegotiatedOptions.BlockSize : ProposedOptions.BlockSize; }
             set { ThrowExceptionIfTransferAlreadyStarted(); ProposedOptions.BlockSize = value; }

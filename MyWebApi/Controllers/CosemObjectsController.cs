@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Entities;
 using MyWebApi.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +17,7 @@ namespace MyWebApi.Controllers
         private readonly ICosemRepository _cosemRepository;
         private readonly ILogger<CosemObjectsController> _logger;
 
-        public CosemObjectsController(ICosemRepository cosemRepository,ILogger<CosemObjectsController> logger)
+        public CosemObjectsController(ICosemRepository cosemRepository, ILogger<CosemObjectsController> logger)
         {
             _cosemRepository = cosemRepository;
             _logger = logger;

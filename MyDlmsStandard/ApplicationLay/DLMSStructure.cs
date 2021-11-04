@@ -1,51 +1,50 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay
 {
-//    public class DlmsCompactArray:IToPduStringInHex,IPduStringInHexConstructor
-//    {
-//        public DLMSDataItem[] Items { get; set; }
-//        [XmlIgnore] public DLMSDataItem ContentDescription { get; set; }
-//
-//        public string ToPduStringInHex()
-//        {
-//            if (ContentDescription == null)
-//            {
-//                if (Items == null || Items.Length == 0)
-//                {
-//                    return "";
-//                }
-//                ContentDescription = Items[0];
-//            }
-//            StringBuilder stringBuilder = new StringBuilder();
-//            stringBuilder.Append("13");
-//            stringBuilder.Append(GetContentDescription(ContentDescription));
-//            StringBuilder stringBuilder2 = new StringBuilder();
-//            DLMSDataItem[] array = Items;
-//            foreach (DLMSDataItem dlmsDataItem in array)
-//            {
-//                stringBuilder2.Append(dlmsDataItem.ToPduStringInHexWithinCompactArray());
-//            }
-//            int qty = stringBuilder2.ToString().Length / 2;
-//            stringBuilder.Append(MyConvert.EncodeVarLength(qty));
-//            stringBuilder.Append(stringBuilder2.ToString());
-//            return stringBuilder.ToString();
-//        }
-//
-//        public bool PduStringInHexConstructor(ref string pduStringInHex)
-//        {
-//            throw new System.NotImplementedException();
-//        }
-//    }
+    //    public class DlmsCompactArray:IToPduStringInHex,IPduStringInHexConstructor
+    //    {
+    //        public DLMSDataItem[] Items { get; set; }
+    //        [XmlIgnore] public DLMSDataItem ContentDescription { get; set; }
+    //
+    //        public string ToPduStringInHex()
+    //        {
+    //            if (ContentDescription == null)
+    //            {
+    //                if (Items == null || Items.Length == 0)
+    //                {
+    //                    return "";
+    //                }
+    //                ContentDescription = Items[0];
+    //            }
+    //            StringBuilder stringBuilder = new StringBuilder();
+    //            stringBuilder.Append("13");
+    //            stringBuilder.Append(GetContentDescription(ContentDescription));
+    //            StringBuilder stringBuilder2 = new StringBuilder();
+    //            DLMSDataItem[] array = Items;
+    //            foreach (DLMSDataItem dlmsDataItem in array)
+    //            {
+    //                stringBuilder2.Append(dlmsDataItem.ToPduStringInHexWithinCompactArray());
+    //            }
+    //            int qty = stringBuilder2.ToString().Length / 2;
+    //            stringBuilder.Append(MyConvert.EncodeVarLength(qty));
+    //            stringBuilder.Append(stringBuilder2.ToString());
+    //            return stringBuilder.ToString();
+    //        }
+    //
+    //        public bool PduStringInHexConstructor(ref string pduStringInHex)
+    //        {
+    //            throw new System.NotImplementedException();
+    //        }
+    //    }
 
     public class DlmsStructure : IPduStringInHexConstructor, IToPduStringInHex, IDataType
     {
         public DataType DataType { get; } = DataType.Structure;
         public DlmsDataItem[] Items { get; set; }
-      
+
         public DlmsStructure()
         {
         }

@@ -1,17 +1,16 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using MyDlmsStandard;
+using MySerialPortMaster;
+using System;
 using System.IO.Ports;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using CommonServiceLocator;
-using MyDlmsStandard;
-using MyDlmsStandard.ApplicationLay;
-using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Common;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     /// <summary>
-    /// 物理层
+    /// 物理层,只需要处理数据的发送即可
     /// </summary>
     public class LinkLayer
     {
@@ -40,8 +39,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
             InitSerialPortParams(PortMaster);
         }
-       
-        
+
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -54,10 +53,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }   /// <summary>
             /// 初始化21E的串口实例
             /// </summary>
-        public void Init21ESerialPort(int StartBaud,int _negotiateBaud)
+        public void Init21ESerialPort(int StartBaud, int _negotiateBaud)
         {
             _negotiateBaud = PortMaster.BaudRate;
-          
+
             PortMaster.BaudRate = StartBaud;
             PortMaster.DataBits = 7;
             PortMaster.StopBits = StopBits.One;
@@ -72,10 +71,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             _caretaker.Dictionary["before"] = memento;
             PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
             PortMaster.SerialPortLogger.IsReceiveFormat16 = false;
-        }  
+        }
         /// <summary>
-           /// 恢复备份的串口参数
-           /// </summary>
+        /// 恢复备份的串口参数
+        /// </summary>
         public void LoadBackupPortPara()
         {
             PortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
@@ -84,17 +83,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
         #region 发送数据 //协议层=>物理层
-        private async Task<byte[]> PhysicalLayerSendData(IToPduBytes iToPduBytes)
-        {
-            return await SendAsync(iToPduBytes.ToPduBytes());
-        }
 
-        private async Task<byte[]> PhysicalLayerSendData(IToPduStringInHex sendHexString)
-        {
-            return await PhysicalLayerSendData(sendHexString.ToPduStringInHex());
-        }
-       
-        private async Task<byte[]> PhysicalLayerSendData(string sendHexString)
+
+        //public async Task<byte[]> SendAsync(IToPduStringInHex sendHexString)
+        //{
+        //    return await SendAsync(sendHexString.ToPduStringInHex());
+        //}
+
+        public async Task<byte[]> SendAsync(string sendHexString)
         {
             return await SendAsync(sendHexString.StringToByte());
         }  /// <summary>
@@ -118,15 +114,15 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
             catch (Exception e)
             {
-               // OnReportSnackbar(e.Message);
+                // OnReportSnackbar(e.Message);
             }
 
 
             return returnBytes;
         }
         #endregion
-        
-       
+
+
     }
 }
 

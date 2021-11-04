@@ -1,7 +1,7 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Get;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
@@ -34,12 +34,12 @@ namespace MyDlmsStandard.ApplicationLay.Set
             }
             else if (SetRequestWithList != null)
             {
-                
+
                 stringBuilder.Append(SetRequestWithList.ToPduStringInHex());
             }
             else if (SetRequestWithListAndFirstDatablock != null)
             {
-              
+
                 stringBuilder.Append(SetRequestWithListAndFirstDatablock.ToPduStringInHex());
             }
             return stringBuilder.ToString();

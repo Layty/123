@@ -1,6 +1,6 @@
-﻿using System.Text;
-using MyDlmsStandard.Axdr;
+﻿using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System.Text;
 
 namespace MyDlmsStandard.Wrapper
 {
@@ -22,7 +22,7 @@ namespace MyDlmsStandard.Wrapper
         public WrapperFrame(IWrapperHeader wrapperHeader)
         {
             WrapperHeader = wrapperHeader;
-            WrapperBody = new WrapperBody {DataBytes = new byte[] { }};
+            WrapperBody = new WrapperBody { DataBytes = new byte[] { } };
         }
 
         public WrapperFrame(IWrapperHeader wrapperHeader, IToPduStringInHex pduStringInHex)
@@ -36,7 +36,7 @@ namespace MyDlmsStandard.Wrapper
 
         public WrapperFrame()
         {
-            WrapperBody = new WrapperBody {DataBytes = new byte[] { }};
+            WrapperBody = new WrapperBody { DataBytes = new byte[] { } };
         }
 
 

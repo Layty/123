@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard.ApplicationLay
 {
-    public class CosemAttributeDescriptorWithSelection :IToPduStringInHex, IPduStringInHexConstructor
+    public class CosemAttributeDescriptorWithSelection : IToPduStringInHex, IPduStringInHexConstructor
     {
         public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor SelectiveAccessDescriptor { get; set; }

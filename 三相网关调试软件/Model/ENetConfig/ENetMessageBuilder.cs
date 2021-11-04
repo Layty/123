@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Newtonsoft.Json;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.Model.ENetConfig
@@ -48,7 +48,7 @@ namespace 三相智慧能源网关调试软件.Model.ENetConfig
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-    public class ENetMessageBuilder:INotifyPropertyChanged
+    public class ENetMessageBuilder : INotifyPropertyChanged
     {
         public long Timestamp
         {
@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.Model.ENetConfig
         }
         private long _timestamp;
 
-        
+
         public ENetEventType EventType
         {
             get => _eventType;
@@ -88,7 +88,7 @@ namespace 三相智慧能源网关调试软件.Model.ENetConfig
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-      
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

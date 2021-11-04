@@ -2,7 +2,7 @@
 {
     public enum DataType : byte
     {
-        NullData=0,
+        NullData = 0,
         /// <summary>
         /// 数组类型元素在 COSEMIC 规范的属性或方法 描述部分中定义。
         /// </summary>
@@ -98,16 +98,16 @@
         /// 字节串(大小(4))OCTETSTRING (SIZE(4))
         /// </summary>
         Time = 27,
-        DoNotCare=255
+        DoNotCare = 255
 
 
-    
 
 
-    
 
 
-  
+
+
+
 
     }
 }

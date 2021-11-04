@@ -2,9 +2,9 @@
 
 namespace MySerialPortMaster
 {
-     internal static class Common
+    internal static class Common
     {
-        
+
         ///  <summary>  
         /// 将指定字节数组转为16进制的字符串  
         ///  </summary>  

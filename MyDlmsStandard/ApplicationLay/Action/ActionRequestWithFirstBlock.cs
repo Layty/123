@@ -1,8 +1,8 @@
 ﻿namespace MyDlmsStandard.ApplicationLay.Action
 {
-    public class ActionRequestWithFirstBlock 
+    public class ActionRequestWithFirstBlock
     {
-       
+
 
         public byte[] ToPduBytes()
         {

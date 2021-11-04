@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using Tftp.Net;
 using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.Properties;
@@ -72,7 +72,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         {
             TftpServerDirectory = Settings.Default.TftpServerDirectory;
             DirectoryCollection = new ObservableCollection<string>();
-            _folderBrowserDialog1 = new FolderBrowserDialog {SelectedPath = TftpServerDirectory};
+            _folderBrowserDialog1 = new FolderBrowserDialog { SelectedPath = TftpServerDirectory };
 
             BrowseCommand = new RelayCommand(BrowseDialog);
 
@@ -90,7 +90,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     _tftpServer.OnError += TftpServer_OnError;
                     _tftpServer?.Start();
                     IsStarted = true;
-                  
+
                 }
             });
             StopServerCommand = new RelayCommand(() =>
@@ -183,7 +183,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// <param name="client"></param>
         private void TftpServer_OnReadRequest(ITftpTransfer transfer, EndPoint client)
         {
-            string path = Path.Combine(Environment.CurrentDirectory+TftpServerDirectory, transfer.Filename);
+            string path = Path.Combine(Environment.CurrentDirectory + TftpServerDirectory, transfer.Filename);
             FileInfo file = new FileInfo(path);
 
             if (!file.Exists)
@@ -199,19 +199,19 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void TftpServer_OnWriteRequest(ITftpTransfer transfer, EndPoint client)
         {
-          
-                string file = Path.Combine(Environment.CurrentDirectory+_tftpServerDirectory, transfer.Filename);
-                bool flag = File.Exists(file);
-                if (flag)
-                {
-                    CancelTransfer(transfer, TftpErrorPacket.FileAlreadyExists);
-                }
-                else
-                {
-                    OutputTransferStatus(transfer, "Accepting write request from " + client);
-                   StartTransfer(transfer, new FileStream(file, FileMode.CreateNew)); 
-                }
-        
+
+            string file = Path.Combine(Environment.CurrentDirectory + _tftpServerDirectory, transfer.Filename);
+            bool flag = File.Exists(file);
+            if (flag)
+            {
+                CancelTransfer(transfer, TftpErrorPacket.FileAlreadyExists);
+            }
+            else
+            {
+                OutputTransferStatus(transfer, "Accepting write request from " + client);
+                StartTransfer(transfer, new FileStream(file, FileMode.CreateNew));
+            }
+
         }
 
 
@@ -247,7 +247,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             {
                 DirectoryCollection.Add(transfer.Filename);//完成后更新列表
             });
-           
+
 
         }
 

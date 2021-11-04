@@ -1,9 +1,9 @@
-﻿using System.IO.Ports;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard.HDLC.IEC21EMode;
 using MySerialPortMaster;
+using System.IO.Ports;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels

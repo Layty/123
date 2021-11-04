@@ -9,7 +9,7 @@ namespace 三相智慧能源网关调试软件.MyControl
     /// </summary>
     public partial class Pager : UserControl
     {
-     
+
         public static RoutedEvent FirstPageEvent;
         public static RoutedEvent PreviousPageEvent;
         public static RoutedEvent NextPageEvent;
@@ -17,7 +17,7 @@ namespace 三相智慧能源网关调试软件.MyControl
         public static RoutedEvent GotoPageEvent;
         public static readonly DependencyProperty CurrentPageProperty;
         public static readonly DependencyProperty TotalPageProperty;
-  
+
         public string CurrentPage
         {
             get { return (string)GetValue(CurrentPageProperty); }
@@ -51,7 +51,7 @@ namespace 三相智慧能源网关调试软件.MyControl
 
         // Using a DependencyProperty as the backing store for TotalCount.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TotalCountProperty =
-            DependencyProperty.Register("TotalCount", typeof(string), typeof(Pager), new PropertyMetadata("",new PropertyChangedCallback(OnTotalCountChanged)));
+            DependencyProperty.Register("TotalCount", typeof(string), typeof(Pager), new PropertyMetadata("", new PropertyChangedCallback(OnTotalCountChanged)));
 
         private static void OnTotalCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -74,12 +74,12 @@ namespace 三相智慧能源网关调试软件.MyControl
             PreviousPageEvent = EventManager.RegisterRoutedEvent("PreviousPage", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(Pager));
             NextPageEvent = EventManager.RegisterRoutedEvent("NextPage", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(Pager));
             LastPageEvent = EventManager.RegisterRoutedEvent("LastPage", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(Pager));
-            GotoPageEvent = EventManager.RegisterRoutedEvent("GotoPage",RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(Pager));
+            GotoPageEvent = EventManager.RegisterRoutedEvent("GotoPage", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(Pager));
             CurrentPageProperty = DependencyProperty.Register("CurrentPage", typeof(string), typeof(Pager), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnCurrentPageChanged)));
-            TotalPageProperty = DependencyProperty.Register("TotalPage", typeof(string), typeof(Pager), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnTotalPageChanged)));            
+            TotalPageProperty = DependencyProperty.Register("TotalPage", typeof(string), typeof(Pager), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnTotalPageChanged)));
         }
-    
-    
+
+
 
 
 
@@ -136,7 +136,7 @@ namespace 三相智慧能源网关调试软件.MyControl
 
                 //rCurrrent.Text = (string)e.NewValue;
                 //CurrentPage = (string)e.NewValue;
-               d.SetValue(CurrentPageProperty, (string)e.NewValue);
+                d.SetValue(CurrentPageProperty, (string)e.NewValue);
             }
         }
         private static void OnPageSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -171,14 +171,14 @@ namespace 三相智慧能源网关调试软件.MyControl
             RaiseEvent(new RoutedEventArgs(LastPageEvent, this));
         }
 
-      
 
-        
+
+
         private void GotoPageButton_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(GotoPageEvent, this));
         }
 
-       
+
     }
 }

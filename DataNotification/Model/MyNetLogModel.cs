@@ -1,9 +1,9 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Text;
-using DataNotification.Commom;
+﻿using DataNotification.Commom;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using NLog;
+using System;
+using System.Net.Sockets;
+using System.Text;
 
 namespace DataNotification.Model
 {
@@ -62,7 +62,7 @@ namespace DataNotification.Model
         public void HandlerReceiveData(Socket socket, byte[] receiveBytes)
         {
             //根据当前设置的显示格式，进行存储
-            var   dataReceiveForShow =
+            var dataReceiveForShow =
                 IsReceiveFormat16 ? receiveBytes.ByteToString(" ") : Encoding.ASCII.GetString(receiveBytes);
             Log = $"{DateTime.Now:yy-MM-dd HH:mm:ss fff} ReceiveDataEvent 收到 {socket.RemoteEndPoint}数据 <= {dataReceiveForShow}{Environment.NewLine}";
         }
@@ -105,6 +105,6 @@ namespace DataNotification.Model
             NetLogStringBuilder.Clear();
             Log = string.Empty;
         }
-   
+
     }
 }

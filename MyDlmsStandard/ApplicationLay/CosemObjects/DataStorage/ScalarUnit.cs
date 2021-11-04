@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
@@ -14,7 +14,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// <summary>
         /// 格式为固定的DLMS结构体
         /// </summary>
-        public DataType DataType {  get; }
+        public DataType DataType { get; }
 
         /// <summary>
         /// 倍率/系数

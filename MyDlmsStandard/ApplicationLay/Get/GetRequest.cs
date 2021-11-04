@@ -1,12 +1,12 @@
-﻿using System.Text;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
     public class GetRequest : IToPduStringInHex, IDlmsCommand
     {
-        [XmlIgnore] public  Command Command { get; } = Command.GetRequest;
+        [XmlIgnore] public Command Command { get; } = Command.GetRequest;
         public GetRequestNormal GetRequestNormal { get; set; }
         public GetRequestNext GetRequestNext { get; set; }
         public GetRequestWithList GetRequestWithList { get; set; }
@@ -15,7 +15,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("C0");
-         
+
             if (GetRequestNormal != null)
             {
                 stringBuilder.Append(GetRequestNormal.GetRequestToPduStringInHex());

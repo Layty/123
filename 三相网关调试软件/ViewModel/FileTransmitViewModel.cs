@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using FileTransmit;
-using 三相智慧能源网关调试软件.Properties;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Win32;
+using System;
+using System.IO;
+using System.Text;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -38,11 +38,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
                         SerialPortViewModel.SerialPortMaster.IsAutoDataReceived = true;
                     }
 
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;                  
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;                    
+                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
                 }
 
                 _isInitUpGradeSerialPort = value;

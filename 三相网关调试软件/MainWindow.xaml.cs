@@ -1,18 +1,15 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using System;
 using System.ComponentModel;
-using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using CommonServiceLocator;
+using 三相智慧能源网关调试软件.Helpers;
+using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.View;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.View.Management;
 using 三相智慧能源网关调试软件.ViewModel;
-using 三相智慧能源网关调试软件.MyControl;
-using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -28,7 +25,7 @@ namespace 三相智慧能源网关调试软件
 
         // public DispatcherTimer Timer = new DispatcherTimer();
 
-      
+
 
         //  SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
@@ -40,18 +37,18 @@ namespace 三相智慧能源网关调试软件
             this.KeyDown += MainWindow_KeyDown;
             // Timer.Interval = new TimeSpan(500);
             // Timer.Tick += Timer_Tick;
-//            Timer.Start();
+            //            Timer.Start();
 
 
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (send, e) =>
             {
-                MessageBoxWindow msgBoxWindow = new MessageBoxWindow() {Message = "是否退出程序？", Title = "提示"};
+                MessageBoxWindow msgBoxWindow = new MessageBoxWindow() { Message = "是否退出程序？", Title = "提示" };
                 var result = msgBoxWindow.ShowDialog();
                 if (result == true)
                 {
-//                    speechSynthesizer.Speak("后会有期");
+                    //                    speechSynthesizer.Speak("后会有期");
                     this.Close();
-//                    Application.Current.Shutdown();
+                    //                    Application.Current.Shutdown();
                 }
             }));
             CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand,
@@ -72,12 +69,12 @@ namespace 三相智慧能源网关调试软件
             //避免最大化时覆盖任务栏
             MaxWidth = SystemParameters.WorkArea.Width;
             MaxHeight = SystemParameters.WorkArea.Height;
-//            Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
-//            Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
-//            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent", PlayNetSendFlashing);
-//            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
-//            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
-//            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
+            //            Messenger.Default.Register<string>(this, "PlaySendFlashing", PlaySendFlashing);
+            //            Messenger.Default.Register<string>(this, "PlayReceiveFlashing", PlayReceiveFlashing);
+            //            Messenger.Default.Register<(Socket, byte[])>(this, "ServerSendDataEvent", PlayNetSendFlashing);
+            //            Messenger.Default.Register<(Socket, byte[])>(this, "ServerReceiveDataEvent", PlayNetReceiveFlashing);
+            //            Messenger.Default.Register<(Socket, byte[])>(this, "ClientSendDataEvent", PlayNetSendFlashing);
+            //            Messenger.Default.Register<(Socket, byte[])>(this, "ClientReceiveDataEvent", PlayNetReceiveFlashing);
             //StrongReferenceMessenger.Default.Register<string, string>(this, "PlaySendFlashing",
             //    (sender, arg) =>
             //    {
@@ -234,30 +231,30 @@ namespace 三相智慧能源网关调试软件
 
         private void HeartBeatButton_OnClick(object sender, RoutedEventArgs e)
         {
-            new LogWindow() {Owner = this}.Show();
+            new LogWindow() { Owner = this }.Show();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(new UserLoginPage());
-            var notify = new Win10NotifyMessage {NotifyText = "Hi"};
+            var notify = new Win10NotifyMessage { NotifyText = "Hi" };
             notify.Show();
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            var notify = new Win10NotifyMessage {NotifyText = "Goodbye"};
+            var notify = new Win10NotifyMessage { NotifyText = "Goodbye" };
             notify.Show();
         }
 
         private void ButtonCosemEditor_OnClick(object sender, RoutedEventArgs e)
         {
-            new CosemObjectsManagement() {Owner = this}.Show();
+            new CosemObjectsManagement() { Owner = this }.Show();
         }
 
         private void ButtonMeterData_OnClick(object sender, RoutedEventArgs e)
         {
-            new MeterDataWindow() {Owner = this}.Show();
+            new MeterDataWindow() { Owner = this }.Show();
         }
 
         private void ButtonTime_Click(object sender, RoutedEventArgs e)

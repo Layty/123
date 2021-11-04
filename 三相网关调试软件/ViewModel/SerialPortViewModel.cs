@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO.Ports;
-using MySerialPortMaster;
-using 三相智慧能源网关调试软件.Properties;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using MySerialPortMaster;
+using System;
+using System.Diagnostics;
+using System.IO.Ports;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -22,7 +22,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 ClearReceiveDataCommand = new RelayCommand(() =>
                 {
                     SerialPortMaster.SerialPortLogger.ClearDataReceiveBytes();
-                   
+
                 });
                 ClearHistoryDataCommand =
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearHistoryText());
@@ -61,7 +61,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
                 catch (Exception e)
                 {
-                    
+
                     StrongReferenceMessenger.Default.Send(e.Message, "Snackbar");
                 }
             });
@@ -87,10 +87,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
         #region 串口参数资源集合
 
         public string[] PortNamesCollection => SerialPort.GetPortNames();
-        public int[] BaudRatesCollection => new[] {300, 1200, 2400, 4800, 9600, 19200, 38400, 115200};
+        public int[] BaudRatesCollection => new[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 115200 };
         public Array ParityCollection => Enum.GetValues(typeof(Parity));
-        public StopBits[] StopBitsCollection => new[] {StopBits.One, StopBits.OnePointFive, StopBits.Two};
-        public int[] DataBitsCollection => new[] {6, 7, 8};
+        public StopBits[] StopBitsCollection => new[] { StopBits.One, StopBits.OnePointFive, StopBits.Two };
+        public int[] DataBitsCollection => new[] { 6, 7, 8 };
 
         #endregion
 

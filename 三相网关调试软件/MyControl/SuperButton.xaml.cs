@@ -21,7 +21,7 @@ namespace 三相智慧能源网关调试软件.MyControl
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var target= Template.FindName("MyEllipse", this) as EllipseGeometry;
+            var target = Template.FindName("MyEllipse", this) as EllipseGeometry;
             target.Center = Mouse.GetPosition(this);
             var animation = new DoubleAnimation
             {

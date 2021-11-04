@@ -11,8 +11,8 @@ namespace MyWebApi.Entities
         [Required]
         public string MeterId { get; set; }
 
-//        public List<Energy> Energies { get; set; } = new List<Energy>();
-//        public List<Power> Powers { get; set; } = new List<Power>();
+        //        public List<Energy> Energies { get; set; } = new List<Energy>();
+        //        public List<Power> Powers { get; set; } = new List<Power>();
     }
 
 

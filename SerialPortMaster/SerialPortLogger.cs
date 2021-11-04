@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using NLog;
 
 namespace MySerialPortMaster
 {

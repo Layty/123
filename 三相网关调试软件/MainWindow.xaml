@@ -11,7 +11,7 @@
     xmlns:wpfdev="https://github.com/yanjinhuagood/WPFDevelopers"
     x:Name="ThisWindow"
     Title="TODO"
-    Width="1024"
+    Width="1024" Style="{StaticResource MaterialDesignWindow}"
     Height="650"
     AllowsTransparency="True"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -227,7 +227,6 @@
             <Grid Grid.Row="0">
                 <materialDesign:ColorZone
                     x:Name="ColorZone"
-                    Padding="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     materialDesign:ShadowAssist.ShadowDepth="Depth3"
@@ -243,7 +242,7 @@
                                 DataContext="{Binding Source={StaticResource Locator}, Path=Login}"
                                 IsEnabled="{Binding LoginModel.LoginResult}"
                                 IsEnabledChanged="ExpandMenu_OnIsEnabledChanged"
-                                Style="{DynamicResource MaterialDesignHamburgerToggleButton}">
+                                Style="{StaticResource MaterialDesignHamburgerToggleButton}">
                                 <ToggleButton.Triggers>
                                     <EventTrigger RoutedEvent="ToggleButton.Checked">
                                         <BeginStoryboard Storyboard="{StaticResource MyOpenMenuStoryboard}" />
@@ -269,17 +268,7 @@
                                     Height="Auto"
                                     Kind="MicrosoftVisualStudio" />
                             </TextBlock>
-                            <wpfdev:SpotLight
-                                FontSize="15"
-                                Foreground="{StaticResource RainBallLinearGradientBrush}"
-                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
-                            <!--<TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="{StaticResource RainBallLinearGradientBrush}"
-                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />-->
-
+                            <wpfdev:SpotLight FontSize="15" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
 
                         <TextBlock
@@ -503,7 +492,7 @@
                                                         ItemTemplate="{StaticResource MenuListBoxItemDataTemplate}"
                                                         ItemsSource="{Binding ManagementMenuCollection}"
                                                         SelectedItem="{Binding MenuModel}"
-                                                        Style="{DynamicResource MaterialDesignCardsListBox}"
+                                                        Style="{StaticResource MaterialDesignCardsListBox}"
                                                         Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                 </ScrollViewer>
 
@@ -564,10 +553,7 @@
                     </materialDesign:Card>
 
                     <!--  导航页面区  -->
-                    <!--<materialDesign:Card
-                        Grid.Column="1"
-                        Width="Auto"
-                        HorizontalAlignment="Stretch">-->
+
                     <Frame
                         x:Name="Frame"
                         Grid.Column="1"
@@ -575,7 +561,6 @@
                         DataContext="{Binding Source={StaticResource Locator}, Path=Menu}"
                         NavigationUIVisibility="Hidden" />
 
-                    <!--</materialDesign:Card>-->
 
                     <GridSplitter
                         Grid.Column="1"
@@ -600,23 +585,23 @@
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="Logout" />
                                     </TabItem.Header>
-                                    <myControl:SocketAndMeterAddressMapping Margin="3" />
+                                    <myControl:SocketAndMeterAddressMapping />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Margin="3" Kind="SerialPort" />
+                                        <materialDesign:PackIcon Kind="SerialPort" />
                                     </TabItem.Header>
                                     <myControl:SerialPortLogger />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Margin="3" Kind="Ethernet" />
+                                        <materialDesign:PackIcon Kind="Ethernet" />
                                     </TabItem.Header>
                                     <myControl:NetLogger />
                                 </TabItem>
                                 <TabItem>
                                     <TabItem.Header>
-                                        <materialDesign:PackIcon Margin="3" Kind="Xml" />
+                                        <materialDesign:PackIcon Kind="Xml" />
                                     </TabItem.Header>
                                     <myControl:XMLLogControl />
                                 </TabItem>

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MyDlmsStandard;
-using MyDlmsStandard.Axdr;
+﻿using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace 三相智慧能源网关调试软件.Model
 {
@@ -13,10 +12,10 @@ namespace 三相智慧能源网关调试软件.Model
     /// </summary>
     public class HeartBeatFrame : WrapperFrame
     {
-        public readonly byte[] HeartBeatFrameType = {0x00, 0x01, 0x03};
+        public readonly byte[] HeartBeatFrameType = { 0x00, 0x01, 0x03 };
         public byte[] MeterAddressBytes { get; set; }
-        
-        public HeartBeatFrame(byte[] meterAddressBytes):this()
+
+        public HeartBeatFrame(byte[] meterAddressBytes) : this()
         {
             MeterAddressBytes = meterAddressBytes;
         }

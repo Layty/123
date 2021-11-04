@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyWebApi.Data;
+using System;
+using System.Threading.Tasks;
 
 namespace MyWebApi.Services
 {
@@ -29,8 +29,8 @@ namespace MyWebApi.Services
 
             var t2 = await _userLoginDbContext.UserLogins.FirstOrDefaultAsync(t =>
                 t.UserName.Equals(userName) && t.Password.Equals(password));
-            return t2!=null;
-           
+            return t2 != null;
+
         }
     }
 }

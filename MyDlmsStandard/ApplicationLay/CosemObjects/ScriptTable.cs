@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Axdr;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
+using System;
+using System.Collections.Generic;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
 {
     public sealed class ScriptTable : CosemObject, IDlmsBase
     {
         public List<Script> Scripts { get; set; }
- 
+
         public ScriptTable()
         {
             Scripts = new List<Script>();
             LogicalName = "0.0.10.0.0.255";
             Version = 1;
-        
+
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.ScriptTable);
         }
 

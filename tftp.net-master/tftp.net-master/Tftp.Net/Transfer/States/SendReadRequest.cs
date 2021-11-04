@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Tftp.Net.Channel;
-using System.Net;
-using Tftp.Net.Transfer;
-using Tftp.Net.Trace;
+﻿using System.Net;
 
 namespace Tftp.Net.Transfer.States
 {
@@ -48,7 +40,7 @@ namespace Tftp.Net.Transfer.States
             else if (command is OptionAcknowledgement)
             {
                 //Check which options were acknowledged
-                Context.FinishOptionNegotiation(new TransferOptionSet( (command as OptionAcknowledgement).Options ));
+                Context.FinishOptionNegotiation(new TransferOptionSet((command as OptionAcknowledgement).Options));
 
                 //the server acknowledged our options. Confirm the final options
                 SendAndRepeat(new Acknowledgement(0));

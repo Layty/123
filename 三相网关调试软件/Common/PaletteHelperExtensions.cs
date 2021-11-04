@@ -1,7 +1,7 @@
-﻿using System.Windows.Media;
-using MaterialDesignColors;
+﻿using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
+using System.Windows.Media;
 
 namespace 三相智慧能源网关调试软件.Common
 {

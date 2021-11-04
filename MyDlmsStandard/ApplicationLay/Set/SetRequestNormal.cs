@@ -1,14 +1,14 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
     public class SetRequestNormal : ISetRequest
     {
         [XmlIgnore] public SetRequestType SetRequestType { get; } = SetRequestType.Normal;
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }=new AxdrIntegerUnsigned8("C1");
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; } = new AxdrIntegerUnsigned8("C1");
         protected CosemAttributeDescriptor CosemAttributeDescriptor { get; set; }
 
         public SelectiveAccessDescriptor AccessSelection { get; set; }
@@ -19,7 +19,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
 
         public SetRequestNormal()
         {
-            
+
         }
         public SetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor,
             SelectiveAccessDescriptor accessSelection

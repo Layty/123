@@ -40,7 +40,9 @@ namespace 三相智慧能源网关调试软件.View
                 To = 1,
                 EasingFunction = new ElasticEase()
                 {
-                    EasingMode = EasingMode.EaseOut, Springiness = 8, Oscillations = 3
+                    EasingMode = EasingMode.EaseOut,
+                    Springiness = 8,
+                    Oscillations = 3
                 }
             };
             var loadclock = loadAnimation.CreateClock();
@@ -51,7 +53,8 @@ namespace 三相智慧能源网关调试软件.View
         {
             var unloadAnimation = new DoubleAnimation
             {
-                Duration = new Duration(TimeSpan.Parse("0:0:0.5")), To = 0
+                Duration = new Duration(TimeSpan.Parse("0:0:0.5")),
+                To = 0
             };
             var loadclock = unloadAnimation.CreateClock();
             loadclock.Completed += (a, b) =>
@@ -60,12 +63,12 @@ namespace 三相智慧能源网关调试软件.View
             };
 
             Scale.ApplyAnimationClock(ScaleTransform.ScaleXProperty, loadclock);
-         
+
         }
 
         private void MessageBoxWindow_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton== MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 if (e.MouseDevice.Target is Control)
                 {

@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
-using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using MyDlmsStandard.Axdr;
+using System.Threading.Tasks;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -48,7 +47,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         #endregion
 
         public DlmsClient Client { get; set; }
-        public EModeViewModel EModeViewModel { get; set; }
+      
 
         private SerialPortViewModel SerialPortViewModel { get; set; }
 
@@ -56,11 +55,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
 
-            EModeViewModel = new EModeViewModel(SerialPortViewModel.SerialPortMaster); //近红外
+           
 
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
 
-            EModeViewModel = Client.EModeViewModel;
+          
 
             InitCommand = new AsyncRelayCommand(async () => { await Client.InitRequest(); });
             DisconnectCommand = new AsyncRelayCommand(async () => { await Client.ReleaseRequest(); });
@@ -96,7 +95,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
             EnterUpgradeModeCommand = new AsyncRelayCommand(async () =>
             {
-              //  var msg = HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
+                //  var msg = HdlcFrameMaker.SetEnterUpGradeMode(256); //写256
                 await Client.SetEnterUpGradeMode();
             });
             SetCapturePeriodCommand = new AsyncRelayCommand(async () =>

@@ -1,10 +1,10 @@
-using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyWebApi.Data;
+using System;
 
 namespace MyWebApi
 {
@@ -12,7 +12,7 @@ namespace MyWebApi
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build(); 
+            var host = CreateHostBuilder(args).Build();
             using (var scope1 = host.Services.CreateScope())
             {
                 try

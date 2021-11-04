@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tftp.Net.Trace;
+﻿using Tftp.Net.Trace;
 
 namespace Tftp.Net.Transfer.States
 {
@@ -49,7 +45,7 @@ namespace Tftp.Net.Transfer.States
             ResetTimeout();
         }
 
-        protected void ResetTimeout() 
+        protected void ResetTimeout()
         {
             timer.Restart();
             retriesUsed = 0;

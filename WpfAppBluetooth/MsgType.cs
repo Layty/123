@@ -1,9 +1,9 @@
 namespace WpfAppBluetooth
 {
-	public enum MsgType
-	{
-		NotifyTxt,
-		BleDevice,
-		BleData
-	}
+    public enum MsgType
+    {
+        NotifyTxt,
+        BleDevice,
+        BleData
+    }
 }

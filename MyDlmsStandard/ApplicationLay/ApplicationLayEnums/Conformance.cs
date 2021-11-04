@@ -3,7 +3,7 @@
 namespace MyDlmsStandard.ApplicationLay.ApplicationLayEnums
 {
     [Flags]
-    
+
     public enum Conformance : uint
     {
         ReservedZero = 0x800000,

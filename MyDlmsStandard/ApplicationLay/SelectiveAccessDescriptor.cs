@@ -14,7 +14,7 @@ namespace MyDlmsStandard.ApplicationLay
         public SelectiveAccessDescriptor(AxdrIntegerUnsigned8 accessSelector, DlmsDataItem dlmsDataItem)
         {
             AccessSelector = accessSelector;
-            AccessParameters = new AccessParameters() {Data = dlmsDataItem};
+            AccessParameters = new AccessParameters() { Data = dlmsDataItem };
         }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)

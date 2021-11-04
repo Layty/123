@@ -235,6 +235,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Wisdom.Utils, Version=2.2.0.0, Culture=neutral, PublicKeyToken=7735f452a0972076, processorArchitecture=MSIL">
+      <HintPath>..\packages\Wisdom.Utils.2.2.4\lib\net40\Wisdom.Utils.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WPFDevelopers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\WPFDevelopers-master\WPFDevelopers-master\src\WPFDevelopers\obj\Debug\WPFDevelopers.dll</HintPath>
@@ -306,6 +310,7 @@
     <Compile Include="Model\CustomCosemDataModel.cs" />
     <Compile Include="Model\CustomCosemProfileGenericModel.cs" />
     <Compile Include="TcpTranslator.cs" />
+    <Compile Include="ViewModel\DlmsViewModels\DemoScheduler.cs" />
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
     <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />

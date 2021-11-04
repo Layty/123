@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Quartz;
 using Quartz.Impl;
+using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Model.Jobs;
 
 namespace 三相智慧能源网关调试软件.Model
@@ -42,7 +42,7 @@ namespace 三相智慧能源网关调试软件.Model
         }
 
 
-     
+
 
 
         private async void LoadingDefaultJob()
@@ -78,7 +78,7 @@ namespace 三相智慧能源网关调试软件.Model
             await scheduler.ScheduleJob(energyJobDetail, energyTrigger);
             await scheduler.ScheduleJob(powerJobDetail, powerTrigger);
             await scheduler.ScheduleJob(dayJobDetail, dayTrigger);
-            
+
         }
 
 
@@ -91,7 +91,7 @@ namespace 三相智慧能源网关调试软件.Model
         public void Shutdown()
         {
             scheduler?.Shutdown();
-          
+
         }
 
 

@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.Model;
 
@@ -601,7 +601,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                     UtilityTablesCollection.Add(new CustomCosemUtilityTablesModel()
-                        {LogicalName = dataTable.Rows[i][0].ToString(), Name = dataTable.Rows[i][1].ToString()});
+                    { LogicalName = dataTable.Rows[i][0].ToString(), Name = dataTable.Rows[i][1].ToString() });
                 }
 
                 GetLogicNameDataCommand = new RelayCommand<CustomCosemUtilityTablesModel>(

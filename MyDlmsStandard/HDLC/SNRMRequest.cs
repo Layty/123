@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using MyDlmsStandard.ApplicationLay;
+﻿using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System.Collections.Generic;
 
 namespace MyDlmsStandard.HDLC
 {

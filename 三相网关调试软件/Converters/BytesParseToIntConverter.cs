@@ -9,7 +9,7 @@ namespace 三相智慧能源网关调试软件.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((Socket) value)?.RemoteEndPoint.ToString();
+            return ((Socket)value)?.RemoteEndPoint.ToString();
         }
     }
 
@@ -17,10 +17,10 @@ namespace 三相智慧能源网关调试软件.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var data = (byte[]) value;
+            var data = (byte[])value;
             if (data.Length == 1)
             {
-                return (byte) data[0];
+                return (byte)data[0];
             }
 
             if (data.Length == 2)

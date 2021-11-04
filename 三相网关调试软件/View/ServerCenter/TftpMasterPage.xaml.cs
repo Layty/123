@@ -12,8 +12,8 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
         public TftpMasterPage()
         {
             InitializeComponent();
-//            Messenger.Default.Register<TftpTransferProgress>(this, "ServerProgressStatus", UpdateProgressStatus);
-//            Messenger.Default.Register<TftpTransferProgress>(this, "ClientProgressStatus", UpdateClientProgressStatus);
+            //            Messenger.Default.Register<TftpTransferProgress>(this, "ServerProgressStatus", UpdateProgressStatus);
+            //            Messenger.Default.Register<TftpTransferProgress>(this, "ClientProgressStatus", UpdateClientProgressStatus);
         }
 
         private void UpdateClientProgressStatus(TftpTransferProgress transferProgress)

@@ -31,7 +31,7 @@ namespace 三相智慧能源网关调试软件.Model
                 }
             };
             return new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("02"),
-                new DlmsDataItem(DataType.Structure, structure) );
+                new DlmsDataItem(DataType.Structure, structure));
         }
 
         public SelectiveAccessDescriptor GetLatestAccessDescriptor()
@@ -64,7 +64,7 @@ namespace 三相智慧能源网关调试软件.Model
                 }
             };
             return new SelectiveAccessDescriptor(new AxdrIntegerUnsigned8("01"),
-                new DlmsDataItem(DataType.Structure,dlmsStructure));
+                new DlmsDataItem(DataType.Structure, dlmsStructure));
         }
 
         public CosemAttributeDescriptorWithSelection GetLoadIdentificationWithTime(CosemClock cosemClock)

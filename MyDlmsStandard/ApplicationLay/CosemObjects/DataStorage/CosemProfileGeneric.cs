@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
@@ -230,7 +229,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
             EntriesInUse.Value = "00000000";
             Buffer.Clear();
             // DlmsDataItem dataItem = new DlmsDataItem(DataType.UInt8) {Value = "00"};
-//            ActionExecute(1, dataItem);
+            //            ActionExecute(1, dataItem);
         }
 
         public void Capture(DlmsStructure dlmsStructure)

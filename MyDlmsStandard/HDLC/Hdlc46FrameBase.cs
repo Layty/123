@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyDlmsStandard.ApplicationLay;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.HDLC
 {
- 
-    public class Hdlc46FrameBase : IPduStringInHexConstructor,IToPduStringInHex
+
+    public class Hdlc46FrameBase : IPduStringInHexConstructor, IToPduStringInHex
     {
         /// <summary>
         /// 起始和结束帧
@@ -36,8 +36,8 @@ namespace MyDlmsStandard.HDLC
 
         public byte[] GetFrameFormatField(int count)
         {
-            FrameFormatField = new HdlcFrameFormatField() {FrameLengthSubField = (ushort) count};
-            return FrameFormatField.ToHexPdu().StringToByte();                    
+            FrameFormatField = new HdlcFrameFormatField() { FrameLengthSubField = (ushort)count };
+            return FrameFormatField.ToHexPdu().StringToByte();
         }
 
         public Hdlc46FrameBase(byte destAddress1, byte sourceAddress1, DLMSInfo dlmsInfo) : this(destAddress1,
@@ -53,8 +53,8 @@ namespace MyDlmsStandard.HDLC
         public Hdlc46FrameBase(byte destAddress1, byte sourceAddress1)
         {
             FrameFormatField = new HdlcFrameFormatField();
-            DestAddress1 = new AAddress() {Size = 1, Upper = destAddress1};
-            SourceAddress1 = new AAddress() {Upper = sourceAddress1, Size = 1};
+            DestAddress1 = new AAddress() { Size = 1, Upper = destAddress1 };
+            SourceAddress1 = new AAddress() { Upper = sourceAddress1, Size = 1 };
             HdlcControlField = new HdlcControlField()
             {
                 CurrentReceiveSequenceNumber = 0,
@@ -68,8 +68,8 @@ namespace MyDlmsStandard.HDLC
         public Hdlc46FrameBase(ushort destAddress1, byte sourceAddress1)
         {
             FrameFormatField = new HdlcFrameFormatField();
-            this.DestAddress1 = new AAddress {Size = 2, Upper = 0x01, Lower = destAddress1}; //
-            SourceAddress1 = new AAddress {Upper = sourceAddress1, Size = 1};
+            this.DestAddress1 = new AAddress { Size = 2, Upper = 0x01, Lower = destAddress1 }; //
+            SourceAddress1 = new AAddress { Upper = sourceAddress1, Size = 1 };
             CurrentReceiveSequenceNumber = 0;
             CurrentSendSequenceNumber = 0;
             LlcHeadFrameBytes = HdlcLlc.LLCSendBytes;
@@ -155,8 +155,8 @@ namespace MyDlmsStandard.HDLC
             PackagingDestinationAndSourceAddress(list);
             int ctr = ((CurrentReceiveSequenceNumber << 1) + 1 << 4) +
                       (CurrentSendSequenceNumber << 1);
-            list.Add((byte) ctr);
-            byte count = (byte) (2 + DestAddress1.Size + 1 + 1 + 2 + 3 + Apdu.Length + 2);
+            list.Add((byte)ctr);
+            byte count = (byte)(2 + DestAddress1.Size + 1 + 1 + 2 + 3 + Apdu.Length + 2);
             list.InsertRange(0, GetFrameFormatField(count));
             PackingHcs(list);
             list.AddRange(LlcHeadFrameBytes);
@@ -237,7 +237,7 @@ namespace MyDlmsStandard.HDLC
 
         public string ToPduStringInHex()
         {
-           return ToPduBytes().ByteToString();
+            return ToPduBytes().ByteToString();
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MyDlmsStandard.Ber;
+using System;
 using System.Text;
-using MyDlmsStandard.Ber;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class ResultSourceDiagnostic 
+    public class ResultSourceDiagnostic
     {
         public BerInteger AcseServiceUser { get; set; }
         public BerInteger AcseServiceProvider { get; set; }

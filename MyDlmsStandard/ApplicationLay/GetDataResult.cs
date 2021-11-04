@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay
 {
@@ -43,7 +43,7 @@ namespace MyDlmsStandard.ApplicationLay
             {
                 pduStringInHex = pduStringInHex.Substring(2);
                 Data = new DlmsDataItem();
-                DataAccessResult = new AxdrIntegerUnsigned8 {Value = "00"};
+                DataAccessResult = new AxdrIntegerUnsigned8 { Value = "00" };
                 return Data.PduStringInHexConstructor(ref pduStringInHex);
             }
 
@@ -55,7 +55,7 @@ namespace MyDlmsStandard.ApplicationLay
                 if (b1)
                 {
                     DataAccessError = new DataAccessError();
-                    DataAccessError.Value = ((DataAccessResult) DataAccessResult.GetEntityValue()).ToString();
+                    DataAccessError.Value = ((DataAccessResult)DataAccessResult.GetEntityValue()).ToString();
                 }
 
                 return b1;
@@ -66,7 +66,7 @@ namespace MyDlmsStandard.ApplicationLay
 
         public bool IsSuccessed()
         {
-            if (DataAccessResult.Value=="00")
+            if (DataAccessResult.Value == "00")
             {
                 return true;
             }

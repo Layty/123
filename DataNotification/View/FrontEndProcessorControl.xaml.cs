@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using MyDlmsStandard.Wrapper;
+using System;
 using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using MyDlmsStandard.Wrapper;
 
 namespace DataNotification.View
 {
@@ -14,7 +14,7 @@ namespace DataNotification.View
     {
         public int Count
         {
-            get { return (int) GetValue(CountProperty); }
+            get { return (int)GetValue(CountProperty); }
             set { SetValue(CountProperty, value); }
         }
 

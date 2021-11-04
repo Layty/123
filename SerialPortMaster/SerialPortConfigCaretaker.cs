@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace MySerialPortMaster
 {
@@ -13,7 +13,7 @@ namespace MySerialPortMaster
     public class SerialPortConfigCaretaker
     {
         private IDictionary<string, SerialPortConfig> _jsonMap = new Dictionary<string, SerialPortConfig>();
-       
+
         public IDictionary<string, SerialPortConfig> Dictionary = new Dictionary<string, SerialPortConfig>();
 
         /// <summary>

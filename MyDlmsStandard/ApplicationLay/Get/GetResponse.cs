@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {

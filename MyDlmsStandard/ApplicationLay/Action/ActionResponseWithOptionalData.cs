@@ -1,9 +1,9 @@
-﻿using System.Text;
-using MyDlmsStandard.Axdr;
+﻿using MyDlmsStandard.Axdr;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Action
 {
-    public class ActionResponseWithOptionalData:IToPduStringInHex,IPduStringInHexConstructor
+    public class ActionResponseWithOptionalData : IToPduStringInHex, IPduStringInHexConstructor
     {
         public AxdrIntegerUnsigned8 Result { get; set; }
         public GetDataResult ReturnParameters { get; set; }

@@ -56,7 +56,7 @@ namespace 三相智慧能源网关调试软件.Common
                 for (int i = 0; i < (str.Length / 2); i++)
                 {
                     int num2 = Convert.ToInt32(str.Substring(i * 2, 2), 0x10);
-                    buffer[i] = (byte) num2;
+                    buffer[i] = (byte)num2;
                 }
 
                 MemoryStream stream = new MemoryStream();

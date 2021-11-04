@@ -14,7 +14,7 @@ namespace 三相智慧能源网关调试软件.Model.IIC
 
     public class IicInstantData
     {
-        public byte[] StartFrame = new byte[] {0x80, 0x01};
+        public byte[] StartFrame = new byte[] { 0x80, 0x01 };
         public string DateTime { get; private set; }
         public string Ua { get; private set; }
         public string Ub { get; private set; }
@@ -80,12 +80,12 @@ namespace 三相智慧能源网关调试软件.Model.IIC
                 if (bytes[0] == 0x80 && bytes[1] == 0x01)
                 {
                     var dateTimeBytes = bytes.Skip(2).Take(6).ToArray();
-                    
+
                     foreach (var variable in dateTimeBytes)
                     {
                         DateTime += Convert.ToString(variable, 10).PadLeft(2, '0');
                     }
-                   
+
                     Ua = IicCommonDataConvertor.ValueConvertor(bytes.Skip(8), ("V", 3));
                     Ub = IicCommonDataConvertor.ValueConvertor(bytes.Skip(12), ("V", 3));
                     Uc = IicCommonDataConvertor.ValueConvertor(bytes.Skip(16), ("V", 3));
@@ -148,7 +148,7 @@ namespace 三相智慧能源网关调试软件.Model.IIC
                 // throw;
             }
 
-         
+
         }
     }
 }

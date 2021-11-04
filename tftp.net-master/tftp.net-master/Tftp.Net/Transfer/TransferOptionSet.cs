@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tftp.Net.Transfer;
+﻿using System.Collections.Generic;
 
 namespace Tftp.Net.Transfer
 {

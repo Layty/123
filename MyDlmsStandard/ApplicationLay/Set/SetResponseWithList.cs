@@ -1,11 +1,11 @@
-﻿using System.Text;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseWithList :ISetResponse
+    public class SetResponseWithList : ISetResponse
     {
         public SetResponseType SetResponseType { get; } = SetResponseType.WithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }

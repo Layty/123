@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using MyDlmsStandard.Annotations;
+﻿using MyDlmsStandard.Annotations;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay
 {
@@ -47,18 +47,18 @@ namespace MyDlmsStandard.ApplicationLay
         DataType DataType { get; }
     }
 
-    public class DLMSArray : IDataType,INotifyPropertyChanged
+    public class DLMSArray : IDataType, INotifyPropertyChanged
     {
-        public DataType DataType { get;} = DataType.Array;
+        public DataType DataType { get; } = DataType.Array;
 
         public DlmsDataItem[] Items
         {
             get => _Items;
-            set { _Items = value; OnPropertyChanged();}
+            set { _Items = value; OnPropertyChanged(); }
         }
         private DlmsDataItem[] _Items;
 
-     
+
 
         public string ToPduStringInHex()
         {

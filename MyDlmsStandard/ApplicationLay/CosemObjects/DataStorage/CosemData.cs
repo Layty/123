@@ -41,7 +41,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// <returns></returns>
         public CosemAttributeDescriptor ValueAttributeDescriptor => GetCosemAttributeDescriptor(2);
 
-        public virtual string[] GetNames() => new[] {LogicalName, "Value"};
+        public virtual string[] GetNames() => new[] { LogicalName, "Value" };
 
         public virtual int AttributeCount => 2;
         public virtual int MethodCount => 0;

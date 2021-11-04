@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System;
 using System.Text;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard
 {

@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard.ApplicationLay.ApplicationLayEnums
 {
-   public enum SetResponseType
+    public enum SetResponseType
     {
         Normal = 1,
         DataBlock,

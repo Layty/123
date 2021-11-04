@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.Common;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Common;
 
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
@@ -106,7 +106,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             }
             catch (Exception e)
             {
-               throw new Exception(e.Message);
+                throw new Exception(e.Message);
             }
 
             return this._dateTime;
@@ -151,16 +151,16 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
         {
             LogicalName = "0.0.1.0.0.255";
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.Clock);
-            this.Year = (short) dateTime.Year;
-            this.Month = (byte) dateTime.Month;
+            this.Year = (short)dateTime.Year;
+            this.Month = (byte)dateTime.Month;
             this.Day = dateTime.Day;
-            this.Hour = (byte) dateTime.Hour;
-            this.Minute = (byte) dateTime.Minute;
-            this.Second = (byte) dateTime.Second;
-            this.DayOfWeek = (byte) dateTime.DayOfWeek;
+            this.Hour = (byte)dateTime.Hour;
+            this.Minute = (byte)dateTime.Minute;
+            this.Second = (byte)dateTime.Second;
+            this.DayOfWeek = (byte)dateTime.DayOfWeek;
         }
 
-        public  bool DlmsClockParse(byte[] dateTimeBytes)
+        public bool DlmsClockParse(byte[] dateTimeBytes)
         {
             bool result = false;
             try
@@ -168,11 +168,11 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
                 byte[] yearstr = dateTimeBytes.Take(2).ToArray();
                 this.Year = BitConverter.ToInt16(yearstr.Reverse<byte>().ToArray<byte>(), 0);
                 this.Month = dateTimeBytes[2];
-                this.Day = (int) dateTimeBytes[3];
+                this.Day = (int)dateTimeBytes[3];
                 this.DayOfWeek = dateTimeBytes[4];
                 this.Hour = dateTimeBytes[5];
                 this.Minute = dateTimeBytes[6];
-                this.Second = dateTimeBytes[7]; 
+                this.Second = dateTimeBytes[7];
                 string tp = string.Concat(new string[]
              {
                 this.Year.ToString().PadLeft(4, '0'),
@@ -203,7 +203,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
                 byte[] yearstr = dateTimeBytes.Take(2).ToArray<byte>();
                 this.Year = BitConverter.ToInt16(yearstr.Reverse<byte>().ToArray<byte>(), 0);
                 this.Month = dateTimeBytes[2];
-                this.Day = (int) dateTimeBytes[3];
+                this.Day = (int)dateTimeBytes[3];
                 this.DayOfWeek = dateTimeBytes[4];
                 this.Hour = dateTimeBytes[5];
                 this.Minute = dateTimeBytes[6];
@@ -224,20 +224,20 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
 
         public void SetLastDayOfMonth()
         {
-            DateTime dt = _dateTime.AddDays((double) (1 - this._dateTime.Day)).AddMonths(1).AddDays(-1.0);
+            DateTime dt = _dateTime.AddDays((double)(1 - this._dateTime.Day)).AddMonths(1).AddDays(-1.0);
             Iec62056DateTime1(dt);
         }
 
 
         private void Iec62056DateTime1(DateTime dateTime)
         {
-            this.Year = (short) dateTime.Year;
-            this.Month = (byte) dateTime.Month;
+            this.Year = (short)dateTime.Year;
+            this.Month = (byte)dateTime.Month;
             this.Day = dateTime.Day;
-            this.Hour = (byte) dateTime.Hour;
-            this.Minute = (byte) dateTime.Minute;
-            this.Second = (byte) dateTime.Second;
-            this.DayOfWeek = (byte) dateTime.DayOfWeek;
+            this.Hour = (byte)dateTime.Hour;
+            this.Minute = (byte)dateTime.Minute;
+            this.Second = (byte)dateTime.Second;
+            this.DayOfWeek = (byte)dateTime.DayOfWeek;
         }
 
 
@@ -302,7 +302,7 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
         {
             LogicalName = "0.0.1.0.0.255";
             ClassId = MyConvert.GetClassIdByObjectType(ObjectType.Clock);
-         
+
         }
 
         public CosemClock(string logicalName)

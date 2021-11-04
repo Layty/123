@@ -1,15 +1,15 @@
-﻿using System;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
-using 三相智慧能源网关调试软件.Properties;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Common;
+using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -114,14 +114,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private void ApplyBase(bool isDark)
         {
             ITheme theme = _paletteHelper.GetTheme();
-            IBaseTheme baseTheme = isDark ? new MaterialDesignDarkTheme() : (IBaseTheme) new MaterialDesignLightTheme();
+            IBaseTheme baseTheme = isDark ? new MaterialDesignDarkTheme() : (IBaseTheme)new MaterialDesignLightTheme();
             theme.SetBaseTheme(baseTheme);
             _paletteHelper.SetTheme(theme);
         }
 
         public ColorToolViewModel()
         {
-            ToggleBaseCommand = new AnotherCommandImplementation(o => ApplyBase((bool) o));
+            ToggleBaseCommand = new AnotherCommandImplementation(o => ApplyBase((bool)o));
             ChangeHueCommand = new AnotherCommandImplementation(ChangeHue);
             ChangeCustomHueCommand = new AnotherCommandImplementation(ChangeCustomColor);
             ChangeToPrimaryCommand = new AnotherCommandImplementation(o => ChangeScheme(ColorScheme.Primary));
@@ -142,7 +142,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void ChangeCustomColor(object obj)
         {
-            var color = (Color) obj;
+            var color = (Color)obj;
 
             if (ActiveScheme == ColorScheme.Primary)
             {
@@ -197,7 +197,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private void ChangeHue(object obj)
         {
-            var hue = (Color) obj;
+            var hue = (Color)obj;
 
             SelectedColor = hue;
             if (ActiveScheme == ColorScheme.Primary)
@@ -289,8 +289,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void ApplyBase()
         {
             var theme = new PaletteHelper().GetTheme();
-            theme.SetPrimaryColor((Color) ColorConverter.ConvertFromString(Settings.Default.PrimarySkin));
-            theme.SetSecondaryColor((Color) ColorConverter.ConvertFromString(Settings.Default.AccentSkin));
+            theme.SetPrimaryColor((Color)ColorConverter.ConvertFromString(Settings.Default.PrimarySkin));
+            theme.SetSecondaryColor((Color)ColorConverter.ConvertFromString(Settings.Default.AccentSkin));
             new PaletteHelper().SetTheme(theme);
         }
 
@@ -319,7 +319,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         private static void ApplyAccent(Swatch swatch)
         {
             ModifyTheme(theme => theme.SetSecondaryColor(swatch.AccentExemplarHue.Color));
-            
+
             Settings.Default.AccentSkin = swatch.ExemplarHue.Color.ToString();
             Settings.Default.Save();
         }

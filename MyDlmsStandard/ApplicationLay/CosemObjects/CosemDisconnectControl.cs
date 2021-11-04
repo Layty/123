@@ -1,6 +1,6 @@
-﻿using System;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
+using System;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
 {
@@ -46,6 +46,6 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects
             throw new NotImplementedException();
         }
 
-       
+
     }
 }

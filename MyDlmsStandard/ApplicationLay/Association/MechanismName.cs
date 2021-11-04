@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {

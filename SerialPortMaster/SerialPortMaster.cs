@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Ports;
@@ -6,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 
 namespace MySerialPortMaster
@@ -123,11 +123,11 @@ namespace MySerialPortMaster
                     return;
                 if (value)
                 {
-                   SerialPort.DataReceived += SerialPort_DataReceived;
+                    SerialPort.DataReceived += SerialPort_DataReceived;
                 }
                 else
                 {
-                   SerialPort.DataReceived -= SerialPort_DataReceived;
+                    SerialPort.DataReceived -= SerialPort_DataReceived;
                 }
 
                 _isAutoDataReceived = value;
@@ -237,7 +237,7 @@ namespace MySerialPortMaster
                     var tryToReadReceiveData = new byte[SerialPort.BytesToRead];
 
                     SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
-                    
+
                     OnDataReceived(tryToReadReceiveData, null);
                     break;
                 }
@@ -486,13 +486,13 @@ namespace MySerialPortMaster
         private void OnDataSend(byte[] sendBytes)
         {
             StrongReferenceMessenger.Default.Send("", "PlaySendFlashing");
-            SerialDataSend?.Invoke(this, new SerialPortEventArgs() {DataBytes = sendBytes});
+            SerialDataSend?.Invoke(this, new SerialPortEventArgs() { DataBytes = sendBytes });
             SerialPortLogger.HandlerSendData(sendBytes);
         }
 
         private void OnDataReceivedTimeOut(int delayTimeOut)
         {
-            SerialDataReceivedTimeOut?.Invoke(this, new SerialPortEventArgs {DelayTime = delayTimeOut});
+            SerialDataReceivedTimeOut?.Invoke(this, new SerialPortEventArgs { DelayTime = delayTimeOut });
         }
 
 
@@ -509,7 +509,7 @@ namespace MySerialPortMaster
         {
             SerialPortLogger.ErrMgs = ex.Message;
             SerialPortLogger.Logger.Error(ex.Message);
-            SerialError?.Invoke(this, new SerialPortEventArgs {Ex = ex});
+            SerialError?.Invoke(this, new SerialPortEventArgs { Ex = ex });
         }
 
 

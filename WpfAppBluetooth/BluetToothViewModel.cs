@@ -1,4 +1,9 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
+using InTheHand.Net.Bluetooth;
+using InTheHand.Net.Sockets;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -6,11 +11,6 @@ using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Devices.Enumeration;
 using Windows.Storage.Streams;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
 
 namespace WpfAppBluetooth
 {
@@ -18,12 +18,12 @@ namespace WpfAppBluetooth
     {
         #region Error Codes
 
-        readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int) 0x80650003);
-        readonly int E_BLUETOOTH_ATT_INVALID_PDU = unchecked((int) 0x80650004);
-        readonly int E_ACCESSDENIED = unchecked((int) 0x80070005);
+        readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
+        readonly int E_BLUETOOTH_ATT_INVALID_PDU = unchecked((int)0x80650004);
+        readonly int E_ACCESSDENIED = unchecked((int)0x80070005);
 
         readonly int
-            E_DEVICE_NOT_AVAILABLE = unchecked((int) 0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
+            E_DEVICE_NOT_AVAILABLE = unchecked((int)0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
 
         #endregion
 
@@ -84,7 +84,7 @@ namespace WpfAppBluetooth
 
         public BluetToothViewModel()
         {
-//            Process.Start("ms-settings:bluetooth");
+            //            Process.Start("ms-settings:bluetooth");
             BluetoothLeDevices = new ObservableCollection<BluetoothLEDevice>();
 
             ConnectCommand = new RelayCommand<BluetoothLEDevice>(async (t) =>
@@ -227,12 +227,12 @@ namespace WpfAppBluetooth
         private void RemoveValueChangedHandler()
         {
             //ValueChangedSubscribeToggle.Content = "Subscribe to value changes";
-//            if (subscribedForNotifications)
-//            {
-//                registeredCharacteristic.ValueChanged -= Characteristic_ValueChanged;
-//                registeredCharacteristic = null;
-//                subscribedForNotifications = false;
-//            }
+            //            if (subscribedForNotifications)
+            //            {
+            //                registeredCharacteristic.ValueChanged -= Characteristic_ValueChanged;
+            //                registeredCharacteristic = null;
+            //                subscribedForNotifications = false;
+            //            }
         }
 
         private async void CharacteristicWriteButtonInt_Click()
@@ -295,10 +295,10 @@ namespace WpfAppBluetooth
         {
             // BT_Code: An Indicate or Notify reported that the value has changed.
             // Display the new value with a timestamp.
-//            var newValue = FormatValueByPresentation(args.CharacteristicValue, presentationFormat);
-//            var message = $"Value at {DateTime.Now:hh:mm:ss.FFF}: {newValue}";
-//            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-//                () => CharacteristicLatestValue.Text = message);
+            //            var newValue = FormatValueByPresentation(args.CharacteristicValue, presentationFormat);
+            //            var message = $"Value at {DateTime.Now:hh:mm:ss.FFF}: {newValue}";
+            //            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            //                () => CharacteristicLatestValue.Text = message);
         }
 
         private void BleCore_CharacteristicAdded(
@@ -333,12 +333,12 @@ namespace WpfAppBluetooth
                 case MsgType.NotifyTxt: break;
                 case MsgType.BleData: break;
                 case MsgType.BleDevice:
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(new Action(() =>
                     {
-                        BluetoothLeDevices.Add(bluetoothLEDevice);
-                    }));
-                }
+                        DispatcherHelper.CheckBeginInvokeOnUI(new Action(() =>
+                        {
+                            BluetoothLeDevices.Add(bluetoothLEDevice);
+                        }));
+                    }
                     break;
             }
         }

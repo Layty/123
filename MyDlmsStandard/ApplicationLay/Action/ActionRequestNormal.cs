@@ -1,15 +1,15 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Action
 {
-    public class ActionRequestNormal :IToPduStringInHex
+    public class ActionRequestNormal : IToPduStringInHex
     {
         [XmlIgnore] protected ActionRequestType ActionRequestType { get; set; } = ActionRequestType.Normal;
-    
-    
+
+
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
         public CosemMethodDescriptor CosemMethodDescriptor { get; set; }
 
@@ -26,7 +26,7 @@ namespace MyDlmsStandard.ApplicationLay.Action
         {
             CosemMethodDescriptor = cosemMethodDescriptor;
             MethodInvocationParameters = methodInvocationParameters;
-            InvokeIdAndPriority=new AxdrIntegerUnsigned8("C1");
+            InvokeIdAndPriority = new AxdrIntegerUnsigned8("C1");
         }
 
         public ActionRequestNormal(CosemMethodDescriptor cosemMethodDescriptor)
@@ -35,7 +35,7 @@ namespace MyDlmsStandard.ApplicationLay.Action
             InvokeIdAndPriority = new AxdrIntegerUnsigned8("C1");
         }
 
-      
+
 
         public string ToPduStringInHex()
         {

@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using Tftp.Net.Transfer.States;
-using System.IO;
-using Tftp.Net.Channel;
 using System.Net;
-using Tftp.Net.Trace;
 using Tftp.Net.Transfer;
+using Tftp.Net.Transfer.States;
 
 namespace Tftp.Net.Trace
 {
     class LoggingStateDecorator : ITransferState
     {
-        public TftpTransfer Context 
+        public TftpTransfer Context
         {
             get { return decoratee.Context; }
             set { decoratee.Context = value; }

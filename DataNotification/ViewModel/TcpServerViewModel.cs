@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using DataNotification.Model;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -14,6 +7,12 @@ using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
 using MyDlmsStandard.Wrapper;
 using NLog;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace DataNotification.ViewModel
 {
@@ -248,7 +247,7 @@ namespace DataNotification.ViewModel
 
                     if (dataNotification.NotificationBody.DataValue.DataType == DataType.Structure)
                     {
-                        var dlmsStructure = (DlmsStructure) dataNotification.NotificationBody.DataValue.Value;
+                        var dlmsStructure = (DlmsStructure)dataNotification.NotificationBody.DataValue.Value;
                         var stringStructure = dlmsStructure.ToPduStringInHex();
 
                         if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
@@ -293,7 +292,7 @@ namespace DataNotification.ViewModel
             catch (Exception e)
             {
                 Console.WriteLine(e);
-//                throw;
+                //                throw;
             }
         }
 

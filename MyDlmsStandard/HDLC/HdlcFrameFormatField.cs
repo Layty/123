@@ -21,7 +21,7 @@
                 splitBitValue = 1 << 12;
             }
 
-            var data = (ushort) (FrameType << 12) + splitBitValue + FrameLengthSubField;
+            var data = (ushort)(FrameType << 12) + splitBitValue + FrameLengthSubField;
             return data.ToString("X4");
         }
 

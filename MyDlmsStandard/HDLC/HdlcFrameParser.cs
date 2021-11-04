@@ -29,7 +29,7 @@
         //    var realMsg = removeFormatIdentifierAndGroupIdentifier.Skip(1).ToArray();
 
 
-        
+
         //    {
         //       // DLMSInfo.InfoTag uInt = (DLMSInfo.InfoTag) data.GetUInt8();
         //        for (int i = 0; i < realMsg.Length; i++)
@@ -41,7 +41,7 @@
         //                case DLMSInfo.InfoTag.MaxInfoTx:
         //                    i++;
         //                   var le= data.Skip(i).Take(1).ToArray()[0];
-                          
+
         //                   // switch (le)
         //                   //{
         //                   //    case 1:
@@ -76,13 +76,13 @@
         //                    throw new GXDLMSException("Invalid UA response.");
         //            }
         //        }
-               
+
         //        object value;
-              
+
         //    }
         //}
 
-      
+
         private static bool CheckFlagIs7E(byte[] inputUaFrameBytes)
         {
             bool flag = inputUaFrameBytes[0] != 126 && inputUaFrameBytes[inputUaFrameBytes.Length - 1] != 126;

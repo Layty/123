@@ -6,9 +6,9 @@ namespace MyDlmsStandard.Axdr
 { //T L V 
 
     public abstract class AxdrIntegerBase<T> : IToPduStringInHex, IPduStringInHexConstructor,
-        INotifyPropertyChanged,IGetEntityValue<T> where T : struct
+        INotifyPropertyChanged, IGetEntityValue<T> where T : struct
     {
-       
+
         [XmlIgnore] public virtual int Length { get; set; }
 
         [XmlAttribute]
@@ -24,14 +24,14 @@ namespace MyDlmsStandard.Axdr
 
         private string _value;
 
-       
+
         public string ToPduStringInHex()
         {
             return Value;
         }
 
 
-        public  bool PduStringInHexConstructor(ref string pduStringInHex)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             if (pduStringInHex.Length < Length * 2)
             {
@@ -55,7 +55,7 @@ namespace MyDlmsStandard.Axdr
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-      
+
 
 
     }

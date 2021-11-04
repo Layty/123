@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
@@ -11,6 +7,10 @@ using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using Quartz;
 using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
@@ -35,7 +35,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
                 {
                     RestrictingObject = new CaptureObjectDefinition()
-                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
+                    { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
                     FromValue = new DlmsDataItem(DataType.OctetString,
                         new CosemClock(DateTime.Now.Subtract(new TimeSpan(0, 0, Period, 0, 0))).GetDateTimeBytes()
                             .ByteToString()),
@@ -49,6 +49,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
         public override async Task Execute(IJobExecutionContext context)
         {
             await base.Execute(context);
+
 
             //遍历列表
             await Task.Run(() =>
@@ -127,9 +128,9 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             }
 
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
-          
+
             RestRequest.AddHeader("Content-Type", "application/json");
-            var str = JsonConvert.SerializeObject(Energy,Formatting.Indented);
+            var str = JsonConvert.SerializeObject(Energy, Formatting.Indented);
             NetLogViewModel.MyServerNetLogModel.Log = str;
             RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);

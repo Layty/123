@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataStorage="clr-namespace:MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;assembly=MyDlmsStandard"
     xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
     d:DesignHeight="450"
@@ -17,9 +18,27 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid>
+    <StackPanel>
         <Expander Header="任务调度中心">
             <StackPanel>
+                <GroupBox Header="通讯配置">
+                    <GroupBox.DataContext>
+                        <Binding Path="DlmsBaseMeterViewModel" Source="{StaticResource Locator}" />
+                    </GroupBox.DataContext>
+                    <StackPanel>
+                        <ComboBox
+                            materialDesign:HintAssist.Hint="CommunicationType"
+                            materialDesign:HintAssist.IsFloating="True"
+                            ItemsSource="{Binding Client.DlmsSettingsViewModel.CommunicationTypeArray}"
+                            SelectedItem="{Binding Client.DlmsSettingsViewModel.CommunicationType, Mode=TwoWay}" />
+                        <ComboBox
+                            materialDesign:HintAssist.Hint="InterfaceType"
+                            materialDesign:HintAssist.IsFloating="True"
+                            ItemsSource="{Binding Client.DlmsSettingsViewModel.InterfaceTypeArray}"
+                            SelectedItem="{Binding Client.DlmsSettingsViewModel.InterfaceType, Mode=TwoWay}" />
+                    </StackPanel>
+
+                </GroupBox>
                 <GroupBox Header="曲线任务">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -64,7 +83,7 @@
                         <DataGrid
                             Grid.Row="3"
                             CanUserAddRows="False"
-                            ItemsSource="{Binding JobMessages}">
+                            ItemsSource="{Binding JobsViewModels}">
                             <DataGrid.ItemTemplate>
                                 <ItemContainerTemplate>
                                     <VirtualizingStackPanel />
@@ -122,5 +141,29 @@
                 </GroupBox>
             </StackPanel>
         </Expander>
-    </Grid>
+        <Expander Header="Scheduler">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="Overview" />
+                <GroupBox Grid.Row="1" Header="Status" />
+                <GroupBox Grid.Row="1" Header="Actions">
+                    <StackPanel>
+                        <Button Content="Standby" />
+                        <Button Content="Shutdown" />
+                        <Button Content="PauseAll" />
+                        <Button Content="ResumeAll" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Groups" />
+                <GroupBox Header="TriggerGroups" />
+            </Grid>
+        </Expander>
+        <Expander Header="Jobs" >
+            <DataGrid ></DataGrid>
+        </Expander>
+    </StackPanel>
 </UserControl>

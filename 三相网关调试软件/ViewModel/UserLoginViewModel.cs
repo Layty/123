@@ -1,14 +1,14 @@
-﻿using System;
-using System.Data.OleDb;
-using System.Threading.Tasks;
-using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.UserLoginServiceReference;
-using 三相智慧能源网关调试软件.Model;
-using 三相智慧能源网关调试软件.Properties;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using RestSharp;
+using System;
+using System.Data.OleDb;
+using System.Threading.Tasks;
+using 三相智慧能源网关调试软件.Common;
+using 三相智慧能源网关调试软件.Model;
+using 三相智慧能源网关调试软件.Properties;
+using 三相智慧能源网关调试软件.UserLoginServiceReference;
 using 三相智慧能源网关调试软件.View;
 
 
@@ -57,7 +57,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             LoginModel.LoginErrorCounts = 0;
             ReadUserInfoFromResource();
 
-//                LoginCommand = new RelayCommand(Login);
+            //                LoginCommand = new RelayCommand(Login);
 
             //         LoginCommand = new RelayCommand(LoginFormWcfServer);
 
@@ -83,7 +83,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 IsCancel = false;
                 if (string.IsNullOrWhiteSpace(LoginModel.UserName) || string.IsNullOrWhiteSpace(LoginModel.Password))
                 {
-                    new MessageBoxWindow() {Message = "请输入用户名和密码！"}.ShowDialog();
+                    new MessageBoxWindow() { Message = "请输入用户名和密码！" }.ShowDialog();
                     return;
                 }
 
@@ -93,7 +93,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     var client =
                         new RestClient(
                             $"{Settings.Default.WebApiUrl}/UserLogin?userName={LoginModel.UserName}&password={LoginModel.Password}");
-                    var request = new RestRequest(Method.POST) {Timeout = 2000};
+                    var request = new RestRequest(Method.POST) { Timeout = 2000 };
 
                     IRestResponse response = client.Execute(request);
                     return response;
@@ -141,13 +141,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
                     {
                         LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                         LoginModel.LoginResult = true;
-//                        Messenger.Default.Send(true, "LoginResult");
+                        //                        Messenger.Default.Send(true, "LoginResult");
                         LoginModel.Report = "登录成功";
                     }
                     else
                     {
                         LoginModel.LoginResult = false;
-//                        Messenger.Default.Send("用户名或密码错误！！！");
+                        //                        Messenger.Default.Send("用户名或密码错误！！！");
                         LoginModel.Report = "用户名或密码错误";
                     }
                 }
@@ -171,7 +171,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// </summary>
         public void ApplicationShutdown()
         {
-//            Messenger.Default.Send("", "ApplicationShutdown");
+            //            Messenger.Default.Send("", "ApplicationShutdown");
         }
 
         /// <summary>

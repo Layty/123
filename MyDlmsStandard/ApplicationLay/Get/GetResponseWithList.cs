@@ -1,12 +1,12 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
-    public class GetResponseWithList : IToPduStringInHex, IPduStringInHexConstructor,IGetResponse
+    public class GetResponseWithList : IToPduStringInHex, IPduStringInHexConstructor, IGetResponse
     {
         [XmlIgnore] public GetResponseType GetResponseType { get; set; } = GetResponseType.WithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
@@ -15,7 +15,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
 
         public string ToPduStringInHex()
         {
-			StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("03");
             stringBuilder.Append(InvokeIdAndPriority.ToPduStringInHex());
             int num = Result.Length;
@@ -37,7 +37,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
                 stringBuilder.Append(getDataResult.ToPduStringInHex());
             }
             return stringBuilder.ToString();
-		}
+        }
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
@@ -45,7 +45,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
             {
                 return false;
             }
-         
+
             InvokeIdAndPriority = new AxdrIntegerUnsigned8();
             if (!InvokeIdAndPriority.PduStringInHexConstructor(ref pduStringInHex))
             {

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.Get;
+using System;
+using System.Linq;
+using System.Windows;
 using 三相智慧能源网关调试软件.Common;
-
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -156,7 +155,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             if (loadDataBytes != null)
             {
-                if (loadDataBytes.GetResponseNormal!=null&&loadDataBytes.GetResponseNormal.Result.Data!= null)
+                if (loadDataBytes.GetResponseNormal != null && loadDataBytes.GetResponseNormal.Result.Data != null)
                 {
                     LoadOriginalDataHex = loadDataBytes.GetResponseNormal.Result.Data.Value.ToString();
                     //      LoadOriginalDataHex = LoadOriginalDataHex.Substring(2); //去掉长度
@@ -170,14 +169,14 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 {
                     LoadDataFormat = loadDataBytes.GetResponseNormal.Result.DataAccessError.Value;
                 }
-               
-          
+
+
             }
         }
 
-        public LoadIdentificationViewModel()
+        public LoadIdentificationViewModel(DlmsClient dlmsClient)
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = dlmsClient;
             CustomCosemLoadIdentificationModel = new CustomCosemLoadIdentificationModel();
             GetEarliestCommand = new RelayCommand(async () =>
             {

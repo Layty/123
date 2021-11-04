@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Tftp.Net.Transfer;
-using Tftp.Net.Trace;
-
-namespace Tftp.Net.Transfer.States
+﻿namespace Tftp.Net.Transfer.States
 {
     class SendWriteRequest : StateWithNetworkTimeout
     {

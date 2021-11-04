@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Windows.Controls;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Renci.SshNet;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Windows.Controls;
 
 namespace 三相智慧能源网关调试软件.MyControl
 {
@@ -38,13 +38,13 @@ namespace 三相智慧能源网关调试软件.MyControl
                 else
                 {
                     sshClient = new SshClient(ServerIpAddress, "root", "11223344");
-                    sshClient.Connect(); 
+                    sshClient.Connect();
                     ConnectResult = sshClient.IsConnected;
                     OnPropertyChanged("ConnectResult");
                 }
 
 
-               
+
             });
             SendCommand = new RelayCommand<string>((t) =>
             {

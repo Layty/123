@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tftp.Net.Transfer.States;
 using Tftp.Net.Channel;
-using Tftp.Net.Transfer;
+using Tftp.Net.Transfer.States;
 
 namespace Tftp.Net.Transfer
 {
     class LocalReadTransfer : TftpTransfer
     {
         public LocalReadTransfer(ITransferChannel connection, string filename, IEnumerable<TransferOption> options)
-            : base(connection, filename, new StartIncomingRead(options)) 
+            : base(connection, filename, new StartIncomingRead(options))
         {
         }
 

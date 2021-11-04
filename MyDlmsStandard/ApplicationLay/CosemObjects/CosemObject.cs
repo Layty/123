@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects
 {

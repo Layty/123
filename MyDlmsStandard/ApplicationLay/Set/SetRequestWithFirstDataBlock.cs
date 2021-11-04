@@ -1,6 +1,6 @@
-﻿using System.Text;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {

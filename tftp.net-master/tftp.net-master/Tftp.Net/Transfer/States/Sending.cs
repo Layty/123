@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Tftp.Net.Trace;
 
 namespace Tftp.Net.Transfer.States
 {
@@ -18,7 +13,7 @@ namespace Tftp.Net.Transfer.States
         {
             base.OnStateEnter();
             lastData = new byte[Context.BlockSize];
- 	        SendNextPacket(1);
+            SendNextPacket(1);
         }
 
         public override void OnAcknowledgement(Acknowledgement command)

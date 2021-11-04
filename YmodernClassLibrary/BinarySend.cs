@@ -6,7 +6,7 @@ namespace FileTransmit
 {
     public class BinarySend : IFileTransmit, ITransmitUart
     {
-        public bool IsStart { get;private set; }
+        public bool IsStart { get; private set; }
         private int DelayTime = 10;
         public BinarySend(int delayTime)
         {

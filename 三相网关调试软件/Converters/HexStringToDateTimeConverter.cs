@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay;
+using MyDlmsStandard.ApplicationLay.CosemObjects;
+using MyDlmsStandard.BusinessDefine;
+using System;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using MyDlmsStandard.ApplicationLay;
-using MyDlmsStandard.ApplicationLay.CosemObjects;
-using MyDlmsStandard.BusinessDefine;
 using 三相智慧能源网关调试软件.Common;
 
 namespace 三相智慧能源网关调试软件.Converters
@@ -60,7 +60,7 @@ namespace 三相智慧能源网关调试软件.Converters
             {
                 try
                 {
-                    var standardEventCode = (StandardEventCode) int.Parse(t.ValueString);
+                    var standardEventCode = (StandardEventCode)int.Parse(t.ValueString);
                     return t?.ValueString + ":" + standardEventCode.ToString();
                 }
                 catch (Exception e)

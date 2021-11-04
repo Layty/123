@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using NLog;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using NLog;
-using Microsoft.Toolkit.Mvvm.Messaging;
 using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
@@ -14,10 +14,11 @@ namespace 三相智慧能源网关调试软件
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
+
         //private readonly LierdaCracker _cracker = new LierdaCracker();
         protected override void OnStartup(StartupEventArgs e)
-       {
-          //  _cracker.Cracker();
+        {
+            //  _cracker.Cracker();
             DispatcherHelper.Initialize();
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace 三相智慧能源网关调试软件.MyControl
 {  /// <summary>
@@ -87,17 +76,17 @@ namespace 三相智慧能源网关调试软件.MyControl
 
             if (Calendar.SelectedDate != null)
             {
-                 t = (DateTime)Calendar.SelectedDate;
+                t = (DateTime)Calendar.SelectedDate;
             }
-                       //在当前时间上加上一周
-        //    t = t.AddDays(7);
+            //在当前时间上加上一周
+            //    t = t.AddDays(7);
             //转换System.DateTime到SYSTEMTIME
             SYSTEMTIME st = new SYSTEMTIME();
             st.FromDateTime(t);
             //调用Win32 API设置系统时间
-          var boo=  Win32API.SetLocalTime(ref st);
+            var boo = Win32API.SetLocalTime(ref st);
             //显示当前时间
-           
+
         }
     }
 }

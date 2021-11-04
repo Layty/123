@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.Axdr;
+using MyDlmsStandard.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.Axdr;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay
 {
@@ -31,7 +31,7 @@ namespace MyDlmsStandard.ApplicationLay
 
     [XmlInclude(typeof(DLMSArray))]
     [XmlInclude(typeof(DlmsStructure))]
-//    [XmlInclude(typeof(DlmsCompactArray))]
+    //    [XmlInclude(typeof(DlmsCompactArray))]
     public class DlmsDataItem : IToPduStringInHex, IPduStringInHexConstructor, INotifyPropertyChanged
     {
         // [XmlAttribute]
@@ -165,7 +165,7 @@ namespace MyDlmsStandard.ApplicationLay
             }
         }
 
-        private string _valueName="";
+        private string _valueName = "";
 
         public DlmsDataItem()
         {
@@ -272,8 +272,8 @@ namespace MyDlmsStandard.ApplicationLay
                     case "06":
                         DataType = DataType.UInt32;
                         Value = pduStringInHex.Substring(2, 8);
-//                        ValueString = BitConverter
-//                            .ToUInt32(Value.ToString().StringToByte().Reverse().ToArray(), 0).ToString();
+                        //                        ValueString = BitConverter
+                        //                            .ToUInt32(Value.ToString().StringToByte().Reverse().ToArray(), 0).ToString();
                         //特殊修改Uint32
                         UpdateDisplayFormat();
 
@@ -458,27 +458,27 @@ namespace MyDlmsStandard.ApplicationLay
                 case DataType.Time:
                     return "1B" + Value;
                 case DataType.Structure:
-                {
-                    DlmsStructure dlmsStructure = (DlmsStructure) Value;
-                    return dlmsStructure.ToPduStringInHex();
-                }
+                    {
+                        DlmsStructure dlmsStructure = (DlmsStructure)Value;
+                        return dlmsStructure.ToPduStringInHex();
+                    }
 
                 case DataType.Array:
-                {
-                    DLMSArray dlmsArray = new DLMSArray();
-                    var temp = Value.ToString();
-                    if (dlmsArray.PduStringInHexConstructor(ref temp))
                     {
+                        DLMSArray dlmsArray = new DLMSArray();
+                        var temp = Value.ToString();
+                        if (dlmsArray.PduStringInHexConstructor(ref temp))
+                        {
+                            return dlmsArray.ToPduStringInHex();
+                        }
+                        else
+                        {
+                            dlmsArray = Value as DLMSArray;
+                        }
+
+                        //     DLMSArray dlmsArray = (DLMSArray) Value;
                         return dlmsArray.ToPduStringInHex();
                     }
-                    else
-                    {
-                        dlmsArray = Value as DLMSArray;
-                    }
-
-                    //     DLMSArray dlmsArray = (DLMSArray) Value;
-                    return dlmsArray.ToPduStringInHex();
-                }
 
 
                 //                case "COMPACTARRAY":
@@ -531,7 +531,7 @@ namespace MyDlmsStandard.ApplicationLay
                     stringBuilder.Append('0');
                 }
 
-                b = (byte) (b >> 1);
+                b = (byte)(b >> 1);
             }
 
             return stringBuilder.ToString();
@@ -548,7 +548,7 @@ namespace MyDlmsStandard.ApplicationLay
                 switch (bitString[i])
                 {
                     case '1':
-                        b = (byte) (b | b2);
+                        b = (byte)(b | b2);
                         break;
                     default:
                         throw new Exception("Illegal character in BitString");
@@ -556,7 +556,7 @@ namespace MyDlmsStandard.ApplicationLay
                         break;
                 }
 
-                b2 = (byte) (b2 >> 1);
+                b2 = (byte)(b2 >> 1);
                 if (b2 == 0)
                 {
                     stringBuilder.Append(b.ToString("X2"));
@@ -614,31 +614,31 @@ namespace MyDlmsStandard.ApplicationLay
                     Value = ushort.Parse(ValueString).ToString("X4");
                     break;
                 case DataType.UInt32:
-                {
-                    switch (UInt32ValueDisplayFormat)
                     {
-                        case UInt32ValueDisplayFormat.Original:
-                            Value = ValueString;
-                            break;
-                        case UInt32ValueDisplayFormat.IpAddress:
+                        switch (UInt32ValueDisplayFormat)
                         {
-                            var s = ValueString.Split('.');
-                            List<byte> list = new List<byte>();
-                            foreach (var variable in s)
-                            {
-                                list.Add(byte.Parse(variable));
-                            }
+                            case UInt32ValueDisplayFormat.Original:
+                                Value = ValueString;
+                                break;
+                            case UInt32ValueDisplayFormat.IpAddress:
+                                {
+                                    var s = ValueString.Split('.');
+                                    List<byte> list = new List<byte>();
+                                    foreach (var variable in s)
+                                    {
+                                        list.Add(byte.Parse(variable));
+                                    }
 
-                            Value = list.ToArray().ByteToString();
-                            break;
+                                    Value = list.ToArray().ByteToString();
+                                    break;
+                                }
+                            case UInt32ValueDisplayFormat.IntValue:
+                                Value = Convert.ToInt32(ValueString).ToString("X8");
+                                break;
                         }
-                        case UInt32ValueDisplayFormat.IntValue:
-                            Value = Convert.ToInt32(ValueString).ToString("X8");
-                            break;
-                    }
 
-                    break;
-                }
+                        break;
+                    }
                 case DataType.OctetString:
 
                     switch (OctetStringDisplayFormat)
@@ -663,13 +663,13 @@ namespace MyDlmsStandard.ApplicationLay
                     Value = Encoding.Default.GetBytes(ValueString).ByteToString();
                     break;
                 case DataType.Boolean:
-//                    ValueBytes = new[] {byte.Parse(ValueString)};
-//                    Value = ValueBytes.ByteToString();
+                    //                    ValueBytes = new[] {byte.Parse(ValueString)};
+                    //                    Value = ValueBytes.ByteToString();
                     Value = ValueString;
                     break;
                 case DataType.Enum:
-//                    ValueBytes = new[] {byte.Parse(ValueString)};
-//                    Value = ValueBytes.ByteToString();
+                    //                    ValueBytes = new[] {byte.Parse(ValueString)};
+                    //                    Value = ValueBytes.ByteToString();
                     Value = ValueString;
                     break;
                 case DataType.Structure:

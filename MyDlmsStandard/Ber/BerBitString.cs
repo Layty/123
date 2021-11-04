@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MyDlmsStandard.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.Ber
 {
@@ -33,7 +33,7 @@ namespace MyDlmsStandard.Ber
             return true;
         }
     }
-    public class BerBitString:IToPduStringInHex,IPduStringInHexConstructor
+    public class BerBitString : IToPduStringInHex, IPduStringInHexConstructor
     {
         [XmlAttribute] public string Value { get; set; }
 
@@ -121,7 +121,7 @@ namespace MyDlmsStandard.Ber
 
                     if (t == '1')
                     {
-                        b = (byte) (b | array[num]);
+                        b = (byte)(b | array[num]);
                     }
 
                     num++;
@@ -136,8 +136,8 @@ namespace MyDlmsStandard.Ber
                 list.Add(b);
             }
 
-            list.Insert(0, (byte) (list.Count + 1));
-            list.Insert(1, (byte) (8 - num));
+            list.Insert(0, (byte)(list.Count + 1));
+            list.Insert(1, (byte)(8 - num));
             return (list.ToArray().ByteToString());
         }
 
@@ -182,6 +182,6 @@ namespace MyDlmsStandard.Ber
             }
         }
 
-      
+
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using MyWebApi.Data;
+using MyWebApi.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MyWebApi.Data;
-using MyWebApi.Entities;
 
 namespace MyWebApi.Services
 {
@@ -25,7 +25,7 @@ namespace MyWebApi.Services
                 throw new ArgumentNullException(nameof(meterId));
             }
 
-            _dbContext.Meters.Add(new Meter() {MeterId = meterId});
+            _dbContext.Meters.Add(new Meter() { MeterId = meterId });
         }
 
         public void DeleteMeter(string meterId)
@@ -74,15 +74,16 @@ namespace MyWebApi.Services
                     //更新追踪的，必须改属性，不然调用update会报错
                     _dbContext.Energies.Update(t);
                 }
-                else {
+                else
+                {
                     //要判断是否已存在不然add时会报错
                     _dbContext.Energies.Add(energy1);
                 }
             }
-            
-           
 
-        
+
+
+
         }
 
         public void AddPowerData(string meterId, List<Power> powers)

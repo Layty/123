@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using MyDlmsStandard.Wrapper;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
-using MyDlmsStandard.Wrapper;
 using 三相智慧能源网关调试软件.Common;
 using HeartBeatFrame = 三相智慧能源网关调试软件.Model.HeartBeatFrame;
 

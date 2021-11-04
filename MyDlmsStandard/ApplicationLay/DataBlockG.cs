@@ -1,5 +1,5 @@
-﻿using System.Text;
-using MyDlmsStandard.Axdr;
+﻿using MyDlmsStandard.Axdr;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay
 {

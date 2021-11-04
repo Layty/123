@@ -17,7 +17,7 @@ namespace 三相智慧能源网关调试软件.Common
             //去掉空格，后以每两个字符进行分割到数组里
             try
             {
-                if (putStringData==null)
+                if (putStringData == null)
                 {
                     return null;
                 }
@@ -51,10 +51,10 @@ namespace 三相智慧能源网关调试软件.Common
         ///  </summary>  
         ///  <param name="inBytes"> 二进制字节 </param>  
         ///  <returns>类似"01 02 0F" </returns>  
-        public static string ByteToString(this byte[] inBytes,string insertString="")
+        public static string ByteToString(this byte[] inBytes, string insertString = "")
         {
             string stringOut = "";
-            if (inBytes==null)
+            if (inBytes == null)
             {
                 return "";
             }

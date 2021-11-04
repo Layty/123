@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
 using System.IO;
-using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Tftp.Net.Channel
 {

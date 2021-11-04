@@ -126,7 +126,7 @@ namespace FileTransmit
         /// <summary>
         /// ´óĞ´×ÖÄ¸C
         /// </summary>
-        private readonly byte KEY_C = 0x43; 
+        private readonly byte KEY_C = 0x43;
 
         private int RetryMax;
 

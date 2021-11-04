@@ -1,7 +1,7 @@
-﻿using System.Text;
-using MyDlmsStandard.ApplicationLay.Action;
+﻿using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.Association;
 using MyDlmsStandard.ApplicationLay.Set;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
@@ -15,7 +15,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
         public string ToPduStringInHex()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            if (AssociationRequest!=null)
+            if (AssociationRequest != null)
             {
                 stringBuilder.Append(AssociationRequest.ToPduStringInHex());
             }

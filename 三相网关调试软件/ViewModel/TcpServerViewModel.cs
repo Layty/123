@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
-using 三相智慧能源网关调试软件.Common;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using MyDlmsStandard.ApplicationLay;
@@ -18,7 +7,16 @@ using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Helpers;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -251,7 +249,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         private ObservableCollection<MeterIdMatchSocket> _meterIdMatchSockets;
 
-
+        public MeterIdMatchSocket CurrentMeterIdMatchSocket { get; set; }
         public TcpServerViewModel()
         {
             IsAutoResponseHeartBeat = true;
@@ -437,7 +435,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                     if (dataNotification.NotificationBody.DataValue.DataType == DataType.Structure)
                     {
-                        var dlmsStructure = (DlmsStructure) dataNotification.NotificationBody.DataValue.Value;
+                        var dlmsStructure = (DlmsStructure)dataNotification.NotificationBody.DataValue.Value;
                         var stringStructure = dlmsStructure.ToPduStringInHex();
 
                         if (alarmViewModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
@@ -489,7 +487,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             catch (Exception e)
             {
                 Console.WriteLine(e);
-//                throw;
+                //                throw;
             }
         }
 

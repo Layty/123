@@ -1,6 +1,7 @@
 using CommonServiceLocator;
 using Unity;
 using Unity.ServiceLocation;
+using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
@@ -16,6 +17,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
             //  ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             //注册服务
             {
+                #region excel配置文件
+                ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+                container.RegisterInstance(excel);
+                #endregion
                 #region Dlms相关服务
 
                 container.RegisterSingleton<DlmsSettingsViewModel>();

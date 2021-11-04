@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay.Get;
 using NLog;
 using Quartz;
+using System;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
@@ -68,7 +68,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                     {
                         var tempClient = Client;
                         tempClient.CurrentSocket = so;
-                        //初始化设置读取方式协议为47协议+以太网
+                        //初始化设置读取方式协议为47协议+以太网,后续放出去配置
                         tempClient.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
                         tempClient.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
 

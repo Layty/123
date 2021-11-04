@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MyWebApi.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyWebApi.Entities;
 
 namespace MyWebApi.Services
 {

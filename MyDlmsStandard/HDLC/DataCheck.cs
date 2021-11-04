@@ -2,23 +2,23 @@
 
 namespace MyDlmsStandard.HDLC
 {
- 
+
     public static class DataCheck
     {
-    
+
         private static uint GetCRC32(byte[] bytes)
         {
-            uint iCount = (uint) bytes.Length;
+            uint iCount = (uint)bytes.Length;
             uint crc = uint.MaxValue;
             foreach (byte b in bytes)
             {
-                crc = ((crc >> 8 & 16777215u) ^ Crc32Table[(int) ((crc ^ b) & 255u)]);
+                crc = ((crc >> 8 & 16777215u) ^ Crc32Table[(int)((crc ^ b) & 255u)]);
             }
 
             return crc ^ uint.MaxValue;
         }
 
-     
+
         public static byte[] GetCrc16(byte[] data)
         {
             byte[] returnVal = new byte[2];
@@ -33,8 +33,8 @@ namespace MyDlmsStandard.HDLC
                 {
                     byte SaveHi = CRC16Hi;
                     byte SaveLo = CRC16Lo;
-                    CRC16Hi = (byte) (CRC16Hi >> 1);
-                    CRC16Lo = (byte) (CRC16Lo >> 1);
+                    CRC16Hi = (byte)(CRC16Hi >> 1);
+                    CRC16Lo = (byte)(CRC16Lo >> 1);
                     bool flag = (SaveHi & 1) == 1;
                     if (flag)
                     {
@@ -55,7 +55,7 @@ namespace MyDlmsStandard.HDLC
             return returnVal;
         }
 
-     
+
         public static byte GetSum(byte[] data)
         {
             byte rtnbyte = 0;
@@ -73,7 +73,7 @@ namespace MyDlmsStandard.HDLC
             return CRC(buffer, 0, buffer.Length);
         }
 
- 
+
         private static byte CRC(byte[] buffer, int off, int len)
         {
             byte crc = 0;
@@ -97,7 +97,7 @@ namespace MyDlmsStandard.HDLC
             return crc;
         }
 
-   
+
         private static byte CRC8(byte[] buffer)
         {
             byte crc = 0;
@@ -109,12 +109,12 @@ namespace MyDlmsStandard.HDLC
                     bool flag = (crc & 1) > 0;
                     if (flag)
                     {
-                        crc = (byte) (crc >> 1);
+                        crc = (byte)(crc >> 1);
                         crc ^= 140;
                     }
                     else
                     {
-                        crc = (byte) (crc >> 1);
+                        crc = (byte)(crc >> 1);
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace MyDlmsStandard.HDLC
             return crc;
         }
 
-  
+
         public static byte[] CRC16_CCITT(byte[] data, int dataLen)
         {
             int crc = 65535;
@@ -134,10 +134,10 @@ namespace MyDlmsStandard.HDLC
             }
 
             crc ^= 65535;
-            return BitConverter.GetBytes((ushort) crc);
+            return BitConverter.GetBytes((ushort)crc);
         }
 
-  
+
         private static readonly uint[] Crc32Table = {
             0u,
             1996959894u,

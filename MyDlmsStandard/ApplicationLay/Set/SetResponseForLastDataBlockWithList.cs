@@ -1,11 +1,11 @@
-﻿using System.Text;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseForLastDataBlockWithList:ISetResponse,IPduStringInHexConstructor
+    public class SetResponseForLastDataBlockWithList : ISetResponse, IPduStringInHexConstructor
     {
         public SetResponseType SetResponseType { get; } = SetResponseType.LastDataBlockWithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
@@ -40,7 +40,7 @@ namespace MyDlmsStandard.ApplicationLay.Set
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-			if (string.IsNullOrEmpty(pduStringInHex))
+            if (string.IsNullOrEmpty(pduStringInHex))
             {
                 return false;
             }
@@ -69,6 +69,6 @@ namespace MyDlmsStandard.ApplicationLay.Set
                 return false;
             }
             return true;
-		}
+        }
     }
 }

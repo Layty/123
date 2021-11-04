@@ -1,9 +1,9 @@
 ﻿namespace MyDlmsStandard.ApplicationLay
 {
-    public class AccessParameters:IToPduStringInHex,IPduStringInHexConstructor
+    public class AccessParameters : IToPduStringInHex, IPduStringInHexConstructor
     {
         public DlmsDataItem Data { get; set; }
-        
+
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             Data = new DlmsDataItem();

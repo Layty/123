@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using System;
 using System.Collections.Generic;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
@@ -30,7 +30,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
             List<byte> list = new List<byte>();
             list.Add(0xBE); //标签([30],Context-specific,Constructed) 的编码
             list.Add(0x10); //标记组件值域长度的编码 
-            list.Add((byte) BerType.OctetString); //user-information(OCTET STRING,Uni- versal)选项的编码 BerType.OctetString
+            list.Add((byte)BerType.OctetString); //user-information(OCTET STRING,Uni- versal)选项的编码 BerType.OctetString
             list.Add(0x0E); // OCTETSTRING 值 域 长 度(14octets)的 编码
 
             list.AddRange(new byte[]

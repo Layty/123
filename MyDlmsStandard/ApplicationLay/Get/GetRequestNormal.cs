@@ -1,7 +1,7 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Get
 {
@@ -14,10 +14,10 @@ namespace MyDlmsStandard.ApplicationLay.Get
         public CosemAttributeDescriptor AttributeDescriptor { get; set; }
         public SelectiveAccessDescriptor AccessSelection { get; set; }
         public CosemAttributeDescriptorWithSelection AttributeDescriptorWithSelection { get; set; }
-        
+
         public GetRequestNormal()
         {
-            
+
         }
         public GetRequestNormal(CosemAttributeDescriptor attributeDescriptor)
         {

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -237,7 +237,7 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-    
+
 
         public void SendDataToServer(byte[] inputBytesData)
         {
@@ -297,7 +297,7 @@ namespace 三相智慧能源网关调试软件
             ClientSocket.Disconnect(false);
             ConnectResult = false;
             StrongReferenceMessenger.Default.Send("关闭连接成功", "ClientStatus");
-            
+
         }
 
         public void CloseAll()
@@ -314,10 +314,10 @@ namespace 三相智慧能源网关调试软件
 
         public void Dispose()
         {
-            ((IDisposable) ClientSocket).Dispose();
+            ((IDisposable)ClientSocket).Dispose();
         }
 
 
-     
+
     }
 }

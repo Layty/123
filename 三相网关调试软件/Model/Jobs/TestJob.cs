@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-
+﻿using CommonServiceLocator;
 using MyDlmsStandard;
 using NLog;
 using Quartz;
+using System;
+using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
-using CommonServiceLocator;
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
     public class TestJob : IBaseJob
@@ -19,7 +18,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
         {
             try
             {
-                if (Client.Socket.SocketClientList.Count==0)
+                if (Client.Socket.SocketClientList.Count == 0)
                 {
                     return;
                 }
@@ -39,17 +38,17 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                             "正在执行初始化请求";
                         await tempClient.InitRequest();
 
-//                        await Task.Delay(2000);
-//                        netLogViewModel.MyServerNetLogModel.Log =
-//                            "正在执行读取曲线捕获对象";
-//                        await tempClient.GetRequestAndWaitResponse(CustomCosemProfileGenericModel
-//                            .GetCaptureObjectsAttributeDescriptor());
-//                        await Task.Delay(2000);
-//                        netLogViewModel.MyServerNetLogModel.Log =
-//                            "正在执行读取曲线Buffer";
-//                        await tempClient.GetRequestAndWaitResponseArray(CustomCosemProfileGenericModel
-//                            .GetBufferAttributeDescriptorWithSelectionByRange());
-//                        await Task.Delay(2000);
+                        //                        await Task.Delay(2000);
+                        //                        netLogViewModel.MyServerNetLogModel.Log =
+                        //                            "正在执行读取曲线捕获对象";
+                        //                        await tempClient.GetRequestAndWaitResponse(CustomCosemProfileGenericModel
+                        //                            .GetCaptureObjectsAttributeDescriptor());
+                        //                        await Task.Delay(2000);
+                        //                        netLogViewModel.MyServerNetLogModel.Log =
+                        //                            "正在执行读取曲线Buffer";
+                        //                        await tempClient.GetRequestAndWaitResponseArray(CustomCosemProfileGenericModel
+                        //                            .GetBufferAttributeDescriptorWithSelectionByRange());
+                        //                        await Task.Delay(2000);
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行释放请求";
                         await tempClient.ReleaseRequest(true);

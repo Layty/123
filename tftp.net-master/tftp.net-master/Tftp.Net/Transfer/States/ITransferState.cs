@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Tftp.Net.Channel;
-using System.Net;
+﻿using System.Net;
 
 namespace Tftp.Net.Transfer.States
 {

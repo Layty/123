@@ -1,8 +1,8 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Ber;
 using MyDlmsStandard.Common;
+using System.Text;
+using System.Xml.Serialization;
 
 
 namespace MyDlmsStandard.ApplicationLay.Association
@@ -10,7 +10,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
     /// <summary>
     /// 协商请求-AARQ_0x60
     /// </summary>
-    public class AssociationRequest:IToPduStringInHex
+    public class AssociationRequest : IToPduStringInHex
     {
         [XmlIgnore] public Command Command => Command.Aarq;
         public BerBitString ProtocolVersion { get; set; }
@@ -38,10 +38,10 @@ namespace MyDlmsStandard.ApplicationLay.Association
                 Value = "1"
             };
             AuthenticationValue = new AuthenticationValue(passWorld)
-                {CharString = new BerGraphicString() {Value = passWorld.ByteToString()}};
+            { CharString = new BerGraphicString() { Value = passWorld.ByteToString() } };
             CallingApTitle = new CallingAPTitle(systemTitle);
             InitiateRequest = new InitiateRequest(maxReceivePduSize, dlmsVersion, conformance);
-            UserInformation = new BerOctetString() {Value = InitiateRequest.ToPduBytes().ByteToString()};
+            UserInformation = new BerOctetString() { Value = InitiateRequest.ToPduBytes().ByteToString() };
         }
 
 
@@ -83,8 +83,8 @@ namespace MyDlmsStandard.ApplicationLay.Association
             if (UserInformation != null)
             {
                 stringBuilder.Append(InitiateRequest.ToPduBytes().ByteToString());
-//                string str = UserInformation.ToPduStringInHex();
-//                stringBuilder.Append("BE" + str);
+                //                string str = UserInformation.ToPduStringInHex();
+                //                stringBuilder.Append("BE" + str);
             }
 
             BerOctetString berOctetString3 = new BerOctetString();

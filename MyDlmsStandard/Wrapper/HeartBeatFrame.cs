@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MyDlmsStandard.Axdr;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MyDlmsStandard.Axdr;
 
 namespace MyDlmsStandard.Wrapper
 {
@@ -10,7 +10,7 @@ namespace MyDlmsStandard.Wrapper
     /// </summary>
     public class HeartBeatFrame : WrapperFrame
     {
-        public readonly byte[] HeartBeatFrameType = {0x00, 0x01, 0x03};
+        public readonly byte[] HeartBeatFrameType = { 0x00, 0x01, 0x03 };
         public byte[] MeterAddressBytes { get; set; }
 
         public string GetMeterAddressString()

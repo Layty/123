@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging;
+using MyDlmsStandard.Common;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +11,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using MyDlmsStandard.Common;
-using NLog;
 
 namespace DataNotification
 {
@@ -130,21 +130,21 @@ namespace DataNotification
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
             var str = bytes.ByteToString();
-//            HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
-//            if (heartBeatFrame.PduStringInHexConstructor(ref str))
-//            {
-//                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-//                {
-//                    foreach (var valueTuple in SocketClientListAndIp)
-//                    {
-//                        if (valueTuple.Item1 != clientSocket.RemoteEndPoint.ToString())
-//                        {
-//                            SocketClientListAndIp.Add((clientSocket.RemoteEndPoint.ToString(),
-//                                Encoding.Default.GetString(bytes)));
-//                        }
-//                    }
-//                });
-//            }
+            //            HeartBeatFrame heartBeatFrame = new HeartBeatFrame();
+            //            if (heartBeatFrame.PduStringInHexConstructor(ref str))
+            //            {
+            //                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //                {
+            //                    foreach (var valueTuple in SocketClientListAndIp)
+            //                    {
+            //                        if (valueTuple.Item1 != clientSocket.RemoteEndPoint.ToString())
+            //                        {
+            //                            SocketClientListAndIp.Add((clientSocket.RemoteEndPoint.ToString(),
+            //                                Encoding.Default.GetString(bytes)));
+            //                        }
+            //                    }
+            //                });
+            //            }
 
 
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");

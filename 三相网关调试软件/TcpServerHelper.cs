@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Speech.Synthesis;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using NLog;
-using Microsoft.Toolkit.Mvvm.Messaging;
-using System.Management;
-using System.Text.RegularExpressions;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
@@ -46,7 +46,7 @@ namespace 三相智慧能源网关调试软件
         /// <param name="getway"></param>
         public static void SetGetWay(string getway)
         {
-            SetIPAddress(null, null, new string[] {getway}, null);
+            SetIPAddress(null, null, new string[] { getway }, null);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace 三相智慧能源网关调试软件
         /// <param name="submask"></param>
         public static void SetIPAddress(string ip, string submask)
         {
-            SetIPAddress(new string[] {ip}, new string[] {submask}, null, null);
+            SetIPAddress(new string[] { ip }, new string[] { submask }, null, null);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace 三相智慧能源网关调试软件
         /// <param name="getway"></param>
         public static void SetIPAddress(string ip, string submask, string getway)
         {
-            SetIPAddress(new string[] {ip}, new string[] {submask}, new string[] {getway}, null);
+            SetIPAddress(new string[] { ip }, new string[] { submask }, new string[] { getway }, null);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace 三相智慧能源网关调试软件
             foreach (ManagementObject mo in moc)
             {
                 //如果没有启用IP设置的网络设备则跳过
-                if (!(bool) mo["IPEnabled"])
+                if (!(bool)mo["IPEnabled"])
                     continue;
                 //设置IP地址和掩码
                 if (ip != null && submask != null)
@@ -134,7 +134,7 @@ namespace 三相智慧能源网关调试软件
             foreach (ManagementObject mo in moc)
             {
                 //如果没有启用IP设置的网络设备则跳过
-                if (!(bool) mo["IPEnabled"])
+                if (!(bool)mo["IPEnabled"])
                     continue;
                 //重置DNS为空
                 mo.InvokeMethod("SetDNSServerSearchOrder", null);
@@ -189,7 +189,7 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private string _iPAddress="172.32.0.3";
+        private string _iPAddress = "172.32.0.3";
 
         public string SubnetMask
         {
@@ -201,7 +201,7 @@ namespace 三相智慧能源网关调试软件
             }
         }
 
-        private string _SubnetMask="255.255.255.0";
+        private string _SubnetMask = "255.255.255.0";
 
 
         public string SetGateways
@@ -242,25 +242,25 @@ namespace 三相智慧能源网关调试软件
             ManagementObjectCollection moc = mc.GetInstances();
             foreach (ManagementObject mo in moc)
             {
-                if (!(bool) mo["IPEnabled"])
+                if (!(bool)mo["IPEnabled"])
                     continue;
 
                 //设置ip地址和子网掩码
                 inPar = mo.GetMethodParameters("EnableStatic");
-                inPar["IPAddress"] = new string[] {IPAddress}; // 1.备用 2.IP
-                inPar["SubnetMask"] = new string[] {SubnetMask};
+                inPar["IPAddress"] = new string[] { IPAddress }; // 1.备用 2.IP
+                inPar["SubnetMask"] = new string[] { SubnetMask };
                 outPar = mo.InvokeMethod("EnableStatic", inPar, null);
-                
+
 
                 //设置网关地址
                 inPar = mo.GetMethodParameters("SetGateways");
-                inPar["DefaultIPGateway"] = new string[] {SetGateways}; // 1.网关;2.备用网关
+                inPar["DefaultIPGateway"] = new string[] { SetGateways }; // 1.网关;2.备用网关
                 outPar = mo.InvokeMethod("SetGateways", inPar, null);
 
-//                //设置DNS
-//                inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
-//                inPar["DNSServerSearchOrder"] = new string[] {"211.97.168.129", "202.102.152.3"}; // 1.DNS 2.备用DNS
-//                outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
+                //                //设置DNS
+                //                inPar = mo.GetMethodParameters("SetDNSServerSearchOrder");
+                //                inPar["DNSServerSearchOrder"] = new string[] {"211.97.168.129", "202.102.152.3"}; // 1.DNS 2.备用DNS
+                //                outPar = mo.InvokeMethod("SetDNSServerSearchOrder", inPar, null);
                 break;
             }
         }
@@ -368,7 +368,7 @@ namespace 三相智慧能源网关调试软件
 
         protected virtual void OnReceiveBytes(Socket clientSocket, byte[] bytes)
         {
-           ReceiveBytes?.Invoke(clientSocket, bytes);
+            ReceiveBytes?.Invoke(clientSocket, bytes);
             (Socket clientSocket, byte[] bytes) p = (clientSocket, bytes);
             var t = p.ToTuple();
             StrongReferenceMessenger.Default.Send(t, "ServerReceiveDataEvent");
@@ -393,7 +393,7 @@ namespace 三相智慧能源网关调试软件
         protected virtual void OnNotifyStatusMsg(string msg)
         {
             StrongReferenceMessenger.Default.Send(msg, "ServerStatus");
-//            Messenger.Default.Send(msg, "ServerStatus");
+            //            Messenger.Default.Send(msg, "ServerStatus");
             StatusMsg?.Invoke(msg);
         }
 
@@ -604,15 +604,16 @@ namespace 三相智慧能源网关调试软件
                 destinationSocket.Send(bytes);
                 OnSendBytesToClient(destinationSocket, bytes);
                 stopwatch1 = new Stopwatch();
-               var nowtick= DateTime.Now.Ticks;
+                var nowtick = DateTime.Now.Ticks;
                 TimeSpan startTimeSpan = new TimeSpan(DateTime.Now.Ticks);
                 stopwatch1.Start();
-               
+
                 //占用大量CPU需要优化
                 while (true)
-                {await Task.Delay(100);
-                    TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks- nowtick);
-                   // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
+                {
+                    await Task.Delay(100);
+                    TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks - nowtick);
+                    // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
                     if (elapsed.TotalSeconds >= ResponseTimeOut)
                     {
                         stopwatch1.Reset();

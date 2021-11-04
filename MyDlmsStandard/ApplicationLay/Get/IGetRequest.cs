@@ -5,7 +5,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
 {
     public interface IGetRequest
     {
-        
+
         /// <summary>
         /// 请求类型 ，分3种
         /// </summary>

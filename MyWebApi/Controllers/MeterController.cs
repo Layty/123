@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Entities;
 using MyWebApi.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyWebApi.Controllers
 {
@@ -46,7 +46,7 @@ namespace MyWebApi.Controllers
             return Ok(meterData);
         }
         [HttpDelete("{meterId}")]
-        public async Task<IActionResult> RemoveByMeterId([FromRoute]string meterId)
+        public async Task<IActionResult> RemoveByMeterId([FromRoute] string meterId)
         {
             if (meterId == "")
             {
@@ -54,7 +54,7 @@ namespace MyWebApi.Controllers
             }
 
             var entity = await _meterRepository.GetMeter(meterId);
-            if (entity==null)
+            if (entity == null)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace MyWebApi.Controllers
             {
                 return BadRequest();
             }
-          
+
             _meterRepository.AddEnergyData(meterId, energy);
             await _meterRepository.SaveAsync();
             return Ok(energy);
@@ -131,6 +131,6 @@ namespace MyWebApi.Controllers
             return Ok(powers);
         }
 
-       
+
     }
 }

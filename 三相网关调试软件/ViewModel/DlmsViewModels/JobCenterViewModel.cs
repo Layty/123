@@ -1,44 +1,46 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using Quartz;
+using Quartz.Impl.Matchers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Quartz;
-using Quartz.Impl;
-using Quartz.Impl.Matchers;
 using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.Model.Jobs;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
+
+
     /*
-由7段构成：秒 分 时 日 月 星期 年（可选）
+    由7段构成：秒 分 时 日 月 星期 年（可选）
 
-"-" ：表示范围  MON-WED表示星期一到星期三
-"," ：表示列举 MON,WEB表示星期一和星期三
-"*" ：表是“每”，每月，每天，每周，每年等
-"/" :表示增量：0/15（处于分钟段里面） 每15分钟，在0分以后开始，3/20 每20分钟，从3分钟以后开始
-"?" :只能出现在日，星期段里面，表示不指定具体的值
-"L" :只能出现在日，星期段里面，是Last的缩写，一个月的最后一天，一个星期的最后一天（星期六）
-"W" :表示工作日，距离给定值最近的工作日
-"#" :表示一个月的第几个星期几，例如："6#3"表示每个月的第三个星期五（1=SUN...6=FRI,7=SAT）
+    "-" ：表示范围  MON-WED表示星期一到星期三
+    "," ：表示列举 MON,WEB表示星期一和星期三
+    "*" ：表是“每”，每月，每天，每周，每年等
+    "/" :表示增量：0/15（处于分钟段里面） 每15分钟，在0分以后开始，3/20 每20分钟，从3分钟以后开始
+    "?" :只能出现在日，星期段里面，表示不指定具体的值
+    "L" :只能出现在日，星期段里面，是Last的缩写，一个月的最后一天，一个星期的最后一天（星期六）
+    "W" :表示工作日，距离给定值最近的工作日
+    "#" :表示一个月的第几个星期几，例如："6#3"表示每个月的第三个星期五（1=SUN...6=FRI,7=SAT）
 
-如果Minutes的数值是 '0/15' ，表示从0开始每15分钟执行
+    如果Minutes的数值是 '0/15' ，表示从0开始每15分钟执行
 
-如果Minutes的数值是 '3/20' ，表示从3开始每20分钟执行，也就是‘3/23/43’
-*/
+    如果Minutes的数值是 '3/20' ，表示从3开始每20分钟执行，也就是‘3/23/43’
+    */
     public class JobCenterViewModel : ObservableObject, ITriggerListener, IJobListener
     {
         public RelayCommand StartSchedulerCommand { get; set; }
         public RelayCommand ShutdownSchedulerCommand { get; set; }
         public RelayCommand PauseAllSchedulerCommand { get; set; }
         public RelayCommand ResumeAllSchedulerCommand { get; set; }
-        public RelayCommand<JobMessage> PauseTriggerCommand { get; set; }
-        public RelayCommand<JobMessage> ResumeTriggerCommand { get; set; }
+        public RelayCommand StandbySchedulerCommand { get; set; }
+        public RelayCommand<JobsViewModel> PauseTriggerCommand { get; set; }
+        public RelayCommand<JobsViewModel> ResumeTriggerCommand { get; set; }
         public RelayCommand UpdateJobListCommand { get; set; }
 
 
@@ -86,9 +88,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             Scheduler.ScheduleJob(normalJobDetail, normalTrigger);
         }
 
-        //调度器工厂
-        ISchedulerFactory factory;
-        //调度器
+
+
 
 
         public IScheduler Scheduler
@@ -140,10 +141,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 new DayProfileGenericJob(),
                 new MonthProfileGenericJob()
             };
-            JobMessages = new ObservableCollection<JobMessage>();
+            JobsViewModels = new ObservableCollection<JobsViewModel>();
 
             StartSchedulerCommand = new RelayCommand(Start);
-            
+
             ShutdownSchedulerCommand = new RelayCommand(Shutdown);
             PauseAllSchedulerCommand = new RelayCommand(PauseAll);
             ResumeAllSchedulerCommand = new RelayCommand(() =>
@@ -151,62 +152,28 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 Scheduler.ResumeAll();
                 UpdateJobList();
             });
-            PauseTriggerCommand = new RelayCommand<JobMessage>(Pause);
-            ResumeTriggerCommand = new RelayCommand<JobMessage>(Resume);
+            PauseTriggerCommand = new RelayCommand<JobsViewModel>(Pause);
+            ResumeTriggerCommand = new RelayCommand<JobsViewModel>(Resume);
+
+            StandbySchedulerCommand = new RelayCommand(Standby);
             UpdateJobListCommand = new RelayCommand(UpdateJobList);
 
             ActionCloseWarningCommand = new RelayCommand(CloseWaring);
 
 
-            factory = new StdSchedulerFactory();
-            //创建任务调度器
-            Scheduler = factory.GetScheduler().Result;
 
+          //  Scheduler = DemoScheduler.Create(false).Result;
+            Scheduler = DemoScheduler.CreateTest(false).Result;
             Scheduler.ListenerManager.AddJobListener(this);
             netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
             // Scheduler.ListenerManager.AddTriggerListener(this);
         }
 
-        private async void LoadingDefaultJob()
+        private void Standby()
         {
-            IJobDetail energyJobDetail = JobBuilder.Create<EnergyProfileGenericJob>()
-                .WithIdentity("EnergyProfileGenericJob", "EnergyProfileGenericJob").Build();
-//            var t = energyJobDetail.JobType.FullName;
-//
-//            Console.WriteLine("haha" + energyJobDetail.Description);
-            ITrigger energyTrigger = TriggerBuilder.Create()
-                .WithCronSchedule("10 0/5 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob").Build();
-
-            //功率
-            IJobDetail powerJobDetail = JobBuilder.Create<PowerProfileGenericJob>()
-                .WithIdentity("PowerProfileGenericJob", "PowerProfileGenericJob").Build();
-
-            ITrigger powerTrigger = TriggerBuilder.Create()
-                .WithIdentity("PowerProfileGenericJobTrigger", "PowerProfileGenericJob")
-                .WithCronSchedule("40 5/15 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .Build();
-
-            //日
-            IJobDetail dayJobDetail = JobBuilder.Create<DayProfileGenericJob>()
-                .WithIdentity("DayProfileGenericJob", "DayProfileGenericJob").Build();
-            ITrigger dayTrigger = TriggerBuilder.Create()
-                .WithIdentity("DayProfileGenericJobTrigger", "DayProfileGenericJob")
-                .WithCronSchedule("0 2 0 * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .Build();
-
-            //测试任务
-            IJobDetail testJobDetail = JobBuilder.Create<TestJob>().WithIdentity("TestJob").Build();
-            ITrigger testTrigger = TriggerBuilder.Create().WithIdentity("TestJobTrigger").WithSimpleSchedule((builder =>
-            {
-                builder.WithIntervalInSeconds(10).RepeatForever();
-            })).Build();
-
-            await Scheduler.ScheduleJob(testJobDetail, testTrigger);
-            await Scheduler.ScheduleJob(energyJobDetail, energyTrigger);
-            await Scheduler.ScheduleJob(powerJobDetail, powerTrigger);
-            await Scheduler.ScheduleJob(dayJobDetail, dayTrigger);
+            Scheduler.Standby();
         }
+
 
         public List<IJobDetail> JobDetails
         {
@@ -218,7 +185,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private List<IJobDetail> _jobDetails=new List<IJobDetail>();
+        private List<IJobDetail> _jobDetails = new List<IJobDetail>();
 
 
         public List<ITrigger> Triggers
@@ -231,94 +198,63 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
         }
 
-        private List<ITrigger> _triggers=new List<ITrigger>();
+        private List<ITrigger> _triggers = new List<ITrigger>();
 
-
-        private async void LoadingDefaultJob1()
+        public class TriggersViewModel
         {
-            IJobDetail energyJobDetail = JobBuilder.Create<EnergyProfileGenericJob>()
-                .WithIdentity("EnergyProfileGenericJob", "EnergyProfileGenericJob").Build();
-            ITrigger energyTrigger = TriggerBuilder.Create()
-                .WithCronSchedule("10 0/5 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob").Build();
+            public string Name { get; set; }
+            public string Group { get; set; }
+            public IScheduler Scheduler { get; set; }
+            public TriggerKey TriggerKey { get; set; }
+            public RelayCommand PauseTriggerCommand { get; set; }
 
-            //功率
-            IJobDetail powerJobDetail = JobBuilder.Create<PowerProfileGenericJob>()
-                .WithIdentity("PowerProfileGenericJob", "PowerProfileGenericJob").Build();
-
-            ITrigger powerTrigger = TriggerBuilder.Create()
-                .WithIdentity("PowerProfileGenericJobTrigger", "PowerProfileGenericJob")
-                .WithCronSchedule("40 5/15 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .Build();
-
-            //日
-            IJobDetail dayJobDetail = JobBuilder.Create<DayProfileGenericJob>()
-                .WithIdentity("DayProfileGenericJob", "DayProfileGenericJob").Build();
-            ITrigger dayTrigger = TriggerBuilder.Create()
-                .WithIdentity("DayProfileGenericJobTrigger", "DayProfileGenericJob")
-                .WithCronSchedule("0 2 0 * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .Build();
-
-            //测试任务
-            IJobDetail testJobDetail = JobBuilder.Create<TestJob>().WithIdentity("TestJob").Build();
-            ITrigger testTrigger = TriggerBuilder.Create().WithIdentity("TestJobTrigger").WithSimpleSchedule((builder =>
+            public RelayCommand ResumeTriggerCommand { get; set; }
+            public void Pause(JobsViewModel jobsViewModel)
             {
-                builder.WithIntervalInSeconds(10).RepeatForever();
-            })).Build();
-            JobDetails.Add(energyJobDetail);
-            JobDetails.Add(powerJobDetail);
-            JobDetails.Add(dayJobDetail);
-            JobDetails.Add(testJobDetail);
-            Triggers.Add(energyTrigger);
-            Triggers.Add(powerTrigger);
-            Triggers.Add(dayTrigger);
-            Triggers.Add(testTrigger);
-            await Scheduler.ScheduleJob(testJobDetail, testTrigger);
-
-
-            await Scheduler.ScheduleJob(energyJobDetail, energyTrigger);
-            await Scheduler.ScheduleJob(powerJobDetail, powerTrigger);
-            await Scheduler.ScheduleJob(dayJobDetail, dayTrigger);
+                var tr = new TriggerKey(jobsViewModel.TriggerName, jobsViewModel.TriggerGroup);
+                Scheduler.PauseTrigger(tr);
+                //UpdateJobList();
+            }
         }
-
-        public class JobMessage : ObservableObject
+        public class JobsViewModel : ObservableObject
         {
-            public string JobGroup
+
+            public string Group
             {
-                get => _jobGroup;
+                get => _group;
                 set
                 {
-                    _jobGroup = value;
+                    _group = value;
                     OnPropertyChanged();
                 }
             }
 
-            private string _jobGroup;
+            private string _group;
 
 
-            public string JobName
+            public string Name
             {
-                get => _jobName;
+                get => _name;
                 set
                 {
-                    _jobName = value;
+                    _name = value;
                     OnPropertyChanged();
                 }
             }
 
-            private string _jobName;
+            private string _name;
 
             public string Status
             {
-                get => _Status;
+                get => _status;
                 set
                 {
-                    _Status = value;
+                    _status = value;
                     OnPropertyChanged();
                 }
             }
 
-            private string _Status;
+            private string _status;
 
 
             public string TriggerName
@@ -358,85 +294,101 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             }
 
             private string _nextTriggerTime;
+
+
+            public string LastFireTime
+            {
+                get => _lastFireTime;
+                set
+                {
+                    _lastFireTime = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            private string _lastFireTime;
+
+            public string CronExpress { get; set; }
+
+
         }
 
-        public ObservableCollection<JobMessage> JobMessages
+        public ObservableCollection<JobsViewModel> JobsViewModels
         {
-            get => _jobMessages;
+            get => _jobsViewModels;
             set
             {
-                _jobMessages = value;
+                _jobsViewModels = value;
                 OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<JobMessage> _jobMessages;
+        private ObservableCollection<JobsViewModel> _jobsViewModels;
 
 
-        public void Start()
+        public async void Start()
         {
-            factory = new StdSchedulerFactory();
-            //创建任务调度器
-            Scheduler = factory.GetScheduler().Result;
             Scheduler.ListenerManager.AddJobListener(this);
-            LoadingDefaultJob();
-            Scheduler.Start();
-            IsSchedulerStarted = true;
+            await Scheduler.Start();
+            IsSchedulerStarted = Scheduler.IsStarted;
             UpdateJobList();
         }
 
 
         private void UpdateJobList()
         {
-            JobMessages = new ObservableCollection<JobMessage>();
+            JobsViewModels = new ObservableCollection<JobsViewModel>();
             NameList = Scheduler.GetJobGroupNames().GetAwaiter().GetResult();
             var nList = NameList.ToList();
 
             for (int i = 0; i < NameList.Count; i++)
             {
-                var data = new JobMessage();
+                var data = new JobsViewModel();
 
                 foreach (var jobKey in Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(nList[i])).Result)
                 {
-                    data.JobGroup = jobKey.Group;
-                    data.JobName = jobKey.Name;
+                    data.Group = jobKey.Group;
+                    data.Name = jobKey.Name;
                 }
 
                 foreach (TriggerKey triggerKey in Scheduler
                     .GetTriggerKeys(GroupMatcher<TriggerKey>.GroupEquals(nList[i])).Result)
                 {
-                    data.Status = (Scheduler.GetTriggerState(triggerKey).Result).ToString();
+                    data.Status = Scheduler.GetTriggerState(triggerKey).Result.ToString();
                     data.TriggerName = triggerKey.Name;
                     data.TriggerGroup = triggerKey.Group;
                     if (Scheduler.GetTrigger(triggerKey).Result is ICronTrigger cronTrigger)
                     {
                         CronExpression cronExpression = new CronExpression(cronTrigger.CronExpressionString);
-                        data.NextTriggerTime = cronExpression.GetNextValidTimeAfter(DateTime.Now).Value.LocalDateTime
+                        data.NextTriggerTime = cronExpression.GetNextValidTimeAfter(DateTime.Now)?.LocalDateTime
                             .ToLongTimeString();
+                        data.LastFireTime = cronExpression.GetFinalFireTime()?.LocalDateTime.ToLongTimeString();
+                        data.CronExpress = cronExpression.CronExpressionString;
+
                     }
                     else if (Scheduler.GetTrigger(triggerKey).Result is ISimpleTrigger simple)
                     {
-
                         data.NextTriggerTime = simple.RepeatInterval.Duration().ToString();
+                        data.LastFireTime = simple.FinalFireTimeUtc.ToString();
+
                     }
                 }
 
-                DispatcherHelper.CheckBeginInvokeOnUI(() => { JobMessages.Add(data); });
+                DispatcherHelper.CheckBeginInvokeOnUI(() => { JobsViewModels.Add(data); });
             }
         }
 
-        public void Pause(JobMessage triggerKey)
+        public void Pause(JobsViewModel triggerKey)
         {
             var tr = new TriggerKey(triggerKey.TriggerName, triggerKey.TriggerGroup);
             Scheduler.PauseTrigger(tr);
             UpdateJobList();
         }
 
-        public void Resume(JobMessage triggerKey)
+        public void Resume(JobsViewModel triggerKey)
         {
             var tr = new TriggerKey(triggerKey.TriggerName, triggerKey.TriggerGroup);
             Scheduler.ResumeTrigger(tr);
-
             UpdateJobList();
         }
 
@@ -449,7 +401,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public void Shutdown()
         {
             Scheduler?.Shutdown();
-            JobMessages.Clear();
+            JobsViewModels.Clear();
             IsSchedulerStarted = false;
         }
 
@@ -487,7 +439,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             Console.WriteLine(@"JobToBeExecuted");
 
-            JobExecutionContexts = Scheduler.GetCurrentlyExecutingJobs().Result;
+            JobExecutionContexts = Scheduler.GetCurrentlyExecutingJobs(cancellationToken).Result;
             netLogViewModel.MyServerNetLogModel.Log = $"JobToBeExecuted";
             return Task.CompletedTask;
         }

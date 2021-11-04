@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using CommonServiceLocator;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CommonServiceLocator;
 using 三相智慧能源网关调试软件.ViewModel;
 
 namespace 三相智慧能源网关调试软件.View

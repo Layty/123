@@ -74,7 +74,7 @@ namespace WpfAppBluetooth
             deviceWatcher.Start();
 
 
-//            _deviceWatcher.Start();
+            //            _deviceWatcher.Start();
             string message = "自动发现设备中..";
             MessAgeChanged?.Invoke(MsgType.NotifyTxt, message);
         }
@@ -113,9 +113,9 @@ namespace WpfAppBluetooth
             {
                 // Unregister the event handlers.
                 deviceWatcher.Added -= DeviceWatcher_Added;
-//                deviceWatcher.Updated -= DeviceWatcher_Updated;
-//                deviceWatcher.Removed -= DeviceWatcher_Removed;
-//                deviceWatcher.EnumerationCompleted -= DeviceWatcher_EnumerationCompleted;
+                //                deviceWatcher.Updated -= DeviceWatcher_Updated;
+                //                deviceWatcher.Removed -= DeviceWatcher_Removed;
+                //                deviceWatcher.EnumerationCompleted -= DeviceWatcher_EnumerationCompleted;
                 deviceWatcher.Stopped -= DeviceWatcher_Stopped;
 
                 // Stop the watcher.
@@ -343,7 +343,7 @@ namespace WpfAppBluetooth
         {
             CurrentDeviceMAC = MAC;
             CurrentDevice = null;
-            BluetoothAdapter.GetDefaultAsync().Completed = async delegate(IAsyncOperation<BluetoothAdapter> asyncInfo,
+            BluetoothAdapter.GetDefaultAsync().Completed = async delegate (IAsyncOperation<BluetoothAdapter> asyncInfo,
                 AsyncStatus asyncStatus)
             {
                 if (asyncStatus == AsyncStatus.Completed)
@@ -365,7 +365,7 @@ namespace WpfAppBluetooth
             characteristic
                     .WriteClientCharacteristicConfigurationDescriptorAsync(
                         GattClientCharacteristicConfigurationDescriptorValue.Notify).Completed =
-                async delegate(IAsyncOperation<GattCommunicationStatus> asyncInfo, AsyncStatus asyncStatus)
+                async delegate (IAsyncOperation<GattCommunicationStatus> asyncInfo, AsyncStatus asyncStatus)
                 {
                     if (asyncStatus == AsyncStatus.Completed)
                     {

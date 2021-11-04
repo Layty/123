@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace 三相智慧能源网关调试软件.Model.IIC
 {
-    public  class IicEnergyData
+    public class IicEnergyData
     {
         public string PosActT0 { get; set; }
         public string PosActT1 { get; set; }
@@ -93,7 +93,7 @@ namespace 三相智慧能源网关调试软件.Model.IIC
             return false;
         }
 
-      
+
     }
 
 }

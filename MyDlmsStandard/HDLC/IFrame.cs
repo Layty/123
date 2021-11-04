@@ -2,7 +2,8 @@
 
 namespace MyDlmsStandard.HDLC
 {
-    public class IFrame : Hdlc46FrameBase {
+    public class IFrame : Hdlc46FrameBase
+    {
         public IFrame(byte destAddress1, byte sourceAddress1, DLMSInfo dlmsInfo) : base(destAddress1, sourceAddress1, dlmsInfo)
         {
         }

@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.Common;
-using MyDlmsStandard.Wrapper;
 using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -41,10 +38,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         private RelayCommand _getTimeZoneCommand;
 
-        public ClockViewModel()
+        public ClockViewModel(DlmsClient dlmsClient, ExcelHelper excel)
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
-            ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+            Client = dlmsClient;
             var dataTable = excel.GetExcelDataTable("Clock$");
             Clock = new CosemClock(dataTable.Rows[0][0].ToString());
             GetTimeCommand = new RelayCommand(async () =>

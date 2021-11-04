@@ -18,7 +18,7 @@ namespace MySerialPortMaster
 
         public int Interval { get; set; }
         public SerialPortConfig(string portName, int baudRate, StopBits stopBits, Parity parity, int dataBits,
-            int delayTimeOut, bool isOwnThisSerialPort, bool isAutoDataReceived,int interval)
+            int delayTimeOut, bool isOwnThisSerialPort, bool isAutoDataReceived, int interval)
         {
             PortName = portName;
             BaudRate = baudRate;

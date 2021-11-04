@@ -352,7 +352,7 @@
                 FontSize="10"
                 ItemsSource="{Binding MeterIdMatchSockets}"
                 MouseLeftButtonDown="ListBox_OnMouseLeftButtonDown"
-                SelectedItem="{Binding DLMSClient.CurrentSocket}"
+                SelectedItem="{Binding CurrentMeterIdMatchSocket}"
                 SelectionChanged="Selector_OnSelectionChanged">
 
                 <ListBox.ItemsPanel>
@@ -418,11 +418,23 @@
 
             </ListBox>
 
-            <TabControl Grid.Row="1" Grid.Column="2">
+            <TabControl
+                Grid.Row="1"
+                Grid.Column="2"
+                materialDesign:ColorZoneAssist.Mode="Standard"
+                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                SnapsToDevicePixels="True"
+                TabStripPlacement="Top">
+
                 <TabItem Header="Data">
+
                     <dlmsControl:DataControl />
                 </TabItem>
                 <TabItem Header="Register">
+
                     <dlmsControl:RegisterControl />
                 </TabItem>
                 <TabItem Header="UtilityTables">
@@ -441,6 +453,7 @@
 
                 </TabItem>
                 <TabItem Header="LoadIdentification">
+
                     <dlmsControl:LoadIdentificationUserControl />
                 </TabItem>
             </TabControl>

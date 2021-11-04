@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 
@@ -86,11 +86,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
             ENetMessageMaker = new ENetMessageBuilder(ENetEventType.SortVersion);
             ItemsCollection = new ObservableCollection<object>();
             ResultStr.StringToByte();
-            StrongReferenceMessenger.Default.Register<byte[],string>(this, "ENetReceiveDataEvent", (sender,args) =>
-            {
-                var base64 = Convert.FromBase64String(Encoding.Default.GetString(args));
-                ResultStr = ConvertJsonString(Encoding.Default.GetString(base64));
-            });
+            StrongReferenceMessenger.Default.Register<byte[], string>(this, "ENetReceiveDataEvent", (sender, args) =>
+             {
+                 var base64 = Convert.FromBase64String(Encoding.Default.GetString(args));
+                 ResultStr = ConvertJsonString(Encoding.Default.GetString(base64));
+             });
             RequestCommand = new RelayCommand(() =>
             {
                 var ENetClient = ServiceLocator.Current.GetInstance<ENetClientHelper>();

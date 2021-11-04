@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件
 {

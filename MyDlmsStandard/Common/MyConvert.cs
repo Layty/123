@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MyDlmsStandard.ApplicationLay;
+﻿using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.OBIS;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MyDlmsStandard.Common
 {
@@ -255,7 +255,7 @@ namespace MyDlmsStandard.Common
         /// <returns></returns>
         public static AxdrIntegerUnsigned16 GetClassIdByObjectType(ObjectType objectType)
         {
-            return new AxdrIntegerUnsigned16(((ushort) objectType).ToString("X4"));
+            return new AxdrIntegerUnsigned16(((ushort)objectType).ToString("X4"));
         }
 
         public static string HowToDisplayIntValue(byte[] dataBytes, UInt32ValueDisplayFormat octetStringDisplayFormat)

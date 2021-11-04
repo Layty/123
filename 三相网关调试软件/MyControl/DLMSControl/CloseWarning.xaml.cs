@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System.Windows.Controls;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 using DlmsDataItem = MyDlmsStandard.ApplicationLay.DlmsDataItem;
@@ -32,7 +18,7 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
         public CloseWarning()
         {
             InitializeComponent();
-            DataContext=new CloseWarningViewModel();
+            DataContext = new CloseWarningViewModel();
         }
         public class CloseWarningViewModel : ObservableObject
         {
@@ -66,10 +52,10 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
             public RelayCommand SetWarningConfigCommand
             {
                 get => _SetWarningConfigCommand;
-                set { _SetWarningConfigCommand = value;  }
+                set { _SetWarningConfigCommand = value; }
             }
             private RelayCommand _SetWarningConfigCommand;
-                
+
 
             public DlmsClient Client { get; set; }
 
@@ -90,16 +76,16 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
                     await Client.GetRequestAndWaitResponse(t);
                 });
 
-                SetWarningConfigCommand=new RelayCommand(async () =>
-                {
-                    await Client.SetRequestAndWaitResponse(cosemData.ValueAttributeDescriptor,
-                        new DlmsDataItem(DataType.UInt64,"00000000" )
-                        );
-                });
+                SetWarningConfigCommand = new RelayCommand(async () =>
+                  {
+                      await Client.SetRequestAndWaitResponse(cosemData.ValueAttributeDescriptor,
+                          new DlmsDataItem(DataType.UInt64, "00000000")
+                          );
+                  });
 
             }
         }
     }
 
-  
+
 }

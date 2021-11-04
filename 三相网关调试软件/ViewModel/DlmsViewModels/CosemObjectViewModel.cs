@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using RestSharp;
+using System;
+using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Model;
 using 三相智慧能源网关调试软件.View;
 
@@ -56,7 +56,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             {
                 var client = new RestClient($"{Properties.Settings.Default.WebApiUrl}/CosemObjects/ByClassId/{s}");
                 var request = new RestRequest(Method.GET);
-               
+
                 try
                 {
                     IRestResponse response = client.Execute(request);

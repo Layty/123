@@ -1,39 +1,39 @@
-﻿using System.Linq;
+﻿using MyDlmsStandard.Common;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using MyDlmsStandard.Common;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class ApplicationContextName :IPduStringInHexConstructor
+    public class ApplicationContextName : IPduStringInHexConstructor
     {
         [XmlAttribute] public string Value { get; set; } = "LN";
         [XmlAttribute] public TranslatorGeneralTags TranslatorGeneralTags => TranslatorGeneralTags.ApplicationContextName;
         public bool CipherSupported { get; set; }
         public string ToPduStringInHex()
         {
-            StringBuilder stringBuilder=new StringBuilder();
-  
+            StringBuilder stringBuilder = new StringBuilder();
+
             if (Value.ToUpper() == "LN")
             {
                 if (CipherSupported)
                 {
-                    stringBuilder.Append( "09060760857405080103");
+                    stringBuilder.Append("09060760857405080103");
                 }
-                stringBuilder.Append ("09060760857405080101");
+                stringBuilder.Append("09060760857405080101");
             }
             if (Value.ToUpper() == "SN")
             {
                 if (CipherSupported)
                 {
-                    stringBuilder.Append  ("09060760857405080104");
+                    stringBuilder.Append("09060760857405080104");
                 }
-                stringBuilder.Append  ("09060760857405080102");
+                stringBuilder.Append("09060760857405080102");
             }
 
             return stringBuilder.ToString();
         }
-        
+
 
         public bool PduBytesToConstructor(byte[] pduBytes)
         {
@@ -63,7 +63,7 @@ namespace MyDlmsStandard.ApplicationLay.Association
                         return false;
                 }
 
-//                pduStringInHex = pduStringInHex.Substring(20);
+                //                pduStringInHex = pduStringInHex.Substring(20);
                 return true;
             }
 

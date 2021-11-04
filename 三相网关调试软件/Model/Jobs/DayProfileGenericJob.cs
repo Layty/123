@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using MyDlmsStandard.ApplicationLay;
+﻿using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using MyDlmsStandard.Common;
+using System;
+using System.Collections.Generic;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {
@@ -22,7 +22,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                 ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
                 {
                     RestrictingObject = new CaptureObjectDefinition()
-                        {AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255"},
+                    { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
                     FromValue = new DlmsDataItem(DataType.OctetString,
                         new CosemClock(DateTime.Today.Date).GetDateTimeBytes()
                             .ByteToString()),

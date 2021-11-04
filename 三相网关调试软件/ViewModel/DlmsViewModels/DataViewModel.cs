@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using 三相智慧能源网关调试软件.Model;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Axdr;
+using System;
+using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Helpers;
+using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
@@ -39,9 +39,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public DlmsClient Client { get; set; }
 
-        public DataViewModel()
+        public DataViewModel(DlmsClient dlmsClient)
         {
-            Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = dlmsClient;
             ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
             var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
             DataCollection = new ObservableCollection<CustomCosemDataModel>();
@@ -49,9 +49,9 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 DataCollection.Add(new CustomCosemDataModel(dataTable.Rows[i][0].ToString(),
-                        (ObjectType) int.Parse(dataTable.Rows[i][2].ToString()),
+                        (ObjectType)int.Parse(dataTable.Rows[i][2].ToString()),
                         new AxdrInteger8(sbyte.Parse(dataTable.Rows[i][3].ToString())))
-                    {DataName = dataTable.Rows[i][1].ToString()});
+                { DataName = dataTable.Rows[i][1].ToString() });
             }
 
             GetLogicNameCommand = new RelayCommand<CustomCosemDataModel>(async t =>
@@ -78,7 +78,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
                 if (requestAndWaitResponse?.GetResponseNormal != null)
                 {
-                    t.LastResult = (ErrorCode) requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
+                    t.LastResult = (ErrorCode)requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
                         .GetEntityValue();
                     if (t.LastResult != ErrorCode.Ok)
                     {
@@ -97,7 +97,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     await Client.SetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
                 if (setResponse != null)
                 {
-                    t.LastResult = (ErrorCode) setResponse.SetResponseNormal.Result;
+                    t.LastResult = (ErrorCode)setResponse.SetResponseNormal.Result;
                 }
             });
         }

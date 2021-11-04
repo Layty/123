@@ -14,7 +14,7 @@
 
         public int Size;
 
-        public AAddress(ushort upper,ushort lower ,int size)
+        public AAddress(ushort upper, ushort lower, int size)
         {
             Upper = upper;
             Lower = lower;
@@ -26,17 +26,17 @@
             switch (Size)
             {
                 case 1:
-                    array[0] = (byte) ((Upper << 1) | 1);
+                    array[0] = (byte)((Upper << 1) | 1);
                     break;
                 case 2:
-                    array[0] = (byte) (Upper << 1);
-                    array[1] = (byte) ((Lower << 1) | 1);
+                    array[0] = (byte)(Upper << 1);
+                    array[1] = (byte)((Lower << 1) | 1);
                     break;
                 case 4:
-                    array[0] = (byte) (Upper >> 7 << 1);
-                    array[1] = (byte) ((Upper & 0x7F) << 1);
-                    array[2] = (byte) (Lower >> 7 << 1);
-                    array[3] = (byte) (((Lower & 0x7F) << 1) | 1);
+                    array[0] = (byte)(Upper >> 7 << 1);
+                    array[1] = (byte)((Upper & 0x7F) << 1);
+                    array[2] = (byte)(Lower >> 7 << 1);
+                    array[3] = (byte)(((Lower & 0x7F) << 1) | 1);
                     break;
                 default:
                     array = new byte[0];
@@ -59,15 +59,15 @@
             switch (result.Size)
             {
                 case 1:
-                    result.Upper = (ushort) (pdu[index] >> 1);
+                    result.Upper = (ushort)(pdu[index] >> 1);
                     break;
                 case 2:
-                    result.Upper = (ushort) (pdu[index] >> 1);
-                    result.Lower = (ushort) (pdu[index + 1] >> 1);
+                    result.Upper = (ushort)(pdu[index] >> 1);
+                    result.Lower = (ushort)(pdu[index + 1] >> 1);
                     break;
                 case 4:
-                    result.Upper = (ushort) ((pdu[index] >> 1 << 7) | (pdu[index + 1] >> 1));
-                    result.Lower = (ushort) ((pdu[index + 2] >> 1 << 7) | (pdu[index + 3] >> 1));
+                    result.Upper = (ushort)((pdu[index] >> 1 << 7) | (pdu[index + 1] >> 1));
+                    result.Lower = (ushort)((pdu[index + 2] >> 1 << 7) | (pdu[index + 3] >> 1));
                     break;
             }
 

@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.Properties;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -112,7 +112,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 }
             });
             SendMsgCommand = new RelayCommand<string>(TcpClientHelper.SendDataToServerWithNewLine);
-            SendMsgControlCCommand = new RelayCommand(() => { TcpClientHelper.SendDataToServer(new byte[] {0x03}); });
+            SendMsgControlCCommand = new RelayCommand(() => { TcpClientHelper.SendDataToServer(new byte[] { 0x03 }); });
             TryToLoginCommand = new RelayCommand((async () =>
             {
                 TcpClientHelper.SendDataToServerWithNewLine("root");
