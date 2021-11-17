@@ -12,6 +12,8 @@ namespace MyWebApi.Data
         public DbSet<Meter> Meters { get; set; }
         public DbSet<Energy> Energies { get; set; }
         public DbSet<Power> Powers { get; set; }
+        public DbSet<Day> Days { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

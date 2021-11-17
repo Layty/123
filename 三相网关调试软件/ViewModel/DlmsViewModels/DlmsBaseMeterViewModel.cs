@@ -117,7 +117,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             });
             OneKeyStartCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始搞事情");
+                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始初始化");
                 InitCommand.Execute(null);
                 await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读工厂模式");
@@ -135,11 +135,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("进入升级模式");
                 EnterUpgradeModeCommand.Execute(null);
                 await Task.Delay(800);
-                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("请开始你的表演");
+                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("请开始升级");
             });
             OneKeyLeaveCommand = new RelayCommand(async () =>
             {
-                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始收拾");
+                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("开始初始化");
                 InitCommand.Execute(null);
                 await Task.Delay(800);
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读软件版本");
@@ -154,10 +154,10 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("读工厂模式");
                 ReadFactoryCommand.Execute(null);
                 await Task.Delay(800);
-                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("事了拂袖去");
+                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("断开连接");
                 DisconnectCommand.Execute(null);
                 await Task.Delay(800);
-                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("深藏功与名");
+                SerialPortViewModel.SerialPortMaster.SerialPortLogger.AddInfo("完成");
             });
         }
 

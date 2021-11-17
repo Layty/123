@@ -3,6 +3,7 @@ using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using Quartz;
@@ -10,6 +11,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
@@ -64,7 +66,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
 
                 Powers = new List<Power>();
-                var ttt = ProfileGenericViewModel.ParseBuffer(Responses);
+                var ttt = CustomCosemProfileGenericModel.ParseBuffer(Responses);
 
                 if (ttt != null)
                 {
@@ -114,7 +116,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
         {
             var tcpServerViewModel = ServiceLocator.Current.GetInstance<TcpServerViewModel>();
             var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
-                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
+                i.IpString == Client.Business.LinkLayer.CurrentSocket.RemoteEndPoint.ToString());
             if (t == null)
             {
                 NetLogViewModel.MyServerNetLogModel.Log = "未找到相应表号,不调用API写数据库";
@@ -130,7 +132,14 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
 
             RestRequest.AddHeader("Content-Type", "application/json");
-            var str = JsonConvert.SerializeObject(Powers);
+            var str = JsonConvert.SerializeObject(Powers, Formatting.Indented);
+            NetLogViewModel.MyServerNetLogModel.Log = str;
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var item in Powers)
+            {
+                stringBuilder.Append(item.DateTime + "\r\n");
+            }
+            NetLogViewModel.MyServerNetLogModel.Log = stringBuilder.ToString();
             RestRequest.AddParameter("CurrentPower", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);
             NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");

@@ -40,6 +40,13 @@ namespace MyWebApi.Services
         /// <param name="meterId"></param>
         /// <param name="powers"></param>
         void AddPowerData(string meterId, List<Power> powers);
+
+        /// <summary>
+        /// 对表插入日电能曲线数据
+        /// </summary>
+        /// <param name="meterId"></param>
+        /// <param name="energy"></param>
+        void AddDayData(string meterId, List<Day> energy);
         /// <summary>
         /// 查询所有数据？？不好
         /// </summary>

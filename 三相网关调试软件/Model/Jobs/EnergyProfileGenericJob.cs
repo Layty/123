@@ -3,6 +3,7 @@ using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using Quartz;
@@ -10,6 +11,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
@@ -28,6 +30,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
         public EnergyProfileGenericJob()
         {
+
             JobName = "1分钟电量曲线任务";
             Period = 5;
             CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel("1.0.99.1.0.255")
@@ -67,8 +70,8 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                     }
                 }
 
-                Energy = new List<Energy>();
-                var ttt = ProfileGenericViewModel.ParseBuffer(Responses);
+                Energies = new List<Energy>();
+                var ttt = CustomCosemProfileGenericModel.ParseBuffer(Responses);
 
 
                 if (ttt != null)
@@ -94,7 +97,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                                 ExportReactiveEnergyTotal = dataItems[8].ValueString
                             };
 
-                            Energy.Add(new Energy()
+                            Energies.Add(new Energy()
                             {
                                 EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
                                 Id = Guid.NewGuid(),
@@ -108,20 +111,20 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             });
         }
 
-        public List<Energy> Energy { get; set; }
+        public List<Energy> Energies { get; set; }
 
         public void InsertData()
         {
             var tcpServerViewModel = ServiceLocator.Current.GetInstance<TcpServerViewModel>();
             var t = tcpServerViewModel.MeterIdMatchSockets.FirstOrDefault(i =>
-                i.IpString == Client.CurrentSocket.RemoteEndPoint.ToString());
+                i.IpString == Client.Business.LinkLayer.CurrentSocket.RemoteEndPoint.ToString());
             if (t == null)
             {
                 NetLogViewModel.MyServerNetLogModel.Log = "未找到相应表号,不调用API写数据库";
                 return;
             }
 
-            if (Energy.Count == 0)
+            if (Energies.Count == 0)
             {
                 NetLogViewModel.MyServerNetLogModel.Log = "电能数据返回个数为0,不调用API写数据库";
                 return;
@@ -130,8 +133,14 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
             RestClient.BaseUrl = new Uri($"{BaseUriString}{t.MeterId}");
 
             RestRequest.AddHeader("Content-Type", "application/json");
-            var str = JsonConvert.SerializeObject(Energy, Formatting.Indented);
+            var str = JsonConvert.SerializeObject(Energies, Formatting.Indented);
             NetLogViewModel.MyServerNetLogModel.Log = str;
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var item in Energies)
+            {
+                stringBuilder.Append(item.DateTime + "\r\n");
+            }
+            NetLogViewModel.MyServerNetLogModel.Log = stringBuilder.ToString();
             RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);
             NetLogViewModel.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败");

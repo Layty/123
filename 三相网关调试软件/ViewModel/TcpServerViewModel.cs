@@ -585,6 +585,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
         public void Select(Socket clientSocket)
         {
             DLMSClient.CurrentSocket = clientSocket;
+            DLMSClient.Business.LinkLayer.CurrentSocket = clientSocket;
             CurrentSocketClient = clientSocket;
         }
 

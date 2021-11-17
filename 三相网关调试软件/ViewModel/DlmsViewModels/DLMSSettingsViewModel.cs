@@ -15,9 +15,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
-        public Array CommunicationTypeArray => Enum.GetValues(typeof(ChanelType));
-        public Array InterfaceTypeArray => Enum.GetValues(typeof(InterfaceType));
-        public InterfaceType InterfaceType { get; set; }
+        public Array PhysicalChanelTypeArray => Enum.GetValues(typeof(PhysicalChanelType));
+        public Array ProtocolInterfaceTypeArray => Enum.GetValues(typeof(ProtocolInterfaceType));
+        public ProtocolInterfaceType ProtocolInterfaceType
+        {
+            get => _protocolInterfaceType; set
+            {
+                _protocolInterfaceType = value;
+                OnPropertyChanged();
+            }
+        }
+        private ProtocolInterfaceType _protocolInterfaceType;
 
         public StartProtocolType StartProtocolType { get; set; }
         public ConnectionState Connected { get; set; }
@@ -25,17 +33,17 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <summary>
         /// 物理层通道类型
         /// </summary>
-        public ChanelType CommunicationType
+        public PhysicalChanelType PhysicalChanelType
         {
-            get => _communicationType;
+            get => physicalChanelType;
             set
             {
-                _communicationType = value;
+                physicalChanelType = value;
                 OnPropertyChanged();
             }
         }
 
-        private ChanelType _communicationType;
+        private PhysicalChanelType physicalChanelType;
 
         [DefaultValue(6)]
         public byte DlmsVersion { get; set; }
@@ -180,8 +188,8 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             DlmsInfoFromMeter = new DLMSInfo();
 
             PasswordString = "33333333";
-            CommunicationType = ChanelType.SerialPort;
-            InterfaceType = InterfaceType.HDLC;
+            PhysicalChanelType = PhysicalChanelType.SerialPort;
+            ProtocolInterfaceType = ProtocolInterfaceType.HDLC;
             StartProtocolType = StartProtocolType.DLMS;
             ClientAddress = 1;
             ServerAddress = 1;

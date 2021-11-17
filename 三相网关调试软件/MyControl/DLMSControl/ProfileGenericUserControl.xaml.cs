@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 
 
@@ -9,6 +12,15 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
     /// </summary>
     public partial class ProfileGenericUserControl : UserControl
     {
+
+      
+
+
+       
+
+
+
+     
         public ProfileGenericUserControl()
         {
             InitializeComponent();

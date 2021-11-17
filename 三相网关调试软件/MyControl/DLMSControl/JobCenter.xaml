@@ -27,15 +27,15 @@
                     </GroupBox.DataContext>
                     <StackPanel>
                         <ComboBox
-                            materialDesign:HintAssist.Hint="CommunicationType"
+                            materialDesign:HintAssist.Hint="PhysicalChanelType"
                             materialDesign:HintAssist.IsFloating="True"
-                            ItemsSource="{Binding Client.DlmsSettingsViewModel.CommunicationTypeArray}"
-                            SelectedItem="{Binding Client.DlmsSettingsViewModel.CommunicationType, Mode=TwoWay}" />
+                            ItemsSource="{Binding Client.DlmsSettingsViewModel.PhysicalChanelTypeArray}"
+                            SelectedItem="{Binding Client.DlmsSettingsViewModel.PhysicalChanelType, Mode=TwoWay}" />
                         <ComboBox
-                            materialDesign:HintAssist.Hint="InterfaceType"
+                            materialDesign:HintAssist.Hint="ProtocolInterfaceType"
                             materialDesign:HintAssist.IsFloating="True"
-                            ItemsSource="{Binding Client.DlmsSettingsViewModel.InterfaceTypeArray}"
-                            SelectedItem="{Binding Client.DlmsSettingsViewModel.InterfaceType, Mode=TwoWay}" />
+                            ItemsSource="{Binding Client.DlmsSettingsViewModel.ProtocolInterfaceTypeArray}"
+                            SelectedItem="{Binding Client.DlmsSettingsViewModel.ProtocolInterfaceType, Mode=TwoWay}" />
                     </StackPanel>
 
                 </GroupBox>
@@ -162,8 +162,8 @@
                 <GroupBox Header="TriggerGroups" />
             </Grid>
         </Expander>
-        <Expander Header="Jobs" >
-            <DataGrid ></DataGrid>
+        <Expander Header="Jobs">
+            <DataGrid />
         </Expander>
     </StackPanel>
 </UserControl>

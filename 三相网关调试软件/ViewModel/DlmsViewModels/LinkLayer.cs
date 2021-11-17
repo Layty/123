@@ -1,5 +1,4 @@
-﻿using CommonServiceLocator;
-using MyDlmsStandard;
+﻿using MyDlmsStandard;
 using MySerialPortMaster;
 using System;
 using System.IO.Ports;
@@ -10,7 +9,7 @@ using 三相智慧能源网关调试软件.Common;
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 {
     /// <summary>
-    /// 物理层,只需要处理数据的发送即可
+    /// 物理层,只需要安装需要调用串口或网络，处理数据的发送即可
     /// </summary>
     public class LinkLayer
     {
@@ -24,7 +23,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         /// <summary>
         /// 网络资源
         /// </summary>
-        public TcpServerHelper Socket { get; set; }
+        public TcpServerHelper TcpServerHelper { get; set; }
 
         /// <summary>
         /// 标识当前的Socket链接
@@ -32,11 +31,16 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         public Socket CurrentSocket { get; set; }
 
         #endregion
-        public ChanelType CommunicationType { get; set; }
-        private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
-        public LinkLayer()
+
+        public PhysicalChanelType CommunicationType { get; set; }
+        public readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
+
+        public LinkLayer(SerialPortMaster serialPort, TcpServerViewModel tcpServerViewModel)
         {
-            PortMaster = ServiceLocator.Current.GetInstance<SerialPortViewModel>().SerialPortMaster;
+            TcpServerHelper = tcpServerViewModel.TcpServerHelper;
+            CurrentSocket = tcpServerViewModel.CurrentSocketClient;
+           
+            PortMaster = serialPort;
             InitSerialPortParams(PortMaster);
         }
 
@@ -50,18 +54,19 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             serialPortMaster.DataBits = 8;
             serialPortMaster.StopBits = StopBits.One;
             serialPortMaster.Parity = Parity.None;
-        }   /// <summary>
-            /// 初始化21E的串口实例
-            /// </summary>
-        public void Init21ESerialPort(int StartBaud, int _negotiateBaud)
-        {
-            _negotiateBaud = PortMaster.BaudRate;
+        }
 
+        /// <summary>
+        /// 初始化21E的串口实例
+        /// </summary>
+        public void Init21ESerialPort(int StartBaud)
+        {
             PortMaster.BaudRate = StartBaud;
             PortMaster.DataBits = 7;
             PortMaster.StopBits = StopBits.One;
             PortMaster.Parity = Parity.Even;
         }
+
         /// <summary>
         /// 备份当前串口参数，用于后续恢复
         /// </summary>
@@ -72,6 +77,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
             PortMaster.SerialPortLogger.IsReceiveFormat16 = false;
         }
+
         /// <summary>
         /// 恢复备份的串口参数
         /// </summary>
@@ -82,34 +88,31 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
             PortMaster.SerialPortLogger.IsReceiveFormat16 = true;
         }
 
-        #region 发送数据 //协议层=>物理层
-
-
-        //public async Task<byte[]> SendAsync(IToPduStringInHex sendHexString)
-        //{
-        //    return await SendAsync(sendHexString.ToPduStringInHex());
-        //}
+        #region 发送数据 
 
         public async Task<byte[]> SendAsync(string sendHexString)
         {
             return await SendAsync(sendHexString.StringToByte());
-        }  /// <summary>
-           /// 如何选择物理通道进行发送数据,得到返回的报文
-           /// </summary>
-           /// <param name="sendBytes"></param>
-           /// <returns></returns>
+        }
+
+
+        /// <summary>
+        /// 内部实现如何选择物理通道进行发送数据,得到返回的报文
+        /// </summary>
+        /// <param name="sendBytes"></param>
+        /// <returns></returns>
         public async Task<byte[]> SendAsync(byte[] sendBytes)
         {
             var returnBytes = new byte[] { };
             try
             {
-                if (CommunicationType == ChanelType.SerialPort)
+                if (CommunicationType == PhysicalChanelType.SerialPort)
                 {
                     returnBytes = await PortMaster.SendAndReceiveReturnDataAsync(sendBytes);
                 }
-                else if (CommunicationType == ChanelType.FrontEndProcess)
+                else if (CommunicationType == PhysicalChanelType.FrontEndProcess)
                 {
-                    returnBytes = await Socket.SendDataToClientAndWaitReceiveDataAsync(CurrentSocket, sendBytes);
+                    returnBytes = await TcpServerHelper.SendDataToClientAndWaitReceiveDataAsync(CurrentSocket, sendBytes);
                 }
             }
             catch (Exception e)
@@ -120,9 +123,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             return returnBytes;
         }
+
         #endregion
-
-
     }
 }
-

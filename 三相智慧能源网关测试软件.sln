@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29721.120
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySerialPortMaster", "SerialPortMaster\MySerialPortMaster.csproj", "{04EC206F-7F4B-4C57-ACF5-4091D6C78C10}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{E83BBF5C-4010-4F90-8319-52610D97238E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppBluetooth", "WpfAppBluetooth\WpfAppBluetooth.csproj", "{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobMaster", "JobMaster\JobMaster.csproj", "{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,6 +197,18 @@ Global
 		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x64.Build.0 = Release|Any CPU
 		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x86.ActiveCfg = Release|Any CPU
 		{FB8BD1D8-7BD1-479B-AE01-C8967B461F5E}.Release|x86.Build.0 = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x64.Build.0 = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

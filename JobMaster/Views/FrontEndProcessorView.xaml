@@ -1,0 +1,253 @@
+﻿<UserControl
+    x:Class="JobMaster.Views.FrontEndProcessorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <Grid>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200" />
+                    <RowDefinition />
+                    <!--<RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />-->
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox
+                        Margin="3"
+                        Header="Server"
+                        Style="{StaticResource GroupBoxOriginal}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox
+                                    Width="180"
+                                    Margin="5"
+                                    FontSize="20"
+                                    IsEditable="True"
+                                    ItemsSource="{Binding TcpServerHelper.HostIPlList}"
+                                    Style="{StaticResource ComboBoxExtendBaseStyle}"
+                                    Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                <TextBox
+                                    Width="100"
+                                    Margin="5"
+                                    FontSize="20"
+                                    Text="{Binding TcpServerHelper.ListenPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <TextBox
+                                    Width="100"
+                                    Margin="5"
+                                    FontSize="20"
+                                    Text="{Binding TcpServerHelper.ResponseTimeOut}" />
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox
+                                    Width="100"
+                                    Margin="5"
+                                    FontSize="20"
+                                    Text="{Binding TcpServerHelper.HeartBeatDelayTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <CheckBox Content="自动识别并响应心跳帧" IsChecked="{Binding TcpServerHelper.IsAutoResponseHeartBeat}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button
+                                    x:Name="ButtonListen"
+                                    Margin="3"
+                                    Command="{Binding StartListen}"
+                                    IsEnabled="{Binding TcpServerHelper.IsStarted, Converter={StaticResource InverseBooleanConverter}}">
+                                    开始监听
+                                </Button>
+                                <Button
+                                    x:Name="ButtonStop"
+                                    Margin="3"
+                                    Command="{Binding CloseServer}"
+                                    IsEnabled="{Binding TcpServerHelper.IsStarted}">
+                                    停止
+                                </Button>
+                                <!--<Button x:Name="ButtonConfig" Click="ButtonConfig_OnClick" />-->
+                                <TextBox
+                                    x:Name="TextBoxIP"
+                                    Width="100"
+                                    Text="192.168.1.92" />
+                                <TextBox
+                                    x:Name="TextBoxIPResult"
+                                    Width="100"
+                                    Text="{Binding IpDetectResult}" />
+                                <Button
+                                    Command="{Binding IpDetectCommand}"
+                                    CommandParameter="{Binding ElementName=TextBoxIP, Path=Text}"
+                                    Content="探测" />
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox
+                        Grid.Column="1"
+                        Margin="3"
+                        HorizontalAlignment="Stretch"
+                        Header="Clients"
+                        Style="{StaticResource GroupBoxOriginal}">
+                        <!--<StackPanel>-->
+                        <!--<TextBlock Text="{Binding CurrentSocketClient.RemoteEndPoint, StringFormat='当前选中{0}'}" />-->
+                        <!--  ItemsSource="{Binding TcpServerHelper.SocketClientList}"  -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ListBox
+                                x:Name="ListBox"
+                                Grid.Column="0"
+                                BorderThickness="2"
+                                ItemsSource="{Binding TcpServerHelper.SocketClientList}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                SelectedItem="{Binding DLMSClient.CurrentSocket}"
+                                SelectionChanged="Selector_OnSelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="5,0" Text="{Binding RemoteEndPoint}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <ListBox
+                                x:Name="ListBoxMatch"
+                                Grid.Column="1"
+                                BorderThickness="2"
+                                ItemsSource="{Binding TcpServerHelper.MeterIdMatchSockets}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                SelectedItem="{Binding DLMSClient.CurrentSocket}"
+                                SelectionChanged="Selector_OnSelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="5,0" Text="{Binding IpString}" />
+                                            <TextBlock Text="{Binding MeterId}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+
+                        <!--</StackPanel>-->
+
+                    </GroupBox>
+                </Grid>
+                <!--<GroupBox
+                    Grid.Row="1"
+                    Margin="3"
+                    Header="主动上报">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Alarms}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Foreground="Red"
+                                                Kind="NotificationsActive" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="DateTime"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding DateTime}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="IpAddress"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding IpAddress}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="AlarmDateTime"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding AlarmDateTime}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="PushId"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding CustomAlarm.PushId.Value}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="CosemLogicalDeviceName"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding CustomAlarm.CosemLogicalDeviceName.Value}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="AlarmDescriptor1"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding CustomAlarm.AlarmDescriptor1.Value}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="AlarmDescriptor2"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Text="{Binding CustomAlarm.AlarmDescriptor2.Value}" />
+                                            <TextBox
+                                                Margin="2"
+                                                materialDesign:HintAssist.Hint="AlarmType"
+                                                materialDesign:HintAssist.IsFloating="True"
+                                                Background="{DynamicResource PrimaryHueLightBrush}"
+                                                Text="{Binding AlarmType}" />
+                                        </StackPanel>
+
+
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                    </ScrollViewer>
+                </GroupBox>-->
+
+
+
+
+                <!-- <Expander Grid.Row="4" Header="任务中心"> -->
+                <!--     <StackPanel> -->
+                <!--         <GroupBox Header="曲线任务"> -->
+                <!--             <StackPanel Orientation="Horizontal"> -->
+                <!--  <Button  -->
+                <!--  Margin="5"  -->
+                <!--  Command="{Binding StartTaskCommand}"  -->
+                <!--  Content="StartTask"  -->
+                <!--  IsEnabled="{Binding JobCenter.IsJobStart, Converter={StaticResource InverseBooleanConverter}}" />  -->
+                <!--  <Button  -->
+                <!--  Margin="5"  -->
+                <!--  Command="{Binding StopTaskCommand}"  -->
+                <!--  Content="StopTask"  -->
+                <!--  IsEnabled="{Binding JobCenter.IsJobStart}" />  -->
+                <!--             </StackPanel> -->
+                <!--         </GroupBox> -->
+                <!--         <GroupBox Header="背光任务"> -->
+                <!--             <StackPanel Orientation="Horizontal"> -->
+                <!--                 <Button Content="StartTask" /> -->
+                <!--             </StackPanel> -->
+                <!--         </GroupBox> -->
+                <!--     </StackPanel> -->
+                <!-- </Expander> -->
+
+            </Grid>
+        </ScrollViewer>
+
+
+    </Grid>
+</UserControl>

@@ -23,6 +23,13 @@ namespace MyWebApi.Entities
         public string EnergyData { get; set; }
         public string MeterId { get; set; }
     }
+    public class Day
+    {
+        [Key] public Guid Id { get; set; }
+        public DateTime DateTime { get; set; }
+        public string DayData { get; set; }
+        public string MeterId { get; set; }
+    }
 
     public class Power
     {
@@ -32,4 +39,6 @@ namespace MyWebApi.Entities
         public string PowerData { get; set; }
         public string MeterId { get; set; }
     }
+
+
 }

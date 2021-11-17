@@ -1,8 +1,9 @@
 ﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 using MyDlmsStandard.Common;
 using System;
 
-namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
+namespace MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric
 {
     public class CaptureObjectDefinition : IToDlmsDataItem, IPduStringInHexConstructor
     {

@@ -4,21 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="https://github.com/yanjinhuagood/WPFDevelopers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:local="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    xmlns:loacl="clr-namespace:MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;assembly=MyDlmsStandard"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
-    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     d:DesignHeight="450"
     d:DesignWidth="800"
     DataContext="{Binding Source={StaticResource Locator}, Path=ProfileGenericViewModel}"
     mc:Ignorable="d">
 
     <Grid>
-
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <ListBox
@@ -159,7 +155,10 @@
 
                 </TabItem>
 
-                <TabItem Header="Profile Buffer">
+                <TabItem
+                    Height="19"
+                    VerticalAlignment="Top"
+                    Header="Profile Buffer">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -203,6 +202,21 @@
                         <StackPanel Grid.Row="1">
                             <TextBlock Text="Selective Access" />
                             <TabControl>
+                                <TabItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ListBox
+                                            x:Name="lb"
+                                            DisplayMemberPath="Description"
+                                            ItemsSource="{Binding CaptureObjects}"
+                                            SelectionMode="Multiple" />
+                                        <ListBox
+                                            x:Name="lbb"
+                                            DisplayMemberPath="Description"
+                                            ItemsSource="{Binding ElementName=lb, Path=SelectedItems, Mode=OneWay}" />
+                                        <ListBox DisplayMemberPath="Description" ItemsSource="{Binding ProfileGenericRangeDescriptor.SelectedValues}" />
+                                    </StackPanel>
+
+                                </TabItem>
                                 <TabItem Header="Range Access">
                                     <StackPanel Orientation="Horizontal">
                                         <ComboBox
@@ -267,6 +281,7 @@
                                                 SelectedTimeFormat="Long"
                                                 Style="{StaticResource MaterialDesignOutlinedTimePicker}"
                                                 WithSeconds="True" />
+
                                         </StackPanel>
                                         <!--<ListBox ItemsSource="{Binding CaptureObjects}" />-->
                                         <!--<ListBox Width="100" ItemsSource="{Binding ProfileGenericRangeDescriptor.RestrictingObject}" />-->

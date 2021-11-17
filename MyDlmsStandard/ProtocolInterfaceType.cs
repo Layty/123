@@ -1,6 +1,6 @@
 ﻿namespace MyDlmsStandard
 {
-    public enum InterfaceType
+    public enum ProtocolInterfaceType
     {
         HDLC,
         WRAPPER

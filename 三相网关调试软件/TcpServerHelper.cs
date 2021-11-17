@@ -392,8 +392,7 @@ namespace 三相智慧能源网关调试软件
 
         protected virtual void OnNotifyStatusMsg(string msg)
         {
-            StrongReferenceMessenger.Default.Send(msg, "ServerStatus");
-            //            Messenger.Default.Send(msg, "ServerStatus");
+            StrongReferenceMessenger.Default.Send(msg, "ServerStatus");     
             StatusMsg?.Invoke(msg);
         }
 
@@ -611,7 +610,7 @@ namespace 三相智慧能源网关调试软件
                 //占用大量CPU需要优化
                 while (true)
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(100);//进行等待延时，进行优化
                     TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks - nowtick);
                     // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
                     if (elapsed.TotalSeconds >= ResponseTimeOut)

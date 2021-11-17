@@ -130,7 +130,28 @@ namespace MyWebApi.Controllers
             await _meterRepository.SaveAsync();
             return Ok(powers);
         }
+        [HttpPost("DayData/{meterId}")]
+        public async Task<ActionResult<Day>> CreateDayData(string meterId, [FromBody] List<Day> day)
+        {
+            if (meterId == "")
+            {
+                return BadRequest();
+            }
 
+            if (meterId == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await _meterRepository.MeterIdExistsAsync(meterId))
+            {
+                return BadRequest();
+            }
+
+            _meterRepository.AddDayData(meterId, day);
+            await _meterRepository.SaveAsync();
+            return Ok(day);
+        }
 
     }
 }

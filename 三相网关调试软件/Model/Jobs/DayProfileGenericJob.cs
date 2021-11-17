@@ -2,6 +2,7 @@
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
 using MyDlmsStandard.Common;
 using System;
 using System.Collections.Generic;

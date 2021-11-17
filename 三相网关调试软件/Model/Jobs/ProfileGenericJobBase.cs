@@ -19,10 +19,11 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
     {
         protected ProfileGenericJobBase()
         {
+            
             Client = ServiceLocator.Current.GetInstance<DlmsClient>();
             NetLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
         }
-
+      
         public DlmsClient Client { get; set; }
         public NetLogViewModel NetLogViewModel { get; set; }
         public string JobName { get; set; }
@@ -66,12 +67,13 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
 
                     await Task.Run(async () =>
                     {
+                    
                         var tempClient = Client;
-                        tempClient.CurrentSocket = so;
+                        tempClient.TcpServerViewModel.CurrentSocketClient = so;
                         //初始化设置读取方式协议为47协议+以太网,后续放出去配置
-                        tempClient.DlmsSettingsViewModel.InterfaceType = InterfaceType.WRAPPER;
-                        tempClient.DlmsSettingsViewModel.CommunicationType = ChanelType.FrontEndProcess;
-
+                        tempClient.DlmsSettingsViewModel.ProtocolInterfaceType = ProtocolInterfaceType.WRAPPER;
+                        tempClient.DlmsSettingsViewModel.PhysicalChanelType = PhysicalChanelType.FrontEndProcess;
+                     
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行" + JobName + "\r\n";
                         NetLogViewModel.MyServerNetLogModel.Log = "正在执行初始化请求\r\n";
                         if (!await tempClient.InitRequest())

@@ -24,7 +24,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
             ITrigger powerTrigger = TriggerBuilder.Create()
                 .WithIdentity("PowerProfileGenericJobTrigger", "PowerProfileGenericJob")
-                .WithCronSchedule("40 5/15 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
+                .WithCronSchedule("30 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
                 .Build();
 
             //日

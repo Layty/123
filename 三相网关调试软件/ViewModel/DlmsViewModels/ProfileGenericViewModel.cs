@@ -3,7 +3,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
-using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
 using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
@@ -295,7 +295,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     await Client.GetRequestAndWaitResponseArray(t.BufferAttributeDescriptor
                     );
 
-                var structures = ParseBuffer(response);
+                var structures = CustomCosemProfileGenericModel. ParseBuffer(response);
                 if (structures != null && t.CaptureObjects != null && t.CaptureObjects.Count != 0)
                 {
                     foreach (var dlmsStructure in structures)
@@ -332,7 +332,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 t.Buffer.Clear();
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByEntry);
-                var structures = ParseBuffer(response);
+                var structures = CustomCosemProfileGenericModel.ParseBuffer(response);
 
                 if (structures != null && t.CaptureObjects != null && t.CaptureObjects.Count != 0)
                 {
@@ -411,7 +411,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                 var response =
                     await Client.GetRequestAndWaitResponseArray(t.GetBufferAttributeDescriptorWithSelectionByRange);
 
-                var structures = ParseBuffer(response);
+                var structures =CustomCosemProfileGenericModel.ParseBuffer(response);
                 if (structures != null && t.CaptureObjects != null && t.CaptureObjects.Count != 0)
                 {
                     foreach (var dlmsStructure in structures)
@@ -449,56 +449,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         }
 
 
-        public static ObservableCollection<DlmsStructure> ParseBuffer(List<GetResponse> responses)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            DLMSArray array;
-            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
-            if (responses != null && responses.Count != 0)
-            {
-                DlmsDataItem vDataItem = new DlmsDataItem();
-                string strr = "";
-                if (responses.Count == 1)
-                {
-                    if (responses[0].GetResponseNormal.Result.IsSuccessed())
-                    {
-                        strr = responses[0].GetResponseNormal.Result.Data.ToPduStringInHex();
-                    }
-
-                }
-                else
-                {
-                    //返回的是多个响应则进行拼接数据
-                    foreach (var getResponse in responses)
-                    {
-                        stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
-                    }
-
-                    strr = stringBuilder.ToString();
-                }
-
-                //接着对字符串进行解析
-                if (!vDataItem.PduStringInHexConstructor(ref strr))
-                {
-                    return null;
-                }
-
-                if (vDataItem.DataType == DataType.Array)
-                {
-                    array = (DLMSArray)vDataItem.Value;
-                    foreach (var item in array.Items)
-                    {
-                        structures.Add((DlmsStructure)item.Value);
-                    }
-
-                    //将每个捕获对象的描述性文字赋值给ValueName用于界面展示
-                }
-
-                return structures;
-            }
-
-            return structures;
-        }
+   
 
         public string BaseUriString { get; set; } = $"{Properties.Settings.Default.WebApiUrl}/Meter/EnergyData/";
 

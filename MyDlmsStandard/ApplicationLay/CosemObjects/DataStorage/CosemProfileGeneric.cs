@@ -1,9 +1,13 @@
 ﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
+using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Common;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
 {
@@ -247,5 +251,56 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         {
             throw new NotImplementedException();
         }
+        public static ObservableCollection<DlmsStructure> ParseBuffer(List<GetResponse> responses)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            DLMSArray array;
+            ObservableCollection<DlmsStructure> structures = new ObservableCollection<DlmsStructure>();
+            if (responses != null && responses.Count != 0)
+            {
+                DlmsDataItem vDataItem = new DlmsDataItem();
+                string strr = "";
+                if (responses.Count == 1)
+                {
+                    if (responses[0].GetResponseNormal.Result.IsSuccessed())
+                    {
+                        strr = responses[0].GetResponseNormal.Result.Data.ToPduStringInHex();
+                    }
+
+                }
+                else
+                {
+                    //返回的是多个响应则进行拼接数据
+                    foreach (var getResponse in responses)
+                    {
+                        stringBuilder.Append(getResponse.GetResponseWithDataBlock.DataBlockG.RawData.Value);
+                    }
+
+                    strr = stringBuilder.ToString();
+                }
+
+                //接着对字符串进行解析
+                if (!vDataItem.PduStringInHexConstructor(ref strr))
+                {
+                    return null;
+                }
+
+                if (vDataItem.DataType == DataType.Array)
+                {
+                    array = (DLMSArray)vDataItem.Value;
+                    foreach (var item in array.Items)
+                    {
+                        structures.Add((DlmsStructure)item.Value);
+                    }
+
+                    //将每个捕获对象的描述性文字赋值给ValueName用于界面展示
+                }
+
+                return structures;
+            }
+
+            return structures;
+        }
+
     }
 }

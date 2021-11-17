@@ -22,6 +22,10 @@ namespace MyDlmsStandard.ApplicationLay.Association
         public BerOctetString UserInformation { get; set; }
         public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
+            if (string.IsNullOrEmpty(pduStringInHex))
+            {
+                return false;
+            }
             string a = pduStringInHex.Substring(0, 2);
             if (a != "61")
             {

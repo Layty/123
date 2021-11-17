@@ -1,0 +1,19 @@
+﻿using Prism.Mvvm;
+
+namespace JobMaster.ViewModels
+{
+    public class MainWindowViewModel : BindableBase
+    {
+        private string _title = "Prism";
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
+        }
+
+        public MainWindowViewModel()
+        {
+
+        }
+    }
+}

@@ -45,54 +45,10 @@ namespace 三相智慧能源网关调试软件.Model
 
 
 
-        private async void LoadingDefaultJob()
-        {
-            list = new ObservableCollection<ProfileGenericJobBase>()
-            {
-                new EnergyProfileGenericJob(),
-                new PowerProfileGenericJob(),
-                new DayProfileGenericJob(),
-                new MonthProfileGenericJob()
-            };
-            //电能
-            IJobDetail energyJobDetail = JobBuilder.Create<EnergyProfileGenericJob>()
-                .WithIdentity("EnergyProfileGenericJob", "EnergyProfileGenericJob").Build();
-            ITrigger energyTrigger = TriggerBuilder.Create().WithCronSchedule("10 0/5 * * * ? *")
-                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob").Build();
-            //功率
-            IJobDetail powerJobDetail = JobBuilder.Create<PowerProfileGenericJob>()
-                .WithIdentity("PowerProfileGenericJob", "PowerProfileGenericJob").Build();
-
-            ITrigger powerTrigger = TriggerBuilder.Create()
-                .WithIdentity("PowerProfileGenericJobTrigger", "PowerProfileGenericJob")
-                .WithCronSchedule("40 5/15 * * * ? *")
-                .Build();
-
-            //日
-            IJobDetail dayJobDetail = JobBuilder.Create<DayProfileGenericJob>()
-                .WithIdentity("DayProfileGenericJob", "DayProfileGenericJob").Build();
-            ITrigger dayTrigger = TriggerBuilder.Create()
-                .WithIdentity("DayProfileGenericJobTrigger", "DayProfileGenericJob")
-                .WithCronSchedule("0 2 0 * * ? *")
-                .Build();
-            await scheduler.ScheduleJob(energyJobDetail, energyTrigger);
-            await scheduler.ScheduleJob(powerJobDetail, powerTrigger);
-            await scheduler.ScheduleJob(dayJobDetail, dayTrigger);
-
-        }
+   
 
 
-        public void Start()
-        {
-            LoadingDefaultJob();
-            scheduler.Start();
-        }
-
-        public void Shutdown()
-        {
-            scheduler?.Shutdown();
-
-        }
+        
 
 
     }

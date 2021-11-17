@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseForDataBlock : IPduStringInHexConstructor, ISetResponse
+    public class SetResponseForDataBlock :  ISetResponse
     {
         public SetResponseType SetResponseType { get; } = SetResponseType.DataBlock;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }

@@ -93,14 +93,53 @@ namespace MyWebApi.Services
                 throw new ArgumentNullException(nameof(powers));
             }
 
+
             foreach (var power in powers)
             {
                 power.MeterId = meterId;
+                if (_dbContext.Powers.Any(t => t.DateTime == power.DateTime))
+                {
+                    var t = _dbContext.Powers.FirstOrDefault(t => t.DateTime == power.DateTime);
+                    t.PowerData = power.PowerData;
+                    //更新追踪的，必须改属性，不然调用update会报错
+                    _dbContext.Powers.Update(t);
+                }
+                else
+                {
+                    //要判断是否已存在不然add时会报错
+                    _dbContext.Powers.Add(power);
+                }
+            }
+        }
+        public void AddDayData(string meterId, List<Day> days)
+        {
+            if (days == null)
+            {
+                throw new ArgumentNullException(nameof(days));
             }
 
-            _dbContext.Powers.AddRange(powers);
-        }
 
+            foreach (var day in days)
+            {
+                day.MeterId = meterId;
+                if (_dbContext.Days.Any(t => t.DateTime == day.DateTime))
+                {
+                    var t = _dbContext.Days.FirstOrDefault(t => t.DateTime == day.DateTime);
+                    t.DayData = day.DayData;
+                    //更新追踪的，必须改属性，不然调用update会报错
+                    _dbContext.Days.Update(t);
+                }
+                else
+                {
+                    //要判断是否已存在不然add时会报错
+                    _dbContext.Days.Add(day);
+                }
+            }
+
+
+
+
+        }
         public async Task<Meter> GetDataAsync(string meterId)
         {
             if (meterId == "")
@@ -147,5 +186,7 @@ namespace MyWebApi.Services
         {
             return (await _dbContext.SaveChangesAsync()) >= 0;
         }
+
+        
     }
 }

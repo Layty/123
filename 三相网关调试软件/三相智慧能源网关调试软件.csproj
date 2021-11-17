@@ -95,9 +95,6 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Lierda.WPFHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cbb49eab16984ff2, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lierda.WPFHelper.1.0.3\lib\net462\Lierda.WPFHelper.dll</HintPath>
-    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.3.2, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.3\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -305,12 +302,13 @@
       <DependentUpon>SSHClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DialogsViewModel.cs" />
+    <Compile Include="Factory\AppProtocolFactory.cs" />
     <Compile Include="ViewModel\DlmsViewModels\Business.cs" />
     <Compile Include="ViewModel\DlmsViewModels\CosemObjectViewModel.cs" />
     <Compile Include="Model\CustomCosemDataModel.cs" />
     <Compile Include="Model\CustomCosemProfileGenericModel.cs" />
     <Compile Include="TcpTranslator.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\DemoScheduler.cs" />
+    <Compile Include="Factory\DemoScheduler.cs" />
     <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
     <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
     <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />

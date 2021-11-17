@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponse : IToPduStringInHex, IPduStringInHexConstructor, IDlmsCommand
+    public class SetResponse :  IPduStringInHexConstructor, IDlmsCommand
     {
         [XmlIgnore] public Command Command { get; } = Command.SetResponse;
         public SetResponseNormal SetResponseNormal { get; set; }
@@ -18,31 +18,31 @@ namespace MyDlmsStandard.ApplicationLay.Set
 
         public SetResponseWithList SetResponseWithList { get; set; }
 
-        public string ToPduStringInHex()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("C5");
-            if (SetResponseNormal != null)
-            {
-                stringBuilder.Append(SetResponseNormal.ToPduStringInHex());
-            }
-            else if (SetResponseForDataBlock != null)
-                stringBuilder.Append(SetResponseForDataBlock.ToPduStringInHex());
-            else if (SetResponseForLastDataBlock != null)
-            {
-                stringBuilder.Append(SetResponseForLastDataBlock.ToPduStringInHex());
-            }
-            else if (SetResponseForLastDataBlockWithList != null)
-            {
-                stringBuilder.Append(SetResponseForLastDataBlockWithList.ToPduStringInHex());
-            }
-            else if (SetResponseWithList != null)
-            {
-                stringBuilder.Append(SetResponseWithList.ToPduStringInHex());
-            }
+        //public string ToPduStringInHex()
+        //{
+        //    StringBuilder stringBuilder = new StringBuilder();
+        //    stringBuilder.Append("C5");
+        //    if (SetResponseNormal != null)
+        //    {
+        //        stringBuilder.Append(SetResponseNormal.ToPduStringInHex());
+        //    }
+        //    else if (SetResponseForDataBlock != null)
+        //        stringBuilder.Append(SetResponseForDataBlock.ToPduStringInHex());
+        //    else if (SetResponseForLastDataBlock != null)
+        //    {
+        //        stringBuilder.Append(SetResponseForLastDataBlock.ToPduStringInHex());
+        //    }
+        //    else if (SetResponseForLastDataBlockWithList != null)
+        //    {
+        //        stringBuilder.Append(SetResponseForLastDataBlockWithList.ToPduStringInHex());
+        //    }
+        //    else if (SetResponseWithList != null)
+        //    {
+        //        stringBuilder.Append(SetResponseWithList.ToPduStringInHex());
+        //    }
 
-            return stringBuilder.ToString();
-        }
+        //    return stringBuilder.ToString();
+        //}
 
 
         public bool PduStringInHexConstructor(ref string pduStringInHex)

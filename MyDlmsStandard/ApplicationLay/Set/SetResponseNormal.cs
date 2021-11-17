@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseNormal : ISetResponse, IToPduStringInHex
+    public class SetResponseNormal : ISetResponse
     {
         [XmlIgnore] public SetResponseType SetResponseType { get; set; }//需要标注XmlIgnore，不然XML序列化时报错
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }

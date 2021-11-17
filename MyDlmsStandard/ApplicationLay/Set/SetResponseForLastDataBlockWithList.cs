@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyDlmsStandard.ApplicationLay.Set
 {
-    public class SetResponseForLastDataBlockWithList : ISetResponse, IPduStringInHexConstructor
+    public class SetResponseForLastDataBlockWithList : ISetResponse
     {
         public SetResponseType SetResponseType { get; } = SetResponseType.LastDataBlockWithList;
         public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }

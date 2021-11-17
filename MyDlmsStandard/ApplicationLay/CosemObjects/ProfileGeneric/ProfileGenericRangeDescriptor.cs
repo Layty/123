@@ -1,9 +1,13 @@
 ﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
+using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 
-namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
+namespace MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric
 {
-    public class ProfileGenericRangeDescriptor : IToDlmsDataItem
+    public class ProfileGenericRangeDescriptor :DependencyObject,  IToDlmsDataItem 
     {
         /// <summary>
         /// 捕获对象：限制对象
@@ -17,6 +21,20 @@ namespace MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage
         /// 一般为空时等于选择所有的捕获对象中定义的数据项
         /// </summary>
         public List<CaptureObjectDefinition> SelectedValues { get; set; }
+
+
+
+        //public ObservableCollection<CaptureObjectDefinition> SelectedValues
+        //{
+        //    get { return (ObservableCollection<CaptureObjectDefinition>)GetValue(SelectedValuesProperty); }
+        //    set { SetValue(SelectedValuesProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for SelectedValues.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty SelectedValuesProperty =
+        //    DependencyProperty.Register("SelectedValues", typeof(ObservableCollection<CaptureObjectDefinition>), typeof(ProfileGenericRangeDescriptor), new PropertyMetadata(0));
+
+
 
         public DlmsDataItem ToDlmsDataItem()
         {
