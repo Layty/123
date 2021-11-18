@@ -1,5 +1,6 @@
 ﻿using DotNetty.Transport.Channels;
 using JobMaster.Helpers;
+using JobMaster.Jobs;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -7,8 +8,10 @@ using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
-using System.Net.Sockets;
+
 
 namespace JobMaster.Handlers
 {
@@ -28,6 +31,10 @@ namespace JobMaster.Handlers
         }
 
         private DataNotificationViewModel _dataNotificationViewModel;
+
+        public string BaseUriString = $"http://localhost:5000/api/Meter/NotificationData/";
+        public RestClient RestClient = new RestClient();
+        public RestRequest RestRequest = new RestRequest(Method.POST);
 
         public override void ChannelActive(IChannelHandlerContext context)
         {
@@ -119,7 +126,22 @@ namespace JobMaster.Handlers
                             }
 
 
-                            DispatcherHelper.CheckBeginInvokeOnUI(() => { _dataNotificationViewModel.DataNotifications.Add(DataNotificationModel); });
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+
+                                _dataNotificationViewModel.DataNotifications.Add(DataNotificationModel);
+
+                                Notification notification = new Notification
+                                {
+                                    Id = Guid.NewGuid(),
+                                    MeterId = DataNotificationModel.MeterId,
+                                    NotifyData = JsonConvert.SerializeObject(DataNotificationModel),
+                                    DateTime = cosemClock.ToDateTime()
+                                };
+                                InsertData(DataNotificationModel.MeterId, notification);
+
+
+                            });
                         }
                     }
                 }
@@ -135,6 +157,29 @@ namespace JobMaster.Handlers
                 _logger.MyServerNetLogModel.Log = e.Message + "\r\n";
             }
         }
+        public class Notification
+        {
+            public Guid Id { get; set; }
+            public DateTime DateTime { get; set; }
+            public string NotifyData { get; set; }
+            public string MeterId { get; set; }
+        }
+        public void InsertData(string meterId, Notification notification)
+        {
+            if (notification == null)
+            {
+                _logger.MyServerNetLogModel.Log = meterId + "主动上报为空,不调用API写数据库";
+                return;
+            }
+            RestClient.BaseUrl = new Uri(BaseUriString + meterId);
+            RestRequest.AddHeader("Content-Type", "application/json");
+            var str = JsonConvert.SerializeObject(notification, Formatting.Indented);
+            _logger.MyServerNetLogModel.Log = str;
 
+
+            RestRequest.AddParameter("CurrentDataNotification", str, ParameterType.RequestBody);
+            IRestResponse restResponse = RestClient.Execute(RestRequest);
+            _logger.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败") + "\r\n";
+        }
     }
 }

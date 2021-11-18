@@ -8,33 +8,36 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace JobMaster.ViewModels
 {
-    public class CustomAlarm : DlmsStructure
+
+    public class CustomAlarm
     {
+        private DlmsStructure structure = new DlmsStructure();
+
         public AxdrOctetStringFixed PushId { get; set; }
         public AxdrOctetString CosemLogicalDeviceName { get; set; }
         public AxdrIntegerUnsigned32 AlarmDescriptor1 { get; set; }
         public AxdrIntegerUnsigned32 AlarmDescriptor2 { get; set; }
 
 
-        public new bool PduStringInHexConstructor(ref string pduStringInHex)
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
         {
-            if (base.PduStringInHexConstructor(ref pduStringInHex))
+            if (structure.PduStringInHexConstructor(ref pduStringInHex))
             {
                 PushId = new AxdrOctetStringFixed(6);
-                var pid = Items[0].Value.ToString();
+                var pid = structure.Items[0].Value.ToString();
                 if (!PushId.PduStringInHexConstructor(ref pid)) return false;
-
-
-                var deviceName = Items[1].ToPduStringInHex().Substring(2);
+                var deviceName = structure.Items[1].ToPduStringInHex().Substring(2);
                 CosemLogicalDeviceName = new AxdrOctetString();
                 if (!CosemLogicalDeviceName.PduStringInHexConstructor(ref deviceName)) return false;
-                var descriptor1 = Items[2].Value.ToString();
+                var descriptor1 = structure.Items[2].Value.ToString();
                 AlarmDescriptor1 = new AxdrIntegerUnsigned32();
                 if (!AlarmDescriptor1.PduStringInHexConstructor(ref descriptor1)) return false;
-                var descriptor2 = Items[3].Value.ToString();
+                var descriptor2 = structure.Items[3].Value.ToString();
                 AlarmDescriptor2 = new AxdrIntegerUnsigned32();
                 if (!AlarmDescriptor2.PduStringInHexConstructor(ref descriptor2)) return false;
 
@@ -45,10 +48,14 @@ namespace JobMaster.ViewModels
             return false;
         }
     }
+    
     public enum AlarmType
     {
+       
         Unknown,
+        [JsonProperty("停电")]
         PowerOff,
+        [JsonProperty("复电")]
         PowerOn,
         ByPass,
         烟感and水浸,
@@ -85,6 +92,7 @@ namespace JobMaster.ViewModels
         /// <summary>
         /// 根据pushid AlarmDescriptor1 解析之后的上报具体类型
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public AlarmType AlarmType { get; set; }
 
 

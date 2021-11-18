@@ -40,5 +40,11 @@ namespace MyWebApi.Entities
         public string MeterId { get; set; }
     }
 
+    public class Notification {
 
+        [Key] public Guid Id { get; set; }
+        public DateTime DateTime { get; set; }
+        public string NotifyData { get; set; }
+        public string MeterId { get; set; }
+    }
 }

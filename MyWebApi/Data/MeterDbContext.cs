@@ -13,7 +13,7 @@ namespace MyWebApi.Data
         public DbSet<Energy> Energies { get; set; }
         public DbSet<Power> Powers { get; set; }
         public DbSet<Day> Days { get; set; }
-
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

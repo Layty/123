@@ -47,6 +47,7 @@ namespace MyWebApi.Services
         /// <param name="meterId"></param>
         /// <param name="energy"></param>
         void AddDayData(string meterId, List<Day> energy);
+        void AddNotificationData(string meterId, Notification notification);
         /// <summary>
         /// 查询所有数据？？不好
         /// </summary>
