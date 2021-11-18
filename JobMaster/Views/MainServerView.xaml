@@ -21,7 +21,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <GroupBox
@@ -104,7 +104,7 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
@@ -140,8 +140,17 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="5,0" Text="{Binding IpString}" />
-                                            <TextBlock Text="{Binding MeterId}" />
+                                            <TextBlock
+                                                MinWidth="180"
+                                                Margin="5,0"
+                                                HorizontalAlignment="Center"
+                                                Text="{Binding IpString}" />
+                                            <TextBlock HorizontalAlignment="Left" Text="&lt;==&gt;" />
+                                            <TextBlock
+                                                MinWidth="180"
+                                                Margin="5,0"
+                                                HorizontalAlignment="Center"
+                                                Text="{Binding MeterId}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

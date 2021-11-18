@@ -8,9 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     Title="{Binding Title}"
-    Width="800" 
-    Height="450" Closing="Window_Closing"
+    Width="800"
+    Height="450"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Closing="Window_Closing"
     ShowTitle="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -20,18 +21,24 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <!--<StackPanel Height="29">
+            <StackPanel Height="29">
                 <Menu HorizontalAlignment="Left">
-                    <MenuItem Header="Header1">
-                        <MenuItem Click="MenuItem_Click" Header="Header1" />
-                        <MenuItem Header="Header2" />
+                    <MenuItem Header="Menu">
+                        <MenuItem
+                            x:Name="Job"
+                            Click="Job_Click"
+                            Header="曲线任务" />
+                        <MenuItem
+                            x:Name="Noti"
+                            Click="Noti_Click"
+                            Header="主动上报" />
                     </MenuItem>
-                    <MenuItem Header="Header2">
+                    <!--<MenuItem Header="Header2">
                         <MenuItem Header="Header1" />
                         <MenuItem Header="Header2" />
-                    </MenuItem>
+                    </MenuItem>-->
                 </Menu>
-            </StackPanel>-->
+            </StackPanel>
             <Button
                 Name="ButtonConfig"
                 Grid.Column="1"
@@ -151,15 +158,16 @@
         </Grid>
     </hc:Window.NonClientAreaContent>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="250" />
-
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="250" />
+        </Grid.ColumnDefinitions>
+
         <ContentControl
             Grid.Row="0"
             Grid.Column="0"
@@ -167,7 +175,7 @@
         <ContentControl
             Grid.Row="1"
             Grid.Column="0"
-            prism:RegionManager.RegionName="JobRegion" />
+            prism:RegionManager.RegionName="ContentRegion" />
         <ContentControl
             Grid.RowSpan="2"
             Grid.Column="2"

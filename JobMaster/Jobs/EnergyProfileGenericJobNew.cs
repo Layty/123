@@ -92,7 +92,7 @@ namespace JobMaster.Jobs
                      {
                          await Task.Run(async () =>
                          {
-                             var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket);
+                             var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket, NetLogViewModel);
                              NetLogViewModel.MyServerNetLogModel.Log = "正在执行" + JobName + "\r\n";
                              NetLogViewModel.MyServerNetLogModel.Log = "开始执行初始化请求\r\n";
                              var strIp = tmp.MySocket.Channel.RemoteAddress.ToString();
@@ -290,7 +290,7 @@ namespace JobMaster.Jobs
                     {
                         await Task.Run(async () =>
                         {
-                            var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket);
+                            var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket, NetLogViewModel);
                             NetLogViewModel.MyServerNetLogModel.Log = "正在执行" + JobName + "\r\n";
                             NetLogViewModel.MyServerNetLogModel.Log = "开始执行初始化请求\r\n";
                             var strIp = tmp.MySocket.Channel.RemoteAddress.ToString();
@@ -487,7 +487,7 @@ namespace JobMaster.Jobs
                     {
                         await Task.Run(async () =>
                         {
-                            var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket);
+                            var Business = new NettyBusiness(Client.DlmsSettingsViewModel, tmp.MySocket, NetLogViewModel);
                             NetLogViewModel.MyServerNetLogModel.Log = "正在执行" + JobName + "\r\n";
                             NetLogViewModel.MyServerNetLogModel.Log = "开始执行初始化请求\r\n";
                             var strIp = tmp.MySocket.Channel.RemoteAddress.ToString();

@@ -36,12 +36,14 @@ namespace JobMaster
             containerRegistry.RegisterSingleton<JobCenterViewModel>();
             containerRegistry.RegisterSingleton<NetLoggerViewModel>();
 
-
+            containerRegistry.RegisterSingleton<DataNotificationViewModel>();
 
             //containerRegistry.RegisterForNavigation<FrontEndProcessorView>();
             //containerRegistry.RegisterForNavigation<JobCenterView>();
 
             //containerRegistry.RegisterForNavigation<NetLoggerView>();
+            containerRegistry.RegisterForNavigation<JobCenterView>();
+            containerRegistry.RegisterForNavigation<DataNotificationView>();
         }
         protected override void OnInitialized()
         {
@@ -49,9 +51,10 @@ namespace JobMaster
             var _regionManager = Container.Resolve<IRegionManager>();
             //_regionManager.RegisterViewWithRegion("ServerRegion", typeof(FrontEndProcessorView));
             _regionManager.RegisterViewWithRegion("ServerRegion", typeof(MainServerView));
-            _regionManager.RegisterViewWithRegion("JobRegion", typeof(JobCenterView));
+          //  _regionManager.RegisterViewWithRegion("JobRegion", typeof(JobCenterView));
             _regionManager.RegisterViewWithRegion("LogRegion", typeof(NetLoggerView));
-
+            //  _regionManager.RegisterViewWithRegion("NotiRegion", typeof(DataNotificationView));
+           
         }
     }
 }

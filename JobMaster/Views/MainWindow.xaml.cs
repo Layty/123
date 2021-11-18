@@ -79,5 +79,15 @@ namespace JobMaster.Views
             }
 
         }
+
+        private void Job_Click(object sender, RoutedEventArgs e)
+        {
+            RegionManager.RequestNavigate("ContentRegion", "JobCenterView");
+        }
+
+        private void Noti_Click(object sender, RoutedEventArgs e)
+        {
+            RegionManager.RequestNavigate("ContentRegion", "DataNotificationView");
+        }
     }
 }

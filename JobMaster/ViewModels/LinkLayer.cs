@@ -98,22 +98,25 @@ namespace JobMaster.ViewModels
 
     public class NettyLinkLayer : ILinkLayer
     {
-        public NettyLinkLayer(IChannelHandlerContext context)
+        public NettyLinkLayer(IChannelHandlerContext context, NetLoggerViewModel netLoggerViewModel)
         {
             Context = context;
+            NetLoggerViewModel = netLoggerViewModel;
         }
 
         public IChannelHandlerContext Context { get; }
+        public NetLoggerViewModel NetLoggerViewModel { get; }
 
-        public Task<byte[]> SendAsync(string sendHexString)
+        public async Task<byte[]> SendAsync(string sendHexString)
         {
-            throw new System.NotImplementedException();
+            return await SendAsync(sendHexString.StringToByte());
         }
 
         public async Task<byte[]> SendAsync(byte[] sendBytes)
         {
             var t = Unpooled.Buffer();
             t.WriteBytes(sendBytes);
+            NetLoggerViewModel.MyServerNetLogModel.Log = $"Send to Client:{Context.Channel.RemoteAddress}" + sendBytes.ByteToString(" ");
             await Context.WriteAndFlushAsync(t);
             return null;
         }

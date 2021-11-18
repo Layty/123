@@ -32,7 +32,6 @@ namespace JobMaster.Handlers
         public EchoServerHandler(NetLoggerViewModel logger)
         {
             _logger = logger;
-
         }
 
         public override void HandlerAdded(IChannelHandlerContext context)

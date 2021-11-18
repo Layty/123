@@ -61,6 +61,7 @@
                 HorizontalAlignment="Stretch"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
+                CanUserSortColumns="False"
                 ItemsSource="{Binding JobsViewModels}"
                 Style="{StaticResource DataGridBaseStyle}">
                 <DataGrid.ItemTemplate>
@@ -70,7 +71,7 @@
                 </DataGrid.ItemTemplate>
 
                 <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
+                    <Style BasedOn="{StaticResource DataGridColumnHeaderStyle}" TargetType="DataGridColumnHeader">
                         <Setter Property="HorizontalContentAlignment" Value="Center" />
                         <Setter Property="VerticalContentAlignment" Value="Center" />
                         <Setter Property="Width" Value="Auto" />
@@ -110,7 +111,7 @@
                                         CommandParameter="{Binding}"
                                         Content="Resume"
                                         Cursor="Hand"
-                                        Style="{StaticResource ButtonDanger}" />
+                                        Style="{StaticResource ButtonSuccess}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

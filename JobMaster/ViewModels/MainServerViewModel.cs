@@ -146,12 +146,19 @@ namespace JobMaster.ViewModels
                     MeterIdMatchSockets.Remove(reslut);
                 }
                 ChannelHandlerContextCollection.Remove(context);
-
-
             });
         }
 
-        public MainServerViewModel(NetLoggerViewModel netLoggerViewModel, DlmsClient dlmsClient)
+        public string FindMeterIdFromMeterIdMatchSockets(IChannelHandlerContext context)
+        {
+            //由于context从不同的handler来，所以转换为 集合中的context,根据RemoteAddress进行匹配
+            var endPoint = context.Channel.RemoteAddress;
+            var chanelInChannelHandlerContextCollection = ChannelHandlerContextCollection.FirstOrDefault(t1 => t1.Channel.RemoteAddress == context.Channel.RemoteAddress);
+            var reslut = MeterIdMatchSockets.FirstOrDefault(t => t.MySocket == chanelInChannelHandlerContextCollection);
+            if (reslut != null) return reslut.MeterId;
+            else return "";
+        }
+        public MainServerViewModel(NetLoggerViewModel netLoggerViewModel, DlmsClient dlmsClient, DataNotificationViewModel dataNotificationViewModel)
         {
 
             RunServer = new DelegateCommand(async () =>
@@ -171,6 +178,7 @@ namespace JobMaster.ViewModels
             });
             NetLoggerViewModel = netLoggerViewModel;
             DlmsClient = dlmsClient;
+            this.dataNotificationViewModel = dataNotificationViewModel;
         }
 
         private IEventLoopGroup _bossGroup;
@@ -211,6 +219,7 @@ namespace JobMaster.ViewModels
         }
 
         private int _readerIdleTimeMin = 5;
+        private readonly DataNotificationViewModel dataNotificationViewModel;
 
         public int ReaderIdleTimeMin
         {
@@ -242,7 +251,7 @@ namespace JobMaster.ViewModels
                  .Option(ChannelOption.TcpNodelay, true)
                   //端口复用
                   .ChildOption(ChannelOption.SoReuseport, true)
-                .Handler(new LoggingHandler("SRV-LSTN"))
+                .Handler(new LoggingHandler("SRV-LSTN", LogLevel.INFO))
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
                     //工作线程连接器 是设置了一个管道，服务端主线程所有接收到的信息都会通过这个管道一层层往下传输
@@ -257,6 +266,7 @@ namespace JobMaster.ViewModels
                     pipeline.AddLast(new IdleStateHandler(_readerIdleTimeMin * 60, 0, 0));
                     pipeline.AddLast("echo", new EchoServerHandler(NetLoggerViewModel));
                     pipeline.AddLast("HeartBeat", new HeartBeatHandler(NetLoggerViewModel, this));
+                    pipeline.AddLast("DataNotification", new DataNotificationHandler(NetLoggerViewModel, this, dataNotificationViewModel));
                     pipeline.AddLast("Assiaction", new AssiactionResponseHandler(NetLoggerViewModel, DlmsClient));
                     pipeline.AddLast("CaptureObjects", new CaptureObjectsResponseHandler(NetLoggerViewModel, DlmsClient));
                     pipeline.AddLast("BufferResponse", new BufferResponseHandler(NetLoggerViewModel, DlmsClient));

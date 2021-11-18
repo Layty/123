@@ -21,9 +21,9 @@ namespace JobMaster.ViewModels
         public ILinkLayer LinkLayer { get; set; }
 
         public CancellationTokenSource CancellationTokenSource { get; set; }
-        public NettyBusiness(DlmsSettingsViewModel dlmsSettingsViewModel, IChannelHandlerContext context)
+        public NettyBusiness(DlmsSettingsViewModel dlmsSettingsViewModel, IChannelHandlerContext context, NetLoggerViewModel netLoggerViewModel)
         {
-            LinkLayer = new NettyLinkLayer(context);
+            LinkLayer = new NettyLinkLayer(context, netLoggerViewModel);
             CancellationTokenSource = new CancellationTokenSource();
             Protocol = new WrapperProtocol(dlmsSettingsViewModel);
         }
@@ -86,25 +86,6 @@ namespace JobMaster.ViewModels
 
             CancellationTokenSource = new CancellationTokenSource();
         }
-        public Business(DlmsSettingsViewModel dlmsSettingsViewModel, SerialPortViewModel serialPortViewModel, IChannelHandlerContext context)
-        {
-            DlmsSettingsViewModel = dlmsSettingsViewModel;
-            Protocol = new Protocol(dlmsSettingsViewModel);
-            InterfaceType = dlmsSettingsViewModel.ProtocolInterfaceType;
-            StartProtocolType = dlmsSettingsViewModel.StartProtocolType;
-            //netty
-            switch (dlmsSettingsViewModel.PhysicalChanelType)
-            {
-                case PhysicalChanelType.SerialPort: LinkLayer = new SerialPortLinkLayer(serialPortViewModel.SerialPortMaster); break;
-                case PhysicalChanelType.FrontEndProcess: LinkLayer = new NettyLinkLayer(context); break;
-                default:
-                    break;
-            }
-
-            CancellationTokenSource = new CancellationTokenSource();
-        }
-
-
 
 
         /// <summary>
@@ -204,7 +185,7 @@ namespace JobMaster.ViewModels
             var replyApdu = Protocol.TakeReplyApduFromFrame(InterfaceType, dataResult);
             return AppProtocolFactory.CreateGetResponse(replyApdu);
         }
-       
+
 
         public async Task<List<GetResponse>> GetRequestAndWaitResponseArray(
             CosemAttributeDescriptor cosemAttributeDescriptor, GetRequestType getRequestType = GetRequestType.Normal)
