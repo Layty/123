@@ -1,105 +1,131 @@
-﻿using JobMaster.Models;
+﻿using Microsoft.Extensions.Logging;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
+using System.Text;
 
 namespace JobMaster.ViewModels
 {
     public class NetLoggerViewModel : BindableBase
     {
-        private MyNetLogModel _myServerNetLogModel;
+        public DelegateCommand ClearServerBufferCommand { get; set; }
+        private readonly ILogger _logger;
 
-        public MyNetLogModel MyServerNetLogModel
+        public bool IsStartWriteLogToFile
         {
-            get => _myServerNetLogModel;
+            get => _isStartWriteLogToFile;
             set
             {
-                _myServerNetLogModel = value;
-              RaisePropertyChanged();
-            }
-        }
-
-
-        public MyNetLogModel MyClientNetLogModel
-        {
-            get => _myClientNetLogModel;
-            set
-            {
-                _myClientNetLogModel = value;
+                _isStartWriteLogToFile = value;
                 RaisePropertyChanged();
             }
         }
 
-        private MyNetLogModel _myClientNetLogModel;
+        private bool _isStartWriteLogToFile;
+        public StringBuilder NetLogStringBuilder = new StringBuilder();
+        private bool _isSendDataDisplayFormat16 = true;
 
-      
-        public DelegateCommand ClearServerBufferCommand { get; set; }
-
-        public DelegateCommand ClearClientBufferCommand { get; set; }
-
-        public NetLoggerViewModel(FrontEndProcessorViewModel frontEndProcessorViewModel)
+        /// <summary>
+        /// 发送区是否16进制显示
+        /// </summary>
+        public bool IsSendDataDisplayFormat16
         {
-            MyServerNetLogModel = new MyNetLogModel();
-            frontEndProcessorViewModel.TcpServerHelper.SendBytesToClient += TcpServerHelper_SendBytesToClient; ;
-            frontEndProcessorViewModel.TcpServerHelper.ReceiveBytes += TcpServerHelper_ReceiveBytes;
-            frontEndProcessorViewModel.TcpServerHelper.AcceptNewClient += TcpServerHelper_AcceptNewClient;
-            frontEndProcessorViewModel.TcpServerHelper.ErrorMsg += TcpServerHelper_ErrorMsg;
-            frontEndProcessorViewModel.TcpServerHelper.StatusMsg += TcpServerHelper_StatusMsg;
-            MyClientNetLogModel = new MyNetLogModel();
-            ClearServerBufferCommand = new DelegateCommand(() => { MyServerNetLogModel.ClearBuffer(); });
-            ClearClientBufferCommand = new DelegateCommand(() => { MyClientNetLogModel.ClearBuffer(); });
-
-            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientReceiveDataEvent",
-            //    (sender, args) => { MyClientNetLogModel.HandlerReceiveData(args.Item1, args.Item2); });
-            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ClientSendDataEvent",
-            //    (sender, args) => { MyClientNetLogModel.HandlerSendData(args.Item1, args.Item2); });
-            //StrongReferenceMessenger.Default.Register<string, string>(this, "ClientStatus",
-            //    (sender, status) => { MyClientNetLogModel.Log = DateTime.Now + "ClientStatus" + status + Environment.NewLine; });
-            //StrongReferenceMessenger.Default.Register<string, string>(this, "ClientErrorEvent",
-            //    (sender, errorMessage) =>
-            //    {
-            //        MyClientNetLogModel.Log = DateTime.Now + "ClientErrorEvent" + errorMessage + Environment.NewLine;
-            //    });
-
-
-            //StrongReferenceMessenger.Default.Register<string, string>(this, "ServerStatus",
-            //    (sender, status) => { MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine; });
-            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerReceiveDataEvent",
-            //    (sender, s) => { MyServerNetLogModel.HandlerReceiveData(s.Item1, s.Item2); });
-            //StrongReferenceMessenger.Default.Register<Tuple<Socket, byte[]>, string>(this, "ServerSendDataEvent",
-            //    (sender, s) => { MyServerNetLogModel.HandlerSendData(s.Item1, s.Item2); });
-            //StrongReferenceMessenger.Default.Register<string, string>(this, "ServerErrorEvent",
-            //    (sender, errorString) =>
-            //    {
-            //        MyServerNetLogModel.Log = DateTime.Now + "ServerErrorEvent" + errorString +
-            //                                  Environment.NewLine;
-            //    });
+            get => _isSendDataDisplayFormat16;
+            set
+            {
+                _isSendDataDisplayFormat16 = value;
+                RaisePropertyChanged();
+            }
         }
 
-        private void TcpServerHelper_StatusMsg(string status)
+        private bool _isReceiveFormat16 = true;
+
+        /// <summary>
+        /// 接收区16进制
+        /// </summary>
+        public bool IsReceiveFormat16
         {
-            MyServerNetLogModel.Log = DateTime.Now + "ServerStatus" + status + Environment.NewLine;
+            get => _isReceiveFormat16;
+            set
+            {
+                _isReceiveFormat16 = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string Log
+        {
+            get => NetLogStringBuilder.ToString();
+
+            set
+            {
+                if (NetLogStringBuilder.Length > _keepMaxSendAndReceiveDataLength)
+                {
+                    NetLogStringBuilder.Clear();
+                }
+
+                if (IsStartWriteLogToFile)
+                {
+                    _logger.LogTrace(value);
+                }
+
+                NetLogStringBuilder.Append(value);
+                RaisePropertyChanged();
+            }
         }
 
-        private void TcpServerHelper_ErrorMsg(string errorString)
+        public int KeepMaxSendAndReceiveDataLength
         {
-            MyServerNetLogModel.Log = DateTime.Now + "ServerErrorEvent" + errorString +
-                                          Environment.NewLine;
+            get => _keepMaxSendAndReceiveDataLength;
+            set
+            {
+                _keepMaxSendAndReceiveDataLength = value;
+                RaisePropertyChanged();
+            }
         }
 
-        private void TcpServerHelper_AcceptNewClient(System.Net.Sockets.Socket obj)
+        private int _keepMaxSendAndReceiveDataLength = 5000;
+
+
+        public void ClearBuffer()
         {
-            MyServerNetLogModel.Log = DateTime.Now + "AcceptNewClient" + obj.RemoteEndPoint + Environment.NewLine;
+            NetLogStringBuilder.Clear();
+            Log = string.Empty;
         }
 
-        private void TcpServerHelper_ReceiveBytes(System.Net.Sockets.Socket arg1, byte[] arg2)
-        {
-            MyServerNetLogModel.HandlerReceiveData(arg1, arg2);
-        }
 
-        private void TcpServerHelper_SendBytesToClient(System.Net.Sockets.Socket arg1, byte[] arg2)
+        public NetLoggerViewModel(ILogger logger)
         {
-            MyServerNetLogModel.HandlerSendData(arg1, arg2);
+            _logger = logger;
+            ClearServerBufferCommand = new DelegateCommand(() => { ClearBuffer(); });
         }
+        #region 重新封装Nlog
+        public void LogTrace(string message)
+        {
+            _logger.LogTrace(message);
+        }
+        public void LogDebug(string message)
+        {
+            _logger.LogDebug(message);
+        }
+        public void LogInfo(string message)
+        {
+            Log = message + "\r\n";
+            _logger.LogInformation(message);
+        }
+        public void LogFront(string message)
+        {
+            Log = message+"\r\n";
+            _logger.LogTrace(message);
+        }
+        public void LogWarn(string message)
+        {
+            Log = message + "\r\n";
+            _logger.LogWarning(message);
+        }
+        public void LogError(string message)
+        {
+            Log = message + "\r\n";
+            _logger.LogError(message);
+        }
+        #endregion
     }
 }

@@ -1,12 +1,10 @@
 ﻿using DotNetty.Transport.Channels;
 using JobMaster.Helpers;
-using JobMaster.Jobs;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
-using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
 using Newtonsoft.Json;
 using RestSharp;
@@ -18,12 +16,13 @@ namespace JobMaster.Handlers
     /// <summary>
     /// 主动上报服务
     /// </summary>
-    public class DataNotificationHandler : ChannelHandlerAdapter
+    public partial class DataNotificationHandler : ChannelHandlerAdapter
     {
         private readonly NetLoggerViewModel _logger;
         private readonly MainServerViewModel mainServerViewModel;
 
-        public DataNotificationHandler(NetLoggerViewModel logger, MainServerViewModel mainServerViewModel, DataNotificationViewModel dataNotificationViewModel)
+        public DataNotificationHandler(NetLoggerViewModel logger, MainServerViewModel mainServerViewModel,
+            DataNotificationViewModel dataNotificationViewModel)
         {
             _logger = logger;
             this.mainServerViewModel = mainServerViewModel;
@@ -38,22 +37,20 @@ namespace JobMaster.Handlers
 
         public override void ChannelActive(IChannelHandlerContext context)
         {
-            _logger.MyServerNetLogModel.Log = DateTime.Now.ToString() + "DataNotificationHandler ChannelActive" + "\r\n";
-
+            _logger.LogDebug(DateTime.Now.ToString() + "DataNotificationHandler ChannelActive" );
             base.ChannelActive(context);
         }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             //主动上报后续再实现
 
             if (message is byte[] bytes)
             {
-                _logger.MyServerNetLogModel.Log = "DataNotificationHandler is running";
+                _logger.LogDebug(DateTime.Now.ToString()+"DataNotificationHandler is running");
 
                 Handler_Notify(context, bytes);
-
             }
-
         }
 
 
@@ -72,7 +69,6 @@ namespace JobMaster.Handlers
                 var dataNotification = new DataNotification();
                 if (dataNotification.PduStringInHexConstructor(ref s1))
                 {
-
                     var DataNotificationModel = new DataNotificationModel()
                     {
                         DateTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss"),
@@ -114,7 +110,7 @@ namespace JobMaster.Handlers
                                     break;
                                 case "0005190900FF":
                                     //水浸烟感上报相关
-                                    DataNotificationModel.AlarmType = AlarmType.烟感and水浸;
+                                    DataNotificationModel.AlarmType = AlarmType.烟感and水浸变位;
                                     break;
                                 case "0006190900FF":
                                     //风机控制上报相关
@@ -128,20 +124,18 @@ namespace JobMaster.Handlers
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-
                                 _dataNotificationViewModel.DataNotifications.Add(DataNotificationModel);
 
-                                Notification notification = new Notification
-                                {
-                                    Id = Guid.NewGuid(),
-                                    MeterId = DataNotificationModel.MeterId,
-                                    NotifyData = JsonConvert.SerializeObject(DataNotificationModel),
-                                    DateTime = cosemClock.ToDateTime()
-                                };
-                                InsertData(DataNotificationModel.MeterId, notification);
-
-
+                             
                             });
+                            Notification notification = new Notification
+                            {
+                                Id = Guid.NewGuid(),
+                                MeterId = DataNotificationModel.MeterId,
+                                NotifyData = JsonConvert.SerializeObject(DataNotificationModel),
+                                DateTime = cosemClock.ToDateTime()
+                            };
+                            InsertData(DataNotificationModel.MeterId, notification);
                         }
                     }
                 }
@@ -149,37 +143,31 @@ namespace JobMaster.Handlers
                 {
                     context.FireChannelRead(bytes);
                 }
-
             }
             catch (Exception e)
             {
-
-                _logger.MyServerNetLogModel.Log = e.Message + "\r\n";
+                _logger.LogError(e.Message);
             }
         }
-        public class Notification
-        {
-            public Guid Id { get; set; }
-            public DateTime DateTime { get; set; }
-            public string NotifyData { get; set; }
-            public string MeterId { get; set; }
-        }
+
         public void InsertData(string meterId, Notification notification)
         {
+
             if (notification == null)
             {
-                _logger.MyServerNetLogModel.Log = meterId + "主动上报为空,不调用API写数据库";
+                _logger.LogWarn($"{meterId} {nameof(notification)} 主动上报为空,不调用API写数据库");
+
                 return;
             }
+
             RestClient.BaseUrl = new Uri(BaseUriString + meterId);
+            var RestRequest = new RestRequest(Method.POST);
             RestRequest.AddHeader("Content-Type", "application/json");
             var str = JsonConvert.SerializeObject(notification, Formatting.Indented);
-            _logger.MyServerNetLogModel.Log = str;
-
-
+            _logger.LogInfo(str);
             RestRequest.AddParameter("CurrentDataNotification", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);
-            _logger.MyServerNetLogModel.Log = "插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败") + "\r\n";
+            _logger.LogInfo("插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败"));
         }
     }
 }

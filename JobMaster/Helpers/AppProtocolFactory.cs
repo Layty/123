@@ -14,14 +14,15 @@ namespace JobMaster.Helpers
     /// </summary>
     public static class AppProtocolFactory
     {
-
         public static GetRequest CreateGetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor)
         {
             var GetRequest = new GetRequest();
             GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
             return GetRequest;
         }
-        public static GetRequest CreateGetRequestNormal(CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
+
+        public static GetRequest CreateGetRequestNormal(
+            CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
         {
             var GetRequest = new GetRequest();
             GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
@@ -32,20 +33,22 @@ namespace JobMaster.Helpers
         {
             var GetRequest = new GetRequest
             {
-                GetRequestNext = new GetRequestNext() { BlockNumber = blockNumber }
+                GetRequestNext = new GetRequestNext() {BlockNumber = blockNumber}
             };
 
             return GetRequest;
         }
+
         public static SetRequest CreateSetRequest(CosemAttributeDescriptor cosemAttributeDescriptor,
             DlmsDataItem value)
         {
-            SetRequest setRequest = new();
+            SetRequest setRequest = new ();
             setRequest.SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value);
             return setRequest;
         }
+
         public static ActionRequest CreateActionRequest(CosemMethodDescriptor cosemMethodDescriptor,
-          DlmsDataItem dlmsDataItem)
+            DlmsDataItem dlmsDataItem)
         {
             var actionRequest = new ActionRequest()
             {
@@ -69,6 +72,7 @@ namespace JobMaster.Helpers
 
             return getResponse;
         }
+
         public static SetResponse CreateSetResponse(byte[] dataResult)
         {
             SetResponse setResponse = new SetResponse();
@@ -82,6 +86,7 @@ namespace JobMaster.Helpers
             XmlHelper.XmlCommon(setResponse);
             return setResponse;
         }
+
         public static ActionResponse CreateActionResponse(byte[] bytes)
         {
             ActionResponse actionResponse = new ActionResponse();
@@ -93,7 +98,7 @@ namespace JobMaster.Helpers
         {
             var releaseRequest = new ReleaseRequest
             {
-                Reason = new BerInteger() { Value = "00" }
+                Reason = new BerInteger() {Value = "00"}
                 //UserInformation = new UserInformation()
                 //{
                 //    InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,

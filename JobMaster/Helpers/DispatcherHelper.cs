@@ -10,11 +10,7 @@ namespace JobMaster.Helpers
         /// Gets a reference to the UI thread's dispatcher, after the
         /// <see cref="M:GalaSoft.MvvmLight.Threading.DispatcherHelper.Initialize" /> method has been called on the UI thread.
         /// </summary>
-        public static Dispatcher UIDispatcher
-        {
-            get;
-            private set;
-        }
+        public static Dispatcher UIDispatcher { get; private set; }
 
         /// <summary>
         /// Executes an action on the UI thread. If this method is called

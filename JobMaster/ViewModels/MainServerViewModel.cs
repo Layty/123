@@ -1,5 +1,5 @@
 ﻿using DotNetty.Buffers;
-using DotNetty.Handlers.Logging;
+using DotNetty.Codecs;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
@@ -7,7 +7,6 @@ using DotNetty.Transport.Channels.Sockets;
 using JobMaster.Handlers;
 using JobMaster.Helpers;
 using Prism.Commands;
-using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,19 +18,21 @@ using System.Threading.Tasks;
 
 namespace JobMaster.ViewModels
 {
-    public class MainServerViewModel : BindableBase
+    public class MainServerViewModel : ValidateModelBase
     {
+        private readonly NetLoggerViewModel NetLoggerViewModel;
+        private readonly IProtocol Protocol;
         public ObservableCollection<MeterIdMatchSocketNew> MeterIdMatchSockets
         {
             get => _meterIdMatchSockets;
             set
             {
-                _meterIdMatchSockets = value;
-                RaisePropertyChanged();
+                SetProperty(ref _meterIdMatchSockets, value);
             }
         }
 
-        private ObservableCollection<MeterIdMatchSocketNew> _meterIdMatchSockets = new ObservableCollection<MeterIdMatchSocketNew>();
+        private ObservableCollection<MeterIdMatchSocketNew> _meterIdMatchSockets = new();
+
         public DelegateCommand RunServer
         {
             get => _runServer;
@@ -83,6 +84,7 @@ namespace JobMaster.ViewModels
         }
 
         private int _responseTimeOut = 2;
+
         /// <summary>
         /// 是否自动响应47心跳帧
         /// </summary>
@@ -97,6 +99,7 @@ namespace JobMaster.ViewModels
         }
 
         private bool _isAutoResponseHeartBeat = true;
+
         /// <summary>
         /// 心跳帧延时响应时间(ms)
         /// </summary>
@@ -130,7 +133,6 @@ namespace JobMaster.ViewModels
         }
 
 
-
         public void AddClient(IChannelHandlerContext context)
         {
             DispatcherHelper.CheckBeginInvokeOnUI(() => { ChannelHandlerContextCollection.Add(context); });
@@ -145,6 +147,7 @@ namespace JobMaster.ViewModels
                 {
                     MeterIdMatchSockets.Remove(reslut);
                 }
+
                 ChannelHandlerContextCollection.Remove(context);
             });
         }
@@ -153,23 +156,21 @@ namespace JobMaster.ViewModels
         {
             //由于context从不同的handler来，所以转换为 集合中的context,根据RemoteAddress进行匹配
             var endPoint = context.Channel.RemoteAddress;
-            var chanelInChannelHandlerContextCollection = ChannelHandlerContextCollection.FirstOrDefault(t1 => t1.Channel.RemoteAddress == context.Channel.RemoteAddress);
+            var chanelInChannelHandlerContextCollection =
+                ChannelHandlerContextCollection.FirstOrDefault(t1 =>
+                    t1.Channel.RemoteAddress == context.Channel.RemoteAddress);
             var reslut = MeterIdMatchSockets.FirstOrDefault(t => t.MySocket == chanelInChannelHandlerContextCollection);
             if (reslut != null) return reslut.MeterId;
             else return "";
         }
-        public MainServerViewModel(NetLoggerViewModel netLoggerViewModel, DlmsClient dlmsClient, DataNotificationViewModel dataNotificationViewModel)
-        {
 
-            RunServer = new DelegateCommand(async () =>
-            {
-                await RunServerAsync();
-            });
+        public MainServerViewModel(NetLoggerViewModel netLoggerViewModel, IProtocol protocol,
+            DataNotificationViewModel dataNotificationViewModel)
+        {
+            RunServer = new DelegateCommand(async () => { await RunServerAsync(); });
             CloseServer =
-                new DelegateCommand(async () =>
-                {
-                    await CloseServerAsync();
-                }).ObservesCanExecute(() => IsServerRunning);
+                new DelegateCommand(async () => { await CloseServerAsync(); })
+                    .ObservesCanExecute(() => IsServerRunning);
 
 
             IpDetectCommand = new DelegateCommand<string>(async t =>
@@ -177,14 +178,13 @@ namespace JobMaster.ViewModels
                 await Task.Run(() => { IpDetectResult = PingIp(t); });
             });
             NetLoggerViewModel = netLoggerViewModel;
-            DlmsClient = dlmsClient;
+            Protocol = protocol;
             this.dataNotificationViewModel = dataNotificationViewModel;
         }
 
         private IEventLoopGroup _bossGroup;
         private IChannel _boundChannel;
         private IEventLoopGroup _workerGroup;
-
 
 
         public bool IpDetectResult
@@ -211,14 +211,16 @@ namespace JobMaster.ViewModels
 
         private DelegateCommand<string> _ipDetectCommand;
 
-        private ObservableCollection<IChannelHandlerContext> _channelHandlerContextCollection = new ObservableCollection<IChannelHandlerContext>();
+        private ObservableCollection<IChannelHandlerContext> _channelHandlerContextCollection =
+            new ObservableCollection<IChannelHandlerContext>();
+
         public ObservableCollection<IChannelHandlerContext> ChannelHandlerContextCollection
         {
             get { return _channelHandlerContextCollection; }
             set { SetProperty(ref _channelHandlerContextCollection, value); }
         }
 
-        private int _readerIdleTimeMin = 5;
+        private int _readerIdleTimeMin = 15;
         private readonly DataNotificationViewModel dataNotificationViewModel;
 
         public int ReaderIdleTimeMin
@@ -229,7 +231,7 @@ namespace JobMaster.ViewModels
 
         public async Task RunServerAsync()
         {
-            NetLoggerViewModel.MyServerNetLogModel.Log = "正在开启服务器\r\n";
+            NetLoggerViewModel.LogFront("正在开启服务器");
             _bossGroup = new MultithreadEventLoopGroup(4);
             _workerGroup = new MultithreadEventLoopGroup();
 
@@ -247,11 +249,11 @@ namespace JobMaster.ViewModels
 
                 //保持长连接
                 .Option(ChannelOption.SoKeepalive, true)
-                 //取消延迟发送
-                 .Option(ChannelOption.TcpNodelay, true)
-                  //端口复用
-                  .ChildOption(ChannelOption.SoReuseport, true)
-                .Handler(new LoggingHandler("SRV-LSTN", LogLevel.INFO))
+                //取消延迟发送
+                .Option(ChannelOption.TcpNodelay, true)
+                //端口复用
+                .ChildOption(ChannelOption.SoReuseport, true)
+                // .Handler(new LoggingHandler("SRV-LSTN", LogLevel.INFO))
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
                     //工作线程连接器 是设置了一个管道，服务端主线程所有接收到的信息都会通过这个管道一层层往下传输
@@ -264,38 +266,42 @@ namespace JobMaster.ViewModels
                     //                        pipeline.AddLast("framing-enc", new LengthFieldPrepender(2));
                     //                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 0, 2, 0, 2));
                     pipeline.AddLast(new IdleStateHandler(_readerIdleTimeMin * 60, 0, 0));
+                    //根据47协议定义 指出长度的索引
+                    pipeline.AddLast("LengthField", new LengthFieldBasedFrameDecoder(1024, 6, 2));
                     pipeline.AddLast("echo", new EchoServerHandler(NetLoggerViewModel));
                     pipeline.AddLast("HeartBeat", new HeartBeatHandler(NetLoggerViewModel, this));
-                    pipeline.AddLast("DataNotification", new DataNotificationHandler(NetLoggerViewModel, this, dataNotificationViewModel));
-                    pipeline.AddLast("Assiaction", new AssiactionResponseHandler(NetLoggerViewModel, DlmsClient));
-                    pipeline.AddLast("CaptureObjects", new CaptureObjectsResponseHandler(NetLoggerViewModel, DlmsClient));
-                    pipeline.AddLast("BufferResponse", new BufferResponseHandler(NetLoggerViewModel, DlmsClient));
-                    pipeline.AddLast("ReleaseResponse", new ReleaseResponseHandler(NetLoggerViewModel, DlmsClient));
+                    pipeline.AddLast("DataNotification",
+                        new DataNotificationHandler(NetLoggerViewModel, this, dataNotificationViewModel));
+
+                    pipeline.AddLast("Assiaction", new AssiactionResponseHandler(NetLoggerViewModel, Protocol));
+                    pipeline.AddLast("CaptureObjects",
+                        new CaptureObjectsResponseHandler(NetLoggerViewModel, Protocol));
+                    pipeline.AddLast("BufferResponse", new BufferResponseHandler(NetLoggerViewModel, Protocol));
+                    pipeline.AddLast("ReleaseResponse", new ReleaseResponseHandler(NetLoggerViewModel, Protocol));
+
                 }));
 
             try
             {
                 _boundChannel = await bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(ServerIp), ServerPort));
+                NetLoggerViewModel.LogFront("成功开启服务器");
 
-                NetLoggerViewModel.MyServerNetLogModel.Log = ("成功开启服务器\r\n");
                 IsServerRunning = true;
             }
             catch (Exception e)
             {
-                NetLoggerViewModel.MyServerNetLogModel.Log = e.Message + "\r\n";
+                NetLoggerViewModel.LogError(e.Message);
             }
-
-
-
         }
 
         public async Task CloseServerAsync()
         {
-            // LogMessage += "正在关闭服务器\r\n";
+            NetLoggerViewModel.LogFront("正在关闭服务器,请等待...");
+
             //主动关闭客户端链接,相当于发起socket.disconnect
             foreach (var item in ChannelHandlerContextCollection)
             {
-                item.CloseAsync();
+                await item.CloseAsync();
             }
 
             await _boundChannel.CloseAsync();
@@ -304,10 +310,7 @@ namespace JobMaster.ViewModels
                 _bossGroup.ShutdownGracefullyAsync(),
                 _workerGroup.ShutdownGracefullyAsync()
             );
-
-
-            // LogMessage += "成功关闭服务器\r\n";
-            NetLoggerViewModel.MyServerNetLogModel.Log = ("成功关闭服务器\r\n");
+            NetLoggerViewModel.LogFront("成功关闭服务器");
 
             IsServerRunning = false;
         }
@@ -338,12 +341,10 @@ namespace JobMaster.ViewModels
         }
 
 
-
-
         public static List<string> HostIPlList => GetHostIpList();
 
-        public NetLoggerViewModel NetLoggerViewModel { get; }
-        public DlmsClient DlmsClient { get; }
+
+
 
         /// <summary>
         /// 获取当前计算机的主机IPV4地址
@@ -371,6 +372,5 @@ namespace JobMaster.ViewModels
 
             return stList;
         }
-
     }
 }

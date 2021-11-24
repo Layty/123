@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace JobMaster.Jobs
 {
-
     public static class DemoScheduler
     {
         public static async Task<IScheduler> CreateTest(bool start = true)
@@ -22,11 +21,12 @@ namespace JobMaster.Jobs
 
 
             IJobDetail energyJobDetail = JobBuilder.Create<EnergyProfileGenericJobNew>()
-            .WithIdentity("Energy", "EnergyProfileGenericJob").WithDescription("分钟电量曲线任务").Build();
+                .WithIdentity("Energy", "EnergyProfileGenericJob").WithDescription("分钟电量曲线任务").Build();
 
             ITrigger energyTrigger = TriggerBuilder.Create()
                 .WithCronSchedule("10 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob").WithDescription("分钟曲线每隔1分钟进行一次采集")
+                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob")
+                .WithDescription("分钟曲线每隔1分钟进行一次采集")
                 .Build();
 
             //功率
@@ -65,7 +65,7 @@ namespace JobMaster.Jobs
                 await scheduler.Start();
             return scheduler;
         }
-      
+
         public static async Task<IScheduler> CreateNormal(bool start = true)
         {
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler();

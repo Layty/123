@@ -10,16 +10,15 @@ using MyDlmsStandard.Wrapper;
 
 namespace JobMaster.ViewModels
 {
-
     public interface IProtocol
     {
         SendData SendData { get; set; }
         ProtocolInterfaceType InterfaceType { get; }
 
         AssociationRequest AssociationRequest { get; set; }
+        AssociationResponse AssociationResponse { get; set; }
         byte[] BuildFinalSendData(IToPduStringInHex Apdu);
         byte[] TakeReplyApduFromFrame(byte[] frameBytes);
-
     }
 
     public class WrapperProtocol : IProtocol
@@ -28,7 +27,7 @@ namespace JobMaster.ViewModels
         public SendData SendData { get; set; }
         public WrapperFrame WrapperFrame { get; }
         public AssociationRequest AssociationRequest { get; set; }
-        public AssociationResponse AssociationResponse;
+        public AssociationResponse AssociationResponse { get; set; }
 
         public WrapperProtocol(DlmsSettingsViewModel dlmsSettingsViewModel)
         {
@@ -46,6 +45,7 @@ namespace JobMaster.ViewModels
             AssociationRequest = AssoctioinFactory.CreateAssociationRequest(dlmsSettingsViewModel);
             AssociationResponse = new AssociationResponse();
         }
+
         public byte[] BuildFinalSendData(IToPduStringInHex Apdu)
         {
             WrapperFrame.WrapperBody.DataBytes = Apdu.ToPduStringInHex().StringToByte();
@@ -59,14 +59,16 @@ namespace JobMaster.ViewModels
             {
                 return null;
             }
+
             var returnPduBytes = System.Array.Empty<byte>();
-           
+
             string parseHexString = frameBytes.ByteToString();
 
             if (WrapperFrame.PduStringInHexConstructor(ref parseHexString))
             {
                 returnPduBytes = WrapperFrame.WrapperBody.DataBytes;
             }
+
             return returnPduBytes;
         }
     }
@@ -77,16 +79,16 @@ namespace JobMaster.ViewModels
         public Hdlc46FrameBase Hdlc46FrameBase { get; set; }
         public ProtocolInterfaceType InterfaceType => ProtocolInterfaceType.HDLC;
         public AssociationRequest AssociationRequest { get; set; }
-        public AssociationResponse AssociationResponse;
-        public HdlcProtocol(byte ServerAddress, byte ClientAddress)
+        public AssociationResponse AssociationResponse { get; set; }
 
+        public HdlcProtocol(byte ServerAddress, byte ClientAddress)
         {
-            Hdlc46FrameBase = new Hdlc46FrameBase((byte)ServerAddress,
-               (byte)ClientAddress, new DLMSInfo());
+            Hdlc46FrameBase = new Hdlc46FrameBase((byte) ServerAddress,
+                (byte) ClientAddress, new DLMSInfo());
         }
+
         public byte[] BuildFinalSendData(IToPduStringInHex Apdu)
         {
-
             Hdlc46FrameBase.Apdu = Apdu.ToPduStringInHex().StringToByte();
             SendData = new SendData(Hdlc46FrameBase);
             return SendData.ToPduStringInHex().StringToByte();
@@ -112,7 +114,6 @@ namespace JobMaster.ViewModels
     }
 
 
-
     /// <summary>
     ///协议层
     /// </summary>
@@ -135,8 +136,8 @@ namespace JobMaster.ViewModels
         {
             DlmsSettingsViewModel = dlmsSettingsViewModel;
             StartProtocolType = dlmsSettingsViewModel.StartProtocolType;
-            Hdlc46FrameBase = new Hdlc46FrameBase((byte)dlmsSettingsViewModel.ServerAddress,
-                (byte)dlmsSettingsViewModel.ClientAddress, dlmsSettingsViewModel.DlmsInfo);
+            Hdlc46FrameBase = new Hdlc46FrameBase((byte) dlmsSettingsViewModel.ServerAddress,
+                (byte) dlmsSettingsViewModel.ClientAddress, dlmsSettingsViewModel.DlmsInfo);
             var wrapperHeader = new WrapperHeader()
             {
                 Version = new AxdrIntegerUnsigned16("1"),
@@ -149,14 +150,13 @@ namespace JobMaster.ViewModels
             };
             EModeFrame = new EModeFrame(dlmsSettingsViewModel.NegotiateBaud);
 
-            SNRMRequest = new SNRMRequest((byte)DlmsSettingsViewModel.ServerAddress,
-                (byte)DlmsSettingsViewModel.ClientAddress, DlmsSettingsViewModel.DlmsInfo);
+            SNRMRequest = new SNRMRequest((byte) DlmsSettingsViewModel.ServerAddress,
+                (byte) DlmsSettingsViewModel.ClientAddress, DlmsSettingsViewModel.DlmsInfo);
             AssociationRequest = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
                 DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
                 DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
             AssociationResponse = new AssociationResponse();
         }
-
 
 
         public byte[] BuildFinalSendData(ProtocolInterfaceType interfaceType, IToPduStringInHex Apdu)
@@ -215,12 +215,11 @@ namespace JobMaster.ViewModels
 
     public static class AssoctioinFactory
     {
-
         public static AssociationRequest CreateAssociationRequest(DlmsSettingsViewModel DlmsSettingsViewModel)
         {
             var AssociationRequest = new AssociationRequest(DlmsSettingsViewModel.PasswordHex,
-                  DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
-                  DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
+                DlmsSettingsViewModel.MaxReceivePduSize, DlmsSettingsViewModel.DlmsVersion,
+                DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
             return AssociationRequest;
         }
     }

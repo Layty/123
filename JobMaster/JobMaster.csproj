@@ -39,12 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDlmsStandard\MyDlmsStandard.csproj" />
-    <ProjectReference Include="..\SerialPortMaster\MySerialPortMaster.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\FrontEndProcessorView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\JobCenterView.xaml">
       <SubType>Designer</SubType>
     </Page>

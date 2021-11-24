@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Prism.Regions;
-using DryIoc;
 using JobMaster.ViewModels;
 
 namespace JobMaster.Views

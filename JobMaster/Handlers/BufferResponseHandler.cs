@@ -11,22 +11,23 @@ using System.Collections.Generic;
 
 namespace JobMaster.Handlers
 {
-
     public class BufferResponseHandler : ChannelHandlerAdapter
     {
         private readonly NetLoggerViewModel _logger;
 
-        private readonly DlmsClient dlmsClient;
+        private readonly IProtocol Protocol;
 
-        public static Dictionary<string, List<GetResponse>> ResponsesBuffer = new();
-        public static Dictionary<string, List<Energy>> ResponsesBufferData = new();
+        public static Dictionary<string, List<GetResponse>> ResponsesBuffer = new ();
+        public static Dictionary<string, List<Energy>> ResponsesBufferData = new ();
 
-        public BufferResponseHandler(NetLoggerViewModel logger, DlmsClient dlmsClient)
+        public BufferResponseHandler(NetLoggerViewModel logger, IProtocol protocol)
         {
             _logger = logger;
-            _logger.MyServerNetLogModel.Log = "BufferResponseHandler 实例化成功";
-            this.dlmsClient = dlmsClient;
+            _logger.LogTrace("BufferResponseHandler 实例化成功");
+         
+            Protocol = protocol;
         }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             if (message is byte[] bytes)
@@ -36,7 +37,7 @@ namespace JobMaster.Handlers
                     ResponsesBuffer[context.Channel.RemoteAddress.ToString()] = new List<GetResponse>();
                 }
 
-                var result = dlmsClient.Business.Protocol.TakeReplyApduFromFrame(ProtocolInterfaceType.WRAPPER, bytes);
+                var result = Protocol.TakeReplyApduFromFrame(bytes);
 
                 var re = AppProtocolFactory.CreateGetResponse(result);
                 if (re?.GetResponseNormal != null)
@@ -47,7 +48,8 @@ namespace JobMaster.Handlers
                         responses.Add(re);
                         ResponsesBuffer[context.Channel.RemoteAddress.ToString()] = responses;
                         var Energies = new List<Energy>();
-                        var dlmsStructures = MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemProfileGeneric.ParseBuffer(responses);
+                        var dlmsStructures = MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage.CosemProfileGeneric
+                            .ParseBuffer(responses);
                         if (dlmsStructures != null)
                         {
                             foreach (var item in dlmsStructures)
@@ -58,7 +60,7 @@ namespace JobMaster.Handlers
                                 var b = clock.DlmsClockParse(dt.StringToByte());
                                 if (b)
                                 {
-                                    EnergyCaptureObjects energyCaptureObjects = new()
+                                    EnergyCaptureObjects energyCaptureObjects = new ()
                                     {
                                         DateTime = clock.ToDateTime(),
                                         ImportActiveEnergyTotal = dataItems[1].ValueString,
@@ -86,8 +88,6 @@ namespace JobMaster.Handlers
                     {
                         throw;
                     }
-
-
                 }
                 //else if (re?.GetResponseWithDataBlock != null)
                 //{
@@ -104,7 +104,6 @@ namespace JobMaster.Handlers
                 //        ResponsesBuffer[context.Channel.RemoteAddress.ToString()].Add(re);
                 //    }
 
-
                 //}
                 else
                 {
@@ -112,9 +111,6 @@ namespace JobMaster.Handlers
                     context.FireChannelRead(bytes);
                 }
             }
-
         }
-
-
     }
 }

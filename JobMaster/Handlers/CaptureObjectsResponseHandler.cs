@@ -12,20 +12,22 @@ namespace JobMaster.Handlers
     public class CaptureObjectsResponseHandler : ChannelHandlerAdapter
     {
         private readonly NetLoggerViewModel _logger;
-        private readonly DlmsClient dlmsClient;
-        public static Dictionary<string, GetResponse> CaptureObjectsResponsesBindingSocketNew = new();
-        public CaptureObjectsResponseHandler(NetLoggerViewModel logger, DlmsClient dlmsClient)
+        private readonly IProtocol Protocol;
+        public static Dictionary<string, GetResponse> CaptureObjectsResponsesBindingSocketNew = new ();
+
+        public CaptureObjectsResponseHandler(NetLoggerViewModel logger, IProtocol protocol)
         {
             _logger = logger;
-            _logger.MyServerNetLogModel.Log = "CaptureObjectsResponseHandler 实例化成功";
-            this.dlmsClient = dlmsClient;
+            _logger.LogTrace("CaptureObjectsResponseHandler 实例化成功");
+         
+            Protocol = protocol;
         }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             if (message is byte[] bytes)
             {
-
-                var result = dlmsClient.Business.Protocol.TakeReplyApduFromFrame(ProtocolInterfaceType.WRAPPER, bytes);
+                var result = Protocol.TakeReplyApduFromFrame(bytes);
 
                 var CaptureObjectsResponse = AppProtocolFactory.CreateGetResponse(result);
                 if (CaptureObjectsResponse != null)
@@ -34,7 +36,6 @@ namespace JobMaster.Handlers
                     {
                         if (CaptureObjectsResponse.GetResponseNormal.Result.Data.DataType == DataType.Array)
                         {
-
                             var CaptureObjectsArray = new DLMSArray();
                             var ar = CaptureObjectsResponse.GetResponseNormal.Result.Data.ToPduStringInHex();
                             if (!CaptureObjectsArray.PduStringInHexConstructor(ref ar))
@@ -48,17 +49,16 @@ namespace JobMaster.Handlers
                             }
                             else
                             {
-                                _logger.MyServerNetLogModel.Log = "读取曲线捕获对象成功\r\n";
-                                CaptureObjectsResponsesBindingSocketNew[context.Channel.RemoteAddress.ToString()] = CaptureObjectsResponse;
+                                _logger.LogTrace("读取曲线捕获对象成功");
+                               
+                                CaptureObjectsResponsesBindingSocketNew[context.Channel.RemoteAddress.ToString()] =
+                                    CaptureObjectsResponse;
                             }
                         }
-
-
-
                     }
                     else
                     {
-                        //_logger.MyServerNetLogModel.Log = "读取曲线捕获对象失败\r\n";
+                        //_logger.Log = "读取曲线捕获对象失败\r\n";
                         CaptureObjectsResponsesBindingSocketNew[context.Channel.RemoteAddress.ToString()] = null;
                         context.FireChannelRead(bytes);
                     }
@@ -68,9 +68,6 @@ namespace JobMaster.Handlers
                     CaptureObjectsResponsesBindingSocketNew[context.Channel.RemoteAddress.ToString()] = null;
                     context.FireChannelRead(bytes);
                 }
-
-
-
             }
         }
     }

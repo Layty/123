@@ -1,5 +1,4 @@
-﻿
-using DotNetty.Transport.Channels;
+﻿using DotNetty.Transport.Channels;
 using JobMaster.Helpers;
 using MyDlmsStandard.Wrapper;
 using NLog;
@@ -31,6 +30,7 @@ namespace JobMaster.ViewModels
         }
 
         private IChannelHandlerContext _MySocket;
+
         public string IpString
         {
             get => _ipString;
@@ -67,6 +67,7 @@ namespace JobMaster.ViewModels
 
         private bool _isCheck;
     }
+
     public class MeterIdMatchSocket : BindableBase
     {
         public Socket MySocket
@@ -80,6 +81,7 @@ namespace JobMaster.ViewModels
         }
 
         private Socket _MySocket;
+
         public string IpString
         {
             get => _ipString;
@@ -116,6 +118,7 @@ namespace JobMaster.ViewModels
 
         private bool _isCheck;
     }
+
     /// <summary>
     /// 职责：数据的发送和接收。通知socket的各个状态，校验IP等参数后的合理性
     /// </summary>
@@ -214,6 +217,7 @@ namespace JobMaster.ViewModels
         }
 
         private int _responseTimeOut = 2;
+
         /// <summary>
         /// 是否自动响应47心跳帧
         /// </summary>
@@ -228,6 +232,7 @@ namespace JobMaster.ViewModels
         }
 
         private bool _isAutoResponseHeartBeat;
+
         /// <summary>
         /// 心跳帧延时响应时间(ms)
         /// </summary>
@@ -267,6 +272,7 @@ namespace JobMaster.ViewModels
             //处理Socke和表号匹配更新等
             TcpServerHelper_MatchSocketMeterId(clientSocket, bytes);
         }
+
         /// <summary>
         /// 计算是否服务47协议 进行拼帧
         /// </summary>
@@ -329,6 +335,7 @@ namespace JobMaster.ViewModels
                 }
             }
         }
+
         /// <summary>
         /// 根据是否自动回心跳帧，判断是否为心跳帧类型，模拟主站处理心跳帧功能
         /// </summary>
@@ -354,6 +361,7 @@ namespace JobMaster.ViewModels
                 Console.WriteLine(e);
             }
         }
+
         /// <summary>
         /// 计算表号和Socket 对MeterIdMatchSockets进行赋值
         /// </summary>
@@ -546,10 +554,7 @@ namespace JobMaster.ViewModels
                         OnNotifyStatusMsg($"{DateTime.Now}有新的连接{clientSocket.RemoteEndPoint}");
 
                         var socket1 = clientSocket;
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            SocketClientList.Add(socket1);
-                        });
+                        DispatcherHelper.CheckBeginInvokeOnUI(() => { SocketClientList.Add(socket1); });
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         SocketClientCancellationTokens.Add(cancellationTokenSource);
                         OnNotifyNewClient(clientSocket);
@@ -650,7 +655,7 @@ namespace JobMaster.ViewModels
                 //占用大量CPU需要优化
                 while (true)
                 {
-                    await Task.Delay(100);//进行等待延时，进行优化
+                    await Task.Delay(100); //进行等待延时，进行优化
                     TimeSpan elapsed = new TimeSpan(DateTime.Now.Ticks - nowtick);
                     // TimeSpan timeSpan = stopTimeSpan.Subtract(startTimeSpan).Duration();
                     if (elapsed.TotalSeconds >= ResponseTimeOut)
@@ -689,6 +694,7 @@ namespace JobMaster.ViewModels
             {
                 return;
             }
+
             //必然不需要拼帧
             if (!_isNeedContinue)
             {

@@ -21,6 +21,7 @@ namespace JobMaster
                 {
                     return null;
                 }
+
                 putStringData = putStringData.Replace(" ", "");
                 var outByteData = new byte[putStringData.Length / 2];
                 for (int i = 0, k = 0; i < putStringData.Length / 2; i++, k += 2)
@@ -58,6 +59,7 @@ namespace JobMaster
             {
                 return "";
             }
+
             try
             {
                 foreach (byte inByte in inBytes)
@@ -118,6 +120,7 @@ namespace JobMaster
             {
                 if (b1[i] != b2[i]) return false;
             }
+
             return true;
         }
     }

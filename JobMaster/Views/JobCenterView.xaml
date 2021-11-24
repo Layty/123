@@ -20,34 +20,43 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Margin="5,0" Orientation="Horizontal">
+
+                <TextBlock
+                    Margin="5,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="调度器" />
                 <CheckBox
                     Margin="5,0"
                     Content="测试任务"
                     IsChecked="{Binding IsTestScheduler, Mode=TwoWay}" />
                 <Button
                     Margin="5,0"
+                    Background="{DynamicResource SuccessBrush}"
                     Command="{Binding StartSchedulerCommand}"
-                    Content="开启调度器"
+                    Content="开启"
                     IsEnabled="{Binding IsSchedulerStarted, Converter={StaticResource InverseBooleanConverter}}" />
                 <Button
                     Margin="5,0"
+                    Background="{DynamicResource DangerBrush}"
                     Command="{Binding ShutdownSchedulerCommand}"
-                    Content="关闭调度器"
+                    Content="关闭"
                     IsEnabled="{Binding IsSchedulerStarted}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"
                 Margin="5,0"
                 Orientation="Horizontal">
+
                 <Button
                     Margin="5,0"
                     Command="{Binding PauseAllSchedulerCommand}"
-                    Content="暂停所有任务"
+                    Content="暂停"
                     IsEnabled="{Binding IsSchedulerStarted}" />
                 <Button
                     Margin="5,0"
                     Command="{Binding ResumeAllSchedulerCommand}"
-                    Content="恢复所有任务"
+                    Content="恢复"
                     IsEnabled="{Binding IsSchedulerStarted}" />
                 <Button
                     Margin="5,0"

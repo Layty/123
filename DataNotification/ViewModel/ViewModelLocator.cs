@@ -30,17 +30,12 @@ namespace DataNotification.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
             SimpleIoc.Default.Register<TcpServerViewModel>();
             SimpleIoc.Default.Register<NetLogViewModel>();
-
-            ////}
-
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-
 
         public TcpServerViewModel TcpServerViewModel => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
         public NetLogViewModel NetLogViewModel => ServiceLocator.Current.GetInstance<NetLogViewModel>();

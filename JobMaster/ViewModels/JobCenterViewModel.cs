@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 
 namespace JobMaster.ViewModels
 {
-
-
     /*
     由7段构成：秒 分 时 日 月 星期 年（可选）
 
@@ -44,12 +42,6 @@ namespace JobMaster.ViewModels
         public DelegateCommand<JobsViewModel> ResumeTriggerCommand { get; set; }
         public DelegateCommand UpdateJobListCommand { get; set; }
 
-
-        public DelegateCommand ActionCloseWarningCommand { get; set; }
-
-        public ObservableCollection<ProfileGenericJobBase> List { get; set; }
-
-
         public bool IsSchedulerStarted
         {
             get => _isSchedulerStarted;
@@ -61,25 +53,6 @@ namespace JobMaster.ViewModels
         }
 
         private bool _isSchedulerStarted;
-
-
-        public void AddJob(ProfileGenericJobBase jobBase)
-        {
-            List.Add(jobBase);
-        }
-
-        public void RemoveJob(ProfileGenericJobBase jobBase)
-        {
-            List.Remove(jobBase);
-        }
-
-        public void UpDate()
-        {
-        }
-
-
-
-
 
 
 
@@ -123,16 +96,10 @@ namespace JobMaster.ViewModels
         private NetLoggerViewModel netLogViewModel;
 
 
-        public JobCenterViewModel(IServiceProvider serviceProvider, NetLoggerViewModel netLoggerViewModel, DlmsClient dlmsClient)
+        public JobCenterViewModel(IServiceProvider serviceProvider, NetLoggerViewModel netLoggerViewModel)
         {
             this.serviceProvider = serviceProvider;
-            List = new ObservableCollection<ProfileGenericJobBase>()
-            {
-                new EnergyProfileGenericJob(netLoggerViewModel,dlmsClient),
-                new PowerProfileGenericJob(netLoggerViewModel,dlmsClient),
-                //new DayProfileGenericJob(netLoggerViewModel,dlmsClient),
-                //new MonthProfileGenericJob(netLoggerViewModel,dlmsClient),
-            };
+
             JobsViewModels = new ObservableCollection<JobsViewModel>();
 
             StartSchedulerCommand = new DelegateCommand(Start);
@@ -151,12 +118,13 @@ namespace JobMaster.ViewModels
             UpdateJobListCommand = new DelegateCommand(UpdateJobList);
 
 
-          //  Scheduler = DemoScheduler.CreateTest(false).Result;
+            //  Scheduler = DemoScheduler.CreateTest(false).Result;
 
             netLogViewModel = netLoggerViewModel;
-            DlmsClient = dlmsClient;
+
             // Scheduler.ListenerManager.AddTriggerListener(this);
         }
+
         public bool IsTestScheduler
         {
             get => _isTestScheduler;
@@ -166,7 +134,9 @@ namespace JobMaster.ViewModels
                 RaisePropertyChanged();
             }
         }
-        private bool _isTestScheduler=false;
+
+        private bool _isTestScheduler = false;
+
         private void Standby()
         {
             Scheduler.Standby();
@@ -207,6 +177,7 @@ namespace JobMaster.ViewModels
             public DelegateCommand PauseTriggerCommand { get; set; }
 
             public DelegateCommand ResumeTriggerCommand { get; set; }
+
             public void Pause(JobsViewModel jobsViewModel)
             {
                 var tr = new TriggerKey(jobsViewModel.TriggerName, jobsViewModel.TriggerGroup);
@@ -214,9 +185,9 @@ namespace JobMaster.ViewModels
                 //  UpdateJobList();
             }
         }
+
         public class JobsViewModel : BindableBase
         {
-
             public string Group
             {
                 get => _group;
@@ -294,10 +265,7 @@ namespace JobMaster.ViewModels
             private string _nextTriggerTime;
 
 
-
             public string CronExpress { get; set; }
-
-
         }
 
         public ObservableCollection<JobsViewModel> JobsViewModels
@@ -315,7 +283,6 @@ namespace JobMaster.ViewModels
 
         public async void Start()
         {
-          
             if (IsTestScheduler)
             {
                 Scheduler = DemoScheduler.CreateTest(false).Result;
@@ -324,7 +291,7 @@ namespace JobMaster.ViewModels
             {
                 Scheduler = DemoScheduler.CreateNormal(false).Result;
             }
-          
+
             await Scheduler.Start();
             Scheduler.ListenerManager.AddJobListener(this);
             Scheduler.JobFactory = new ProfileGenicJobFactory(serviceProvider);
@@ -362,13 +329,11 @@ namespace JobMaster.ViewModels
                             .ToLongTimeString();
                         // data.LastFireTime = cronExpression.GetFinalFireTime()?.LocalDateTime.ToLongTimeString();
                         data.CronExpress = cronExpression.CronExpressionString;
-
                     }
                     else if (Scheduler.GetTrigger(triggerKey).Result is ISimpleTrigger simple)
                     {
                         data.NextTriggerTime = simple.RepeatInterval.Duration().ToString();
                         //  data.LastFireTime = simple.FinalFireTimeUtc.ToString();
-
                     }
                 }
 
@@ -438,7 +403,7 @@ namespace JobMaster.ViewModels
             Console.WriteLine(@"JobToBeExecuted");
 
             JobExecutionContexts = Scheduler.GetCurrentlyExecutingJobs(cancellationToken).Result;
-            netLogViewModel.MyServerNetLogModel.Log = $"JobToBeExecuted";
+            netLogViewModel.LogTrace($"JobToBeExecuted");
             return Task.CompletedTask;
         }
 
@@ -446,20 +411,21 @@ namespace JobMaster.ViewModels
             CancellationToken cancellationToken = new CancellationToken())
         {
             Console.WriteLine(@"JobExecutionVetoed");
-            netLogViewModel.MyServerNetLogModel.Log = $"JobExecutionVetoed";
+            netLogViewModel.LogTrace($"JobExecutionVetoed");
+
             return Task.CompletedTask;
         }
 
         public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            netLogViewModel.MyServerNetLogModel.Log =
-                $"Executed {Scheduler.GetMetaData().Result.NumberOfJobsExecuted} Jobs.  RunningSince{Scheduler.GetMetaData().Result.RunningSince.Value.ToLocalTime()}";
+            netLogViewModel.LogTrace(
+                $"Executed {Scheduler.GetMetaData().Result.NumberOfJobsExecuted} Jobs.  RunningSince{Scheduler.GetMetaData().Result.RunningSince.Value.ToLocalTime()}");
             UpdateJobList();
             return Task.CompletedTask;
         }
 
         public string Name { get; } = "HAHAHAH";
-        public DlmsClient DlmsClient { get; }
+
     }
 }

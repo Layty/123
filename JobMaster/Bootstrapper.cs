@@ -10,10 +10,8 @@ namespace JobMaster
 {
     public class Bootstrapper : PrismBootstrapper
     {
-        
         protected override DependencyObject CreateShell()
         {
-
             return Container.Resolve<MainWindow>();
         }
 
@@ -23,38 +21,31 @@ namespace JobMaster
             var factory = new NLog.Extensions.Logging.NLogLoggerFactory();
             ILogger logger = factory.CreateLogger("");
             containerRegistry.RegisterInstance(logger);
-
+            containerRegistry.RegisterSingleton<NetLoggerViewModel>();
             containerRegistry.RegisterSingleton<DlmsSettingsViewModel>();
+            //注入 47协议
+            containerRegistry.RegisterSingleton<IProtocol, WrapperProtocol>();
 
-            containerRegistry.RegisterSingleton<SerialPortViewModel>();
 
-            containerRegistry.RegisterSingleton<DlmsClient>();
-
-            //  containerRegistry.RegisterSingleton<FrontEndProcessorViewModel>();
+            containerRegistry.RegisterSingleton<DataNotificationViewModel>();
             containerRegistry.RegisterSingleton<MainServerViewModel>();
 
             containerRegistry.RegisterSingleton<JobCenterViewModel>();
-            containerRegistry.RegisterSingleton<NetLoggerViewModel>();
-
-            containerRegistry.RegisterSingleton<DataNotificationViewModel>();
-
-            //containerRegistry.RegisterForNavigation<FrontEndProcessorView>();
-            //containerRegistry.RegisterForNavigation<JobCenterView>();
-
-            //containerRegistry.RegisterForNavigation<NetLoggerView>();
             containerRegistry.RegisterForNavigation<JobCenterView>();
             containerRegistry.RegisterForNavigation<DataNotificationView>();
         }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             var _regionManager = Container.Resolve<IRegionManager>();
-            //_regionManager.RegisterViewWithRegion("ServerRegion", typeof(FrontEndProcessorView));
+
             _regionManager.RegisterViewWithRegion("ServerRegion", typeof(MainServerView));
-          //  _regionManager.RegisterViewWithRegion("JobRegion", typeof(JobCenterView));
+
             _regionManager.RegisterViewWithRegion("LogRegion", typeof(NetLoggerView));
-            //  _regionManager.RegisterViewWithRegion("NotiRegion", typeof(DataNotificationView));
-           
+
+
+
         }
     }
 }

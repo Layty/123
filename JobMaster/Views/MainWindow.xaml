@@ -32,6 +32,14 @@
                             x:Name="Noti"
                             Click="Noti_Click"
                             Header="主动上报" />
+                        <MenuItem
+                            x:Name="x1"
+                            Click="Noti_Click"
+                            Header="数据采集" />
+                        <MenuItem
+                            x:Name="x2"
+                            Click="Noti_Click"
+                            Header="数据查询" />
                     </MenuItem>
                     <!--<MenuItem Header="Header2">
                         <MenuItem Header="Header1" />
@@ -159,9 +167,8 @@
     </hc:Window.NonClientAreaContent>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
             <RowDefinition />
-
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

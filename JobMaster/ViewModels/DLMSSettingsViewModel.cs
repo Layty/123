@@ -1,5 +1,4 @@
-﻿
-using MyDlmsStandard;
+﻿using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.HDLC.Enums;
@@ -13,19 +12,21 @@ namespace JobMaster.ViewModels
 {
     public class DlmsSettingsViewModel : BindableBase
     {
-
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array PhysicalChanelTypeArray => Enum.GetValues(typeof(PhysicalChanelType));
         public Array ProtocolInterfaceTypeArray => Enum.GetValues(typeof(ProtocolInterfaceType));
+
         public ProtocolInterfaceType ProtocolInterfaceType
         {
-            get => _protocolInterfaceType; set
+            get => _protocolInterfaceType;
+            set
             {
                 _protocolInterfaceType = value;
                 RaisePropertyChanged();
             }
         }
+
         private ProtocolInterfaceType _protocolInterfaceType;
 
         public StartProtocolType StartProtocolType { get; set; }
@@ -46,8 +47,7 @@ namespace JobMaster.ViewModels
 
         private PhysicalChanelType physicalChanelType;
 
-        [DefaultValue(6)]
-        public byte DlmsVersion { get; set; }
+        [DefaultValue(6)] public byte DlmsVersion { get; set; }
 
         [DefaultValue(65535)]
         public ushort MaxReceivePduSize
@@ -97,12 +97,13 @@ namespace JobMaster.ViewModels
         /// 当建立连接时，客户端告诉它想要使用什么类型的服务。
         /// </summary>
         public Conformance ProposedConformance { get; set; }
+
         /// <summary>
         /// 服务器告诉什么功能是可用的，客户端就会知道
         /// </summary>
         internal Conformance NegotiatedConformance = 0;
-        public Array ProposedConformanceArray { get; set; } = Enum.GetValues(typeof(Conformance));
 
+        public Array ProposedConformanceArray { get; set; } = Enum.GetValues(typeof(Conformance));
 
 
         public bool AutoIncreaseInvokeID { get; set; }
@@ -127,23 +128,29 @@ namespace JobMaster.ViewModels
         private string _passwordString;
 
 
-
-
         public ushort ClientAddress
         {
             get => _clientAddress;
-            set { _clientAddress = value; RaisePropertyChanged(); }
+            set
+            {
+                _clientAddress = value;
+                RaisePropertyChanged();
+            }
         }
+
         private ushort _clientAddress;
-
-
 
 
         public ushort ServerAddress
         {
             get => _serverAddress;
-            set { _serverAddress = value; RaisePropertyChanged(); }
+            set
+            {
+                _serverAddress = value;
+                RaisePropertyChanged();
+            }
         }
+
         private ushort _serverAddress;
 
         public byte ServerAddressSize { get; set; } = 1;
@@ -153,16 +160,8 @@ namespace JobMaster.ViewModels
         /// </summary>
         public Command LastCommand { get; set; }
 
-        public uint BlockIndex
-        {
-            get;
-            internal set;
-        }
-        public ushort BlockNumberAck
-        {
-            get;
-            set;
-        }
+        public uint BlockIndex { get; internal set; }
+        public ushort BlockNumberAck { get; set; }
         public DLMSInfo DlmsInfo { get; set; }
 
         public DLMSInfo DlmsInfoFromMeter { get; set; }
@@ -171,9 +170,15 @@ namespace JobMaster.ViewModels
         public string SystemTitle
         {
             get => _systemTitle;
-            set { _systemTitle = value; RaisePropertyChanged(); }
+            set
+            {
+                _systemTitle = value;
+                RaisePropertyChanged();
+            }
         }
+
         private string _systemTitle;
+
         public DlmsSettingsViewModel()
         {
             UseLogicalNameReferencing = true;
@@ -198,25 +203,42 @@ namespace JobMaster.ViewModels
             NegotiateBaud = 9600;
             StartBaud = 300;
         }
+
         public static Conformance GetInitialConformance(bool useLogicalNameReferencing)
         {
             if (useLogicalNameReferencing)
             {
-                return Conformance.BlockTransferWithGetOrRead | Conformance.BlockTransferWithSetOrWrite | Conformance.BlockTransferWithAction | Conformance.MultipleReferences | Conformance.Get | Conformance.Set | Conformance.SelectiveAccess | Conformance.Action;
+                return Conformance.BlockTransferWithGetOrRead | Conformance.BlockTransferWithSetOrWrite |
+                       Conformance.BlockTransferWithAction | Conformance.MultipleReferences | Conformance.Get |
+                       Conformance.Set | Conformance.SelectiveAccess | Conformance.Action;
             }
-            return Conformance.Read | Conformance.Write | Conformance.UnconfirmedWrite | Conformance.MultipleReferences | Conformance.InformationReport | Conformance.ParameterizedAccess;
+
+            return Conformance.Read | Conformance.Write | Conformance.UnconfirmedWrite |
+                   Conformance.MultipleReferences | Conformance.InformationReport | Conformance.ParameterizedAccess;
         }
+
         public int NegotiateBaud
         {
             get => _negotiateBaud;
-            set { _negotiateBaud = value; RaisePropertyChanged(); }
+            set
+            {
+                _negotiateBaud = value;
+                RaisePropertyChanged();
+            }
         }
+
         private int _negotiateBaud;
+
         public int StartBaud
         {
             get => _startBaud;
-            set { _startBaud = value; RaisePropertyChanged(); }
+            set
+            {
+                _startBaud = value;
+                RaisePropertyChanged();
+            }
         }
+
         private int _startBaud;
     }
 }

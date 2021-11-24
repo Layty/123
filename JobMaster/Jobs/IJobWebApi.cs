@@ -1,5 +1,4 @@
 ﻿using RestSharp;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace JobMaster.Jobs
@@ -10,7 +9,7 @@ namespace JobMaster.Jobs
     public interface IJobWebApi<T>
     {
         string BaseUriString { get; set; }
-      
+
         RestClient RestClient { get; set; }
         RestRequest RestRequest { get; set; }
         void InsertData(string meterId, List<T> data);

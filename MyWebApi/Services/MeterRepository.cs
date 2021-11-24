@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyWebApi.Data;
 using MyWebApi.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace MyWebApi.Services
@@ -143,22 +145,25 @@ namespace MyWebApi.Services
             {
                 throw new ArgumentNullException(nameof(notification));
             }
-
+            var jsonstr = JsonConvert.SerializeObject(notification, Formatting.Indented);
+            Console.WriteLine(jsonstr);
             //foreach (var notification in notifications)
             //{
-                notification.MeterId = meterId;
-                if (_dbContext.Notifications.Any(t => t.DateTime == notification.DateTime))
-                {
-                    var t = _dbContext.Notifications.FirstOrDefault(t => t.DateTime == notification.DateTime);
-                    t.NotifyData = notification.NotifyData;
-                    //更新追踪的，必须改属性，不然调用update会报错
-                    _dbContext.Notifications.Update(t);
-                }
-                else
-                {
-                    //要判断是否已存在不然add时会报错
-                    _dbContext.Notifications.Add(notification);
-                }
+            notification.MeterId = meterId;
+            if (_dbContext.Notifications.Any(t => t.DateTime == notification.DateTime))
+            {
+                var t = _dbContext.Notifications.FirstOrDefault(t => t.DateTime == notification.DateTime);
+                t.NotifyData = notification.NotifyData;
+                //更新追踪的，必须改属性，不然调用update会报错
+                Console.WriteLine("Update-Notifications");
+                _dbContext.Notifications.Update(t);
+            }
+            else
+            {
+                Console.WriteLine("add-Notifications");
+                //要判断是否已存在不然add时会报错
+                _dbContext.Notifications.Add(notification);
+            }
             //}
         }
         public async Task<Meter> GetDataAsync(string meterId)
@@ -208,6 +213,6 @@ namespace MyWebApi.Services
             return (await _dbContext.SaveChangesAsync()) >= 0;
         }
 
-     
+
     }
 }

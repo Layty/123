@@ -10,6 +10,7 @@ namespace JobMaster
     public class ValidateModelBase : BindableBase, IDataErrorInfo
     {
         #region 属性 
+
         /// <summary>
         /// 表当验证错误集合
         /// </summary>
@@ -26,9 +27,11 @@ namespace JobMaster
                 {
                     return false;
                 }
+
                 return true;
             }
         }
+
         #endregion
 
         public string this[string columnName]
@@ -38,12 +41,14 @@ namespace JobMaster
                 ValidationContext vc = new ValidationContext(this, null, null);
                 vc.MemberName = columnName;
                 var res = new List<ValidationResult>();
-                var result = Validator.TryValidateProperty(GetType().GetProperty(columnName)?.GetValue(this, null), vc, res);
+                var result =
+                    Validator.TryValidateProperty(GetType().GetProperty(columnName)?.GetValue(this, null), vc, res);
                 if (res.Count > 0)
                 {
                     AddDic(_dataErrors, vc.MemberName);
                     return string.Join(Environment.NewLine, res.Select(r => r.ErrorMessage).ToArray());
                 }
+
                 RemoveDic(_dataErrors, vc.MemberName);
                 return null;
             }
@@ -73,6 +78,7 @@ namespace JobMaster
         {
             if (!dics.ContainsKey(dicKey)) dics.Add(dicKey, "");
         }
+
         #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace JobMaster.Handlers
     public class HeartBeatHandler : ChannelHandlerAdapter
     {
         private readonly NetLoggerViewModel _logger;
-        private MainServerViewModel _mainServerViewModel;
+        private readonly MainServerViewModel _mainServerViewModel;
         public HeartBeatHandler(NetLoggerViewModel logger, MainServerViewModel mainServerViewModel)
         {
             _logger = logger;
@@ -21,7 +21,7 @@ namespace JobMaster.Handlers
         }
         public override void ChannelActive(IChannelHandlerContext context)
         {
-            _logger.MyServerNetLogModel.Log = DateTime.Now.ToString() + "HeartBeatHandler ChannelActive" + "\r\n";
+            _logger.LogTrace(DateTime.Now.ToString() + "HeartBeatHandler ChannelActive" + "\r\n");
             _mainServerViewModel.AddClient(context);
             base.ChannelActive(context);
         }
@@ -29,7 +29,7 @@ namespace JobMaster.Handlers
         {
             if (message is byte[] bytes)
             {
-                _logger.MyServerNetLogModel.Log = "HeartBeatHandler is running";
+                _logger.LogTrace("HeartBeatHandler is running");
                 HandleHeartBeat(context, bytes);
             }
 
@@ -45,16 +45,16 @@ namespace JobMaster.Handlers
                 {
                     return;
                 }
-                _logger.MyServerNetLogModel.Log = "符合心跳帧";
+                _logger.LogTrace("符合心跳帧");
                 heartBeatFrame.WrapperHeader.OverturnDestinationSource();
                 Task.Delay(_mainServerViewModel.HeartBeatDelayTime).Wait(); ;
                 var strAdd = heartBeatFrame.GetMeterAddressString();
-                _logger.MyServerNetLogModel.Log = $"MeterAddress:{strAdd}";
+                _logger.LogFront($"MeterAddress:{strAdd}");
                 var t = Unpooled.Buffer();
-                t.WriteBytes(heartBeatFrame.ToPduStringInHex().StringToByte());
+                var sendBytes = heartBeatFrame.ToPduStringInHex().StringToByte();
+                t.WriteBytes(sendBytes);
                 context.WriteAsync(t);
-                _logger.MyServerNetLogModel.Log = $"Send Data To client:{context.Channel.RemoteAddress} " + heartBeatFrame.ToPduStringInHex().StringToByte().ByteToString(" ") + "\r\n";
-
+                _logger.LogInfo($"Send     To  {context.Channel.RemoteAddress}==> {sendBytes.ByteToString(" ")}");
 
                 if (_mainServerViewModel.MeterIdMatchSockets.Count == 0)
                 {
@@ -113,10 +113,10 @@ namespace JobMaster.Handlers
         {
             await Task.Run(() =>
             {
-                _logger.MyServerNetLogModel.Log = "Exception: " + exception + "\r\n";
+                _logger.LogError("Exception: " + exception);
                 _mainServerViewModel.RemoveClient(context);
+                _logger.LogError("断开: " + context.Channel.RemoteAddress);
 
-                _logger.MyServerNetLogModel.Log = "断开: " + context.Channel.RemoteAddress + "\r\n";
                 context.CloseAsync();
             });
         }
@@ -124,13 +124,13 @@ namespace JobMaster.Handlers
         public override void ChannelUnregistered(IChannelHandlerContext context)
         {
             _mainServerViewModel.RemoveClient(context);
+            _logger.LogInfo("已断开: " + context.Channel.RemoteAddress);
 
-            _logger.MyServerNetLogModel.Log = "已断开: " + context.Channel.RemoteAddress + "\r\n";
             base.ChannelUnregistered(context);
         }
         public override void UserEventTriggered(IChannelHandlerContext context, object evt)
         {
-            if (!(evt is IdleStateEvent))
+            if (evt is not IdleStateEvent)
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace JobMaster.Handlers
             {
                 // The connection was OK but there was no traffic for last period.
                 //Console.WriteLine("Disconnecting due to no inbound traffic");
-                _logger.MyServerNetLogModel.Log = "长时间未与服务器通讯，踢掉";
+                _logger.LogInfo("长时间未与服务器通讯，踢掉: " + context.Channel.RemoteAddress);
                 context.CloseAsync();
             }
 

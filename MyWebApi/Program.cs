@@ -52,7 +52,7 @@ namespace MyWebApi
                 catch (Exception e)
                 {
                     var logger = scope1.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(e, "UserLogin Database Migration Error!");
+                    logger.LogError(e, "Meter Database Migration Error!");
                 }
             }
 

@@ -12,15 +12,11 @@ namespace JobMaster
     public partial class App : Application
     {
         public ILogger Logger = LogManager.GetCurrentClassLogger();
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
-        }
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
-
             DispatcherHelper.Initialize();
-
 
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -31,6 +27,7 @@ namespace JobMaster
             boot.Run();
             Logger.Debug("Bootstrapper is running");
         }
+
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
@@ -52,6 +49,7 @@ namespace JobMaster
 
             e.Handled = true;
         }
+
         internal void UpdateTheme(ApplicationTheme theme)
         {
             if (ThemeManager.Current.ApplicationTheme != theme)

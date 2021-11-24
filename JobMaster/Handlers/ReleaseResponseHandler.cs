@@ -1,7 +1,6 @@
 ﻿using DotNetty.Transport.Channels;
 using JobMaster.Helpers;
 using JobMaster.ViewModels;
-using MyDlmsStandard;
 using System;
 using System.Collections.Generic;
 
@@ -11,21 +10,23 @@ namespace JobMaster.Handlers
     {
         private readonly NetLoggerViewModel _logger;
 
-        private readonly DlmsClient dlmsClient;
+        private readonly IProtocol Protocol;
 
 
         public static Dictionary<string, bool> ReleaseSuccessors = new Dictionary<string, bool>();
-        public ReleaseResponseHandler(NetLoggerViewModel logger, DlmsClient dlmsClient)
+
+        public ReleaseResponseHandler(NetLoggerViewModel logger, IProtocol protocol)
         {
             _logger = logger;
-            _logger.MyServerNetLogModel.Log = "ReleaseResponseHandler 实例化成功";
-            this.dlmsClient = dlmsClient;
+            _logger.LogTrace("ReleaseResponseHandler 实例化成功");
+            Protocol = protocol;
         }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             if (message is byte[] bytes)
             {
-                var result = dlmsClient.Business.Protocol.TakeReplyApduFromFrame(ProtocolInterfaceType.WRAPPER, bytes);
+                var result = Protocol.TakeReplyApduFromFrame(bytes);
                 if (AppProtocolFactory.CreateReleaseResponse(result) != null)
                 {
                     ReleaseSuccessors[context.Channel.RemoteAddress.ToString()] = true;
@@ -33,12 +34,9 @@ namespace JobMaster.Handlers
                 else
                 {
                     ReleaseSuccessors[context.Channel.RemoteAddress.ToString()] = false;
-                    throw new Exception("Release失败");
+
                 }
             }
-
-
-
         }
     }
 }

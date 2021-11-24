@@ -14,19 +14,16 @@ namespace JobMaster.Jobs
         public ProfileGenicJobFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-          
         }
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-
             Type jobType = bundle.JobDetail.JobType;
             return _serviceProvider.GetService(jobType) as IJob;
         }
 
         public void ReturnJob(IJob job)
         {
-
         }
     }
 }

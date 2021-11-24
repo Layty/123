@@ -1,4 +1,4 @@
-﻿using JobMaster;
+﻿using DotNetty.Transport.Channels;
 using JobMaster.Handlers;
 using JobMaster.Models;
 using JobMaster.ViewModels;
@@ -18,52 +18,51 @@ using System.Threading.Tasks;
 
 namespace JobMaster.Jobs
 {
-    public class EnergyProfileGenericJobNew : ProfileGenericJobBaseNew, IJobWebApi<Energy>
+    public class PowerProfileGenericJobNew : ProfileGenericJobBaseNew, IJobWebApi<Power>
     {
-        public virtual string BaseUriString { get; set; } = $"http://localhost:5000/api/Meter/EnergyData/";
+        public virtual string BaseUriString { get; set; } = $"http://localhost:5000/api/Meter/PowerData/";
 
         public RestClient RestClient { get; set; } = new RestClient();
         public RestRequest RestRequest { get; set; } = new RestRequest(Method.POST);
-        public IProtocol Protocol { get; }
 
-        private readonly ObservableCollection<MeterIdMatchSocketNew> MeterIdMatchSockets;
-        public EnergyProfileGenericJobNew(NetLoggerViewModel netLoggerViewModel,
-            MainServerViewModel mainServerViewModel, IProtocol protocol, DlmsSettingsViewModel dlmsSettingsViewModel) : base(netLoggerViewModel, protocol, dlmsSettingsViewModel)
+        public PowerProfileGenericJobNew(NetLoggerViewModel netLoggerViewModel, MainServerViewModel mainServerViewModel,
+             DlmsSettingsViewModel dlmsSettingsViewModel,IProtocol protocol) : base(netLoggerViewModel,protocol, dlmsSettingsViewModel)
         {
-            JobName = "1分钟电量曲线任务";
-            Period = 5;
+            JobName = "15分钟功率负荷曲线任务";
+            Period = 15;
             var from = DateTime.Now.Subtract(new TimeSpan(0, 0, Period, 0, 0));
             var to = DateTime.Now;
             netLoggerViewModel.LogFront($"任务名称:{JobName}\r\n间隔{Period}min\r\n起始:{from}\r\n结束:{to}\r\n");
 
-            CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel(ProfileGenericLogicNameDefine.一分钟电量曲线)
+            CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel("1.0.99.2.0.255")
             {
                 ProfileGenericRangeDescriptor = new ProfileGenericRangeDescriptor()
                 {
                     RestrictingObject = new CaptureObjectDefinition()
                     { AttributeIndex = 2, ClassId = 8, DataIndex = 0, LogicalName = "0.0.1.0.0.255" },
                     FromValue = new DlmsDataItem(DataType.OctetString,
-                        new CosemClock(from).GetDateTimeBytes()
-                            .ByteToString()),
+                        new CosemClock(from).GetDateTimeBytes().ByteToString()),
                     ToValue = new DlmsDataItem(DataType.OctetString,
                         new CosemClock(to).GetDateTimeBytes().ByteToString()),
                     SelectedValues = new List<CaptureObjectDefinition>()
                 }
-                    ,
-                ProfileGenericName = JobName
             };
 
             MeterIdMatchSockets = mainServerViewModel.MeterIdMatchSockets;
-            Protocol = protocol;
         }
 
+        public Dictionary<IChannelHandlerContext, GetResponse> CaptureObjectsResponsesBindingSocketNew { get; set; } =
+            new Dictionary<IChannelHandlerContext, GetResponse>();
 
+        public Dictionary<IChannelHandlerContext, List<GetResponse>> DataBufferResponsesBindingSocketNew { get; set; } =
+            new Dictionary<IChannelHandlerContext, List<GetResponse>>();
 
+        public ObservableCollection<MeterIdMatchSocketNew> MeterIdMatchSockets { get; set; }
 
         public override async Task Execute(IJobExecutionContext context)
         {
             if (MeterIdMatchSockets.Count == 0) return;
-            NetLogViewModel.LogDebug("In EnergyTask Execute");
+            NetLogViewModel.LogDebug("In PowerTask Execute");
             for (int i = 0; i < MeterIdMatchSockets.Count; i++)
             {
                 var index = i; //处理闭包
@@ -75,9 +74,9 @@ namespace JobMaster.Jobs
                     {
                         await Task.Run(async () =>
                         {
-                            ILinkLayer linkLayer = new NettyLinkLayer(tmp.MySocket,NetLogViewModel);
+
+                            ILinkLayer linkLayer = new NettyLinkLayer(tmp.MySocket, NetLogViewModel);
                             var Business = new NettyBusiness(Protocol, linkLayer);
-                          
                             NetLogViewModel.LogDebug("正在执行" + JobName);
                             NetLogViewModel.LogDebug("开始执行协商请求");
                             var strIp = tmp.MySocket.Channel.RemoteAddress.ToString();
@@ -93,8 +92,7 @@ namespace JobMaster.Jobs
                             }
                             catch (Exception e)
                             {
-                                NetLogViewModel.LogError(e.Message);
-
+                                var str = e.Message;
                                 return;
                             }
 
@@ -121,14 +119,14 @@ namespace JobMaster.Jobs
                                     }
                                 }
                             }
-                            NetLogViewModel.LogDebug("正在执行读取曲线Buffer");
 
+                            NetLogViewModel.LogDebug("正在执行读取曲线Buffer");
                             var ResponsesBuffer = new List<GetResponse>();
                             await Business.GetRequestAndWaitResponseArrayNetty(CustomCosemProfileGenericModel
                                 .GetBufferAttributeDescriptorWithSelectionByRange);
                             await Task.Delay(2000);
                             var Responses = BufferResponseHandler.ResponsesBuffer[strIp];
-                            var Energies = new List<Energy>();
+                            var Powers = new List<Power>();
                             if (Responses == null)
                             {
                                 return;
@@ -146,22 +144,22 @@ namespace JobMaster.Jobs
                                         var b = clock.DlmsClockParse(dt.StringToByte());
                                         if (b)
                                         {
-                                            EnergyCaptureObjects energyCaptureObjects = new EnergyCaptureObjects
+                                            PowerCaptureObjects powerCaptureObjects = new PowerCaptureObjects
                                             {
                                                 DateTime = clock.ToDateTime(),
-                                                ImportActiveEnergyTotal = dataItems[1].ValueString,
-                                                ImportActiveEnergyT1 = dataItems[2].ValueString,
-                                                ImportActiveEnergyT2 = dataItems[3].ValueString,
-                                                ImportActiveEnergyT3 = dataItems[4].ValueString,
-                                                ImportActiveEnergyT4 = dataItems[5].ValueString,
-                                                ExportActiveEnergyTotal = dataItems[6].ValueString,
-                                                ImportReactiveEnergyTotal = dataItems[7].ValueString,
-                                                ExportReactiveEnergyTotal = dataItems[8].ValueString
+                                                ImportActivePowerTotal = dataItems[1].ValueString,
+                                                ExportActivePowerTotal = dataItems[2].ValueString,
+                                                A相电压 = dataItems[3].ValueString,
+                                                B相电压 = dataItems[4].ValueString,
+                                                C相电压 = dataItems[5].ValueString,
+                                                A相电流 = dataItems[6].ValueString,
+                                                B相电流 = dataItems[7].ValueString,
+                                                C相电流 = dataItems[8].ValueString
                                             };
 
-                                            Energies.Add(new Energy()
+                                            Powers.Add(new Power()
                                             {
-                                                EnergyData = JsonConvert.SerializeObject(energyCaptureObjects),
+                                                PowerData = JsonConvert.SerializeObject(powerCaptureObjects),
                                                 Id = Guid.NewGuid(),
                                                 DateTime = clock.ToDateTime(),
                                                 MeterId = tmp.MeterId
@@ -174,8 +172,8 @@ namespace JobMaster.Jobs
                                     return;
                                 }
                             }
-                            NetLogViewModel.LogDebug("正在执行释放请求");
 
+                            NetLogViewModel.LogDebug("正在执行释放请求");
                             await Business.ReleaseRequestAsyncNetty(true);
                             await Task.Delay(2000);
 
@@ -188,7 +186,7 @@ namespace JobMaster.Jobs
 
 
                             //提交、存储
-                            InsertData(tmp.MeterId, Energies);
+                            InsertData(tmp.MeterId, Powers);
                         });
                     }
                     catch (Exception e)
@@ -200,30 +198,27 @@ namespace JobMaster.Jobs
         }
 
 
-        public void InsertData(string meterId, List<Energy> Energies)
+        public void InsertData(string meterId, List<Power> powers)
         {
-            if (Energies.Count == 0)
+            if (powers.Count == 0)
             {
-                NetLogViewModel.LogWarn(meterId + "分钟电能数据返回个数为0,不调用API写数据库");
+                NetLogViewModel.LogWarn(meterId + "功率数据返回个数为0,不调用API写数据库");
                 return;
             }
 
             RestClient.BaseUrl = new Uri(BaseUriString + meterId);
             RestRequest.AddHeader("Content-Type", "application/json");
-            var str = JsonConvert.SerializeObject(Energies, Formatting.Indented);
-
+            var str = JsonConvert.SerializeObject(powers, Formatting.Indented);
             NetLogViewModel.LogInfo(str);
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (var item in Energies)
+            foreach (var item in powers)
             {
                 stringBuilder.Append(item.DateTime + "\r\n");
             }
 
-          
             NetLogViewModel.LogInfo(stringBuilder.ToString());
-            RestRequest.AddParameter("CurrentEnergy", str, ParameterType.RequestBody);
+            RestRequest.AddParameter("CurrentPower", str, ParameterType.RequestBody);
             IRestResponse restResponse = RestClient.Execute(RestRequest);
-
             NetLogViewModel.LogInfo("插入数据库" + (restResponse.IsSuccessful ? "成功" : "失败"));
         }
     }

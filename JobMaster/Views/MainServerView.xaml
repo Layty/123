@@ -10,161 +10,142 @@
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox
+                Margin="3"
+                Header="Server"
+                Style="{StaticResource GroupBoxOriginal}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="150"
+                            Margin="5"
+                            IsEditable="True"
+                            IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}"
+                            ItemsSource="{Binding HostIPlList}"
+                            Style="{StaticResource ComboBoxExtendBaseStyle}"
+                            Text="{Binding ServerIp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                            ToolTip="服务器IP地址" />
+                        <TextBox
+                            Margin="5"
+                            IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}"
+                            Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                            ToolTip="端口号" />
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200" />
-                    <RowDefinition />
 
-                </Grid.RowDefinitions>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            x:Name="ButtonRunServer"
+                            Margin="5"
+                            Background="{DynamicResource SuccessBrush}"
+                            Command="{Binding RunServer}"
+                            Content="开始"
+                            IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}" />
+                        <Button
+                            x:Name="ButtonCloseServer"
+                            Margin="5"
+                            Background="{DynamicResource DangerBrush}"
+                            Command="{Binding CloseServer}"
+                            Content="停止"
+                            IsEnabled="{Binding IsServerRunning}" />
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                            <TextBox
+                                x:Name="TextBoxIP"
+                                Width="100"
+                                Text="192.168.1.92" />
+                            <TextBox
+                                x:Name="TextBoxIPResult"
+                                Width="100"
+                                Text="{Binding IpDetectResult}" />
+                            <Button
+                                Command="{Binding IpDetectCommand}"
+                                CommandParameter="{Binding ElementName=TextBoxIP, Path=Text}"
+                                Content="探测" />
+                        </StackPanel>-->
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox
+                Grid.Column="1"
+                Margin="3"
+                HorizontalAlignment="Stretch"
+                Header="Clients"
+                Style="{StaticResource GroupBoxOriginal}">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
-                    <GroupBox
-                        Margin="3"
-                        Header="Server"
-                        Style="{StaticResource GroupBoxOriginal}">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <ComboBox
-                                    Width="180"
-                                    Margin="5"
-                                    FontSize="20"
-                                    IsEditable="True"
-                                    ItemsSource="{Binding HostIPlList}"
-                                    Style="{StaticResource ComboBoxExtendBaseStyle}"
-                                    Text="{Binding ServerIp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-                                <TextBox
-                                    Width="100"
-                                    Margin="5"
-                                    FontSize="20"
-                                    Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                                <!--<TextBox
-                                    Width="100"
-                                    Margin="5"
-                                    FontSize="20"
-                                    Text="{Binding ResponseTimeOut}" />-->
-
-                            </StackPanel>
-                            <!--<StackPanel Orientation="Horizontal">
-                                <TextBox
-                                    Width="100"
-                                    Margin="5"
-                                    FontSize="20"
-                                    Text="{Binding HeartBeatDelayTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                <CheckBox Content="自动识别并响应心跳帧" IsChecked="{Binding IsAutoResponseHeartBeat}" />
-                            </StackPanel>-->
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    x:Name="ButtonListen"
-                                    Margin="3"
-                                    Command="{Binding RunServer}"
-                                    Content="开始"
-                                    IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}" />
-                                <Button
-                                    x:Name="ButtonStop"
-                                    Margin="3"
-                                    Command="{Binding CloseServer}"
-                                    Content="停止"
-                                    IsEnabled="{Binding IsServerRunning}" />
-
-
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox
-                                    x:Name="TextBoxIP"
-                                    Width="100"
-                                    Text="192.168.1.92" />
-                                <TextBox
-                                    x:Name="TextBoxIPResult"
-                                    Width="100"
-                                    Text="{Binding IpDetectResult}" />
-                                <Button
-                                    Command="{Binding IpDetectCommand}"
-                                    CommandParameter="{Binding ElementName=TextBoxIP, Path=Text}"
-                                    Content="探测" />
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-
-                    <GroupBox
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="链接" />
+                        <TextBlock Text="{Binding ChannelHandlerContextCollection.Count}" />
+                        <TextBlock Text="设备识别" />
+                        <TextBlock Text="{Binding MeterIdMatchSockets.Count}" />
+                    </StackPanel>
+                    <ListBox
+                        x:Name="ListBox"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        BorderThickness="2"
+                        ItemsSource="{Binding ChannelHandlerContextCollection}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5,0" Text="{Binding Channel.RemoteAddress}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox
+                        x:Name="ListBoxMatch"
+                        Grid.Row="1"
                         Grid.Column="1"
-                        Margin="3"
-                        HorizontalAlignment="Stretch"
-                        Header="Clients"
-                        Style="{StaticResource GroupBoxOriginal}">
-
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="链接" />
-                                <TextBlock Text="{Binding ChannelHandlerContextCollection.Count}" />
-                                <TextBlock Text="设备识别" />
-                                <TextBlock Text="{Binding MeterIdMatchSockets.Count}" />
-                            </StackPanel>
-                            <ListBox
-                                x:Name="ListBox"
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                BorderThickness="2"
-                                ItemsSource="{Binding ChannelHandlerContextCollection}"
-                                ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="5,0" Text="{Binding Channel.RemoteAddress}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <ListBox
-                                x:Name="ListBoxMatch"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                BorderThickness="2"
-                                ItemsSource="{Binding MeterIdMatchSockets}"
-                                ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                MinWidth="180"
-                                                Margin="5,0"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding IpString}" />
-                                            <TextBlock HorizontalAlignment="Left" Text="&lt;==&gt;" />
-                                            <TextBlock
-                                                MinWidth="180"
-                                                Margin="5,0"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding MeterId}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Grid>
-
-
-                    </GroupBox>
+                        BorderThickness="2"
+                        ItemsSource="{Binding MeterIdMatchSockets}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock
+                                        MinWidth="180"
+                                        Margin="5,0"
+                                        HorizontalAlignment="Center"
+                                        Text="{Binding IpString}" />
+                                    <TextBlock HorizontalAlignment="Left" Text="&lt;==&gt;" />
+                                    <TextBlock
+                                        MinWidth="180"
+                                        Margin="5,0"
+                                        HorizontalAlignment="Center"
+                                        Text="{Binding MeterId}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
 
 
-            </Grid>
-        </ScrollViewer>
+            </GroupBox>
+        </Grid>
 
 
-    </Grid>
+
+    </ScrollViewer>
+
+
+
 </UserControl>

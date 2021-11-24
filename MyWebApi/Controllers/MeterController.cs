@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Entities;
 using MyWebApi.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -170,10 +171,16 @@ namespace MyWebApi.Controllers
             {
                 return BadRequest();
             }
-
+            var jsonstr = JsonConvert.SerializeObject(notification, Formatting.Indented);
+            Console.WriteLine("Controller");
+            Console.WriteLine(jsonstr);
             _meterRepository.AddNotificationData(meterId, notification);
-            await _meterRepository.SaveAsync();
-            return Ok(notification);
+            if (await _meterRepository.SaveAsync())
+            {
+                return Ok(notification);
+            }
+            else { return BadRequest(); }
+            
         }
     }
 }

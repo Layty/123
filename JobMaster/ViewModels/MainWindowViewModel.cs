@@ -4,7 +4,8 @@ namespace JobMaster.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private string _title = "Prism";
+        private string _title = "智慧能源网关主站采集系统";
+
         public string Title
         {
             get { return _title; }
@@ -13,7 +14,6 @@ namespace JobMaster.ViewModels
 
         public MainWindowViewModel()
         {
-
         }
     }
 }

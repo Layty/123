@@ -5,8 +5,8 @@ namespace JobMaster.Jobs
 {
     public interface IBaseJob : IJob
     {
-        DlmsClient Client { get; set; }
-
+      //  NettyBusiness Business { get; set; }
+        
         /// <summary>
         /// 曲线任务的名称
         /// </summary>
