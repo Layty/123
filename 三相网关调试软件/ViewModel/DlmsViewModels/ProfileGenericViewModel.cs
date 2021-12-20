@@ -231,6 +231,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
                     response.GetResponseNormal.Result.Data.UInt32ValueDisplayFormat =
                         UInt32ValueDisplayFormat.IntValue;
                     t.CapturePeriod.Value = response.GetResponseNormal.Result.Data.ValueString;
+                    //TODO :未进行格式化转换，导致设置的时候报文为“0x60” 二非“0x0000003C”
                 }
             });
             SetCapturePeriodCommand = new AsyncRelayCommand<CustomCosemProfileGenericModel>(async

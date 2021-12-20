@@ -1,5 +1,6 @@
 ﻿using DotNetty.Transport.Channels;
 using JobMaster.Helpers;
+using JobMaster.Models;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;

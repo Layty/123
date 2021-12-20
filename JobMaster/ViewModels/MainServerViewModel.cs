@@ -6,6 +6,7 @@ using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using JobMaster.Handlers;
 using JobMaster.Helpers;
+using JobMaster.Services;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -232,7 +233,7 @@ namespace JobMaster.ViewModels
         public async Task RunServerAsync()
         {
             NetLoggerViewModel.LogFront("正在开启服务器");
-            _bossGroup = new MultithreadEventLoopGroup(4);
+            _bossGroup = new MultithreadEventLoopGroup(1);
             _workerGroup = new MultithreadEventLoopGroup();
 
 
@@ -284,6 +285,7 @@ namespace JobMaster.ViewModels
             try
             {
                 _boundChannel = await bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(ServerIp), ServerPort));
+               await bootstrap.BindAsync(8882);
                 NetLoggerViewModel.LogFront("成功开启服务器");
 
                 IsServerRunning = true;

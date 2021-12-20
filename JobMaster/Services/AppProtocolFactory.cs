@@ -1,4 +1,5 @@
-﻿using MyDlmsStandard.ApplicationLay;
+﻿using JobMaster.Helpers;
+using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.Get;
 using MyDlmsStandard.ApplicationLay.Release;
@@ -7,7 +8,7 @@ using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Ber;
 
 
-namespace JobMaster.Helpers
+namespace JobMaster.Services
 {
     /// <summary>
     /// dlms 应用层帧 工厂
@@ -33,7 +34,7 @@ namespace JobMaster.Helpers
         {
             var GetRequest = new GetRequest
             {
-                GetRequestNext = new GetRequestNext() {BlockNumber = blockNumber}
+                GetRequestNext = new GetRequestNext() { BlockNumber = blockNumber }
             };
 
             return GetRequest;
@@ -42,7 +43,7 @@ namespace JobMaster.Helpers
         public static SetRequest CreateSetRequest(CosemAttributeDescriptor cosemAttributeDescriptor,
             DlmsDataItem value)
         {
-            SetRequest setRequest = new ();
+            SetRequest setRequest = new();
             setRequest.SetRequestNormal = new SetRequestNormal(cosemAttributeDescriptor, value);
             return setRequest;
         }
@@ -98,7 +99,7 @@ namespace JobMaster.Helpers
         {
             var releaseRequest = new ReleaseRequest
             {
-                Reason = new BerInteger() {Value = "00"}
+                Reason = new BerInteger() { Value = "00" }
                 //UserInformation = new UserInformation()
                 //{
                 //    InitiateRequest = new InitiateRequest(DlmsSettingsViewModel.MaxReceivePduSize,

@@ -1,6 +1,6 @@
-﻿using JobMaster;
-using JobMaster.Handlers;
+﻿using JobMaster.Handlers;
 using JobMaster.Models;
+using JobMaster.Services;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -24,7 +24,7 @@ namespace JobMaster.Jobs
 
         public RestClient RestClient { get; set; } = new RestClient();
         public RestRequest RestRequest { get; set; } = new RestRequest(Method.POST);
-        public IProtocol Protocol { get; }
+       
 
         private readonly ObservableCollection<MeterIdMatchSocketNew> MeterIdMatchSockets;
         public EnergyProfileGenericJobNew(NetLoggerViewModel netLoggerViewModel,

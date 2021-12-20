@@ -1,5 +1,4 @@
-﻿
-using MyDlmsStandard.ApplicationLay;
+﻿using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.BusinessDefine;
 using System;

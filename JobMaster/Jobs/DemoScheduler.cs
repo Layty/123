@@ -6,6 +6,38 @@ namespace JobMaster.Jobs
 {
     public static class DemoScheduler
     {
+        public static async Task<IScheduler> CreatClearBuffer(bool start = true)
+        {
+            var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            //清空分钟曲线任务，通过设置捕获对象进行清空
+
+            IJobDetail ClearEnergyJobDetail = JobBuilder.Create<ClearEnergyProfileGenericBufferJob>().WithIdentity("ClearEnergy", "ClearEnergyProfileGenericJob").WithDescription("1分钟电量曲线清空任务").Build();
+            ITrigger ClearEnergyTrigger = TriggerBuilder.Create()
+              .WithCronSchedule("10 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
+              .WithIdentity("EnergyProfileGenericJobTrigger", "ClearEnergyProfileGenericJob")
+              .WithDescription("分钟曲线每隔1分钟进行一次清空")
+              .Build();
+
+            IJobDetail ClearPowerJobDetail = JobBuilder.Create<ClearPowerProfileGenericBufferJob>().WithIdentity("ClearPower", "ClearPowerProfileGenericJob").WithDescription("15分钟功率曲线清空任务").Build();
+            ITrigger ClearPowerTrigger = TriggerBuilder.Create()
+              .WithCronSchedule("20 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
+              .WithIdentity("EnergyProfileGenericJobTrigger", "ClearPowerProfileGenericJob")
+              .WithDescription("功率曲线每隔1分钟进行一次清空")
+              .Build();
+            IJobDetail ClearDayJobDetail = JobBuilder.Create<ClearDayProfileGenericBufferJob>().WithIdentity("ClearDay", "ClearDayProfileGenericJob").WithDescription("日冻结电量曲线清空任务").Build();
+            ITrigger ClearDayTrigger = TriggerBuilder.Create()
+              .WithCronSchedule("40 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
+              .WithIdentity("DayProfileGenericJobTrigger", "ClearDayProfileGenericJob")
+              .WithDescription("日曲线每隔1分钟进行一次清空")
+              .Build();
+
+            await scheduler.ScheduleJob(ClearEnergyJobDetail, ClearEnergyTrigger);
+            await scheduler.ScheduleJob(ClearPowerJobDetail, ClearPowerTrigger);
+            await scheduler.ScheduleJob(ClearDayJobDetail, ClearDayTrigger);
+            if (start)
+                await scheduler.Start();
+            return scheduler;
+        }
         public static async Task<IScheduler> CreateTest(bool start = true)
         {
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
@@ -45,6 +77,7 @@ namespace JobMaster.Jobs
                 .WithIdentity("DayProfileGenericJobTrigger", "DayProfileGenericJob")
                 .WithCronSchedule("40 0/1 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
                 .Build();
+            
 
             //测试任务
             //IJobDetail testJobDetail = JobBuilder.Create<TestJob>().WithIdentity("TestJob").Build();

@@ -1,5 +1,6 @@
 ﻿using JobMaster.Handlers;
 using JobMaster.Models;
+using JobMaster.Services;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace JobMaster.Jobs
 {
+
     public class DayProfileGenericJobNew : ProfileGenericJobBaseNew, IJobWebApi<Day>
     {
         public virtual string BaseUriString { get; set; } = $"http://localhost:5000/api/Meter/DayData/";

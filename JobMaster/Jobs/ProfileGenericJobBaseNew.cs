@@ -1,4 +1,5 @@
 ﻿using JobMaster.Models;
+using JobMaster.Services;
 using JobMaster.ViewModels;
 using Quartz;
 using System.Threading.Tasks;
@@ -12,15 +13,14 @@ namespace JobMaster.Jobs
     {
         protected ProfileGenericJobBaseNew(NetLoggerViewModel netLoggerViewModel, IProtocol protocol, DlmsSettingsViewModel dlmsSettingsViewModel)
         {
-          
             NetLogViewModel = netLoggerViewModel;
             DlmsSettingsViewModel = dlmsSettingsViewModel;
-            Protocol= protocol;
+            Protocol = protocol;
         }
 
         public CustomCosemProfileGenericModel CustomCosemProfileGenericModel { get; set; }
-      //  public NettyBusiness Business { get; set; }
-      public IProtocol Protocol { get; set; }
+     
+        public IProtocol Protocol { get; set; }
         public DlmsSettingsViewModel DlmsSettingsViewModel { get; set; }
         public string JobName { get; set; }
         public int Period { get; set; }

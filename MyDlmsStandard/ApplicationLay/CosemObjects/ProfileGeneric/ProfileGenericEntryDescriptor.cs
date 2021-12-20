@@ -3,6 +3,7 @@ using MyDlmsStandard.ApplicationLay.CosemObjects.DataStorage;
 
 namespace MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric
 {
+   
     public class ProfileGenericEntryDescriptor : IToDlmsDataItem
     {
         /// <summary>

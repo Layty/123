@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace JobMaster.Handlers
+namespace JobMaster.Models
 {
     public class Notification
     {
@@ -10,5 +10,5 @@ namespace JobMaster.Handlers
         public string NotifyData { get; set; }
         public string MeterId { get; set; }
     }
- 
+
 }

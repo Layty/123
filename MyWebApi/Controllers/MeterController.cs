@@ -131,7 +131,7 @@ namespace MyWebApi.Controllers
             await _meterRepository.SaveAsync();
             return Ok(powers);
         }
-      
+
         [HttpPost("DayData/{meterId}")]
         public async Task<ActionResult<Day>> CreateDayData(string meterId, [FromBody] List<Day> day)
         {
@@ -171,16 +171,15 @@ namespace MyWebApi.Controllers
             {
                 return BadRequest();
             }
-            var jsonstr = JsonConvert.SerializeObject(notification, Formatting.Indented);
-            Console.WriteLine("Controller");
-            Console.WriteLine(jsonstr);
+
+
             _meterRepository.AddNotificationData(meterId, notification);
             if (await _meterRepository.SaveAsync())
             {
                 return Ok(notification);
             }
             else { return BadRequest(); }
-            
+
         }
     }
 }

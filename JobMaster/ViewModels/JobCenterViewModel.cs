@@ -285,7 +285,7 @@ namespace JobMaster.ViewModels
         {
             if (IsTestScheduler)
             {
-                Scheduler = DemoScheduler.CreateTest(false).Result;
+                Scheduler = DemoScheduler.CreatClearBuffer(false).Result;
             }
             else
             {

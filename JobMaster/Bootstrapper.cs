@@ -1,4 +1,5 @@
-﻿using JobMaster.ViewModels;
+﻿using JobMaster.Services;
+using JobMaster.ViewModels;
 using JobMaster.Views;
 using Microsoft.Extensions.Logging;
 using Prism.DryIoc;

@@ -47,7 +47,9 @@ namespace JobMaster.Handlers
                 }
                 _logger.LogTrace("符合心跳帧");
                 heartBeatFrame.WrapperHeader.OverturnDestinationSource();
-                Task.Delay(_mainServerViewModel.HeartBeatDelayTime).Wait(); ;
+                
+               // Task.Delay(_mainServerViewModel.HeartBeatDelayTime).Wait(); 
+               
                 var strAdd = heartBeatFrame.GetMeterAddressString();
                 _logger.LogFront($"MeterAddress:{strAdd}");
                 var t = Unpooled.Buffer();
@@ -113,7 +115,7 @@ namespace JobMaster.Handlers
         {
             await Task.Run(() =>
             {
-                _logger.LogError("Exception: " + exception);
+                _logger.LogError("Exception: " + exception.Message);
                 _mainServerViewModel.RemoveClient(context);
                 _logger.LogError("断开: " + context.Channel.RemoteAddress);
 
@@ -140,7 +142,7 @@ namespace JobMaster.Handlers
             {
                 // The connection was OK but there was no traffic for last period.
                 //Console.WriteLine("Disconnecting due to no inbound traffic");
-                _logger.LogInfo("长时间未与服务器通讯，踢掉: " + context.Channel.RemoteAddress);
+                _logger.LogInfo("由于未主动与服务器通讯而断开连接: " + context.Channel.RemoteAddress);
                 context.CloseAsync();
             }
 

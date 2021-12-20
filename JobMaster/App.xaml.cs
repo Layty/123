@@ -47,6 +47,7 @@ namespace JobMaster
         {
             Logger.Error($"Current_DispatcherUnhandledException:{e.Exception}");
 
+
             e.Handled = true;
         }
 
