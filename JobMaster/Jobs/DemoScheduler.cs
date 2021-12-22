@@ -102,12 +102,13 @@ namespace JobMaster.Jobs
         public static async Task<IScheduler> CreateNormal(bool start = true)
         {
             var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            
             IJobDetail energyJobDetail = JobBuilder.Create<EnergyProfileGenericJobNew>()
-                .WithIdentity("Energy", "ProfileGenericJob").WithDescription("分钟电量曲线任务").Build();
+                .WithIdentity("Energy", "EnergyProfileGenericJob").WithDescription("分钟电量曲线任务").Build();
 
             ITrigger energyTrigger = TriggerBuilder.Create()
                 .WithCronSchedule("10 0/5 * * * ? *", x => x.WithMisfireHandlingInstructionDoNothing())
-                .WithIdentity("EnergyProfileGenericJobTrigger", "ProfileGenericJob").WithDescription("分钟曲线每隔5分钟进行一次采集")
+                .WithIdentity("EnergyProfileGenericJobTrigger", "EnergyProfileGenericJob").WithDescription("分钟曲线每隔5分钟进行一次采集")
                 .Build();
 
             //功率

@@ -18,7 +18,9 @@ using System.Threading.Tasks;
 
 namespace JobMaster.Jobs
 {
-
+    /// <summary>
+    /// 日冻结曲线的读取任务
+    /// </summary>
     public class DayProfileGenericJobNew : ProfileGenericJobBaseNew, IJobWebApi<Day>
     {
         public virtual string BaseUriString { get; set; } = $"http://localhost:5000/api/Meter/DayData/";

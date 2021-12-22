@@ -277,6 +277,8 @@ namespace JobMaster.ViewModels
                     pipeline.AddLast("Assiaction", new AssiactionResponseHandler(NetLoggerViewModel, Protocol));
                     pipeline.AddLast("CaptureObjects",
                         new CaptureObjectsResponseHandler(NetLoggerViewModel, Protocol));
+                    pipeline.AddLast("SetResponse",
+                       new SetResponseHandler(NetLoggerViewModel, Protocol));
                     pipeline.AddLast("BufferResponse", new BufferResponseHandler(NetLoggerViewModel, Protocol));
                     pipeline.AddLast("ReleaseResponse", new ReleaseResponseHandler(NetLoggerViewModel, Protocol));
 
@@ -285,7 +287,7 @@ namespace JobMaster.ViewModels
             try
             {
                 _boundChannel = await bootstrap.BindAsync(new IPEndPoint(IPAddress.Parse(ServerIp), ServerPort));
-               await bootstrap.BindAsync(8882);
+                // await bootstrap.BindAsync(8882);
                 NetLoggerViewModel.LogFront("成功开启服务器");
 
                 IsServerRunning = true;

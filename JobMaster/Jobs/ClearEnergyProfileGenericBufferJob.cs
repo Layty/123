@@ -4,7 +4,6 @@ using JobMaster.Services;
 using JobMaster.ViewModels;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
-using MyDlmsStandard.ApplicationLay.CosemObjects.ProfileGeneric;
 using Quartz;
 using System;
 using System.Collections.ObjectModel;
@@ -18,21 +17,11 @@ namespace JobMaster.Jobs
         public ClearEnergyProfileGenericBufferJob(NetLoggerViewModel netLoggerViewModel, MainServerViewModel mainServerViewModel,
            IProtocol protocol, DlmsSettingsViewModel dlmsSettingsViewModel) : base(netLoggerViewModel, protocol, dlmsSettingsViewModel)
         {
-            JobName = "清空1分钟冻结Buffer任务";
+            JobName = "清空1分钟电量曲线Buffer任务";
+            netLoggerViewModel.LogFront($"任务名称:{JobName}\r\n");
             CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel(ProfileGenericLogicNameDefine.一分钟电量曲线)
             {
-                CaptureObjects = new ObservableCollection<CaptureObjectDefinition>()
-                {
-                    new CaptureObjectDefinition(){ ClassId=8,LogicalName="0.0.1.0.0.255",AttributeIndex=2,DataIndex=0,Description="Clock time"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.8.0.255",AttributeIndex=2,DataIndex=0,Description="正向有功总电能"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.8.1.255",AttributeIndex=2,DataIndex=0,Description="正向有功总电能尖"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.8.2.255",AttributeIndex=2,DataIndex=0,Description="正向有功总电能峰"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.8.3.255",AttributeIndex=2,DataIndex=0,Description="正向有功总电能平"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.8.4.255",AttributeIndex=2,DataIndex=0,Description="正向有功总电能谷"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.2.8.0.255",AttributeIndex=2,DataIndex=0,Description="反向有功总电能"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.3.8.0.255",AttributeIndex=2,DataIndex=0,Description="正向无功总电能"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.4.8.0.255",AttributeIndex=2,DataIndex=0,Description="反向无功总电能"},
-                }
+                CaptureObjects = ProfileGenericDefalutCaptrueObject.Energy
             };
             MeterIdMatchSockets = mainServerViewModel.MeterIdMatchSockets;
         }
@@ -84,10 +73,13 @@ namespace JobMaster.Jobs
                             await Business.SetRequestAndWaitResponseNetty(CustomCosemProfileGenericModel.CaptureObjectsAttributeDescriptor,
                                    new DlmsDataItem(DataType.Array, array));
                             await Task.Delay(2000);
-
-
-
-
+                            var setResult = SetResponseHandler.SetResponseBindingSocketNew[strIp];
+                            if (setResult != DataAccessResult.Success)
+                            {
+                                NetLogViewModel.LogWarn("设置失败");
+                                return;
+                            }
+                            NetLogViewModel.LogFront($"{strIp}成功");
                             NetLogViewModel.LogDebug("正在执行释放请求");
 
                             await Business.ReleaseRequestAsyncNetty(true);

@@ -4,6 +4,7 @@ using JobMaster.Jobs;
 using Prism.Commands;
 using Prism.Mvvm;
 using Quartz;
+using Quartz.Impl;
 using Quartz.Impl.Matchers;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace JobMaster.ViewModels
     public class JobCenterViewModel : BindableBase, ITriggerListener, IJobListener
     {
         public DelegateCommand StartSchedulerCommand { get; set; }
+        public DelegateCommand LoadingJobCommand { get; }
         public DelegateCommand ShutdownSchedulerCommand { get; set; }
         public DelegateCommand PauseAllSchedulerCommand { get; set; }
         public DelegateCommand ResumeAllSchedulerCommand { get; set; }
@@ -103,7 +105,7 @@ namespace JobMaster.ViewModels
             JobsViewModels = new ObservableCollection<JobsViewModel>();
 
             StartSchedulerCommand = new DelegateCommand(Start);
-
+            LoadingJobCommand = new DelegateCommand(LoadingJob);
             ShutdownSchedulerCommand = new DelegateCommand(Shutdown);
             PauseAllSchedulerCommand = new DelegateCommand(PauseAll);
             ResumeAllSchedulerCommand = new DelegateCommand(() =>
@@ -281,17 +283,38 @@ namespace JobMaster.ViewModels
         private ObservableCollection<JobsViewModel> _jobsViewModels;
 
 
+        public SchedulerJobType SchedulerType { get; set; } = SchedulerJobType.NoromalReadProfileBuffer;
+        public void LoadingJob()
+        {
+            //每次都清空，保证只有一个
+            Scheduler.Clear();
+            switch (SchedulerType)
+            {
+                case SchedulerJobType.ClearBuffer:
+                    Scheduler = DemoScheduler.CreatClearBuffer(false).Result;
+                    break;
+                case SchedulerJobType.NoromalReadProfileBuffer:
+                    Scheduler = DemoScheduler.CreateNormal(false).Result;
+                    break;
+                case SchedulerJobType.TestReadProfileBuffer:
+                    Scheduler = DemoScheduler.CreateTest(false).Result;
+                    break;
+                default:
+                    break;
+            }
+            UpdateJobList();
+        }
         public async void Start()
         {
-            if (IsTestScheduler)
-            {
-                Scheduler = DemoScheduler.CreatClearBuffer(false).Result;
-            }
-            else
-            {
-                Scheduler = DemoScheduler.CreateNormal(false).Result;
-            }
-
+            //if (SchedulerType==SchedulerJobType.ClearBuffer)
+            //{
+            //    Scheduler = DemoScheduler.CreatClearBuffer(false).Result;
+            //}
+            //else
+            //{
+            //    Scheduler = DemoScheduler.CreateNormal(false).Result;
+            //}
+            Scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await Scheduler.Start();
             Scheduler.ListenerManager.AddJobListener(this);
             Scheduler.JobFactory = new ProfileGenicJobFactory(serviceProvider);

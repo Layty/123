@@ -18,21 +18,11 @@ namespace JobMaster.Jobs
         public ClearPowerProfileGenericBufferJob(NetLoggerViewModel netLoggerViewModel, MainServerViewModel mainServerViewModel,
            IProtocol protocol, DlmsSettingsViewModel dlmsSettingsViewModel) : base(netLoggerViewModel, protocol, dlmsSettingsViewModel)
         {
-            JobName = "清空15功率冻结Buffer任务";
-            CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel(ProfileGenericLogicNameDefine.十五分钟电量曲线)
+            JobName = "清空15分钟功率曲线Buffer任务";
+            netLoggerViewModel.LogFront($"任务名称:{JobName}\r\n");
+            CustomCosemProfileGenericModel = new CustomCosemProfileGenericModel(ProfileGenericLogicNameDefine.十五分钟功率曲线)
             {
-                CaptureObjects = new ObservableCollection<CaptureObjectDefinition>()
-                {
-                    new CaptureObjectDefinition(){ ClassId=8,LogicalName="0.0.1.0.0.255",AttributeIndex=2,DataIndex=0,Description="Clock time"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.1.7.0.255",AttributeIndex=2,DataIndex=0,Description="总正向有功功率"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.2.7.0.255",AttributeIndex=2,DataIndex=0,Description="总反向有功功率"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.32.7.0.255",AttributeIndex=2,DataIndex=0,Description="L1 相电压"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.52.7.0.255",AttributeIndex=2,DataIndex=0,Description="L2 相电压"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.72.7.0.255",AttributeIndex=2,DataIndex=0,Description="L3 相电压"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.31.7.0.255",AttributeIndex=2,DataIndex=0,Description="L1 相电流"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.51.7.0.255",AttributeIndex=2,DataIndex=0,Description="L2 相电流"},
-                    new CaptureObjectDefinition(){ ClassId=3,LogicalName="1.0.71.7.0.255",AttributeIndex=2,DataIndex=0,Description="L3 相电流"},
-                }
+                CaptureObjects = ProfileGenericDefalutCaptrueObject.Power,
             };
             MeterIdMatchSockets = mainServerViewModel.MeterIdMatchSockets;
         }
@@ -84,8 +74,13 @@ namespace JobMaster.Jobs
                             await Business.SetRequestAndWaitResponseNetty(CustomCosemProfileGenericModel.CaptureObjectsAttributeDescriptor,
                                    new DlmsDataItem(DataType.Array, array));
                             await Task.Delay(2000);
-
-
+                            var setResult = SetResponseHandler.SetResponseBindingSocketNew[strIp];
+                            if (setResult != DataAccessResult.Success)
+                            {
+                                NetLogViewModel.LogWarn("设置失败");
+                                return;
+                            }
+                            NetLogViewModel.LogFront($"{strIp}成功");
 
 
                             NetLogViewModel.LogDebug("正在执行释放请求");

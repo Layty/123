@@ -2,6 +2,9 @@
 
 namespace JobMaster.Jobs
 {
+    /// <summary>
+    /// 与类7曲线类相关的任务,继承者IBaseJob
+    /// </summary>
     public interface IProfileGenericJob : IBaseJob
     {
         /// <summary>

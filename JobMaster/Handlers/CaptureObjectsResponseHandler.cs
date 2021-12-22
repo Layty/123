@@ -13,13 +13,13 @@ namespace JobMaster.Handlers
     {
         private readonly NetLoggerViewModel _logger;
         private readonly IProtocol Protocol;
-        public static Dictionary<string, GetResponse> CaptureObjectsResponsesBindingSocketNew = new ();
+        public static Dictionary<string, GetResponse> CaptureObjectsResponsesBindingSocketNew = new();
 
         public CaptureObjectsResponseHandler(NetLoggerViewModel logger, IProtocol protocol)
         {
             _logger = logger;
             _logger.LogTrace("CaptureObjectsResponseHandler 实例化成功");
-         
+
             Protocol = protocol;
         }
 
@@ -50,7 +50,7 @@ namespace JobMaster.Handlers
                             else
                             {
                                 _logger.LogTrace("读取曲线捕获对象成功");
-                               
+
                                 CaptureObjectsResponsesBindingSocketNew[context.Channel.RemoteAddress.ToString()] =
                                     CaptureObjectsResponse;
                             }

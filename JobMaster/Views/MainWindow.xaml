@@ -27,7 +27,7 @@
                         <MenuItem
                             x:Name="Job"
                             Click="Job_Click"
-                            Header="曲线任务" />
+                            Header="自动任务" />
                         <MenuItem
                             x:Name="Noti"
                             Click="Noti_Click"
