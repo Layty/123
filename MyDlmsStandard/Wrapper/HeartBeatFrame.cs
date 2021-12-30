@@ -1,4 +1,5 @@
 ﻿using MyDlmsStandard.Axdr;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,21 @@ namespace MyDlmsStandard.Wrapper
 
             return add;
         }
+       /// <summary>
+       /// 设置字符串的方式设置表号
+       /// </summary>
+       /// <param name="meterIdStrign"></param>
+        public void SetMeterAddressString(string meterIdStrign)
+        {
+
+            if (meterIdStrign.Length != 12)
+            {
+                throw new Exception("长度不对，需为12个");
+            }
+            MeterAddressBytes = Encoding.Default.GetBytes(meterIdStrign);
+
+        }
+
 
         public HeartBeatFrame(byte[] meterAddressBytes) : this()
         {

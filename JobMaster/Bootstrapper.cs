@@ -34,6 +34,10 @@ namespace JobMaster
             containerRegistry.RegisterSingleton<JobCenterViewModel>();
             containerRegistry.RegisterForNavigation<JobCenterView>();
             containerRegistry.RegisterForNavigation<DataNotificationView>();
+
+            //注册虚拟表服务
+            containerRegistry.RegisterSingleton<VirtualMeterClientViewModel>();
+            containerRegistry.RegisterForNavigation<VirtualMeterClientView>();
         }
 
         protected override void OnInitialized()

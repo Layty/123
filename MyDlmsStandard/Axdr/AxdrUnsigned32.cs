@@ -11,7 +11,10 @@ namespace MyDlmsStandard.Axdr
         public AxdrIntegerUnsigned32()
         {
         }
-
+        public AxdrIntegerUnsigned32(uint uintValue)
+        {
+            Value = uintValue.ToString("X8");
+        }
         public AxdrIntegerUnsigned32(string hexString)
         {
             if (hexString.Length != 8)

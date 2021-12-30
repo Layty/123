@@ -1,5 +1,6 @@
 ﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
+using System;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -58,6 +59,53 @@ namespace MyDlmsStandard.ApplicationLay.Get
             }
 
             return stringBuilder.ToString();
+        }
+
+        internal bool PduStringInHexConstructor(ref string pduStringInHex)
+        {
+            if (string.IsNullOrEmpty(pduStringInHex))
+            {
+                return false;
+            }
+            string getRequestType = pduStringInHex.Substring(0, 2);
+            if (getRequestType != "01")
+            {
+                return false;
+            }
+            string InvokeIdAndPriority = pduStringInHex.Substring(2, 2);
+            if (InvokeIdAndPriority != "C1")
+            {
+                return false;
+            }
+            pduStringInHex = pduStringInHex.Substring(4);
+            var a = new CosemAttributeDescriptor();
+            if (a.PduStringInHexConstructor(ref pduStringInHex))
+            {
+                AttributeDescriptor = a;
+               
+            }
+            var b = pduStringInHex.Substring(0, 2);
+           
+            if (b == "00")
+            {
+                return true;
+            }
+            else if (b == "01")
+            {
+                pduStringInHex = pduStringInHex.Substring(2);
+                var aselestion = new SelectiveAccessDescriptor();
+                if (aselestion.PduStringInHexConstructor(ref pduStringInHex))
+                {
+                    this.AccessSelection = aselestion;
+                    this.AttributeDescriptorWithSelection = new CosemAttributeDescriptorWithSelection
+                        (AttributeDescriptor, AccessSelection);
+                    return true;
+                }
+                else { return false; }
+            }
+          
+
+            return true;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace JobMaster.Handlers
 {
+
     public class AssiactionResponseHandler : ChannelHandlerAdapter
     {
         private readonly NetLoggerViewModel _logger;

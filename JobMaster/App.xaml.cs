@@ -6,14 +6,20 @@ using NLog;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using GZY.Quartz.MUI.Extensions;
 
 namespace JobMaster
 {
     public partial class App : Application
     {
-        public ILogger Logger = LogManager.GetCurrentClassLogger();
+        public static ILogger Logger = LogManager.GetCurrentClassLogger();
 
-
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddQuartzUI();
+        //    services.AddQuartzClassJobs(); //添加本地调度任务访问
+        //}
         protected override void OnStartup(StartupEventArgs e)
         {
             DispatcherHelper.Initialize();

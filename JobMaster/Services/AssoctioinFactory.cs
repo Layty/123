@@ -12,5 +12,10 @@ namespace JobMaster.Services
                 DlmsSettingsViewModel.SystemTitle, DlmsSettingsViewModel.ProposedConformance);
             return AssociationRequest;
         }
+        public static AssociationResponse CreateAssociationResponse(DlmsSettingsViewModel DlmsSettingsViewModel)
+        {
+            var AssociationResponse = new AssociationResponse();
+            return AssociationResponse;
+        }
     }
 }

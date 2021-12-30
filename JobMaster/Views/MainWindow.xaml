@@ -40,6 +40,10 @@
                             x:Name="x2"
                             Click="Noti_Click"
                             Header="数据查询" />
+                        <MenuItem
+                            x:Name="VirtualMeter"
+                            Click="VirtualMeter_Click"
+                            Header="模拟表" />
                     </MenuItem>
                     <!--<MenuItem Header="Header2">
                         <MenuItem Header="Header1" />

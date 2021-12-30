@@ -300,23 +300,35 @@ namespace JobMaster.ViewModels
 
         public async Task CloseServerAsync()
         {
-            NetLoggerViewModel.LogFront("正在关闭服务器,请等待...");
-
-            //主动关闭客户端链接,相当于发起socket.disconnect
-            foreach (var item in ChannelHandlerContextCollection)
+            try
             {
-                await item.CloseAsync();
+                NetLoggerViewModel.LogDebug("正在关闭服务器,请等待...");
+                NetLoggerViewModel.LogFront("正在关闭服务器,请等待...");
+
+                //主动关闭客户端链接,相当于发起socket.disconnect
+                foreach (var item in ChannelHandlerContextCollection)
+                {
+                    await item.CloseAsync();
+
+                }
+
+                await _boundChannel.CloseAsync();
             }
 
-            await _boundChannel.CloseAsync();
+            finally
+            {
+                await Task.WhenAll(
+                                _bossGroup.ShutdownGracefullyAsync(),
+                                _workerGroup.ShutdownGracefullyAsync()
+                            );
+                NetLoggerViewModel.LogFront("成功关闭服务器");
+                NetLoggerViewModel.LogDebug("成功关闭服务器");
+                IsServerRunning = false;
+            }
 
-            await Task.WhenAll(
-                _bossGroup.ShutdownGracefullyAsync(),
-                _workerGroup.ShutdownGracefullyAsync()
-            );
-            NetLoggerViewModel.LogFront("成功关闭服务器");
 
-            IsServerRunning = false;
+
+
         }
 
 

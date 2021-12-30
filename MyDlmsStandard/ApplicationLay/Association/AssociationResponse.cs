@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace MyDlmsStandard.ApplicationLay.Association
 {
-    public class AssociationResponse
+    public class AssociationResponse:IToPduStringInHex
     {
         [XmlIgnore] public Command Command { get; set; } = Command.Aare;
 
@@ -122,6 +122,12 @@ namespace MyDlmsStandard.ApplicationLay.Association
                 }
             }
             return true;
+        }
+
+        public string ToPduStringInHex()
+        {//00 01 00 01 00 01 00 2B 61 29 A1 09 06 07 60 85 74 05 08 01 01 A2 03 02 01 00 A3 05 A1 03 02 01 00 BE 10 04 0E 08 00 06 5F 1F 04 00 00 3A 1F 01 40 00 07
+            return "00 01 00 01 00 01 00 2B 61 29 A1 09 06 07 60 85 74 05 08 01 01 A2 03 02 01 00 A3 05 A1 03 02 01 00 BE 10 04 0E 08 00 06 5F 1F 04 00 00 3A 1F 01 40 00 07";
+          
         }
     }
 }

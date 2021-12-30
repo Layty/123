@@ -1,25 +1,30 @@
 ﻿using HandyControl.Controls;
 using HandyControl.Themes;
-using HandyControl.Tools;
+using Microsoft.Extensions.Logging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Prism.Regions;
 using JobMaster.ViewModels;
+using HandyControl.Tools;
 
 namespace JobMaster.Views
 {
     public partial class MainWindow
     {
-        public MainWindow(IRegionManager regionManager, MainServerViewModel mainServerViewModel)
+        public MainWindow(IRegionManager regionManager, ILogger logger, MainServerViewModel mainServerViewModel, JobCenterViewModel jobCenterViewModel)
         {
-            InitializeComponent();  
+            InitializeComponent();
             RegionManager = regionManager;
+            Logger = logger;
             MainServerViewModel = mainServerViewModel;
+            JobCenterViewModel = jobCenterViewModel;
         }
 
         public IRegionManager RegionManager { get; }
+        public ILogger Logger { get; }
         public MainServerViewModel MainServerViewModel { get; }
+        public JobCenterViewModel JobCenterViewModel { get; }
 
         #region Change Theme
         private void ButtonConfig_OnClick(object sender, RoutedEventArgs e) => PopupConfig.IsOpen = true;
@@ -68,10 +73,14 @@ namespace JobMaster.Views
             RegionManager.RequestNavigate("ContentRegion", "JobCenterView");
         }
 
-     
+
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (JobCenterViewModel.IsSchedulerStarted)
+            {
+                JobCenterViewModel.Shutdown();
+            }
             if (MainServerViewModel.IsServerRunning)
             {
                 await MainServerViewModel.CloseServerAsync();
@@ -87,6 +96,12 @@ namespace JobMaster.Views
         private void Noti_Click(object sender, RoutedEventArgs e)
         {
             RegionManager.RequestNavigate("ContentRegion", "DataNotificationView");
+        }
+
+        private void VirtualMeter_Click(object sender, RoutedEventArgs e)
+        {
+            
+            RegionManager.RequestNavigate("ContentRegion", "VirtualMeterClientView");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using NLog;
 using System;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace 三相智慧能源网关调试软件
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             base.OnStartup(e);
         }
-
+       
 
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)

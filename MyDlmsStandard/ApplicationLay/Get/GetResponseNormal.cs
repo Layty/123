@@ -7,7 +7,7 @@ namespace MyDlmsStandard.ApplicationLay.Get
     public class GetResponseNormal : IGetResponse
     {
         [XmlIgnore] public GetResponseType GetResponseType => GetResponseType.Normal;
-        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; }
+        public AxdrIntegerUnsigned8 InvokeIdAndPriority { get; set; } = new AxdrIntegerUnsigned8("C1");
 
         public GetDataResult Result { get; set; }
 

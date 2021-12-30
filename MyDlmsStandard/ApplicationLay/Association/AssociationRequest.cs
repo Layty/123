@@ -1,6 +1,7 @@
 ﻿using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Ber;
 using MyDlmsStandard.Common;
+using System;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -90,6 +91,108 @@ namespace MyDlmsStandard.ApplicationLay.Association
             BerOctetString berOctetString3 = new BerOctetString();
             berOctetString3.Value = stringBuilder.ToString();
             return "60" + berOctetString3.ToPduStringInHex();
+        }
+
+        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        { //采用最简单的判断60
+            string a = pduStringInHex.Substring(0, 2);
+            if (a != "60")
+            {
+                return false;
+            }
+            //int num = Convert.ToInt32(pduStringInHex.Substring(2, 2), 16);
+            //if (num < 16 || num * 2 + 2 > pduStringInHex.Length)
+            //{
+            //    return false;
+            //}
+            //pduStringInHex = pduStringInHex.Substring(4);
+            //while (!string.IsNullOrEmpty(pduStringInHex))
+            //{
+            //    a = pduStringInHex.Substring(0, 2);
+            //    pduStringInHex = pduStringInHex.Substring(2);
+            //    switch (Convert.ToInt32(a, 16) & 0x1F)
+            //    {
+            //        case 0:
+            //            ProtocolVersion = new BerBitString();
+            //            if (!ProtocolVersion.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case 1:
+            //            ApplicationContextName = new ApplicationContextName();
+            //            if (!ApplicationContextName.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        //case 2:
+            //        //    result = new BerInteger();
+            //        //    if (!pduStringInHex.StartsWith("0302"))
+            //        //    {
+            //        //        return false;
+            //        //    }
+            //        //    pduStringInHex = pduStringInHex.Substring(4);
+            //        //    if (!result.PduStringInHexContructor(ref pduStringInHex))
+            //        //    {
+            //        //        return false;
+            //        //    }
+            //        //    break;
+            //        //case 3:
+            //        //    resultSourceDiagnostic = new ResultSourceDiagnostic();
+            //        //    if (!resultSourceDiagnostic.PduStringInHexContructor(ref pduStringInHex))
+            //        //    {
+            //        //        return false;
+            //        //    }
+            //        //    break;
+            //        //case 4:
+            //        //    pduStringInHex = pduStringInHex.Substring(2);
+            //        //    if (pduStringInHex.StartsWith("04"))
+            //        //    {
+            //        //        pduStringInHex = pduStringInHex.Substring(2);
+            //        //        respondingAPTitle = new BerOctetString();
+            //        //        if (!respondingAPTitle.PduStringInHexContructor(ref pduStringInHex))
+            //        //        {
+            //        //            return false;
+            //        //        }
+            //        //        break;
+            //        //    }
+            //        //    return false;
+            //        case 8:
+            //            SenderACSERequirements = new BerBitString();
+            //            if (!SenderACSERequirements.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case 9:
+            //            MechanismName = new MechanismName();
+            //            if (!MechanismName.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case 10:
+            //            AuthenticationValue = new AuthenticationValue();
+            //            if (!AuthenticationValue.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        case 30:
+            //            UserInformation = new BerOctetString();
+            //            if (!UserInformation.PduStringInHexConstructor(ref pduStringInHex))
+            //            {
+            //                return false;
+            //            }
+            //            break;
+            //        default:
+            //            return false;
+            //    }
+
+            //}
+
+            return true;
         }
     }
 }
