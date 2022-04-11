@@ -1,5 +1,5 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay.Get;
 using NLog;
@@ -20,8 +20,8 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
         protected ProfileGenericJobBase()
         {
             
-            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
-            NetLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
+            Client = App.Current.Services.GetService<DlmsClient>();
+            NetLogViewModel = App.Current.Services.GetService<NetLogViewModel>();
         }
       
         public DlmsClient Client { get; set; }

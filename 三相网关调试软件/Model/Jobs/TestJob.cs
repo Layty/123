@@ -1,4 +1,4 @@
-﻿using CommonServiceLocator;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MyDlmsStandard;
 using NLog;
 using Quartz;
@@ -11,7 +11,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
     {
         public TestJob()
         {
-            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = App.Current.Services.GetService<DlmsClient>();
             JobName = "简单测试任务";
         }
         public async Task Execute(IJobExecutionContext context)
@@ -31,7 +31,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         tempClient.CurrentSocket = so;
                         tempClient.DlmsSettingsViewModel.ProtocolInterfaceType = ProtocolInterfaceType.WRAPPER;
                         tempClient.DlmsSettingsViewModel.PhysicalChanelType = PhysicalChanelType.FrontEndProcess;
-                        var netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
+                        var netLogViewModel = App.Current.Services.GetService<NetLogViewModel>();
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行" + JobName + "\r\n";
                         netLogViewModel.MyServerNetLogModel.Log =

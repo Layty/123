@@ -1,4 +1,4 @@
-﻿using CommonServiceLocator;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Text;
@@ -10,7 +10,7 @@ namespace 三相智慧能源网关调试软件.Common
 {
     public static class XmlHelper
     {
-        public static XMLLogViewModel Logger = ServiceLocator.Current.GetInstance<XMLLogViewModel>();
+        public static XMLLogViewModel Logger = App.Current.Services.GetService<XMLLogViewModel>();
 
         public static void XmlCommon<T>(T t)
         {

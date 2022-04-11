@@ -1,6 +1,6 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
@@ -53,11 +53,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public DlmsBaseMeterViewModel()
         {
-            SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+            SerialPortViewModel = App.Current.Services.GetService<SerialPortViewModel>();
 
            
 
-            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = App.Current.Services.GetService<DlmsClient>();
 
           
 

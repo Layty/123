@@ -1,4 +1,4 @@
-﻿using CommonServiceLocator;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
@@ -14,7 +14,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
     {
         public CloseWarmingJob()
         {
-            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = App.Current.Services.GetService<DlmsClient>();
             JobName = "背光窃电状态字配置任务";
             DataModel = new CustomCosemDataModel("0.0.96.50.22.255");
         }
@@ -36,7 +36,7 @@ namespace 三相智慧能源网关调试软件.Model.Jobs
                         tempClient.CurrentSocket = so;
                         tempClient.DlmsSettingsViewModel.ProtocolInterfaceType = ProtocolInterfaceType.WRAPPER;
                         tempClient.DlmsSettingsViewModel.PhysicalChanelType = PhysicalChanelType.FrontEndProcess;
-                        var netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
+                        var netLogViewModel = App.Current.Services.GetService<NetLogViewModel>();
                         netLogViewModel.MyServerNetLogModel.Log =
                             "正在执行" + JobName + "\r\n";
                         netLogViewModel.MyServerNetLogModel.Log =

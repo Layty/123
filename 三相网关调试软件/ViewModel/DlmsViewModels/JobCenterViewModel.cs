@@ -1,6 +1,6 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Quartz;
 using Quartz.Impl.Matchers;
 using System;
@@ -165,7 +165,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
           //  Scheduler = DemoScheduler.Create(false).Result;
             Scheduler = DemoScheduler.CreateTest(false).Result;
             Scheduler.ListenerManager.AddJobListener(this);
-            netLogViewModel = ServiceLocator.Current.GetInstance<NetLogViewModel>();
+            netLogViewModel = App.Current.Services.GetService<NetLogViewModel>();
             // Scheduler.ListenerManager.AddTriggerListener(this);
         }
 

@@ -40,7 +40,7 @@
                                         IsEditable="True"
                                         ItemsSource="{Binding TcpServerHelper.HostIPlList}"
                                         Style="{StaticResource MaterialDesignFilledComboBox}"
-                                        Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                        Text="{Binding TcpServerHelper.ListenIpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                         <!-- <ComboBoxItem>192.168.1.155</ComboBoxItem> -->
                                         <!-- <ComboBoxItem>127.0.0.1</ComboBoxItem> -->
                                     </ComboBox>
@@ -51,7 +51,7 @@
                                         materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
                                         FontSize="20"
                                         Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                                        Text="{Binding TcpServerHelper.ListenPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                        Text="{Binding TcpServerHelper.ListenPort, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox
                                         Margin="5"
                                         materialDesign:HintAssist.FloatingScale="0.50"
@@ -308,7 +308,7 @@
                             </StackPanel>
                         </GroupBox>
                     </Expander>
-               
+
                     <!-- <Expander Grid.Row="4" Header="任务中心"> -->
                     <!--     <StackPanel> -->
                     <!--         <GroupBox Header="曲线任务"> -->

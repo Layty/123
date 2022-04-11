@@ -1,4 +1,4 @@
-﻿using CommonServiceLocator;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MyDlmsStandard;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,37 +18,37 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
         public DlmsClientPage()
         {
             InitializeComponent();
-            Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+            Client = App.Current.Services.GetService<DlmsClient>();
         }
 
         private void ListBox_OnSelected(object sender, RoutedEventArgs e)
         {
-            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket =
+            App.Current.Services.GetService<DlmsClient>().CurrentSocket =
                 (ListBox.SelectedItem as TcpServerViewModel.MeterIdMatchSocket)?.MySocket;
-            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket = ListBox.SelectedItem as Socket;
-            //            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-            //                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
-            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket =
+            //            App.Current.Services.GetService<DlmsClient>().CurrentSocket = ListBox.SelectedItem as Socket;
+            //            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+            //                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<DlmsClient>().CurrentSocket =
                 (ListBox.SelectedItem as TcpServerViewModel.MeterIdMatchSocket)?.MySocket;
-            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
         }
 
         private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
         {
-            //            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket = (Socket)ListBox.SelectedItem;
-            //            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-            //                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
-            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket =
+            //            App.Current.Services.GetService<DlmsClient>().CurrentSocket = (Socket)ListBox.SelectedItem;
+            //            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+            //                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<DlmsClient>().CurrentSocket =
                 (ListBox.SelectedItem as TcpServerViewModel.MeterIdMatchSocket)?.MySocket;
-            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
         }
 
 
@@ -71,10 +71,10 @@ namespace 三相智慧能源网关调试软件.View.ServerCenter
 
         private void ListBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket =
+            App.Current.Services.GetService<DlmsClient>().CurrentSocket =
                 (ListBox.SelectedItem as TcpServerViewModel.MeterIdMatchSocket)?.MySocket;
-            ServiceLocator.Current.GetInstance<TcpServerViewModel>().CurrentSocketClient =
-                ServiceLocator.Current.GetInstance<DlmsClient>().CurrentSocket;
+            App.Current.Services.GetService<TcpServerViewModel>().CurrentSocketClient =
+                App.Current.Services.GetService<DlmsClient>().CurrentSocket;
         }
     }
 }

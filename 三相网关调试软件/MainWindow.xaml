@@ -8,17 +8,21 @@
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
     xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
     xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
-    xmlns:wpfdev="https://github.com/yanjinhuagood/WPFDevelopers"
-    x:Name="ThisWindow"
+    xmlns:viewmodel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
+    xmlns:wpfdev="https://github.com/WPFDevelopersOrg/WPFDevelopers"
     Title="TODO"
-    Width="1024" Style="{StaticResource MaterialDesignWindow}"
+    Width="1024"
     Height="650"
+    d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
     AllowsTransparency="True"
     Background="{DynamicResource MaterialDesignPaper}"
     Closing="MainWindow_OnClosing"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
     Loaded="MainWindow_OnLoaded"
     ResizeMode="CanMinimize"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
@@ -26,6 +30,11 @@
     mc:Ignorable="d">
 
     <Window.Resources>
+
+
+
+
+
 
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -185,6 +194,7 @@
                 <EasingThicknessKeyFrame Value="-200,3,3,5" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
+
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="StackPanel.MouseEnter" SourceName="StackPanelOperatingZone">
@@ -532,8 +542,9 @@
                                     <Expander
                                         Margin="5"
                                         materialDesign:ExpanderAssist.VerticalHeaderPadding="20"
+                                        Header="服务中心"
                                         IsEnabled="{Binding LoginModel.LoginResult}">
-                                        <Expander.Header>服务中心</Expander.Header>
+
                                         <Expander.Content>
                                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                                 <ListBox
@@ -581,25 +592,26 @@
                                 x:Name="TabControl"
                                 Margin="0,-1,0,1"
                                 BorderThickness="0">
-                                <TabItem>
+
+                                <TabItem HorizontalAlignment="Center">
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="Logout" />
                                     </TabItem.Header>
                                     <myControl:SocketAndMeterAddressMapping />
                                 </TabItem>
-                                <TabItem>
+                                <TabItem HorizontalAlignment="Center">
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="SerialPort" />
                                     </TabItem.Header>
                                     <myControl:SerialPortLogger />
                                 </TabItem>
-                                <TabItem>
+                                <TabItem HorizontalAlignment="Center">
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="Ethernet" />
                                     </TabItem.Header>
                                     <myControl:NetLogger />
                                 </TabItem>
-                                <TabItem>
+                                <TabItem HorizontalAlignment="Center">
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="Xml" />
                                     </TabItem.Header>

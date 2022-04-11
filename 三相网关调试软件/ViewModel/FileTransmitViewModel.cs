@@ -1,7 +1,7 @@
-﻿using CommonServiceLocator;
+﻿using Microsoft.Extensions.DependencyInjection;
 using FileTransmit;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -172,7 +172,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
         public FileTransmitViewModel()
         {
-            SerialPortViewModel = ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+            SerialPortViewModel = App.Current.Services.GetService<SerialPortViewModel>();
             TransmitMode = TransmitMode.Send;
             YModemType = YModemType.YModem_1K;
             PacketLen = 1024;

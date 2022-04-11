@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件.Model
 {
 
-    public class UserLoginModel : ValidateModelBase
+    public class UserLoginModel : ObservableValidator
     {
         [Required(ErrorMessage = "The user name cannot be empty！")]
         public string UserName

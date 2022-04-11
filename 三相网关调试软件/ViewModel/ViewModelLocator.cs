@@ -1,7 +1,4 @@
-using CommonServiceLocator;
-using Unity;
-using Unity.ServiceLocation;
-using 三相智慧能源网关调试软件.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using 三相智慧能源网关调试软件.MyControl;
 using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
 
@@ -11,24 +8,22 @@ namespace 三相智慧能源网关调试软件.ViewModel
     {
         public ViewModelLocator()
         {
-            UnityContainer container = new UnityContainer();
-            UnityServiceLocator unityServiceLocator = new UnityServiceLocator(container);
-            ServiceLocator.SetLocatorProvider(() => unityServiceLocator);
-            //  ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+           
+          
             //注册服务
             {
                 #region excel配置文件
-                ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
-                container.RegisterInstance(excel);
+                //ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+                //container.RegisterInstance(excel);
                 #endregion
                 #region Dlms相关服务
 
-                container.RegisterSingleton<DlmsSettingsViewModel>();
-                container.RegisterSingleton<DataViewModel>();
-                container.RegisterSingleton<RegisterViewModel>();
-                container.RegisterSingleton<ProfileGenericViewModel>();
-                container.RegisterSingleton<ClockViewModel>();
-                container.RegisterSingleton<LoadIdentificationViewModel>();
+                //container.RegisterSingleton<DlmsSettingsViewModel>();
+                //container.RegisterSingleton<DataViewModel>();
+                //container.RegisterSingleton<RegisterViewModel>();
+                //container.RegisterSingleton<ProfileGenericViewModel>();
+                //container.RegisterSingleton<ClockViewModel>();
+                //container.RegisterSingleton<LoadIdentificationViewModel>();
                 //SimpleIoc.Default.Register<DlmsSettingsViewModel>();
                 //SimpleIoc.Default.Register<DataViewModel>();
                 //SimpleIoc.Default.Register<RegisterViewModel>();
@@ -41,13 +36,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 主程序界面相关
 
-                container.RegisterSingleton<MainViewModel>(); //主窗体
-                container.RegisterSingleton<MenuViewModel>(); //菜单
-                container.RegisterSingleton<UserLoginViewModel>(); //用户登录
-                container.RegisterSingleton<ColorToolViewModel>(); //程序调色板，皮肤
+                //container.RegisterSingleton<MainViewModel>(); //主窗体
+                //container.RegisterSingleton<MenuViewModel>(); //菜单
+                //container.RegisterSingleton<UserLoginViewModel>(); //用户登录
+                //container.RegisterSingleton<ColorToolViewModel>(); //程序调色板，皮肤
                 // container.RegisterSingleton<SkinViewModel>(); //程序调色板，皮肤，开机直接应用
-                container.RegisterInstance(new SkinViewModel());
-                container.RegisterSingleton<SnackbarViewModel>();
+                //container.RegisterInstance(new SkinViewModel());
+                //container.RegisterSingleton<SnackbarViewModel>();
 
 
                 //SimpleIoc.Default.Register<MainViewModel>(); //主窗体
@@ -62,15 +57,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 服务中心相关业务
 
-                container.RegisterSingleton<TelnetViewModel>(); //网关调试登录Telnet客户端
-                container.RegisterSingleton<TcpServerViewModel>(); //网关调试登录Telnet客户端
-                container.RegisterSingleton<TftpServerViewModel>();
-                container.RegisterSingleton<TftpClientViewModel>();
-                container.RegisterSingleton<NetLogViewModel>();
-                container.RegisterSingleton<XMLLogViewModel>();
-                container.RegisterSingleton<SerialPortViewModel>(); //RS485串口
-                container.RegisterSingleton<DlmsClient>();
-                container.RegisterSingleton<JobCenterViewModel>();
+                //container.RegisterSingleton<TelnetViewModel>(); //网关调试登录Telnet客户端
+                //container.RegisterSingleton<TcpServerViewModel>(); //网关调试登录Telnet客户端
+                //container.RegisterSingleton<TftpServerViewModel>();
+                //container.RegisterSingleton<TftpClientViewModel>();
+                //container.RegisterSingleton<NetLogViewModel>();
+                //container.RegisterSingleton<XMLLogViewModel>();
+                //container.RegisterSingleton<SerialPortViewModel>(); //RS485串口
+                //container.RegisterSingleton<DlmsClient>();
+                //container.RegisterSingleton<JobCenterViewModel>();
 
                 //SimpleIoc.Default.Register<TelnetViewModel>(); //网关调试登录Telnet客户端
                 //SimpleIoc.Default.Register<TcpServerViewModel>(); //网关调试登录Telnet客户端
@@ -88,9 +83,9 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 三相网关计量芯相关业务
 
-                container.RegisterSingleton<DlmsBaseMeterViewModel>(); //基表DLMS协议
-                container.RegisterSingleton<FileTransmitViewModel>(); //计量芯升级
-                container.RegisterSingleton<IicDataViewModel>(); //IIC报文解析服务
+                //container.RegisterSingleton<DlmsBaseMeterViewModel>(); //基表DLMS协议
+                //container.RegisterSingleton<FileTransmitViewModel>(); //计量芯升级
+                //container.RegisterSingleton<IicDataViewModel>(); //IIC报文解析服务
                 //SimpleIoc.Default.Register<DlmsBaseMeterViewModel>(); //基表DLMS协议
                 //SimpleIoc.Default.Register<FileTransmitViewModel>(); //计量芯升级
                 //SimpleIoc.Default.Register<IicDataViewModel>(); //IIC报文解析服务
@@ -99,7 +94,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 三相网关智能仪表业务
 
-                container.RegisterSingleton<UtilityTablesViewModel>(); //泰昂设备
+                //container.RegisterSingleton<UtilityTablesViewModel>(); //泰昂设备
 
                 //   SimpleIoc.Default.Register<UtilityTablesViewModel>(); //泰昂设备
 
@@ -107,8 +102,8 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 #region 三相网关管理芯相关业务
 
-                container.RegisterSingleton<ENetClientHelper>(); //网关登录使用的ENet客户端
-                container.RegisterSingleton<ENetMessageBuilderViewModel>();
+                //container.RegisterSingleton<ENetClientHelper>(); //网关登录使用的ENet客户端
+                //container.RegisterSingleton<ENetMessageBuilderViewModel>();
                 //SimpleIoc.Default.Register<ENetClientHelper>(); //网关登录使用的ENet客户端
                 //SimpleIoc.Default.Register<ENetMessageBuilderViewModel>();
 
@@ -117,83 +112,83 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 #endregion
 
 
-                container.RegisterSingleton<CosemObjectViewModel>();
-                container.RegisterSingleton<MeterDataViewModel>();
-                container.RegisterSingleton<DialogsViewModel>();
+                //container.RegisterSingleton<CosemObjectViewModel>();
+                //container.RegisterSingleton<MeterDataViewModel>();
+                //container.RegisterSingleton<DialogsViewModel>();
 
-                container.RegisterSingleton<LocalNetHelper>();
-                container.RegisterSingleton<SSHClientViewModel>();
+                //container.RegisterSingleton<LocalNetHelper>();
+                //container.RegisterSingleton<SSHClientViewModel>();
             }
         }
 
-        public SSHClientViewModel SshClientViewModel => ServiceLocator.Current.GetInstance<SSHClientViewModel>();
-        public LocalNetHelper LocalNetHelper => ServiceLocator.Current.GetInstance<LocalNetHelper>();
+        public SSHClientViewModel SshClientViewModel => App.Current.Services.GetService<SSHClientViewModel>();
+        public LocalNetHelper LocalNetHelper => App.Current.Services.GetService<LocalNetHelper>();
 
-        public DialogsViewModel DialogsViewModel => ServiceLocator.Current.GetInstance<DialogsViewModel>();
+        public DialogsViewModel DialogsViewModel => App.Current.Services.GetService<DialogsViewModel>();
 
         #region 主程序界面相关
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public MenuViewModel Menu => ServiceLocator.Current.GetInstance<MenuViewModel>();
-        public UserLoginViewModel Login => ServiceLocator.Current.GetInstance<UserLoginViewModel>();
-        public ColorToolViewModel ColorToolViewModel => ServiceLocator.Current.GetInstance<ColorToolViewModel>();
-        public SkinViewModel Skin => ServiceLocator.Current.GetInstance<SkinViewModel>();
+        public MainViewModel Main => App.Current.Services.GetService<MainViewModel>();
+        public MenuViewModel Menu => App.Current.Services.GetService<MenuViewModel>();
+        public UserLoginViewModel Login => App.Current.Services.GetService<UserLoginViewModel>();
+        public ColorToolViewModel ColorToolViewModel => App.Current.Services.GetService<ColorToolViewModel>();
+        public SkinViewModel Skin => App.Current.Services.GetService<SkinViewModel>();
 
-        public ClockViewModel ClockViewModel => ServiceLocator.Current.GetInstance<ClockViewModel>();
-        public SnackbarViewModel SnackbarViewModel => ServiceLocator.Current.GetInstance<SnackbarViewModel>();
+        public ClockViewModel ClockViewModel => App.Current.Services.GetService<ClockViewModel>();
+        public SnackbarViewModel SnackbarViewModel => App.Current.Services.GetService<SnackbarViewModel>();
 
         #endregion
 
         #region 管理芯相关业务
 
-        public DlmsClient DlmsClient => ServiceLocator.Current.GetInstance<DlmsClient>();
+        public DlmsClient DlmsClient => App.Current.Services.GetService<DlmsClient>();
 
         public DlmsSettingsViewModel DlmsSettingsViewModel =>
-            ServiceLocator.Current.GetInstance<DlmsSettingsViewModel>();
+            App.Current.Services.GetService<DlmsSettingsViewModel>();
 
-        public RegisterViewModel RegisterViewModel => ServiceLocator.Current.GetInstance<RegisterViewModel>();
-        public DataViewModel DataViewModel => ServiceLocator.Current.GetInstance<DataViewModel>();
+        public RegisterViewModel RegisterViewModel => App.Current.Services.GetService<RegisterViewModel>();
+        public DataViewModel DataViewModel => App.Current.Services.GetService<DataViewModel>();
 
 
         public ProfileGenericViewModel ProfileGenericViewModel =>
-            ServiceLocator.Current.GetInstance<ProfileGenericViewModel>();
+            App.Current.Services.GetService<ProfileGenericViewModel>();
 
         public LoadIdentificationViewModel LoadIdentificationViewModel =>
-            ServiceLocator.Current.GetInstance<LoadIdentificationViewModel>();
+            App.Current.Services.GetService<LoadIdentificationViewModel>();
 
-        public ENetClientHelper ENetClient => ServiceLocator.Current.GetInstance<ENetClientHelper>();
+        public ENetClientHelper ENetClient => App.Current.Services.GetService<ENetClientHelper>();
 
         public ENetMessageBuilderViewModel ENetMessageMakerViewModel =>
-            ServiceLocator.Current.GetInstance<ENetMessageBuilderViewModel>();
+            App.Current.Services.GetService<ENetMessageBuilderViewModel>();
 
-        public TelnetViewModel TcpClientHelper => ServiceLocator.Current.GetInstance<TelnetViewModel>();
+        public TelnetViewModel TcpClientHelper => App.Current.Services.GetService<TelnetViewModel>();
 
-        public NetLogViewModel Log => ServiceLocator.Current.GetInstance<NetLogViewModel>();
+        public NetLogViewModel Log => App.Current.Services.GetService<NetLogViewModel>();
 
-        public XMLLogViewModel XmlLogViewModel => ServiceLocator.Current.GetInstance<XMLLogViewModel>();
-        public TftpServerViewModel TftpServer => ServiceLocator.Current.GetInstance<TftpServerViewModel>();
-        public TftpClientViewModel TftpClient => ServiceLocator.Current.GetInstance<TftpClientViewModel>();
-        public TcpServerViewModel TcpServer => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
-        public JobCenterViewModel JobCenterViewModel => ServiceLocator.Current.GetInstance<JobCenterViewModel>();
+        public XMLLogViewModel XmlLogViewModel => App.Current.Services.GetService<XMLLogViewModel>();
+        public TftpServerViewModel TftpServer => App.Current.Services.GetService<TftpServerViewModel>();
+        public TftpClientViewModel TftpClient => App.Current.Services.GetService<TftpClientViewModel>();
+        public TcpServerViewModel TcpServer => App.Current.Services.GetService<TcpServerViewModel>();
+        public JobCenterViewModel JobCenterViewModel => App.Current.Services.GetService<JobCenterViewModel>();
 
         #endregion
 
         #region 计量芯相关业务
 
-        public SerialPortViewModel SerialPortViewModel => ServiceLocator.Current.GetInstance<SerialPortViewModel>();
+        public SerialPortViewModel SerialPortViewModel => App.Current.Services.GetService<SerialPortViewModel>();
 
         public DlmsBaseMeterViewModel DlmsBaseMeterViewModel =>
-            ServiceLocator.Current.GetInstance<DlmsBaseMeterViewModel>();
+            App.Current.Services.GetService<DlmsBaseMeterViewModel>();
 
         public UtilityTablesViewModel UtilityTablesViewModel =>
-            ServiceLocator.Current.GetInstance<UtilityTablesViewModel>();
+            App.Current.Services.GetService<UtilityTablesViewModel>();
 
         #endregion
 
         #region 智能仪表
 
         public FileTransmitViewModel FileTransmitViewModel =>
-            ServiceLocator.Current.GetInstance<FileTransmitViewModel>();
+            App.Current.Services.GetService<FileTransmitViewModel>();
 
         #endregion
 
@@ -203,10 +198,10 @@ namespace 三相智慧能源网关调试软件.ViewModel
         /// IIC数据视图模型
         /// </summary>
         public IicDataViewModel IicDataViewModel =>
-            ServiceLocator.Current.GetInstance<IicDataViewModel>();
+            App.Current.Services.GetService<IicDataViewModel>();
 
-        public CosemObjectViewModel CosemObjectViewModel => ServiceLocator.Current.GetInstance<CosemObjectViewModel>();
-        public MeterDataViewModel MeterDataViewModel => ServiceLocator.Current.GetInstance<MeterDataViewModel>();
+        public CosemObjectViewModel CosemObjectViewModel => App.Current.Services.GetService<CosemObjectViewModel>();
+        public MeterDataViewModel MeterDataViewModel => App.Current.Services.GetService<MeterDataViewModel>();
 
         #endregion
 

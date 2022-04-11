@@ -1,11 +1,12 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Common;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using 三相智慧能源网关调试软件.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
@@ -592,7 +593,7 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
         {
             {
                 DiYaGuiDataModels = new ObservableCollection<DiYaGuiDataModel>();
-                Client = CommonServiceLocator.ServiceLocator.Current.GetInstance<DlmsClient>();
+                Client = App.Current.Services.GetService<DlmsClient>();
 
                 ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
                 var dataTable = excel.GetExcelDataTable("UtilityTables$");

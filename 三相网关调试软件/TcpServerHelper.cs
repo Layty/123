@@ -1,6 +1,6 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -266,7 +266,7 @@ namespace 三相智慧能源网关调试软件
         }
     }
 
-    public class TcpServerHelper : ValidateModelBase
+    public class TcpServerHelper : ObservableValidator
     {
         public bool IsStarted
         {
@@ -286,27 +286,19 @@ namespace 三相智慧能源网关调试软件
         public string ListenIpAddress
         {
             get => _listenIpAddress;
-            set
-            {
-                _listenIpAddress = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _listenIpAddress, value, true);
         }
 
         private string _listenIpAddress;
 
         [Required(ErrorMessage = "不能为空！")]
-        public int ListenPort
+        public int? ListenPort
         {
             get => _listenPort;
-            set
-            {
-                _listenPort = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _listenPort, value, true);
         }
 
-        private int _listenPort;
+        private int? _listenPort;
         private IPEndPoint _ipEndPoint;
 
         public IPEndPoint IpEndPoint
@@ -401,7 +393,7 @@ namespace 三相智慧能源网关调试软件
             ListenIpAddress = listenIpAddress;
             ListenPort = listenPort;
             SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
+            IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort.Value);
             SocketClientList = new ObservableCollection<Socket>();
         }
 
@@ -478,7 +470,7 @@ namespace 三相智慧能源网关调试软件
                 }
 
                 SocketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort);
+                IpEndPoint = new IPEndPoint(IPAddress.Parse(ListenIpAddress), ListenPort.Value);
                 SocketServer.Bind(IpEndPoint);
                 SocketServer.Listen(500);
                 OnNotifyStatusMsg($"监听{IpEndPoint}成功");

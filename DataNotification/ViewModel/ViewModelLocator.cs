@@ -1,20 +1,6 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:DataNotification"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
 
-using CommonServiceLocator;
-using GalaSoft.MvvmLight.Ioc;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataNotification.ViewModel
 {
@@ -29,16 +15,16 @@ namespace DataNotification.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            SimpleIoc.Default.Register<TcpServerViewModel>();
-            SimpleIoc.Default.Register<NetLogViewModel>();
-            SimpleIoc.Default.Register<MainViewModel>();
+            //ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            //SimpleIoc.Default.Register<TcpServerViewModel>();
+            //SimpleIoc.Default.Register<NetLogViewModel>();
+            //SimpleIoc.Default.Register<MainViewModel>();
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public MainViewModel Main => App.Current.Services.GetService<MainViewModel>();
 
-        public TcpServerViewModel TcpServerViewModel => ServiceLocator.Current.GetInstance<TcpServerViewModel>();
-        public NetLogViewModel NetLogViewModel => ServiceLocator.Current.GetInstance<NetLogViewModel>();
+        public TcpServerViewModel TcpServerViewModel => App.Current.Services.GetService<TcpServerViewModel>();
+        public NetLogViewModel NetLogViewModel => App.Current.Services.GetService<NetLogViewModel>();
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

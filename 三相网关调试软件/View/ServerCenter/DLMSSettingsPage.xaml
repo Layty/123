@@ -12,6 +12,9 @@
     Title="DLMSSettingsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
     <Page.DataContext>
         <Binding Path="DlmsBaseMeterViewModel" Source="{StaticResource Locator}" />

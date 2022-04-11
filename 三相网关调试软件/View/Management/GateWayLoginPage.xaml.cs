@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace 三相智慧能源网关调试软件.View.Management
 {
@@ -14,7 +15,7 @@ namespace 三相智慧能源网关调试软件.View.Management
         }
 
         public ENetClientHelper ENetInstance =
-            CommonServiceLocator.ServiceLocator.Current.GetInstance<ENetClientHelper>();
+            App.Current.Services.GetService<ENetClientHelper>();
 
 
 

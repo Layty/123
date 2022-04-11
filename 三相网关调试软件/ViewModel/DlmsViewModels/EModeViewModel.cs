@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MyDlmsStandard.HDLC.IEC21EMode;
 using MySerialPortMaster;
 using System.IO.Ports;

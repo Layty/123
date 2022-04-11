@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using DataNotification.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
+using NLog;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,7 +16,23 @@ namespace DataNotification
         public static Logger Logger = LogManager.GetCurrentClassLogger();
 
 
+        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; }
+        public App()
+        {
+            Services = ConfigureServices();
 
+            this.InitializeComponent();
+        }
+        private static IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<TcpServerViewModel>();
+            services.AddSingleton<NetLogViewModel>();
+            return services.BuildServiceProvider();
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
 

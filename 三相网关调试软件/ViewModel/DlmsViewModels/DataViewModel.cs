@@ -1,5 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Get;
@@ -39,11 +39,11 @@ namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
 
         public DlmsClient Client { get; set; }
 
-        public DataViewModel(DlmsClient dlmsClient)
+        public DataViewModel(DlmsClient dlmsClient,ExcelHelper excelHelper)
         {
             Client = dlmsClient;
-            ExcelHelper excel = new ExcelHelper(Properties.Settings.Default.ExcelFileName);
-            var dataTable = excel.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
+          
+            var dataTable = excelHelper.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
             DataCollection = new ObservableCollection<CustomCosemDataModel>();
 
             for (int i = 0; i < dataTable.Rows.Count; i++)

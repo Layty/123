@@ -6,7 +6,6 @@
     xmlns:local="clr-namespace:三相智慧能源网关调试软件.View"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
     xmlns:myAnimation="clr-namespace:myAnimation;assembly=myAnimation"
     xmlns:themes="clr-namespace:三相智慧能源网关调试软件.Themes"
     Title="CoverPage"

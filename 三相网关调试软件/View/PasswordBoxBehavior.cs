@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using Microsoft.Xaml.Behaviors;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
+
 
 namespace 三相智慧能源网关调试软件.View
 {

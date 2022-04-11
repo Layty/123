@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
+using CommunityToolkit.Mvvm.ComponentModel;
 using 三相智慧能源网关调试软件.Common;
 using HeartBeatFrame = 三相智慧能源网关调试软件.Model.HeartBeatFrame;
+using ValidationResult = System.Windows.Controls.ValidationResult;
 
 
 namespace 三相智慧能源网关调试软件
@@ -12,7 +14,7 @@ namespace 三相智慧能源网关调试软件
     /// <summary>
     /// （适配器）处理12为表地址和8位表地址转换问题，为了兼容旧版本服务器，后续被舍弃
     /// </summary>
-    public class TcpTranslator : ValidateModelBase
+    public class TcpTranslator : ObservableValidator
     {
         public TcpServerHelper TcpListener { get; set; }
 
@@ -20,26 +22,18 @@ namespace 三相智慧能源网关调试软件
         public int LocalPort
         {
             get => _localPort;
-            set
-            {
-                _localPort = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _localPort, value, true);
         }
 
         private int _localPort;
-
+       
         [Required(ErrorMessage = "不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",
             ErrorMessage = "请输入正确的IP地址！")]
         public string LocalIp
         {
             get => _localIp;
-            set
-            {
-                _localIp = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _localIp, value, true);
         }
 
         private string _localIp;
@@ -50,11 +44,7 @@ namespace 三相智慧能源网关调试软件
         public string RemoteIp
         {
             get => _remoteIp;
-            set
-            {
-                _remoteIp = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _remoteIp, value, true);
         }
 
         private string _remoteIp;
@@ -63,16 +53,11 @@ namespace 三相智慧能源网关调试软件
         public int RemotePort
         {
             get => _remotePort;
-            set
-            {
-                _remotePort = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _remotePort, value, true);
         }
 
         private int _remotePort;
-
-
+     
         public bool IsNeedToConvert12HeartBeatTo8
         {
             get => _isNeedToConvert12HeartBeatTo8;

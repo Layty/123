@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,10 +6,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace 三相智慧能源网关调试软件
 {
-    public class TcpClientHelper : ValidateModelBase
+    public class TcpClientHelper : ObservableValidator
     {
         public Socket ClientSocket { get; set; }
 

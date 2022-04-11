@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using NLog;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using 三相智慧能源网关调试软件.Helpers;
+using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModel;
+using 三相智慧能源网关调试软件.MyControl;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -15,19 +18,76 @@ namespace 三相智慧能源网关调试软件
     public partial class App : Application
     {
         public static Logger Logger = LogManager.GetCurrentClassLogger();
+        public new static App Current => (App)Application.Current;
+        public IServiceProvider Services { get; }
+        public App()
+        {
+            Services = ConfigureServices();
 
-        //private readonly LierdaCracker _cracker = new LierdaCracker();
+           
+        }
+        private static IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+            ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
+            services.AddSingleton(excel);
+
+            services.AddSingleton<DlmsSettingsViewModel>();
+            services.AddSingleton<DataViewModel>();
+            services.AddSingleton<RegisterViewModel>();
+            services.AddSingleton<ProfileGenericViewModel>();
+            services.AddSingleton<ClockViewModel>();
+            services.AddSingleton<LoadIdentificationViewModel>();
+
+            services.AddSingleton<MainViewModel>(); //主窗体
+            services.AddSingleton<MenuViewModel>(); //菜单
+            services.AddSingleton<UserLoginViewModel>(); //用户登录
+            services.AddSingleton<ColorToolViewModel>(); //程序调色板，皮肤
+            services.AddSingleton<SkinViewModel>(); //程序调色板，皮肤，开机直接应用
+
+            services.AddSingleton<SnackbarViewModel>();
+
+
+            services.AddSingleton<TelnetViewModel>(); //网关调试登录Telnet客户端
+            services.AddSingleton<TcpServerViewModel>(); //网关调试登录Telnet客户端
+            services.AddSingleton<TftpServerViewModel>();
+            services.AddSingleton<TftpClientViewModel>();
+            services.AddSingleton<NetLogViewModel>();
+            services.AddSingleton<XMLLogViewModel>();
+            services.AddSingleton<SerialPortViewModel>(); //RS485串口
+            services.AddSingleton<DlmsClient>();
+            services.AddSingleton<JobCenterViewModel>();
+
+            services.AddSingleton<DlmsBaseMeterViewModel>(); //基表DLMS协议
+            services.AddSingleton<FileTransmitViewModel>(); //计量芯升级
+            services.AddSingleton<IicDataViewModel>(); //IIC报文解析服务
+
+            services.AddSingleton<UtilityTablesViewModel>(); //泰昂设备
+
+            services.AddSingleton<ENetClientHelper>(); //网关登录使用的ENet客户端
+            services.AddSingleton<ENetMessageBuilderViewModel>();
+
+            services.AddSingleton<CosemObjectViewModel>();
+            services.AddSingleton<MeterDataViewModel>();
+            services.AddSingleton<DialogsViewModel>();
+
+            services.AddSingleton<LocalNetHelper>();
+            services.AddSingleton<SSHClientViewModel>();
+
+            return services.BuildServiceProvider();
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
-            //  _cracker.Cracker();
+
             DispatcherHelper.Initialize();
 
+            Services.GetService<SkinViewModel>().ApplyBase();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             base.OnStartup(e);
         }
-       
+
 
         //仅能捕获 Task 中抛出的未处理异常 事件的触发有延时，依赖垃圾回收
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)

@@ -14,6 +14,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     DataContext="{Binding Source={StaticResource Locator}, Path=DlmsClient}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="ToggleButtonStyle12" TargetType="{x:Type ToggleButton}">
@@ -421,7 +424,6 @@
             <TabControl
                 Grid.Row="1"
                 Grid.Column="2"
-                materialDesign:ColorZoneAssist.Mode="Standard"
                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
                 BorderBrush="Transparent"

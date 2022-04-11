@@ -1,7 +1,7 @@
 ﻿using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Properties;
+using System.Threading.Tasks;
 
 namespace 三相智慧能源网关调试软件.ViewModel
 {
@@ -274,8 +275,14 @@ namespace 三相智慧能源网关调试软件.ViewModel
             get => _isDarkTheme;
             set
             {
-                _isDarkTheme = value;
-                OnPropertyChanged();
+                if (SetProperty(ref _isDarkTheme, value))
+                {
+                    Task.Run(() => { 
+                        ModifyTheme(theme => theme.SetBaseTheme(value ? Theme.Dark : Theme.Light));
+                        Settings.Default.IsDarkTheme = value;
+                        Settings.Default.Save();
+                    });
+                }
             }
         }
 
@@ -294,8 +301,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             new PaletteHelper().SetTheme(theme);
         }
 
-        public RelayCommand<bool> ToggleBaseCommand { get; } = new RelayCommand<bool>(ApplyBase);
-
+        
         private static void ApplyBase(bool isDark)
         {
             ModifyTheme(theme => theme.SetBaseTheme(isDark ? Theme.Dark : Theme.Light));

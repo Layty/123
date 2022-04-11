@@ -1,7 +1,7 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -93,13 +93,13 @@ namespace 三相智慧能源网关调试软件.ViewModel
              });
             RequestCommand = new RelayCommand(() =>
             {
-                var ENetClient = ServiceLocator.Current.GetInstance<ENetClientHelper>();
+                var ENetClient = App.Current.Services.GetService<ENetClientHelper>();
                 var e = ENetMessageMaker.GetRequest();
                 ENetClient.SendDataToServer(e);
             });
             SetCommand = new RelayCommand(() =>
             {
-                var ENetClient = ServiceLocator.Current.GetInstance<ENetClientHelper>();
+                var ENetClient = App.Current.Services.GetService<ENetClientHelper>();
                 var e = ENetMessageMaker.GetRequest();
                 ENetClient.SendDataToServer(e);
             });

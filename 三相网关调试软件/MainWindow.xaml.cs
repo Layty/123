@@ -1,5 +1,5 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -143,7 +143,7 @@ namespace 三相智慧能源网关调试软件
                 _keyState++;
                 if (_keyState >= _target.Length)
                 {
-                    var s = ServiceLocator.Current.GetInstance<UserLoginViewModel>();
+                    var s = App.Current.Services.GetService<UserLoginViewModel>();
                     s.LoginModel.LoginResult = true;
 
                     _keyState = 0;

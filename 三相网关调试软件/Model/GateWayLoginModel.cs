@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace 三相智慧能源网关调试软件.Model
 {
-    public class GateWayLoginModel : ValidateModelBase
+    public class GateWayLoginModel : ObservableValidator
     {
         [Required(ErrorMessage = "网关IP不能为空！")]
         [RegularExpression("^((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}$$",

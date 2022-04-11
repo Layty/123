@@ -1,6 +1,6 @@
-﻿using CommonServiceLocator;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using System.Windows.Controls;
@@ -62,7 +62,7 @@ namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 
             public CloseWarningViewModel()
             {
-                Client = ServiceLocator.Current.GetInstance<DlmsClient>();
+                Client = App.Current.Services.GetService<DlmsClient>();
 
                 InitCommand = new RelayCommand(async () => { await Client.InitRequest(); });
                 ReleaseCommand = new RelayCommand(async () => { await Client.ReleaseRequest(); });
