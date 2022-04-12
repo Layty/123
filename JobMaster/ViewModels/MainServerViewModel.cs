@@ -1,4 +1,6 @@
-﻿using DotNetty.Buffers;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
@@ -7,7 +9,6 @@ using DotNetty.Transport.Channels.Sockets;
 using JobMaster.Handlers;
 using JobMaster.Helpers;
 using JobMaster.Services;
-using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,119 +20,48 @@ using System.Threading.Tasks;
 
 namespace JobMaster.ViewModels
 {
-    public class MainServerViewModel : ValidateModelBase
+
+    public partial class MainServerViewModel : ObservableObject
     {
         private readonly NetLoggerViewModel NetLoggerViewModel;
         private readonly IProtocol Protocol;
-        public ObservableCollection<MeterIdMatchSocketNew> MeterIdMatchSockets
-        {
-            get => _meterIdMatchSockets;
-            set
-            {
-                SetProperty(ref _meterIdMatchSockets, value);
-            }
-        }
 
+        [ObservableProperty]
         private ObservableCollection<MeterIdMatchSocketNew> _meterIdMatchSockets = new();
 
-        public DelegateCommand RunServer
-        {
-            get => _runServer;
-            set
-            {
-                _runServer = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private DelegateCommand _runServer;
-
-        private DelegateCommand _closeServer;
-
-        public DelegateCommand CloseServer
-        {
-            get => _closeServer;
-            set
-            {
-                _closeServer = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public bool IsServerRunning
-        {
-            get => _isServerRunning;
-            set
-            {
-                _isServerRunning = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(CloseServerCommand))]
         private bool _isServerRunning;
-
 
         /// <summary>
         /// 超时时间默认2s
         /// </summary>
-        public int ResponseTimeOut
-        {
-            get => _responseTimeOut;
-            set
-            {
-                _responseTimeOut = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private int _responseTimeOut = 2;
 
         /// <summary>
         /// 是否自动响应47心跳帧
         /// </summary>
-        public bool IsAutoResponseHeartBeat
-        {
-            get => _isAutoResponseHeartBeat;
-            set
-            {
-                _isAutoResponseHeartBeat = value;
-                RaisePropertyChanged();
-            }
-        }
+        [ObservableProperty]
 
         private bool _isAutoResponseHeartBeat = true;
 
         /// <summary>
         /// 心跳帧延时响应时间(ms)
         /// </summary>
-        public int HeartBeatDelayTime
-        {
-            get => _heartBeatDelayTime;
-            set
-            {
-                _heartBeatDelayTime = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private int _heartBeatDelayTime = 1000;
 
-
+        [ObservableProperty]
         private string _serverIp = "192.168.1.155";
 
-        public string ServerIp
-        {
-            get { return _serverIp; }
-            set { SetProperty(ref _serverIp, value); }
-        }
 
+        [ObservableProperty]
         private int _serverPort = 8881;
 
-        public int ServerPort
-        {
-            get { return _serverPort; }
-            set { SetProperty(ref _serverPort, value); }
-        }
+
 
 
         public void AddClient(IChannelHandlerContext context)
@@ -168,16 +98,6 @@ namespace JobMaster.ViewModels
         public MainServerViewModel(NetLoggerViewModel netLoggerViewModel, IProtocol protocol,
             DataNotificationViewModel dataNotificationViewModel)
         {
-            RunServer = new DelegateCommand(async () => { await RunServerAsync(); });
-            CloseServer =
-                new DelegateCommand(async () => { await CloseServerAsync(); })
-                    .ObservesCanExecute(() => IsServerRunning);
-
-
-            IpDetectCommand = new DelegateCommand<string>(async t =>
-            {
-                await Task.Run(() => { IpDetectResult = PingIp(t); });
-            });
             NetLoggerViewModel = netLoggerViewModel;
             Protocol = protocol;
             this.dataNotificationViewModel = dataNotificationViewModel;
@@ -188,48 +108,23 @@ namespace JobMaster.ViewModels
         private IEventLoopGroup _workerGroup;
 
 
-        public bool IpDetectResult
-        {
-            get => _ipDetectResult;
-            set
-            {
-                _ipDetectResult = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private bool _ipDetectResult;
 
-        public DelegateCommand<string> IpDetectCommand
-        {
-            get => _ipDetectCommand;
-            set
-            {
-                _ipDetectCommand = value;
-                RaisePropertyChanged();
-            }
-        }
 
-        private DelegateCommand<string> _ipDetectCommand;
-
+        [ObservableProperty]
         private ObservableCollection<IChannelHandlerContext> _channelHandlerContextCollection =
             new ObservableCollection<IChannelHandlerContext>();
 
-        public ObservableCollection<IChannelHandlerContext> ChannelHandlerContextCollection
-        {
-            get { return _channelHandlerContextCollection; }
-            set { SetProperty(ref _channelHandlerContextCollection, value); }
-        }
 
+        [ObservableProperty]
         private int _readerIdleTimeMin = 15;
         private readonly DataNotificationViewModel dataNotificationViewModel;
 
-        public int ReaderIdleTimeMin
-        {
-            get { return _readerIdleTimeMin; }
-            set { SetProperty(ref _readerIdleTimeMin, value); }
-        }
 
+        [ICommand()]
+       
         public async Task RunServerAsync()
         {
             NetLoggerViewModel.LogFront("正在开启服务器");
@@ -297,7 +192,7 @@ namespace JobMaster.ViewModels
                 NetLoggerViewModel.LogError(e.Message);
             }
         }
-
+        [ICommand]
         public async Task CloseServerAsync()
         {
             try
@@ -330,7 +225,11 @@ namespace JobMaster.ViewModels
 
 
         }
-
+        [ICommand]
+        public void IpDetect(string t)
+        {
+            IpDetectResult = PingIp(t);
+        }
 
         /// <summary>
         /// <summary>

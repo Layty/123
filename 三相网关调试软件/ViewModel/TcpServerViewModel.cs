@@ -7,10 +7,12 @@ using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
 using MyDlmsStandard.Axdr;
 using MyDlmsStandard.Wrapper;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -341,7 +343,15 @@ namespace 三相智慧能源网关调试软件.ViewModel
                 });
         }
 
-
+        [Flags]
+        public enum AlarmRegisterObject2
+        {
+            [JsonProperty("停电")] PowerOff = 0x00000001,
+            [JsonProperty("复电")] PowerOn = 0x00000004,
+            [JsonProperty("过载")] OverLoad = 0x10000000,
+            [JsonProperty("过流")] OverCurrent = 0x08000000,
+            [JsonProperty("漏电流")] ByPass = 0x02000000,
+        }
         public enum AlarmType
         {
             Unknown,
@@ -390,7 +400,7 @@ namespace 三相智慧能源网关调试软件.ViewModel
             public string DateTime { get; set; }
             public string IpAddress { get; set; }
             public string AlarmDateTime { get; set; }
-            public AlarmType AlarmType { get; set; }
+            public string AlarmType { get; set; }
 
             public CustomAlarm CustomAlarm
             {
@@ -444,36 +454,24 @@ namespace 三相智慧能源网关调试软件.ViewModel
                             {
                                 case "0004190900FF":
                                     //停电上报相关
-                                    switch (alarmViewModel.CustomAlarm.AlarmDescriptor2.Value)
-                                    {
-                                        case "02000000":
-                                            alarmViewModel.AlarmType = AlarmType.ByPass;
-                                            break;
-                                        case "00000001":
-                                            alarmViewModel.AlarmType = AlarmType.PowerOff;
-                                            break;
-                                        case "00000004":
-                                            alarmViewModel.AlarmType = AlarmType.PowerOn;
-                                            break;
-                                        default:
-                                            alarmViewModel.AlarmType = AlarmType.Unknown;
-                                            break;
-                                    }
+                                    var intvalue = alarmViewModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
+                                    var ttt = (AlarmRegisterObject2)intvalue;
+                                    alarmViewModel.AlarmType = ttt.ToString();
 
                                     break;
                                 case "0005190900FF":
                                     //水浸烟感上报相关
-                                    alarmViewModel.AlarmType = AlarmType.烟感and水浸;
+                                    alarmViewModel.AlarmType = "烟感and水浸";
                                     break;
                                 case "0006190900FF":
                                     //风机控制上报相关
-                                    alarmViewModel.AlarmType = AlarmType.风机控制;
+                                    alarmViewModel.AlarmType = "风机控制";
                                     break;
                                 default:
-                                    alarmViewModel.AlarmType = AlarmType.Unknown;
+                                    alarmViewModel.AlarmType = alarmViewModel.AlarmType = "Unknown";
                                     break;
                             }
-
+                            
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() => { Alarms.Add(alarmViewModel); });
                         }
@@ -543,10 +541,11 @@ namespace 三相智慧能源网关调试软件.ViewModel
 
                 if (bytes.Length >= NeedReceiveLength)
                 {
+                    var interrr = bytes.Take(NeedReceiveLength).ToArray();
                     NeedReceiveLength = 0;
                     _isNeedContinue = false;
-
-                    _listReturnBytes.AddRange(bytes);
+                  
+                    _listReturnBytes.AddRange(interrr);
                     _returnBytes = _listReturnBytes.ToArray();
                     TcpServerHelper_ReceiveBytes(clientSocket, _returnBytes);
                     Socket_ReceiveBytes_Notify(clientSocket, _returnBytes);

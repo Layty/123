@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 
 namespace JobMaster.ViewModels
 {
@@ -42,7 +43,15 @@ namespace JobMaster.ViewModels
             return false;
         }
     }
-
+    [Flags]
+    public enum AlarmRegisterObject2
+    {
+        [JsonProperty("停电")] PowerOff = 0x00000001,
+        [JsonProperty("复电")] PowerOn = 0x00000004,
+        [JsonProperty("过载")] OverLoad = 0x10000000,
+        [JsonProperty("过流")] OverCurrent = 0x08000000,
+        [JsonProperty("漏电流")] ByPass = 0x02000000,
+    }
     public enum AlarmType
     {
         Unknown,
@@ -85,11 +94,11 @@ namespace JobMaster.ViewModels
         /// </summary>
         public CustomAlarm CustomAlarm { get; set; } = new CustomAlarm();
 
-        /// <summary>
-        /// 根据pushid AlarmDescriptor1 解析之后的上报具体类型
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public AlarmType AlarmType { get; set; }
+        ///// <summary>
+        ///// 根据pushid AlarmDescriptor1 解析之后的上报具体类型
+        ///// </summary>
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public string AlarmType { get; set; }
     }
 
     public class DataNotificationViewModel : BindableBase

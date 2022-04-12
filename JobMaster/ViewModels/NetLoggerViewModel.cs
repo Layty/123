@@ -1,56 +1,31 @@
 ﻿using Microsoft.Extensions.Logging;
-using Prism.Commands;
-using Prism.Mvvm;
+
 using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace JobMaster.ViewModels
 {
-    public class NetLoggerViewModel : BindableBase
+    public partial class NetLoggerViewModel : ObservableObject
     {
-        public DelegateCommand ClearServerBufferCommand { get; set; }
+
         private readonly ILogger _logger;
 
-        public bool IsStartWriteLogToFile
-        {
-            get => _isStartWriteLogToFile;
-            set
-            {
-                _isStartWriteLogToFile = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private bool _isStartWriteLogToFile;
-        public StringBuilder NetLogStringBuilder = new StringBuilder();
-        private bool _isSendDataDisplayFormat16 = true;
 
+        public StringBuilder NetLogStringBuilder = new StringBuilder();
         /// <summary>
         /// 发送区是否16进制显示
         /// </summary>
-        public bool IsSendDataDisplayFormat16
-        {
-            get => _isSendDataDisplayFormat16;
-            set
-            {
-                _isSendDataDisplayFormat16 = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private bool _isReceiveFormat16 = true;
+        [ObservableProperty]
+        private bool _isSendDataDisplayFormat16 = true;
 
         /// <summary>
         /// 接收区16进制
         /// </summary>
-        public bool IsReceiveFormat16
-        {
-            get => _isReceiveFormat16;
-            set
-            {
-                _isReceiveFormat16 = value;
-                RaisePropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private bool _isReceiveFormat16 = true;
         public string Log
         {
             get => NetLogStringBuilder.ToString();
@@ -68,23 +43,15 @@ namespace JobMaster.ViewModels
                 }
 
                 NetLogStringBuilder.Append(value);
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        public int KeepMaxSendAndReceiveDataLength
-        {
-            get => _keepMaxSendAndReceiveDataLength;
-            set
-            {
-                _keepMaxSendAndReceiveDataLength = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private int _keepMaxSendAndReceiveDataLength = 5000;
 
-
+        [ICommand]
         public void ClearBuffer()
         {
             NetLogStringBuilder.Clear();
@@ -95,7 +62,7 @@ namespace JobMaster.ViewModels
         public NetLoggerViewModel(ILogger logger)
         {
             _logger = logger;
-            ClearServerBufferCommand = new DelegateCommand(() => { ClearBuffer(); });
+
         }
         #region 重新封装Nlog
         public void LogTrace(string message)
@@ -113,7 +80,7 @@ namespace JobMaster.ViewModels
         }
         public void LogFront(string message)
         {
-            Log = message+"\r\n";
+            Log = message + "\r\n";
             _logger.LogTrace(message);
         }
         public void LogWarn(string message)

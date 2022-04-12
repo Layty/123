@@ -56,7 +56,7 @@
                     Text="MeterId" />
                 <TextBox
                     Margin="5"
-                    Text="{Binding MeterId}"
+                    Text="{Binding MeterId,ValidatesOnDataErrors=True}"
                     ToolTip="MeterId" />
                 <Button
                     Margin="5"

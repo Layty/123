@@ -1,6 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
+﻿
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System;

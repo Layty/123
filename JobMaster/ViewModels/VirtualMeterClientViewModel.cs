@@ -1,111 +1,93 @@
-﻿using DotNetty.Buffers;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using JobMaster.Handlers;
-using JobMaster.Models;
+
 using JobMaster.Services;
 using MyDlmsStandard.Wrapper;
 using Newtonsoft.Json;
 using Prism.Commands;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace JobMaster.ViewModels
 {
-    public class EnergyCaptureObjects1 : ValidateModelBase
+    public partial class EnergyCaptureObjects1 : ObservableObject
     {
-        public DateTime DateTime { get => dateTime; set { dateTime = value; RaisePropertyChanged(); } }
-        private DateTime dateTime=DateTime.Now;
+        [ObservableProperty]
+        private DateTime dateTime = DateTime.Now;
         [JsonProperty("正向有功总")]
-        public string ImportActiveEnergyTotal
-        { get => importActiveEnergyTotal; set { importActiveEnergyTotal = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
+
         private string importActiveEnergyTotal = "0";
         [JsonProperty("正向有功尖")]
-        public string ImportActiveEnergyT1
-        { get => importActiveEnergyT1; set { importActiveEnergyT1 = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
         private string importActiveEnergyT1 = "0";
         [JsonProperty("正向有功峰")]
-        public string ImportActiveEnergyT2
-        { get => importActiveEnergyT2; set { importActiveEnergyT2 = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
         private string importActiveEnergyT2 = "0";
         [JsonProperty("正向有功平")]
-        public string ImportActiveEnergyT3
-        { get => importActiveEnergyT3; set { importActiveEnergyT3 = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
         private string importActiveEnergyT3 = "0";
         [JsonProperty("正向有功谷")]
-        public string ImportActiveEnergyT4
-        { get => importActiveEnergyT4; set { importActiveEnergyT4 = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
         private string importActiveEnergyT4 = "0";
         [JsonProperty("反向有功总")]
-        public string ExportActiveEnergyTotal
-        { get => exportActiveEnergyTotal; set { exportActiveEnergyTotal = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
         private string exportActiveEnergyTotal = "0";
 
 
         [JsonProperty("正向无功总")]
-        public string ImportReactiveEnergyTotal
-        { get => importReactiveEnergyTotal; set { importReactiveEnergyTotal = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
+
         private string importReactiveEnergyTotal = "0";
         [JsonProperty("反向无功总")]
-        public string ExportReactiveEnergyTotal
-        { get => exportReactiveEnergyTotal; set { exportReactiveEnergyTotal = value; RaisePropertyChanged(); } }
+        [ObservableProperty]
+
         private string exportReactiveEnergyTotal = "0";
     }
-    public class VirtualMeterClientViewModel : ValidateModelBase
+    public partial class VirtualMeterClientViewModel : ObservableValidator
     {
         private readonly NetLoggerViewModel netLoggerViewModel;
         private readonly IProtocol protocol;
+        [ObservableProperty]
+        [Required]
         private string _serverIp = "192.168.1.155";
-        public EnergyCaptureObjects1 EnergyCapture
-        {
-            get => _energyCapture;
-            set
-            {
-                _energyCapture = value; RaisePropertyChanged();
-            }
-        }
+     
+        [ObservableProperty]
         private EnergyCaptureObjects1 _energyCapture = new EnergyCaptureObjects1();
 
-        public string ServerIp
-        {
-            get { return _serverIp; }
-            set { SetProperty(ref _serverIp, value); }
-        }
-
+       
+        [ObservableProperty]
         private int _serverPort = 8881;
 
-        public int ServerPort
-        {
-            get { return _serverPort; }
-            set { SetProperty(ref _serverPort, value); }
-        }
+      
         private string _meterId = "000000000001";
 
+        [Required]
+        [MinLength(12)]
+        [MaxLength(12)]
+       
         public string MeterId
         {
             get { return _meterId; }
-            set { SetProperty(ref _meterId, value); }
+            set { SetProperty(ref _meterId, value, true); }
         }
 
         public DelegateCommand ConnectToServer { get; set; }
         public DelegateCommand DisConnectToServer { get; set; }
 
         public DelegateCommand HeartBeatCommand { get; set; }
-        public bool IsServerRunning
-        {
-            get => _isServerRunning;
-            set
-            {
-                _isServerRunning = value;
-                RaisePropertyChanged();
-            }
-        }
+      
 
         private IChannel clientChannel;
         private MultithreadEventLoopGroup group;
+        [ObservableProperty]
         private bool _isServerRunning;
         public VirtualMeterClientViewModel(NetLoggerViewModel netLoggerViewModel, IProtocol protocol
             )

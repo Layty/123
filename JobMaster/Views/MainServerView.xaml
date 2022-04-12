@@ -46,14 +46,14 @@
                             x:Name="ButtonRunServer"
                             Margin="5"
                             Background="{DynamicResource SuccessBrush}"
-                            Command="{Binding RunServer}"
+                            Command="{Binding RunServerCommand}"
                             Content="开始"
                             IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}" />
                         <Button
                             x:Name="ButtonCloseServer"
                             Margin="5"
                             Background="{DynamicResource DangerBrush}"
-                            Command="{Binding CloseServer}"
+                            Command="{Binding CloseServerCommand}"
                             Content="停止"
                             IsEnabled="{Binding IsServerRunning}" />
 

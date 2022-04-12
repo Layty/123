@@ -79,7 +79,7 @@ namespace JobMaster.Views
         {
             if (JobCenterViewModel.IsSchedulerStarted)
             {
-                JobCenterViewModel.Shutdown();
+                JobCenterViewModel.ShutdownScheduler();
             }
             if (MainServerViewModel.IsServerRunning)
             {

@@ -38,7 +38,7 @@ namespace JobMaster.Handlers
 
         public override void ChannelActive(IChannelHandlerContext context)
         {
-            _logger.LogDebug(DateTime.Now.ToString() + "DataNotificationHandler ChannelActive" );
+            _logger.LogDebug(DateTime.Now.ToString() + "DataNotificationHandler ChannelActive");
             base.ChannelActive(context);
         }
 
@@ -48,12 +48,12 @@ namespace JobMaster.Handlers
 
             if (message is byte[] bytes)
             {
-                _logger.LogDebug(DateTime.Now.ToString()+"DataNotificationHandler is running");
+                _logger.LogDebug(DateTime.Now.ToString() + "DataNotificationHandler is running");
 
                 Handler_Notify(context, bytes);
             }
         }
-
+     
 
         private void Handler_Notify(IChannelHandlerContext context, byte[] bytes)
         {
@@ -92,33 +92,37 @@ namespace JobMaster.Handlers
                             {
                                 case "0004190900FF":
                                     //停电上报相关
-                                    switch (DataNotificationModel.CustomAlarm.AlarmDescriptor2.Value)
-                                    {
-                                        case "02000000":
-                                            DataNotificationModel.AlarmType = AlarmType.ByPass;
-                                            break;
-                                        case "00000001":
-                                            DataNotificationModel.AlarmType = AlarmType.PowerOff;
-                                            break;
-                                        case "00000004":
-                                            DataNotificationModel.AlarmType = AlarmType.PowerOn;
-                                            break;
-                                        default:
-                                            DataNotificationModel.AlarmType = AlarmType.Unknown;
-                                            break;
-                                    }
+                                    var intvalue = DataNotificationModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
+                                    var ttt = (AlarmRegisterObject2)intvalue;
+
+                                    DataNotificationModel.AlarmType = ttt.ToString();
+                                    //switch (DataNotificationModel.CustomAlarm.AlarmDescriptor2.Value)
+                                    //{
+                                    //    case "02000000":
+                                    //        DataNotificationModel.AlarmType = AlarmType.ByPass;
+                                    //        break;
+                                    //    case "00000001":
+                                    //        DataNotificationModel.AlarmType = AlarmType.PowerOff;
+                                    //        break;
+                                    //    case "00000004":
+                                    //        DataNotificationModel.AlarmType = AlarmType.PowerOn;
+                                    //        break;
+                                    //    default:
+                                    //        DataNotificationModel.AlarmType = AlarmType.Unknown;
+                                    //        break;
+                                    //}
 
                                     break;
                                 case "0005190900FF":
                                     //水浸烟感上报相关
-                                    DataNotificationModel.AlarmType = AlarmType.烟感and水浸变位;
+                                    DataNotificationModel.AlarmType = "烟感and水浸变位";
                                     break;
                                 case "0006190900FF":
                                     //风机控制上报相关
-                                    DataNotificationModel.AlarmType = AlarmType.风机控制;
+                                    DataNotificationModel.AlarmType = "风机控制";
                                     break;
                                 default:
-                                    DataNotificationModel.AlarmType = AlarmType.Unknown;
+                                    DataNotificationModel.AlarmType = "Unknown";
                                     break;
                             }
 
@@ -127,7 +131,7 @@ namespace JobMaster.Handlers
                             {
                                 _dataNotificationViewModel.DataNotifications.Add(DataNotificationModel);
 
-                             
+
                             });
                             Notification notification = new Notification
                             {

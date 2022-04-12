@@ -19,13 +19,14 @@
     <DefineConstants>TRACE;Core</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetty.Buffers" Version="0.7.0" />
-    <PackageReference Include="DotNetty.Codecs" Version="0.7.0" />
-    <PackageReference Include="DotNetty.Common" Version="0.7.0" />
-    <PackageReference Include="DotNetty.Handlers" Version="0.7.0" />
-    <PackageReference Include="DotNetty.Transport" Version="0.7.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="DotNetty.Buffers" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Codecs" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Common" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Transport" Version="0.7.2" />
     <PackageReference Include="GZY.Quartz.MUI" Version="1.1.3" />
-    <PackageReference Include="HandyControls" Version="3.3.8.1" />
+    <PackageReference Include="HandyControls" Version="3.3.11" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

@@ -1,8 +1,8 @@
-﻿using DryIoc;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using JobMaster.Helpers;
 using JobMaster.Jobs;
 using Prism.Commands;
-using Prism.Mvvm;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Matchers;
@@ -32,68 +32,23 @@ namespace JobMaster.ViewModels
 
     如果Minutes的数值是 '3/20' ，表示从3开始每20分钟执行，也就是‘3/23/43’
     */
-    public class JobCenterViewModel : BindableBase, ITriggerListener, IJobListener
+    public partial class JobCenterViewModel : ObservableObject, ITriggerListener, IJobListener
     {
-        public DelegateCommand StartSchedulerCommand { get; set; }
-        public DelegateCommand LoadingJobCommand { get; }
-        public DelegateCommand ShutdownSchedulerCommand { get; set; }
-        public DelegateCommand PauseAllSchedulerCommand { get; set; }
-        public DelegateCommand ResumeAllSchedulerCommand { get; set; }
-        public DelegateCommand StandbySchedulerCommand { get; set; }
-        public DelegateCommand<JobsViewModel> PauseTriggerCommand { get; set; }
-        public DelegateCommand<JobsViewModel> ResumeTriggerCommand { get; set; }
-        public DelegateCommand UpdateJobListCommand { get; set; }
 
-        public bool IsSchedulerStarted
-        {
-            get => _isSchedulerStarted;
-            set
-            {
-                _isSchedulerStarted = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private bool _isSchedulerStarted;
 
-
-
-        public IScheduler Scheduler
-        {
-            get => _scheduler;
-            set
-            {
-                _scheduler = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private IScheduler _scheduler;
 
-        public IReadOnlyCollection<IJobExecutionContext> JobExecutionContexts
-        {
-            get => _jobExecutionContexts;
-            set
-            {
-                _jobExecutionContexts = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private IReadOnlyCollection<IJobExecutionContext> _jobExecutionContexts;
 
 
-        public IReadOnlyCollection<string> NameList
-        {
-            get => _nameList;
-            set
-            {
-                _nameList = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private IReadOnlyCollection<string> _nameList;
+
         private readonly IServiceProvider serviceProvider;
         private NetLoggerViewModel netLogViewModel;
 
@@ -101,73 +56,24 @@ namespace JobMaster.ViewModels
         public JobCenterViewModel(IServiceProvider serviceProvider, NetLoggerViewModel netLoggerViewModel)
         {
             this.serviceProvider = serviceProvider;
-
             JobsViewModels = new ObservableCollection<JobsViewModel>();
-
-            StartSchedulerCommand = new DelegateCommand(Start);
-            LoadingJobCommand = new DelegateCommand(LoadingJob);
-            ShutdownSchedulerCommand = new DelegateCommand(Shutdown);
-            PauseAllSchedulerCommand = new DelegateCommand(PauseAll);
-            ResumeAllSchedulerCommand = new DelegateCommand(() =>
-            {
-                Scheduler.ResumeAll();
-                UpdateJobList();
-            });
-            PauseTriggerCommand = new DelegateCommand<JobsViewModel>(Pause);
-            ResumeTriggerCommand = new DelegateCommand<JobsViewModel>(Resume);
-
-            StandbySchedulerCommand = new DelegateCommand(Standby);
-            UpdateJobListCommand = new DelegateCommand(UpdateJobList);
-
-
-            //  Scheduler = DemoScheduler.CreateTest(false).Result;
-
             netLogViewModel = netLoggerViewModel;
 
-            // Scheduler.ListenerManager.AddTriggerListener(this);
         }
 
-        public bool IsTestScheduler
-        {
-            get => _isTestScheduler;
-            set
-            {
-                _isTestScheduler = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private bool _isTestScheduler = false;
 
-        private void Standby()
+        [ICommand]
+        private void StandbyScheduler()
         {
             Scheduler.Standby();
         }
-
-
-        public List<IJobDetail> JobDetails
-        {
-            get => _jobDetails;
-            set
-            {
-                _jobDetails = value;
-                RaisePropertyChanged();
-            }
-        }
-
+  
+        [ObservableProperty]
         private List<IJobDetail> _jobDetails = new List<IJobDetail>();
 
-
-        public List<ITrigger> Triggers
-        {
-            get => _triggers;
-            set
-            {
-                _triggers = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        [ObservableProperty]
         private List<ITrigger> _triggers = new List<ITrigger>();
 
         public class TriggersViewModel
@@ -188,102 +94,48 @@ namespace JobMaster.ViewModels
             }
         }
 
-        public class JobsViewModel : BindableBase
+        public partial class JobsViewModel : ObservableObject
         {
-            public string Group
-            {
-                get => _group;
-                set
-                {
-                    _group = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _group;
 
 
-            public string Name
-            {
-                get => _name;
-                set
-                {
-                    _name = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _name;
 
-            public string Status
-            {
-                get => _status;
-                set
-                {
-                    _status = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _status;
 
 
-            public string TriggerName
-            {
-                get => _triggerName;
-                set
-                {
-                    _triggerName = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _triggerName;
 
 
-            public string TriggerGroup
-            {
-                get => _triggerGroup;
-                set
-                {
-                    _triggerGroup = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _triggerGroup;
 
 
-            public string NextTriggerTime
-            {
-                get => _nextTriggerTime;
-                set
-                {
-                    _nextTriggerTime = value;
-                    RaisePropertyChanged();
-                }
-            }
 
+            [ObservableProperty]
             private string _nextTriggerTime;
 
 
             public string CronExpress { get; set; }
         }
 
-        public ObservableCollection<JobsViewModel> JobsViewModels
-        {
-            get => _jobsViewModels;
-            set
-            {
-                _jobsViewModels = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private ObservableCollection<JobsViewModel> _jobsViewModels;
 
 
         public SchedulerJobType SchedulerType { get; set; } = SchedulerJobType.NoromalReadProfileBuffer;
+
+        [ICommand]
         public void LoadingJob()
         {
             //每次都清空，保证只有一个
@@ -304,7 +156,8 @@ namespace JobMaster.ViewModels
             }
             UpdateJobList();
         }
-        public async void Start()
+        [ICommand]
+        public async void StartScheduler()
         {
             //if (SchedulerType==SchedulerJobType.ClearBuffer)
             //{
@@ -322,7 +175,7 @@ namespace JobMaster.ViewModels
             UpdateJobList();
         }
 
-
+        [ICommand]
         private void UpdateJobList()
         {
             JobsViewModels = new ObservableCollection<JobsViewModel>();
@@ -364,33 +217,39 @@ namespace JobMaster.ViewModels
             }
         }
 
-        public void Pause(JobsViewModel triggerKey)
+        [ICommand]
+        public void PauseTrigger(JobsViewModel triggerKey)
         {
             var tr = new TriggerKey(triggerKey.TriggerName, triggerKey.TriggerGroup);
             Scheduler.PauseTrigger(tr);
             UpdateJobList();
         }
-
-        public void Resume(JobsViewModel triggerKey)
+        [ICommand]
+        public void ResumeTrigger(JobsViewModel triggerKey)
         {
             var tr = new TriggerKey(triggerKey.TriggerName, triggerKey.TriggerGroup);
             Scheduler.ResumeTrigger(tr);
             UpdateJobList();
         }
-
-        public void PauseAll()
+        [ICommand]
+        public void PauseAllScheduler()
         {
             Scheduler.PauseAll();
             UpdateJobList();
         }
-
-        public void Shutdown()
+        [ICommand]
+        public void ShutdownScheduler()
         {
             Scheduler?.Shutdown();
             JobsViewModels.Clear();
             IsSchedulerStarted = false;
         }
-
+        [ICommand]
+        public void ResumeAllScheduler()
+        {
+            Scheduler.ResumeAll();
+            UpdateJobList();
+        }
         public Task TriggerFired(ITrigger trigger, IJobExecutionContext context,
             CancellationToken cancellationToken = new CancellationToken())
         {

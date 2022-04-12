@@ -1,8 +1,9 @@
-﻿using MyDlmsStandard;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MyDlmsStandard;
 using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.HDLC.Enums;
-using Prism.Mvvm;
+
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,23 +11,15 @@ using System.Text;
 
 namespace JobMaster.ViewModels
 {
-    public class DlmsSettingsViewModel : BindableBase
+    public partial class DlmsSettingsViewModel : ObservableValidator
     {
         public bool UseLogicalNameReferencing { get; set; }
         public Array StartProtocolArray => Enum.GetValues(typeof(StartProtocolType));
         public Array PhysicalChanelTypeArray => Enum.GetValues(typeof(PhysicalChanelType));
         public Array ProtocolInterfaceTypeArray => Enum.GetValues(typeof(ProtocolInterfaceType));
 
-        public ProtocolInterfaceType ProtocolInterfaceType
-        {
-            get => _protocolInterfaceType;
-            set
-            {
-                _protocolInterfaceType = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private ProtocolInterfaceType _protocolInterfaceType;
 
         public StartProtocolType StartProtocolType { get; set; }
@@ -35,16 +28,8 @@ namespace JobMaster.ViewModels
         /// <summary>
         /// 物理层通道类型
         /// </summary>
-        public PhysicalChanelType PhysicalChanelType
-        {
-            get => physicalChanelType;
-            set
-            {
-                physicalChanelType = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private PhysicalChanelType physicalChanelType;
 
         [DefaultValue(6)] public byte DlmsVersion { get; set; }
@@ -109,7 +94,7 @@ namespace JobMaster.ViewModels
         public bool AutoIncreaseInvokeID { get; set; }
 
 
-        public byte[] PasswordHex { get; private set; }
+        public byte[] PasswordHex => Encoding.Default.GetBytes(_passwordString);
 
 
         [Required]
@@ -117,40 +102,21 @@ namespace JobMaster.ViewModels
         public string PasswordString
         {
             get => _passwordString;
-            set
-            {
-                _passwordString = value;
-                PasswordHex = Encoding.Default.GetBytes(value);
-                RaisePropertyChanged();
-            }
+            set => SetProperty(ref _passwordString, value, true);
         }
 
+
+        [AlsoNotifyChangeFor(nameof(PasswordHex))]
         private string _passwordString;
 
 
-        public ushort ClientAddress
-        {
-            get => _clientAddress;
-            set
-            {
-                _clientAddress = value;
-                RaisePropertyChanged();
-            }
-        }
-
+    
+        [ObservableProperty]
         private ushort _clientAddress;
 
 
-        public ushort ServerAddress
-        {
-            get => _serverAddress;
-            set
-            {
-                _serverAddress = value;
-                RaisePropertyChanged();
-            }
-        }
 
+        [ObservableProperty]
         private ushort _serverAddress;
 
         public byte ServerAddressSize { get; set; } = 1;
@@ -167,16 +133,8 @@ namespace JobMaster.ViewModels
         public DLMSInfo DlmsInfoFromMeter { get; set; }
 
 
-        public string SystemTitle
-        {
-            get => _systemTitle;
-            set
-            {
-                _systemTitle = value;
-                RaisePropertyChanged();
-            }
-        }
-
+       
+        [ObservableProperty]
         private string _systemTitle;
 
         public DlmsSettingsViewModel()
@@ -217,28 +175,12 @@ namespace JobMaster.ViewModels
                    Conformance.MultipleReferences | Conformance.InformationReport | Conformance.ParameterizedAccess;
         }
 
-        public int NegotiateBaud
-        {
-            get => _negotiateBaud;
-            set
-            {
-                _negotiateBaud = value;
-                RaisePropertyChanged();
-            }
-        }
-
+   
+        [ObservableProperty]
         private int _negotiateBaud;
 
-        public int StartBaud
-        {
-            get => _startBaud;
-            set
-            {
-                _startBaud = value;
-                RaisePropertyChanged();
-            }
-        }
-
+      
+        [ObservableProperty]
         private int _startBaud;
     }
 }
