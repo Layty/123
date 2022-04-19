@@ -1,5 +1,5 @@
 ﻿using Quartz;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {

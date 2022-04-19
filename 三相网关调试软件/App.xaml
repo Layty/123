@@ -7,12 +7,12 @@
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:三相智慧能源网关调试软件"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:vm="clr-namespace:三相智慧能源网关调试软件.ViewModel"
+    xmlns:viewModels="clr-namespace:三相智慧能源网关调试软件.ViewModels"
     d1p1:Ignorable="d"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+            <viewModels:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:FactoryConverter x:Key="FactoryConverter" />
             <converters:HexStringToDateTimeConverter x:Key="HexStringToDateTimeConverter" />

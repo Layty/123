@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using 三相智慧能源网关调试软件.ViewModel;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.Model.Jobs
 {

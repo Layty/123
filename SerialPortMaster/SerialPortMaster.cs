@@ -304,6 +304,8 @@ namespace MySerialPortMaster
                 catch (Exception ex)
                 {
                     OnSerialError(ex);
+                    throw ex;
+                  
                 }
             }
         }

@@ -4,7 +4,7 @@ using MyDlmsStandard.Axdr;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+
 using System;
 
 namespace JobMaster.ViewModels
@@ -43,24 +43,52 @@ namespace JobMaster.ViewModels
             return false;
         }
     }
-    [Flags]
-    public enum AlarmRegisterObject2
+
+    public static class PushId
     {
+        /// <summary>
+        /// 停电上报相关PushId
+        /// </summary>
+        public const string Meter = "0.4.25.9.0.255";
+        /// <summary>
+        /// 烟感水浸的PushId
+        /// </summary>
+        public const string SmokeAndWater = "0.5.25.9.0.255";
+        /// <summary>
+        /// 风机控制的PushId
+        /// </summary>
+        public const string Wind = "0.6.25.9.0.255";
+
+    }
+
+    [Flags]
+    public enum AlarmDescriptorObject2
+    {
+        None,
         [JsonProperty("停电")] PowerOff = 0x00000001,
         [JsonProperty("复电")] PowerOn = 0x00000004,
         [JsonProperty("过载")] OverLoad = 0x10000000,
         [JsonProperty("过流")] OverCurrent = 0x08000000,
         [JsonProperty("漏电流")] ByPass = 0x02000000,
     }
-    public enum AlarmType
-    {
-        Unknown,
-        [JsonProperty("停电")] PowerOff,
-        [JsonProperty("复电")] PowerOn,
-        [JsonProperty("漏电流")] ByPass,
-        烟感and水浸变位,
-        风机控制
-    }
+    /// <summary>
+    /// 烟感状态描述子
+    /// </summary>
+    [Flags]
+    public enum SmokeAlarmDescriptor { None, 状态1 = 1, 状态2 = 2, 状态3 = 4, 状态4 = 8, 状态5 = 16, 状态6 = 32, 状态7 = 64, 状态8 = 128 }
+    [Flags]
+    public enum WaterAlarmDescriptor { None, 状态1 = 1, 状态2 = 2, 状态3 = 4, 状态4 = 8, 状态5 = 16, 状态6 = 32, 状态7 = 64, 状态8 = 128 }
+    /// <summary>
+    /// 风机控制状态描数字
+    /// </summary>
+    [Flags]
+    public enum WindControlDescriptor { None, 状态1 = 1, 状态2 = 2, 状态3 = 4, 状态4 = 8, 状态5 = 16, 状态6 = 32, 状态7 = 64, 状态8 = 128 }
+    /// <summary>
+    /// 风机回路状态描数字
+    /// </summary>
+    [Flags]
+    public enum WindLoopDescriptor { None, 状态1 = 1, 状态2 = 2, 状态3 = 4, 状态4 = 8, 状态5 = 16, 状态6 = 32, 状态7 = 64, 状态8 = 128 }
+
 
     public class DataNotificationModel
     {

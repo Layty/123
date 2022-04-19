@@ -19,12 +19,14 @@ namespace 三相智慧能源网关调试软件.Factory
         {
             var GetRequest = new GetRequest();
             GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
+            XmlHelper.XmlCommon(GetRequest);
             return GetRequest;
         }
         public static GetRequest CreateGetRequestNormal(CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
         {
             var GetRequest = new GetRequest();
             GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
+            XmlHelper.XmlCommon(GetRequest);
             return GetRequest;
         }
 
@@ -35,7 +37,7 @@ namespace 三相智慧能源网关调试软件.Factory
             {
                 GetRequestNext = new GetRequestNext() { BlockNumber = blockNumber }
             };
-
+            XmlHelper.XmlCommon(GetRequest);
             return GetRequest;
         }
         public static SetRequest CreateSetRequest(CosemAttributeDescriptor cosemAttributeDescriptor,

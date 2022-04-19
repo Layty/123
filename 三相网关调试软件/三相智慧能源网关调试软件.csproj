@@ -137,6 +137,7 @@
     <Compile Include="Converters\HexStringToDateTimeConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\StringBuliderConverter.cs" />
+    <Compile Include="Helpers\SinglePhaseGatewayManagementHelper.cs" />
     <Compile Include="Themes\CustomLight.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Model\Jobs\CloseWarmingJob.cs" />
@@ -175,21 +176,21 @@
     <Compile Include="MyControl\SSHClient.xaml.cs">
       <DependentUpon>SSHClient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DialogsViewModel.cs" />
+    <Compile Include="ViewModels\DialogsViewModel.cs" />
     <Compile Include="Factory\AppProtocolFactory.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\Business.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\CosemObjectViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\Business.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\CosemObjectViewModel.cs" />
     <Compile Include="Model\CustomCosemDataModel.cs" />
     <Compile Include="Model\CustomCosemProfileGenericModel.cs" />
     <Compile Include="TcpTranslator.cs" />
     <Compile Include="Factory\DemoScheduler.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\EModeViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\DLMSClient.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\JobCenterViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\LinkLayer.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\MeterDataViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\Protocol.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\XMLLogViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\EModeViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\DLMSClient.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\JobCenterViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\LinkLayer.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\MeterDataViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\Protocol.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\XMLLogViewModel.cs" />
     <Compile Include="ENetClientHelper.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
     <Compile Include="Model\CustomCosemRegisterModel.cs" />
@@ -217,7 +218,7 @@
     <Compile Include="MyControl\NetClientLogger.xaml.cs">
       <DependentUpon>NetClientLogger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DlmsViewModels\LoadIdentificationViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\LoadIdentificationViewModel.cs" />
     <Compile Include="MyControl\HeartBeatButton.xaml.cs">
       <DependentUpon>HeartBeatButton.xaml</DependentUpon>
     </Compile>
@@ -230,8 +231,8 @@
     <Compile Include="MyControl\XMLLogControl.xaml.cs">
       <DependentUpon>XMLLogControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DlmsViewModels\ClockViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\DataViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\ClockViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\DataViewModel.cs" />
     <Compile Include="MyControl\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
@@ -247,10 +248,10 @@
     <Compile Include="MyControl\DLMSControl\ProfileGenericUserControl.xaml.cs">
       <DependentUpon>ProfileGenericUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ENetMessageBuilderViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\DLMSSettingsViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\ProfileGenericViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ENetMessageBuilderViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\DLMSSettingsViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\ProfileGenericViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\RegisterViewModel.cs" />
     <Compile Include="MyControl\SerialPortControl.xaml.cs">
       <DependentUpon>SerialPortControl.xaml</DependentUpon>
     </Compile>
@@ -267,72 +268,76 @@
     <Compile Include="TcpClientHelper.cs" />
     <Compile Include="TcpServerHelper.cs" />
     <Compile Include="Model\CustomCosemUtilityTablesModel.cs" />
-    <Compile Include="ViewModel\SnackbarViewModel.cs" />
-    <Compile Include="ViewModel\TcpServerViewModel.cs" />
-    <Compile Include="ViewModel\TelnetViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\DlmsBaseMeterViewModel.cs" />
-    <Compile Include="ViewModel\IicDataViewModel.cs" />
-    <Compile Include="ViewModel\SkinViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\UtilityTablesViewModel.cs" />
-    <Compile Include="ViewModel\TftpClientViewModel.cs" />
-    <Compile Include="ViewModel\TftpServerViewModel.cs" />
-    <Compile Include="ViewModel\FileTransmitViewModel.cs" />
+    <Compile Include="ViewModels\SnackbarViewModel.cs" />
+    <Compile Include="ViewModels\TcpServerViewModel.cs" />
+    <Compile Include="ViewModels\TelnetViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\DlmsBaseMeterViewModel.cs" />
+    <Compile Include="ViewModels\IicDataViewModel.cs" />
+    <Compile Include="ViewModels\SkinViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\UtilityTablesViewModel.cs" />
+    <Compile Include="ViewModels\TftpClientViewModel.cs" />
+    <Compile Include="ViewModels\TftpServerViewModel.cs" />
+    <Compile Include="ViewModels\FileTransmitViewModel.cs" />
     <Compile Include="Model\UserLoginModel.cs" />
     <Compile Include="Model\GateWayLoginModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
     <Compile Include="Model\MyNetLogModel.cs" />
     <Compile Include="ValidateModelBase.cs" />
-    <Compile Include="ViewModel\SerialPortViewModel.cs" />
-    <Compile Include="ViewModel\UserLoginViewModel.cs" />
-    <Compile Include="ViewModel\DlmsViewModels\NetLogViewModel.cs" />
-    <Compile Include="ViewModel\MenuViewModel.cs" />
-    <Compile Include="View\AboutPage.xaml.cs">
+    <Compile Include="ViewModels\SerialPortViewModel.cs" />
+    <Compile Include="ViewModels\UserLoginViewModel.cs" />
+    <Compile Include="ViewModels\DlmsViewModels\NetLogViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CommunicationLight.xaml.cs">
+    <Compile Include="Views\CommunicationLight.xaml.cs">
       <DependentUpon>CommunicationLight.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CosemObjectsManagement.xaml.cs">
+    <Compile Include="Views\CosemObjectsManagement.xaml.cs">
       <DependentUpon>CosemObjectsManagement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\CoverPage.xaml.cs">
+    <Compile Include="Views\CoverPage.xaml.cs">
       <DependentUpon>CoverPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginStatus.xaml.cs">
+    <Compile Include="Views\LoginStatus.xaml.cs">
       <DependentUpon>LoginStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LogWindow.xaml.cs">
+    <Compile Include="Views\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Management\ENetDataPage.xaml.cs">
+    <Compile Include="Views\Management\ENetDataPage.xaml.cs">
       <DependentUpon>ENetDataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MeterDataWindow.xaml.cs">
+    <Compile Include="Views\Management\SinglePhaseManagementPage.xaml.cs">
+      <DependentUpon>SinglePhaseManagementPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Management\SinglePhaseManagementPageViewModel.cs" />
+    <Compile Include="Views\MeterDataWindow.xaml.cs">
       <DependentUpon>MeterDataWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MsgHostBox.xaml.cs">
+    <Compile Include="Views\MsgHostBox.xaml.cs">
       <DependentUpon>MsgHostBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\DLMSClientPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\DLMSClientPage.xaml.cs">
       <DependentUpon>DLMSClientPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\DLMSSettingsPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\DLMSSettingsPage.xaml.cs">
       <DependentUpon>DLMSSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\SerialPortPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\SerialPortPage.xaml.cs">
       <DependentUpon>SerialPortPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MessageBoxWindow.xaml.cs">
+    <Compile Include="Views\MessageBoxWindow.xaml.cs">
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PasswordBoxHelper.cs" />
-    <Compile Include="View\Management\GateWayAppPage.xaml.cs">
+    <Compile Include="Views\PasswordBoxHelper.cs" />
+    <Compile Include="Views\Management\GateWayAppPage.xaml.cs">
       <DependentUpon>GateWayAppPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Management\GateWayLoginPage.xaml.cs">
+    <Compile Include="Views\Management\GateWayLoginPage.xaml.cs">
       <DependentUpon>GateWayLoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Management\GlobalParameterPage.xaml.cs">
+    <Compile Include="Views\Management\GlobalParameterPage.xaml.cs">
       <DependentUpon>GlobalParameterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyControl\SerialPortLogger.xaml.cs">
@@ -341,31 +346,31 @@
     <Compile Include="MyControl\DLMSControl\FrontEndProcessorControl.xaml.cs">
       <DependentUpon>FrontEndProcessorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\TcpClientPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\TcpClientPage.xaml.cs">
       <DependentUpon>TcpClientPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\TftpMasterPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\TftpMasterPage.xaml.cs">
       <DependentUpon>TftpMasterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\TftpServerControl.xaml.cs">
+    <Compile Include="Views\ServerCenter\TftpServerControl.xaml.cs">
       <DependentUpon>TftpServerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BaseMeter\UpGradeBaseMeterPage.xaml.cs">
+    <Compile Include="Views\BaseMeter\UpGradeBaseMeterPage.xaml.cs">
       <DependentUpon>UpGradeBaseMeterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ServerCenter\VirtualServerPage.xaml.cs">
+    <Compile Include="Views\ServerCenter\VirtualServerPage.xaml.cs">
       <DependentUpon>VirtualServerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserLoginPage.xaml.cs">
+    <Compile Include="Views\UserLoginPage.xaml.cs">
       <DependentUpon>UserLoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\PasswordBoxBehavior.cs" />
-    <Compile Include="View\ServerCenter\IicDataPage.xaml.cs">
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\PasswordBoxBehavior.cs" />
+    <Compile Include="Views\ServerCenter\IicDataPage.xaml.cs">
       <DependentUpon>IicDataPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Win10NotifyMessage.xaml.cs">
+    <Compile Include="Views\Win10NotifyMessage.xaml.cs">
       <DependentUpon>Win10NotifyMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window3dTest.xaml.cs">
@@ -499,67 +504,71 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\AboutPage.xaml">
+    <Page Include="Views\AboutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CommunicationLight.xaml">
+    <Page Include="Views\CommunicationLight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CosemObjectsManagement.xaml">
+    <Page Include="Views\CosemObjectsManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\CoverPage.xaml">
+    <Page Include="Views\CoverPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginStatus.xaml">
+    <Page Include="Views\LoginStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LogWindow.xaml">
+    <Page Include="Views\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Management\ENetDataPage.xaml">
+    <Page Include="Views\Management\ENetDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MeterDataWindow.xaml">
+    <Page Include="Views\Management\SinglePhaseManagementPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MsgHostBox.xaml">
+    <Page Include="Views\MeterDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\DLMSClientPage.xaml">
+    <Page Include="Views\MsgHostBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\DLMSSettingsPage.xaml">
+    <Page Include="Views\ServerCenter\DLMSClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\SerialPortPage.xaml">
+    <Page Include="Views\ServerCenter\DLMSSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Management\GateWayAppPage.xaml">
+    <Page Include="Views\ServerCenter\SerialPortPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Management\GateWayLoginPage.xaml">
+    <Page Include="Views\Management\GateWayAppPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Management\GlobalParameterPage.xaml">
+    <Page Include="Views\Management\GateWayLoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MessageBoxWindow.xaml">
+    <Page Include="Views\Management\GlobalParameterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -571,35 +580,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\TcpClientPage.xaml">
+    <Page Include="Views\ServerCenter\TcpClientPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\TftpMasterPage.xaml">
+    <Page Include="Views\ServerCenter\TftpMasterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\TftpServerControl.xaml">
+    <Page Include="Views\ServerCenter\TftpServerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\BaseMeter\UpGradeBaseMeterPage.xaml">
+    <Page Include="Views\BaseMeter\UpGradeBaseMeterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ServerCenter\VirtualServerPage.xaml">
+    <Page Include="Views\ServerCenter\VirtualServerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserLoginPage.xaml">
+    <Page Include="Views\UserLoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ServerCenter\IicDataPage.xaml">
+    <Page Include="Views\ServerCenter\IicDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Win10NotifyMessage.xaml">
+    <Page Include="Views\Win10NotifyMessage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -622,8 +631,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="WPFDevelopers.dll">
-    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -696,6 +703,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dialogs\" />
     <Folder Include="TFTPServerFiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -784,7 +792,7 @@
       <Version>1.3.0</Version>
     </PackageReference>
     <PackageReference Include="WPFDevelopers">
-      <Version>1.0.2</Version>
+      <Version>1.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

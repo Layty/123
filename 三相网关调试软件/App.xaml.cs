@@ -5,10 +5,13 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Helpers;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
-using 三相智慧能源网关调试软件.ViewModel;
 using 三相智慧能源网关调试软件.MyControl;
+using 三相智慧能源网关调试软件.Properties;
+using 三相智慧能源网关调试软件.ViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
+using 三相智慧能源网关调试软件.Views.Management;
 
 namespace 三相智慧能源网关调试软件
 {
@@ -23,15 +26,25 @@ namespace 三相智慧能源网关调试软件
         public App()
         {
             Services = ConfigureServices();
-
-           
         }
         private static IServiceProvider ConfigureServices()
         {
+
             var services = new ServiceCollection();
+            //串口配置管理者
+            var serialPortConfigCaretaker =
+                new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
+            //从管理者中得到串口配置，进行串口相关参数初始化
+            var config = serialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
+            var serialPortMaster = new SerialPortMaster(config);
+            services.AddSingleton(serialPortConfigCaretaker);
+            services.AddSingleton(serialPortMaster);
+            services.AddTransient<SerialPortViewModel>(); //RS485串口
+
+            //DLMS各个接口类的配置文件
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
             services.AddSingleton(excel);
-
+            services.AddSingleton<DlmsClient>();
             services.AddSingleton<DlmsSettingsViewModel>();
             services.AddSingleton<DataViewModel>();
             services.AddSingleton<RegisterViewModel>();
@@ -54,8 +67,8 @@ namespace 三相智慧能源网关调试软件
             services.AddSingleton<TftpClientViewModel>();
             services.AddSingleton<NetLogViewModel>();
             services.AddSingleton<XMLLogViewModel>();
-            services.AddSingleton<SerialPortViewModel>(); //RS485串口
-            services.AddSingleton<DlmsClient>();
+
+          
             services.AddSingleton<JobCenterViewModel>();
 
             services.AddSingleton<DlmsBaseMeterViewModel>(); //基表DLMS协议
@@ -73,7 +86,9 @@ namespace 三相智慧能源网关调试软件
 
             services.AddSingleton<LocalNetHelper>();
             services.AddSingleton<SSHClientViewModel>();
+            services.AddSingleton<SinglePhaseManagementPageViewModel>();
 
+            services.AddTransient<IUserRepository, UserWebApi>();
             return services.BuildServiceProvider();
         }
         protected override void OnStartup(StartupEventArgs e)
@@ -81,7 +96,8 @@ namespace 三相智慧能源网关调试软件
 
             DispatcherHelper.Initialize();
 
-            Services.GetService<SkinViewModel>().ApplyBase();
+            Services.GetService<SkinViewModel>().ApplyBase();//开机应用主题
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -93,21 +109,21 @@ namespace 三相智慧能源网关调试软件
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             Logger.Error("TaskError" + e.Exception);
-            StrongReferenceMessenger.Default.Send("TaskError", "Snackbar");
+            StrongReferenceMessenger.Default.Send($"TaskError{e.Exception}", "Snackbar");
             e.SetObserved();
         }
 
         //能捕获 所有线程（Task 除外） 抛出的未处理异常 默认情况无法阻止程序崩溃（可通过 legacyUnhandledExceptionPolicy 配置异常策略 ）
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Logger.Error("无法处理的异常啊" + e.ExceptionObject);
+            Logger.Error("无法处理的异常" + e.ExceptionObject);
         }
 
         //能够捕获 UI 线程抛出的未处理异常 可通过事件参数 e.Handled = true 来阻止程序崩溃
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Logger.Error($"Current_DispatcherUnhandledException:{e.Exception}");
-            StrongReferenceMessenger.Default.Send("Current_DispatcherUnhandledException", "Snackbar");
+            StrongReferenceMessenger.Default.Send($"{e.Exception.Message}", "Snackbar");
             e.Handled = true;
         }
     }

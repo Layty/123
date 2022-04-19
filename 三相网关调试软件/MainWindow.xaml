@@ -7,24 +7,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:三相智慧能源网关调试软件.Model"
     xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-    xmlns:view="clr-namespace:三相智慧能源网关调试软件.View"
-    xmlns:viewmodel="clr-namespace:三相智慧能源网关调试软件.ViewModel"
+    xmlns:viewModels="clr-namespace:三相智慧能源网关调试软件.ViewModels"
+    xmlns:views="clr-namespace:三相智慧能源网关调试软件.Views"
     xmlns:wpfdev="https://github.com/WPFDevelopersOrg/WPFDevelopers"
     Title="TODO"
     Width="1024"
     Height="650"
-    d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
     AllowsTransparency="True"
     Background="{DynamicResource MaterialDesignPaper}"
     Closing="MainWindow_OnClosing"
-    DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
     Loaded="MainWindow_OnLoaded"
     ResizeMode="CanMinimize"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     Topmost="{Binding ElementName=ToggleButtonTopMost, Path=IsChecked}"
-    WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     WindowStyle="None"
     mc:Ignorable="d">
@@ -474,6 +473,7 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition />
                                                     <RowDefinition />
+                                                    <RowDefinition />
                                                 </Grid.RowDefinitions>
                                                 <Grid.DataContext>
                                                     <Binding Path="ENetClient" Source="{StaticResource Locator}" />
@@ -505,7 +505,12 @@
                                                         Style="{StaticResource MaterialDesignCardsListBox}"
                                                         Visibility="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.ConnectResult, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                 </ScrollViewer>
-
+                                                <Button
+                                                    x:Name="SingalPharse"
+                                                    Grid.Row="2"
+                                                    Click="SingalPharse_OnClick"
+                                                    Content="单相"
+                                                    Style="{StaticResource MaterialDesignFlatButton}" />
                                             </Grid>
 
                                         </Expander.Content>
@@ -635,8 +640,9 @@
                 <Grid>
 
                     <StackPanel Orientation="Horizontal">
-                        <view:LoginStatus />
-                        <view:CommunicationLight />
+                        <views:LoginStatus />
+                        <views:CommunicationLight />
+
                         <TextBlock
                             x:Name="TextBlockHaHa"
                             HorizontalAlignment="Center"

@@ -73,7 +73,7 @@ namespace MyDlmsStandard.ApplicationLay
         /// </summary>
         /// <param name="pduStringInHex"></param>
         /// <returns></returns>
-        public bool PduStringInHexConstructor(ref string pduStringInHex)
+        public virtual bool PduStringInHexConstructor(ref string pduStringInHex)
         {
             pduStringInHex = pduStringInHex.Substring(2);
             int num = MyConvert.DecodeVarLength(ref pduStringInHex);

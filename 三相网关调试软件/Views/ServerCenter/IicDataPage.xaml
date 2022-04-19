@@ -1,0 +1,75 @@
+﻿<Page x:Class="三相智慧能源网关调试软件.Views.ServerCenter.IicDataPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      DataContext="{Binding Source={StaticResource Locator },Path=IicDataViewModel}"
+      Title="IicDataPage">
+    <Grid>
+        <Border BorderThickness="3" Padding="10">
+            <ScrollViewer>
+                <StackPanel>
+                    <Button Margin="3" Command="{Binding ClearCommand}" Content="清空数据_C"></Button>
+                    <GroupBox Header="IIC瞬时量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding InstantDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC当前电量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding CurrentEnergyDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC上一月电量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding Last1EnergyDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC上二月电量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding Last2EnergyDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC当前最大需量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding CurrentDemandDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC上一月最大需量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding Last1DemandDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC上二月最大需量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding Last2DemandDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC A相电压谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding UaHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC B相电压谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding UbHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC C相电压谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding UcHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC A相电流谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding IaHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC B相电流谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding IbHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC C相电流谐波含量" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding IcHarmonicDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                    <GroupBox Header="IIC 参数块" Height="200">
+                        <DataGrid
+                            ItemsSource="{Binding IicParameterDataCollection,UpdateSourceTrigger=PropertyChanged}" />
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Page>

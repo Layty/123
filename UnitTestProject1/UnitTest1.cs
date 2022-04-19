@@ -6,7 +6,7 @@ using 三相智慧能源网关调试软件.Common;
 using 三相智慧能源网关调试软件.Helpers;
 using 三相智慧能源网关调试软件.Model.ENetConfig;
 using 三相智慧能源网关调试软件.Model.IIC;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
 
 namespace UnitTestProject1
 {

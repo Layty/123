@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication2", "WebAppli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobMaster", "JobMaster\JobMaster.csproj", "{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "智慧能源网关Dlms协议测试软件", "智慧能源网关Dlms协议测试软件\智慧能源网关Dlms协议测试软件.csproj", "{493E305F-2C56-4885-A7E5-B15228728F78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyWpfCustomControlLibrary", "MyWpfCustomControlLibrary\MyWpfCustomControlLibrary.csproj", "{ED921B15-F840-4064-BAC6-E1C8C0192FCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +185,30 @@ Global
 		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x64.Build.0 = Release|Any CPU
 		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{C106AF1D-721C-41FB-BE40-A0A873C1B9BD}.Release|x86.Build.0 = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|x64.Build.0 = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Debug|x86.Build.0 = Debug|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|x64.ActiveCfg = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|x64.Build.0 = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|x86.ActiveCfg = Release|Any CPU
+		{493E305F-2C56-4885-A7E5-B15228728F78}.Release|x86.Build.0 = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|x64.Build.0 = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED921B15-F840-4064-BAC6-E1C8C0192FCE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

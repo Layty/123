@@ -19,7 +19,7 @@ namespace MyWebApi
                 {
                     var userLoginDbContext = scope1.ServiceProvider.GetService<UserLoginDbContext>();
                     userLoginDbContext.Database.EnsureCreated();
-                    userLoginDbContext.Database.Migrate();
+                    //userLoginDbContext.Database.Migrate();
                 }
                 catch (Exception e)
                 {
@@ -33,7 +33,7 @@ namespace MyWebApi
                 {
                     var cosemObjectDbContext = scope.ServiceProvider.GetService<CosemObjectDbContext>();
                     cosemObjectDbContext.Database.EnsureCreated();
-                    cosemObjectDbContext.Database.Migrate();
+                    //cosemObjectDbContext.Database.Migrate();
                 }
                 catch (Exception e)
                 {
@@ -47,7 +47,7 @@ namespace MyWebApi
                 {
                     var userLoginDbContext = scope1.ServiceProvider.GetService<MeterDbContext>();
                     userLoginDbContext.Database.EnsureCreated();
-                    userLoginDbContext.Database.Migrate();
+                    //userLoginDbContext.Database.Migrate();
                 }
                 catch (Exception e)
                 {

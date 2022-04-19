@@ -6,6 +6,7 @@ using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.CosemObjects;
 using MyDlmsStandard.ApplicationLay.DataNotification;
+using MyDlmsStandard.OBIS;
 using MyDlmsStandard.Wrapper;
 using Newtonsoft.Json;
 using RestSharp;
@@ -53,7 +54,7 @@ namespace JobMaster.Handlers
                 Handler_Notify(context, bytes);
             }
         }
-     
+
 
         private void Handler_Notify(IChannelHandlerContext context, byte[] bytes)
         {
@@ -88,38 +89,36 @@ namespace JobMaster.Handlers
 
                         if (DataNotificationModel.CustomAlarm.PduStringInHexConstructor(ref stringStructure))
                         {
-                            switch (DataNotificationModel.CustomAlarm.PushId.Value)
+                            var pushIdObis = ObisHelper.GetObisOriginal(DataNotificationModel.CustomAlarm.PushId.Value);
+                            switch (pushIdObis)
                             {
-                                case "0004190900FF":
+                                case PushId.Meter:
                                     //停电上报相关
                                     var intvalue = DataNotificationModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
-                                    var ttt = (AlarmRegisterObject2)intvalue;
-
+                                    var ttt = (AlarmDescriptorObject2)intvalue;
                                     DataNotificationModel.AlarmType = ttt.ToString();
-                                    //switch (DataNotificationModel.CustomAlarm.AlarmDescriptor2.Value)
-                                    //{
-                                    //    case "02000000":
-                                    //        DataNotificationModel.AlarmType = AlarmType.ByPass;
-                                    //        break;
-                                    //    case "00000001":
-                                    //        DataNotificationModel.AlarmType = AlarmType.PowerOff;
-                                    //        break;
-                                    //    case "00000004":
-                                    //        DataNotificationModel.AlarmType = AlarmType.PowerOn;
-                                    //        break;
-                                    //    default:
-                                    //        DataNotificationModel.AlarmType = AlarmType.Unknown;
-                                    //        break;
-                                    //}
-
                                     break;
-                                case "0005190900FF":
+                                case PushId.SmokeAndWater:
                                     //水浸烟感上报相关
-                                    DataNotificationModel.AlarmType = "烟感and水浸变位";
+                                    var smokeValue = DataNotificationModel.CustomAlarm.AlarmDescriptor1.GetEntityValue();
+                                    var smoke = (SmokeAlarmDescriptor)smokeValue;
+                                    DataNotificationModel.AlarmType += "烟感告警：" + smoke.ToString() + " | ";
+                                    //水浸烟感上报相关
+                                    var waterValue = DataNotificationModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
+                                    var water = (WaterAlarmDescriptor)waterValue;
+                                    DataNotificationModel.AlarmType += "水浸告警：" + water.ToString();
                                     break;
-                                case "0006190900FF":
+                                case PushId.Wind:
+
                                     //风机控制上报相关
-                                    DataNotificationModel.AlarmType = "风机控制";
+
+                                    var WindControlValue = DataNotificationModel.CustomAlarm.AlarmDescriptor1.GetEntityValue();
+                                    var windControl = (WindControlDescriptor)WindControlValue;
+                                    DataNotificationModel.AlarmType += "风机控制:" + windControl.ToString() + " | ";
+                                    //水浸烟感上报相关
+                                    var WindLoopValue = DataNotificationModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
+                                    var WindLoop = (WaterAlarmDescriptor)WindLoopValue;
+                                    DataNotificationModel.AlarmType += "风机回路:" + WindLoop.ToString();
                                     break;
                                 default:
                                     DataNotificationModel.AlarmType = "Unknown";

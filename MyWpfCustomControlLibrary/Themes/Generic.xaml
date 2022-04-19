@@ -1,0 +1,65 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:MyWpfCustomControlLibrary">
+    <Style TargetType="{x:Type local:LightControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="{x:Type local:LightControl}">
+                    <Border>
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}" />
+                            <Ellipse
+                                x:Name="Ellipse"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Fill="{TemplateBinding FromColor}"
+                                Opacity="{TemplateBinding Opacity}" />
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ActiveStates">
+                                <VisualState x:Name="Inactive">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Ellipse"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1"
+                                            To="0.2"
+                                            Duration="00:00:01" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Active">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Ellipse"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0.2"
+                                            To="1"
+                                            Duration="00:00:01" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+
+
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style TargetType="{x:Type local:ShuttlePanel}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ShuttlePanel}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+</ResourceDictionary>

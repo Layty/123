@@ -2,6 +2,7 @@
     x:Class="JobMaster.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctr="clr-namespace:MyWpfCustomControlLibrary;assembly=MyWpfCustomControlLibrary"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:local="clr-namespace:JobMaster.Views"
@@ -22,6 +23,13 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel Height="29">
+                <!--<CheckBox Content="123" IsChecked="{Binding ElementName=LightControl, Path=IsActive}" />
+                <ctr:LightControl
+                    x:Name="LightControl"
+                    Width="30"
+                    Height="30"
+                    FromColor="Gold"
+                    IsActive="True" />-->
                 <Menu HorizontalAlignment="Left">
                     <MenuItem Header="Menu">
                         <MenuItem

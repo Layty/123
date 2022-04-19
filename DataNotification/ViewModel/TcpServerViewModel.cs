@@ -155,15 +155,7 @@ namespace DataNotification.ViewModel
         }
 
 
-        public enum AlarmType
-        {
-            Unknown,
-            PowerOff,
-            PowerOn,
-            ByPass,
-            烟感and水浸,
-            风机控制
-        }
+
         [Flags]
         public enum AlarmRegisterObject2
         {
@@ -267,7 +259,7 @@ namespace DataNotification.ViewModel
                                     var intvalue = alarmViewModel.CustomAlarm.AlarmDescriptor2.GetEntityValue();
                                     var ttt = (AlarmRegisterObject2)intvalue;
                                     alarmViewModel.AlarmType = ttt.ToString();
-                                
+
 
                                     break;
                                 case "0005190900FF":
@@ -277,7 +269,7 @@ namespace DataNotification.ViewModel
                                     alarmViewModel.AlarmType = "风机控制";
                                     break;
                                 default:
-                                    alarmViewModel.AlarmType ="Unknown";
+                                    alarmViewModel.AlarmType = "Unknown";
                                     break;
                             }
 

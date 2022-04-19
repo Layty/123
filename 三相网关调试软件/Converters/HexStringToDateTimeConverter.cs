@@ -63,7 +63,7 @@ namespace 三相智慧能源网关调试软件.Converters
                     var standardEventCode = (StandardEventCode)int.Parse(t.ValueString);
                     return t?.ValueString + ":" + standardEventCode.ToString();
                 }
-                catch (Exception e)
+                catch
                 {
                     return t?.ValueString;
                 }

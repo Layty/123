@@ -1,0 +1,242 @@
+﻿<Page
+    x:Class="三相智慧能源网关调试软件.Views.ServerCenter.TcpClientPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
+    Title="TcpClientPage"
+    d:DesignHeight="850"
+    d:DesignWidth="600"
+    DataContext="{Binding Source={StaticResource Locator}, Path=TcpClientHelper}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <ScrollViewer>
+            <materialDesign:Card>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon
+                        Grid.Row="0"
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Kind="Ethernet" />
+
+                        <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Height="50"
+                        Margin="5"
+                        materialDesign:HintAssist.FloatingScale="0.50"
+                        materialDesign:HintAssist.Hint="网关IP(editable)"
+                        FontSize="20"
+                        IsEditable="True"
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        Text="{Binding TcpClientHelper.ServerIpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                            <ComboBoxItem>127.0.0.1</ComboBoxItem>
+                            <ComboBoxItem>192.168.0.145</ComboBoxItem>
+                        </ComboBox>
+
+                        <TextBox
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Height="50"
+                        Margin="5"
+                        materialDesign:HintAssist.FloatingScale="0.50"
+                        materialDesign:HintAssist.Hint="端口号"
+                        materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                        FontSize="20"
+                        Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding TcpClientHelper.ServerPortNum}" />
+
+                        <ToggleButton
+                        x:Name="ButtonConnect"
+                        Grid.Column="3"
+                        Width="50"
+                        Height="50"
+                        Margin="5"
+                        Command="{Binding ConnectOrDisconnectCommand}"
+                        IsChecked="{Binding TcpClientHelper.ConnectResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource MaterialDesignActionLightToggleButton}">
+                            <ToggleButton.Content>
+                                <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                Kind="LocalAreaNetworkConnect" />
+                            </ToggleButton.Content>
+                            <materialDesign:ToggleButtonAssist.OnContent>
+                                <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                Kind="LocalAreaNetworkDisConnect" />
+                            </materialDesign:ToggleButtonAssist.OnContent>
+                        </ToggleButton>
+
+
+                    </Grid>
+                    <GroupBox Grid.Row="1" Header="发送区">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                            x:Name="TextBoxMsg"
+                            Height="100"
+                            Margin="5"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Text="root"
+                            TextWrapping="Wrap" />
+                            <Button
+                            Grid.Column="1"
+                            Margin="5"
+                            Command="{Binding SendMsgCommand}"
+                            CommandParameter="{Binding ElementName=TextBoxMsg, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+                            Content="发送"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}" />
+                        </Grid>
+
+                    </GroupBox>
+                    <Expander
+                    Grid.Row="2"
+                    Header="三相网关参数调试"
+                    IsExpanded="False">
+                        <Grid>
+                            <StackPanel Margin="2">
+                                <Button Margin="3" Command="{Binding TryToLoginCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Key" />
+                                        <TextBlock Text="一键登录网关" />
+                                        <materialDesign:PackIcon Kind="Key" />
+                                    </StackPanel>
+                                </Button>
+
+
+                                <UniformGrid Columns="2">
+
+                                    <TextBox
+                                    x:Name="TextBoxAfterHostIP"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="南瑞主站IP"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterHostIp, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaHostIpCommand}"
+                                    Content="设置主站IP" />
+                                </UniformGrid>
+                                <UniformGrid Columns="2">
+                                    <TextBox
+                                    x:Name="TextBoxAfterIP"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="网关IP"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterIp, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaIpAddrCommand}"
+                                    Content="设置网关IP" />
+                                </UniformGrid>
+                                <UniformGrid Columns="2">
+                                    <TextBox
+                                    x:Name="TextBoxAfterMask"
+                                    Margin="3"
+                                    materialDesign:HintAssist.Hint="默认网关"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    FontSize="20"
+                                    Text="{Binding AfterGateway, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    <Button
+                                    Margin="3"
+                                    Command="{Binding ReplaceAppParaIpGateWayCommand}"
+                                    Content="设置默认网关" />
+                                </UniformGrid>
+                                <WrapPanel>
+
+
+                                    <Button Margin="3" Command="{Binding ReplaceAllParaCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="SettingsBox" />
+                                            <TextBlock Text="一键设置参数" />
+                                            <materialDesign:PackIcon Kind="SettingsBox" />
+                                        </StackPanel>
+
+                                    </Button>
+                                    <Button
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="cat /opt/cfg/AppPara.cfg">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Eye" />
+                                            <TextBlock Text="查看配置文件" />
+                                            <materialDesign:PackIcon Kind="Eye" />
+                                        </StackPanel>
+
+                                    </Button>
+                                    <Button
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="reboot">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="Restart" />
+                                            <TextBlock Text="重启reboot" />
+                                            <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="Restart" />
+                                        </StackPanel>
+
+                                    </Button>
+                                    <Button
+                                    x:Name="ButtonTail"
+                                    Margin="3"
+                                    Command="{Binding SendMsgCommand}"
+                                    CommandParameter="tail -f /opt/bin/base_meter.log"
+                                    Content="查看IIC通讯日志" />
+                                    <Button
+                                    x:Name="ButtonExitTail"
+                                    Margin="3"
+                                    Command="{Binding SendMsgControlCCommand}"
+                                    Content="Control+C" />
+
+                                </WrapPanel>
+                            </StackPanel>
+                        </Grid>
+
+                    </Expander>
+                    <GroupBox Grid.Row="3" Header="SSHClient">
+                        <ScrollViewer>
+                            <myControl:SSHClient />
+                        </ScrollViewer>
+
+                    </GroupBox>
+
+                </Grid>
+            </materialDesign:Card>
+        </ScrollViewer>
+       
+
+    </Grid>
+</Page>

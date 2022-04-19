@@ -1,9 +1,9 @@
-﻿using Quartz;
+﻿using System.Threading.Tasks;
+using Quartz;
 using Quartz.Impl;
-using System.Threading.Tasks;
 using 三相智慧能源网关调试软件.Model.Jobs;
 
-namespace 三相智慧能源网关调试软件.ViewModel.DlmsViewModels
+namespace 三相智慧能源网关调试软件.Factory
 {
     public static class DemoScheduler
     {

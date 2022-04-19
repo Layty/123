@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDlmsStandard\MyDlmsStandard.csproj" />
+    <ProjectReference Include="..\MyWpfCustomControlLibrary\MyWpfCustomControlLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\JobCenterView.xaml">

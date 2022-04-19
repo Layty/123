@@ -5,7 +5,7 @@ using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.Axdr;
 using System.Windows.Controls;
 using 三相智慧能源网关调试软件.Model;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
 using DlmsDataItem = MyDlmsStandard.ApplicationLay.DlmsDataItem;
 
 namespace 三相智慧能源网关调试软件.MyControl.DLMSControl

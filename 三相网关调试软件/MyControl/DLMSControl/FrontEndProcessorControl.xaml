@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dlmsControl="clr-namespace:三相智慧能源网关调试软件.MyControl.DLMSControl"
-    xmlns:local="clr-namespace:三相智慧能源网关调试软件.View.ServerCenter"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding Source={StaticResource Locator}, Path=TcpServer}"

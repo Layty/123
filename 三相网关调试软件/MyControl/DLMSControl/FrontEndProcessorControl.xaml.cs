@@ -4,8 +4,8 @@ using System.Windows;
 
 using System.Windows.Controls;
 using System.Windows.Input;
-using 三相智慧能源网关调试软件.ViewModel;
-using 三相智慧能源网关调试软件.ViewModel.DlmsViewModels;
+using 三相智慧能源网关调试软件.ViewModels;
+using 三相智慧能源网关调试软件.ViewModels.DlmsViewModels;
 
 namespace 三相智慧能源网关调试软件.MyControl.DLMSControl
 {
