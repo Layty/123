@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyCommon;
 
 namespace 智慧能源网关Dlms协议测试软件.ViewModels
 {
@@ -30,7 +31,9 @@ namespace 智慧能源网关Dlms协议测试软件.ViewModels
         }
         public MainWindowViewModel(IEventAggregator aggregator)
         {
-
+          //byte[] Hex=new byte[] { 0xFe,0xFE,0x09};
+          byte[] Hex = null;
+            var str =Hex.ByteArrayToHexString();
         }
     }
 }

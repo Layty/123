@@ -6,7 +6,6 @@ using System.Net.Sockets;
 using CommunityToolkit.Mvvm.ComponentModel;
 using 三相智慧能源网关调试软件.Common;
 using HeartBeatFrame = 三相智慧能源网关调试软件.Model.HeartBeatFrame;
-using ValidationResult = System.Windows.Controls.ValidationResult;
 
 
 namespace 三相智慧能源网关调试软件

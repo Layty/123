@@ -1,61 +1,41 @@
 ﻿using System;
+using System.Text;
 
 namespace MySerialPortMaster
 {
     internal static class Common
     {
-
-        ///  <summary>  
-        /// 将指定字节数组转为16进制的字符串  
-        ///  </summary>  
-        ///  <param name="inBytes"> 二进制字节 </param>  
-        ///  <returns>类似"01 02 0F" </returns>  
-        public static string ByteToString(this byte[] inBytes)
-        {
-            string stringOut = "";
-            try
-            {
-                foreach (byte inByte in inBytes)
-                {
-                    stringOut = stringOut + $"{inByte:X2}" + " ";
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-
-            return stringOut.Trim();
-        }
-
-        /// <summary>
-        /// 将指定字节数组中一个字节序列转为16进制的字符串
-        /// </summary>
-        /// <param name="inBytes"></param>
-        /// <param name="index"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public static string ByteToString(this byte[] inBytes, int index, int count)
+        ///  <summary>
+        /// 将指定字节数组转为16进制的字符串
+        ///  </summary>
+        ///  <param name="inBytes"> 字节数组 </param>
+        ///  <param name="separator">分隔符</param>
+        ///  <returns>类似"01 02 0F" </returns>
+        public static string ByteToString(this byte[] inBytes, string separator = " ")
         {
             if (inBytes == null)
             {
-                throw new Exception(@"不能将空数组转换为16进制字符串");
+                throw new ArgumentNullException(nameof(inBytes), @"不能将空数组转换为16进制字符串");
             }
-
-            string stringOut = "";
-            try
+            if (separator == null)
             {
-                for (int i = index; i < count; i++)
+                throw new ArgumentNullException(nameof(separator), "分隔符不能为空");
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            for (var i = 0; i < inBytes.Length; i++)
+            {
+                byte inByte = inBytes[i];
+                if (i == (inBytes.Length - 1))
                 {
-                    stringOut += inBytes[i].ToString("X2") + " ";
+                    stringBuilder.Append($"{inByte:X2}");
+                }
+                else
+                {
+                    stringBuilder.Append($"{inByte:X2}" + separator);
                 }
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
 
-            return stringOut.Trim();
+            return stringBuilder.ToString();
         }
     }
 }

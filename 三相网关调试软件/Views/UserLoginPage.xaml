@@ -236,7 +236,7 @@
             VerticalAlignment="Bottom"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
             Command="{Binding LoginCommand}"
-            IsEnabled="{Binding IsCancel}">
+            IsEnabled="{Binding IsLoginStatus}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="Login" ToolTip="登录" />
                 <TextBlock>登录</TextBlock>

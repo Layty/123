@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyCommon\MyCommon.csproj" />
     <ProjectReference Include="..\MyWpfCustomControlLibrary\MyWpfCustomControlLibrary.csproj" />
   </ItemGroup>
 

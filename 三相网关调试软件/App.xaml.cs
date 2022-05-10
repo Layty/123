@@ -31,13 +31,16 @@ namespace 三相智慧能源网关调试软件
         {
 
             var services = new ServiceCollection();
+          
             //串口配置管理者
+            //var serialPortConfigCaretaker =
+            //    new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
             var serialPortConfigCaretaker =
-                new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
+                new SerialPortConfigCaretaker();
             //从管理者中得到串口配置，进行串口相关参数初始化
-            var config = serialPortConfigCaretaker.LoadSerialPortParamsByReadSerialPortConfigFile();
+            var config = serialPortConfigCaretaker.LoadSerialPortConfigFromJsonFile();
             var serialPortMaster = new SerialPortMaster(config);
-            services.AddSingleton(serialPortConfigCaretaker);
+           
             services.AddSingleton(serialPortMaster);
             services.AddTransient<SerialPortViewModel>(); //RS485串口
 

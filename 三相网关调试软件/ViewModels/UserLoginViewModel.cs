@@ -35,19 +35,19 @@ namespace 三相智慧能源网关调试软件.ViewModels
     public class UserLoginViewModel : ObservableObject
     {
         /// <summary>
-        /// 禁用按钮
+        /// 是否正在登陆,界面禁用按钮,
         /// </summary>
-        public bool IsCancel
+        public bool IsLoginStatus
         {
-            get => _isCancel;
+            get => _isLoginStatus;
             set
             {
-                _isCancel = value;
+                _isLoginStatus = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _isCancel = true;
+        private bool _isLoginStatus = true;
 
 
         public UserLoginViewModel(IUserRepository userRepository)
@@ -62,16 +62,16 @@ namespace 三相智慧能源网关调试软件.ViewModels
 
             LoginCommand = new RelayCommand(() =>
             {
-#if !DEBUG
+#if DEBUG
    LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
                     LoginModel.LoginResult = true;
                     StrongReferenceMessenger.Default.Send("ni hao ya da shuai bi", "Snackbar");
                     LoginModel.Report = "登录成功";
 #else
-                IsCancel = false;
-                userRepository.Login(); 
+                IsLoginStatus = false;
+                userRepository.Login();
                 LoginWebApi();
-                this.IsCancel = true;
+                this.IsLoginStatus = true;
 # endif
             });
             ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
@@ -82,7 +82,7 @@ namespace 三相智慧能源网关调试软件.ViewModels
         {
             try
             {
-                IsCancel = false;
+                IsLoginStatus = false;
                 if (string.IsNullOrWhiteSpace(LoginModel.UserName) || string.IsNullOrWhiteSpace(LoginModel.Password))
                 {
                     new MessageBoxWindow() { Message = "请输入用户名和密码！" }.ShowDialog();
@@ -128,7 +128,7 @@ namespace 三相智慧能源网关调试软件.ViewModels
             }
             finally
             {
-                this.IsCancel = true;
+                this.IsLoginStatus = true;
             }
         }
 

@@ -33,13 +33,13 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         #endregion
 
         public PhysicalChanelType CommunicationType { get; set; }
-        public readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
+        
 
-        public LinkLayer(SerialPortMaster serialPort, TcpServerViewModel tcpServerViewModel)
+        public LinkLayer(SerialPortMaster serialPort, TcpServerViewModel tcpServerViewModel )
         {
             TcpServerHelper = tcpServerViewModel.TcpServerHelper;
             CurrentSocket = tcpServerViewModel.CurrentSocketClient;
-
+          
             PortMaster = serialPort;
             InitSerialPortParams(PortMaster);
         }
@@ -59,9 +59,9 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         /// <summary>
         /// 初始化21E的串口实例
         /// </summary>
-        public void Init21ESerialPort(int StartBaud)
+        public void Init21ESerialPort(int startBaud)
         {
-            PortMaster.BaudRate = StartBaud;
+            PortMaster.BaudRate = startBaud;
             PortMaster.DataBits = 7;
             PortMaster.StopBits = StopBits.One;
             PortMaster.Parity = Parity.Even;
@@ -72,8 +72,9 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         /// </summary>
         public void BackupPortPara()
         {
-            var memento = PortMaster.CreateMySerialPortConfig;
-            _caretaker.Dictionary["before"] = memento;
+            var memento = PortMaster.CreateCurrentSerialPortConfig;
+            //_caretaker.Dictionary["before"] = memento;
+            PortMaster.SerialPortConfigCaretaker.BackUp(memento);
             PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
             PortMaster.SerialPortLogger.IsReceiveFormat16 = false;
         }
@@ -83,7 +84,8 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         /// </summary>
         public void LoadBackupPortPara()
         {
-            PortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            //PortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            PortMaster.LoadSerialPortConfig(PortMaster.SerialPortConfigCaretaker.Undo());
             PortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = true;
             PortMaster.SerialPortLogger.IsReceiveFormat16 = true;
         }

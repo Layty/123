@@ -268,6 +268,11 @@ namespace MySerialPortMaster
             SendFrameCount = 0;
         }
 
+        public void HandlerTimeOut(int timeOut)
+        {
+            SendAndReceiveDataCollections =
+                $"{DateTime.Now:yyyy-MM-dd hh:mm:ss fff} => {timeOut}s超时无响应{Environment.NewLine}";
+        }
         public void HandlerSendData(byte[] sendBytes)
         {
             SendFrameCount++; //累加帧数

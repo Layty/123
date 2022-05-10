@@ -27,15 +27,15 @@ namespace MyDlmsStandard.Wrapper
        /// <summary>
        /// 设置字符串的方式设置表号
        /// </summary>
-       /// <param name="meterIdStrign"></param>
-        public void SetMeterAddressString(string meterIdStrign)
+       /// <param name="meterIdString"></param>
+        public void SetMeterAddressString(string meterIdString)
         {
 
-            if (meterIdStrign.Length != 12)
+            if (meterIdString.Length != 12)
             {
                 throw new Exception("长度不对，需为12个");
             }
-            MeterAddressBytes = Encoding.Default.GetBytes(meterIdStrign);
+            MeterAddressBytes = Encoding.Default.GetBytes(meterIdString);
 
         }
 

@@ -49,7 +49,7 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
 
         private string _meterAddress = "";
 
-        private readonly SerialPortConfigCaretaker _caretaker = new SerialPortConfigCaretaker();
+        private readonly SerialPortConfigCaretaker _caretaker;
 
         public EModeViewModel(DlmsSettingsViewModel settings)
         {
@@ -66,6 +66,7 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         {
             _opticalPortMaster = serialOpticalPortMaster;
             _eModeFrame = eModeFrame;
+            _caretaker = serialOpticalPortMaster.SerialPortConfigCaretaker;
         }
 
         /// <summary>
@@ -122,8 +123,9 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         /// </summary>
         private void BackupPortPara()
         {
-            var memento = _opticalPortMaster.CreateMySerialPortConfig;
-            _caretaker.Dictionary["before"] = memento;
+            var memento = _opticalPortMaster.CreateCurrentSerialPortConfig;
+            //_caretaker.Dictionary["before"] = memento;
+            _caretaker.BackUp(memento);
             _opticalPortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = false;
             _opticalPortMaster.SerialPortLogger.IsReceiveFormat16 = false;
         }
@@ -133,7 +135,8 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         /// </summary>
         private void LoadBackupPortPara()
         {
-            _opticalPortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            //_opticalPortMaster.LoadSerialPortConfig(_caretaker.Dictionary["before"]);
+            _opticalPortMaster.LoadSerialPortConfig(_caretaker.Undo());
             _opticalPortMaster.SerialPortLogger.IsSendDataDisplayFormat16 = true;
             _opticalPortMaster.SerialPortLogger.IsReceiveFormat16 = true;
         }

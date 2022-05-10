@@ -37,8 +37,8 @@ namespace 三相智慧能源网关调试软件.ViewModels
 
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
-                SerialPortConfigCaretaker.SaveSerialPortConfigDataToJsonFile(SerialPortMaster
-                    .CreateMySerialPortConfig);
+                SerialPortConfigCaretaker.SaveSerialPortConfigToJsonFile(SerialPortMaster
+                    .CreateCurrentSerialPortConfig);
             });
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
             OpenOrCloseCommand = new RelayCommand(() =>

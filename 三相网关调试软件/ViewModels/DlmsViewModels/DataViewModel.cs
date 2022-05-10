@@ -11,7 +11,7 @@ using 三相智慧能源网关调试软件.Model;
 
 namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
 {
-    public class DataViewModel : ObservableObject
+    public sealed class DataViewModel : ObservableObject
     {
         public Array OctetStringDisplayFormatArray { get; set; } = Enum.GetValues(typeof(OctetStringDisplayFormat));
         public Array UInt32ValueDisplayFormatArray { get; set; } = Enum.GetValues(typeof(UInt32ValueDisplayFormat));
@@ -37,11 +37,9 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         public RelayCommand<CustomCosemDataModel> SetValueCommand { get; set; }
 
 
-        public DlmsClient Client { get; set; }
-
         public DataViewModel(DlmsClient dlmsClient,ExcelHelper excelHelper)
         {
-            Client = dlmsClient;
+            var client = dlmsClient;
           
             var dataTable = excelHelper.GetExcelDataTable(Properties.Settings.Default.DlmsDataSheetName);
             DataCollection = new ObservableCollection<CustomCosemDataModel>();
@@ -57,7 +55,7 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
             GetLogicNameCommand = new RelayCommand<CustomCosemDataModel>(async t =>
             {
                 t.Value = new DlmsDataItem();
-                var getResponse = await Client.GetRequestAndWaitResponse(t.LogicNameAttributeDescriptor);
+                var getResponse = await client.GetRequestAndWaitResponse(t.LogicNameAttributeDescriptor);
                 if (getResponse != null)
                 {
                     t.Value.OctetStringDisplayFormat = OctetStringDisplayFormat.Obis;
@@ -75,7 +73,7 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
                 t.Value.Value = "";
 
                 GetResponse requestAndWaitResponse =
-                    await Client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
+                    await client.GetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr));
                 if (requestAndWaitResponse?.GetResponseNormal != null)
                 {
                     t.LastResult = (ErrorCode)requestAndWaitResponse.GetResponseNormal.Result.DataAccessResult
@@ -94,7 +92,7 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
                 t.Value.UpdateValue();
                 t.LastResult = new ErrorCode();
                 var setResponse =
-                    await Client.SetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
+                    await client.SetRequestAndWaitResponse(t.GetCosemAttributeDescriptor(t.Attr), t.Value);
                 if (setResponse != null)
                 {
                     t.LastResult = (ErrorCode)setResponse.SetResponseNormal.Result;

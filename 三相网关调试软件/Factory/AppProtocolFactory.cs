@@ -17,28 +17,28 @@ namespace 三相智慧能源网关调试软件.Factory
 
         public static GetRequest CreateGetRequestNormal(CosemAttributeDescriptor cosemAttributeDescriptor)
         {
-            var GetRequest = new GetRequest();
-            GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
-            XmlHelper.XmlCommon(GetRequest);
-            return GetRequest;
+            var getRequest = new GetRequest();
+            getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptor);
+            XmlHelper.XmlCommon(getRequest);
+            return getRequest;
         }
         public static GetRequest CreateGetRequestNormal(CosemAttributeDescriptorWithSelection cosemAttributeDescriptorWithSelection)
         {
-            var GetRequest = new GetRequest();
-            GetRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
-            XmlHelper.XmlCommon(GetRequest);
-            return GetRequest;
+            var getRequest = new GetRequest();
+            getRequest.GetRequestNormal = new GetRequestNormal(cosemAttributeDescriptorWithSelection);
+            XmlHelper.XmlCommon(getRequest);
+            return getRequest;
         }
 
         public static GetRequest CreateGetRequestNext(
             AxdrIntegerUnsigned32 blockNumber)
         {
-            var GetRequest = new GetRequest
+            var getRequest = new GetRequest
             {
                 GetRequestNext = new GetRequestNext() { BlockNumber = blockNumber }
             };
-            XmlHelper.XmlCommon(GetRequest);
-            return GetRequest;
+            XmlHelper.XmlCommon(getRequest);
+            return getRequest;
         }
         public static SetRequest CreateSetRequest(CosemAttributeDescriptor cosemAttributeDescriptor,
             DlmsDataItem value)
