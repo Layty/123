@@ -6,6 +6,7 @@ using MyDlmsStandard.ApplicationLay;
 using MyDlmsStandard.ApplicationLay.Action;
 using MyDlmsStandard.ApplicationLay.ApplicationLayEnums;
 using MyDlmsStandard.ApplicationLay.Get;
+using MyDlmsStandard.ApplicationLay.Release;
 using MyDlmsStandard.ApplicationLay.Set;
 using MyDlmsStandard.HDLC;
 using MyDlmsStandard.HDLC.Enums;
@@ -109,8 +110,12 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
 
             if (force && (InterfaceType == ProtocolInterfaceType.HDLC))
             {
+                //result = await LinkLayer.SendAsync(Protocol.BuildFinalSendData(InterfaceType,
+                //    new DisConnectRequest(1, 1))); //disConnectRequest有bug
                 result = await LinkLayer.SendAsync(Protocol.BuildFinalSendData(InterfaceType,
-                    new DisConnectRequest(1, 1)));
+                    new ReleaseRequest()));
+                result = await LinkLayer.SendAsync(
+                    new DisConnectRequest(1,1).ToPduBytes());//正确的断开
                 //TODO :ParseUA
                 return Protocol.Hdlc46FrameBase.ParseUaResponse(result);
             }

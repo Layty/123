@@ -106,6 +106,19 @@ namespace 三相智慧能源网关调试软件.Model
                 OnPropertyChanged();
             }
         }
+        /// <summary>
+        /// 是否正在登陆,界面禁用按钮,
+        /// </summary>
+        public bool IsLoginStatus
+        {
+            get => _isLoginStatus;
+            set
+            {
+                _isLoginStatus = value;
+                OnPropertyChanged();
+            }
+        }
 
+        private bool _isLoginStatus = true;
     }
 }

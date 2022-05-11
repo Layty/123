@@ -10,12 +10,14 @@ namespace 三相智慧能源网关调试软件.ViewModels
 {
     public class SerialPortViewModel : ObservableObject
     {
-        public SerialPortViewModel(SerialPortConfigCaretaker serialPortConfigCaretaker, SerialPortMaster serialPortMaster)
-        {
-            {
-                SerialPortConfigCaretaker = serialPortConfigCaretaker;
 
-                SerialPortMaster = serialPortMaster;
+        public SerialPortMaster SerialPortMaster { get; set; }
+
+        public SerialPortViewModel(SerialPortMaster serialPortMaster)
+        {
+            SerialPortMaster = serialPortMaster;
+
+            {
 
                 ClearReceiveDataCommand = new RelayCommand(() =>
                 {
@@ -34,10 +36,9 @@ namespace 三相智慧能源网关调试软件.ViewModels
                     new RelayCommand(() => SerialPortMaster.SerialPortLogger.ClearReceiveCount());
             }
 
-
             SaveSerialPortConfigFileCommand = new RelayCommand(() =>
             {
-                SerialPortConfigCaretaker.SaveSerialPortConfigToJsonFile(SerialPortMaster
+                serialPortMaster.SerialPortConfigCaretaker.SaveSerialPortConfigToJsonFile(SerialPortMaster
                     .CreateCurrentSerialPortConfig);
             });
             OpenCalcCommand = new RelayCommand(() => { Process.Start("compmgmt.msc"); });
@@ -62,19 +63,6 @@ namespace 三相智慧能源网关调试软件.ViewModels
                 }
             });
         }
-
-        public SerialPortMaster SerialPortMaster
-        {
-            get => _serialPortMaster;
-            set
-            {
-                _serialPortMaster = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private SerialPortMaster _serialPortMaster;
-        private  SerialPortConfigCaretaker SerialPortConfigCaretaker { get; set; }
 
 
         public RelayCommand OpenOrCloseCommand { get; set; }
@@ -104,7 +92,7 @@ namespace 三相智慧能源网关调试软件.ViewModels
         #region 保存串口配置信息值Json文件
 
         public RelayCommand SaveSerialPortConfigFileCommand { get; set; }
-        public RelayCommand SaveSerialPortLogCommand { get; set; }
+
 
         #endregion
 
@@ -114,10 +102,6 @@ namespace 三相智慧能源网关调试软件.ViewModels
 
         #endregion
 
-        #region 发送区
 
-        public RelayCommand SendTextCommand { get; set; }
-
-        #endregion
     }
 }

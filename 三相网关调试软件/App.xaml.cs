@@ -31,18 +31,19 @@ namespace 三相智慧能源网关调试软件
         {
 
             var services = new ServiceCollection();
-          
+
             //串口配置管理者
-            //var serialPortConfigCaretaker =
-            //    new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
-            var serialPortConfigCaretaker =
-                new SerialPortConfigCaretaker();
+            //var serialPortConfigCaretaker =new SerialPortConfigCaretaker(Settings.Default.SerialPortViewModelConfigFilePath);
+            var serialPortConfigCaretaker = new SerialPortConfigCaretaker();
             //从管理者中得到串口配置，进行串口相关参数初始化
             var config = serialPortConfigCaretaker.LoadSerialPortConfigFromJsonFile();
             var serialPortMaster = new SerialPortMaster(config);
-           
+
             services.AddSingleton(serialPortMaster);
             services.AddTransient<SerialPortViewModel>(); //RS485串口
+
+            services.AddSingleton(new TcpServerHelper("127.0.0.1", 8881));
+            //new LinkLayer(serialPortMaster, new TcpServerViewModel());
 
             //DLMS各个接口类的配置文件
             ExcelHelper excel = new ExcelHelper("DLMS设备信息.xls");
@@ -57,6 +58,10 @@ namespace 三相智慧能源网关调试软件
 
             services.AddSingleton<MainViewModel>(); //主窗体
             services.AddSingleton<MenuViewModel>(); //菜单
+
+            //services.AddTransient<IUserRepository, UserWebApi>();
+            services.AddTransient<IUserRepository, UserBackDoor>();
+
             services.AddSingleton<UserLoginViewModel>(); //用户登录
             services.AddSingleton<ColorToolViewModel>(); //程序调色板，皮肤
             services.AddSingleton<SkinViewModel>(); //程序调色板，皮肤，开机直接应用
@@ -71,7 +76,7 @@ namespace 三相智慧能源网关调试软件
             services.AddSingleton<NetLogViewModel>();
             services.AddSingleton<XMLLogViewModel>();
 
-          
+
             services.AddSingleton<JobCenterViewModel>();
 
             services.AddSingleton<DlmsBaseMeterViewModel>(); //基表DLMS协议
@@ -91,7 +96,6 @@ namespace 三相智慧能源网关调试软件
             services.AddSingleton<SSHClientViewModel>();
             services.AddSingleton<SinglePhaseManagementPageViewModel>();
 
-            services.AddTransient<IUserRepository, UserWebApi>();
             return services.BuildServiceProvider();
         }
         protected override void OnStartup(StartupEventArgs e)

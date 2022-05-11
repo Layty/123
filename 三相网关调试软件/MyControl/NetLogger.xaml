@@ -9,7 +9,7 @@
     <UserControl.DataContext>
         <Binding Path="Log" Source="{StaticResource Locator}" />
     </UserControl.DataContext>
-    <materialDesign:Card UniformCornerRadius="5">
+    <materialDesign:Card>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

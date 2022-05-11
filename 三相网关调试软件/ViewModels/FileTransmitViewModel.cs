@@ -4,25 +4,15 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FileTransmit;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Properties;
 
 namespace 三相智慧能源网关调试软件.ViewModels
 {
     public class FileTransmitViewModel : ObservableObject
     {
-        private SerialPortViewModel _serialPortViewModel;
-
-        public SerialPortViewModel SerialPortViewModel
-        {
-            get => _serialPortViewModel;
-            set
-            {
-                _serialPortViewModel = value;
-                OnPropertyChanged();
-            }
-        }
+        public SerialPortMaster SerialPortMaster { get; }
 
         private bool _isInitUpGradeSerialPort;
 
@@ -33,16 +23,16 @@ namespace 三相智慧能源网关调试软件.ViewModels
             {
                 if (value)
                 {
-                    if (!SerialPortViewModel.SerialPortMaster.IsAutoDataReceived)
+                    if (!SerialPortMaster.IsAutoDataReceived)
                     {
-                        SerialPortViewModel.SerialPortMaster.IsAutoDataReceived = true;
+                        SerialPortMaster.IsAutoDataReceived = true;
                     }
 
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
+                    SerialPortMaster.SerialDataReceived += SerialPortMasterModelSerialDataReceived;
                 }
                 else
                 {
-                    SerialPortViewModel.SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
+                    SerialPortMaster.SerialDataReceived -= SerialPortMasterModelSerialDataReceived;
                 }
 
                 _isInitUpGradeSerialPort = value;
@@ -50,8 +40,8 @@ namespace 三相智慧能源网关调试软件.ViewModels
             }
         }
 
-        private void SerialPortMasterModelSerialDataReceived(MySerialPortMaster.SerialPortMaster source,
-            MySerialPortMaster.SerialPortEventArgs e)
+        private void SerialPortMasterModelSerialDataReceived(SerialPortMaster source,
+            SerialPortEventArgs e)
         {
             FileTransmitProtocol.ReceivedFromUart(e.DataBytes);
         }
@@ -170,9 +160,10 @@ namespace 三相智慧能源网关调试软件.ViewModels
         public Array YModemTypeArray => Enum.GetValues(typeof(YModemType));
 
 
-        public FileTransmitViewModel()
+        public FileTransmitViewModel(SerialPortMaster serialPortMaster)
         {
-            SerialPortViewModel = App.Current.Services.GetService<SerialPortViewModel>();
+            SerialPortMaster= serialPortMaster;
+             
             TransmitMode = TransmitMode.Send;
             YModemType = YModemType.YModem_1K;
             PacketLen = 1024;
@@ -180,12 +171,12 @@ namespace 三相智慧能源网关调试软件.ViewModels
             FileTransmitProtocol = new YModem(TransmitMode, YModemType, 10);
             UserComCommand = new RelayCommand(() =>
             {
-                SerialPortViewModel.SerialPortMaster.SerialDataReceived +=
+                SerialPortMaster.SerialDataReceived +=
                     SerialPortMasterModelSerialDataReceived;
             });
             ReleaseComCommand = new RelayCommand(() =>
             {
-                SerialPortViewModel.SerialPortMaster.SerialDataReceived -=
+                SerialPortMaster.SerialDataReceived -=
                     SerialPortMasterModelSerialDataReceived;
             });
             StartCommand = new RelayCommand(() =>
@@ -248,7 +239,7 @@ namespace 三相智慧能源网关调试软件.ViewModels
 
         private void YModem_EndOfTransmit(object sender, EventArgs e)
         {
-            if (FileTransmitProtocol == null || SerialPortViewModel == null)
+            if (FileTransmitProtocol == null || SerialPortMaster == null)
             {
                 return;
             }
@@ -321,12 +312,12 @@ namespace 三相智慧能源网关调试软件.ViewModels
 
         private void YModem_SendToUartEvent(object sender, SendToUartEventArgs e)
         {
-            if (!_serialPortViewModel.SerialPortMaster.IsOpen)
+            if (!SerialPortMaster.IsOpen)
             {
-                _serialPortViewModel.SerialPortMaster.Open();
+                SerialPortMaster.Open();
             }
 
-            _serialPortViewModel.SerialPortMaster.Send(e.Data); //使用Send可捕捉发送日志
+            SerialPortMaster.Send(e.Data); //使用Send可捕捉发送日志
         }
 
 

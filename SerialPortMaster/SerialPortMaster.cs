@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Ports;
@@ -107,15 +108,18 @@ namespace MySerialPortMaster
             get => _isAutoDataReceived;
             set
             {
+
                 if (_isAutoDataReceived == value)
                     return;
                 if (value)
                 {
                     SerialPort.DataReceived += SerialPort_DataReceived;
+
                 }
                 else
                 {
                     SerialPort.DataReceived -= SerialPort_DataReceived;
+
                 }
 
                 _isAutoDataReceived = value;
@@ -209,30 +213,53 @@ namespace MySerialPortMaster
 
         public SerialPortMaster(SerialPortConfig serialPortConfig)
         {
+            if (serialPortConfig == null) throw new ArgumentNullException(nameof(serialPortConfig));
             IsAutoDataReceived = true;
             SerialPortConfigCaretaker = new SerialPortConfigCaretaker();
-            LoadSerialPortConfig(SerialPortConfigCaretaker.DefaultConfig);
+            LoadSerialPortConfig(serialPortConfig);
+
         }
 
-        private async void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+
+
+
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            while (SerialPort.BytesToRead != 0)
+            try
             {
-                var n = SerialPort.BytesToRead;
-                await Task.Delay(50);//最大帧接受间隔
-
-                var n1 = SerialPort.BytesToRead;
-                if (n != 0 && n1 == n)
+                //if (SerialPort.BytesToRead != 0)
                 {
-                    //声明一个临时数组存储当前来的串口数据
-                    var tryToReadReceiveData = new byte[SerialPort.BytesToRead];
+                    //var n = SerialPort.BytesToRead;
+                    //Thread.Sleep(50);//最大帧接受间隔
 
-                    SerialPort.Read(tryToReadReceiveData, 0, SerialPort.BytesToRead);
+                    var n1 = SerialPort.BytesToRead;
 
-                    OnDataReceived(tryToReadReceiveData, null);
-                    break;
+                    if (n1 != 0)
+                    {
+
+                        //声明一个临时数组存储当前来的串口数据
+                        var tryToReadReceiveData = new byte[n1];
+                        if (IsOpen)
+                        {
+                            try
+                            {
+                                SerialPort.Read(tryToReadReceiveData, 0, n1);
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
+                        }
+
+                        OnDataReceived(tryToReadReceiveData, null);
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+
         }
 
         #region 串口开启与关闭

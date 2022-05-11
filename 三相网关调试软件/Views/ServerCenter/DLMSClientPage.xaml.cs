@@ -19,6 +19,25 @@ namespace 三相智慧能源网关调试软件.Views.ServerCenter
         {
             InitializeComponent();
             Client = App.Current.Services.GetService<DlmsClient>();
+            this.Loaded += DlmsClientPage_Loaded;
+            
+        }
+
+        private void DlmsClientPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Client.DlmsSettingsViewModel.ProtocolInterfaceType == ProtocolInterfaceType.WRAPPER)
+            {
+                ToggleButtonSelectChannel.IsChecked = true;
+                ToggleButtonSelectChannel.Content = "Wrapper";
+
+
+            }
+            else
+            {
+                ToggleButtonSelectChannel.IsChecked = false;
+                ToggleButtonSelectChannel.Content = "SerialPort";
+
+            }
         }
 
         private void ListBox_OnSelected(object sender, RoutedEventArgs e)
@@ -52,6 +71,11 @@ namespace 三相智慧能源网关调试软件.Views.ServerCenter
         }
 
 
+
+
+
+
+
         private void ToggleButtonSelectChannel_OnClick(object sender, RoutedEventArgs e)
         {
             if (ToggleButtonSelectChannel.IsChecked == true)
@@ -59,12 +83,14 @@ namespace 三相智慧能源网关调试软件.Views.ServerCenter
                 ToggleButtonSelectChannel.Content = "Wrapper";
                 Client.DlmsSettingsViewModel.PhysicalChanelType = PhysicalChanelType.FrontEndProcess;
                 Client.DlmsSettingsViewModel.ProtocolInterfaceType = ProtocolInterfaceType.WRAPPER;
+
             }
             else
             {
                 ToggleButtonSelectChannel.Content = "SerialPort";
                 Client.DlmsSettingsViewModel.PhysicalChanelType = PhysicalChanelType.SerialPort;
                 Client.DlmsSettingsViewModel.ProtocolInterfaceType = ProtocolInterfaceType.HDLC;
+
             }
         }
 

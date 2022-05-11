@@ -15,74 +15,24 @@ namespace 三相智慧能源网关调试软件.ViewModels
 {
     public interface IUserRepository
     {
+        UserLoginModel LoginModel { get; set; }
         void Login();
         void Exit();
     }
 
-    public class UserWebApi : IUserRepository
+    /// <summary>
+    /// 通过webApi进行登录
+    /// </summary>
+    public class UserWebApi : ObservableObject, IUserRepository
     {
-        public void Login()
-        {
-           
-        }
-
-        public void Exit()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class UserLoginViewModel : ObservableObject
-    {
-        /// <summary>
-        /// 是否正在登陆,界面禁用按钮,
-        /// </summary>
-        public bool IsLoginStatus
-        {
-            get => _isLoginStatus;
-            set
-            {
-                _isLoginStatus = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isLoginStatus = true;
+        public UserLoginModel LoginModel { get; set; } = new UserLoginModel();
 
 
-        public UserLoginViewModel(IUserRepository userRepository)
-        {
-            LoginModel = new UserLoginModel();
-            LoginModel.LoginErrorCounts = 0;
-            ReadUserInfoFromResource();
-
-            //                LoginCommand = new RelayCommand(Login);
-
-            //         LoginCommand = new RelayCommand(LoginFormWcfServer);
-
-            LoginCommand = new RelayCommand(() =>
-            {
-#if DEBUG
-   LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
-                    LoginModel.LoginResult = true;
-                    StrongReferenceMessenger.Default.Send("ni hao ya da shuai bi", "Snackbar");
-                    LoginModel.Report = "登录成功";
-#else
-                IsLoginStatus = false;
-                userRepository.Login();
-                LoginWebApi();
-                this.IsLoginStatus = true;
-# endif
-            });
-            ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
-            SaveUserInfoToResourceCommand = new RelayCommand(SaveUserInfoToResource);
-        }
-
-        private async void LoginWebApi()
+        public async void Login()
         {
             try
             {
-                IsLoginStatus = false;
+                LoginModel.IsLoginStatus = false;
                 if (string.IsNullOrWhiteSpace(LoginModel.UserName) || string.IsNullOrWhiteSpace(LoginModel.Password))
                 {
                     new MessageBoxWindow() { Message = "请输入用户名和密码！" }.ShowDialog();
@@ -128,11 +78,37 @@ namespace 三相智慧能源网关调试软件.ViewModels
             }
             finally
             {
-                this.IsLoginStatus = true;
+                this.LoginModel.IsLoginStatus = true;
             }
         }
 
-        private async void LoginFormWcfServer()
+        public void Exit()
+        {
+
+        }
+    }
+    public class UserBackDoor : IUserRepository
+    {
+        public UserLoginModel LoginModel { get; set; } = new UserLoginModel();
+
+        public void Login()
+        {
+            LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+            LoginModel.LoginResult = true;
+            StrongReferenceMessenger.Default.Send("后门登录", "Snackbar");
+            LoginModel.Report = "登录成功";
+        }
+
+        public void Exit()
+        {
+
+        }
+    }
+
+    public class UseWpf : IUserRepository
+    {
+        public UserLoginModel LoginModel { get; set; } = new UserLoginModel();
+        public async void Login()
         {
             using (UserLoginClient loginClient = new UserLoginClient())
             {
@@ -160,6 +136,76 @@ namespace 三相智慧能源网关调试软件.ViewModels
             }
         }
 
+        public void Exit()
+        {
+
+        }
+    }
+
+    public class UseAccess : IUserRepository
+    {
+        public UserLoginModel LoginModel { get; set; } = new UserLoginModel();
+
+        public void Exit()
+        {
+
+        }
+        private readonly string _connectionStr = Settings.Default.AccessConnectionStr +
+                                                 "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
+
+        public void Login()
+        {
+            LoginModel.Report = "";
+            int result;
+            using (OleDbConnection dbConnection = new OleDbConnection(_connectionStr))
+            {
+                dbConnection.Open();
+
+                string sqlSel = "select count(*) from UserInfo where userName = '" + LoginModel.UserName +
+                                "' and password = '" + LoginModel.Password + "'";
+                using (OleDbCommand cmd = new OleDbCommand(sqlSel, dbConnection))
+                {
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+
+            if (result > 0)
+            {
+                LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
+                LoginModel.LoginResult = true;
+
+                LoginModel.Report = "登录成功";
+                //SaveUserInfoToResource();
+            }
+            else
+            {
+                LoginModel.LoginResult = false;
+
+                LoginModel.Report = "用户名或密码错误";
+            }
+        }
+    }
+    public class UserLoginViewModel : ObservableObject
+    {
+        private readonly IUserRepository _userRepository;
+
+        public UserLoginViewModel(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+
+            LoginModel = new UserLoginModel();
+            LoginModel.LoginErrorCounts = 0;
+            ReadUserInfoFromResource();
+
+            LoginCommand = new RelayCommand( () =>
+            {
+                _userRepository.Login();
+                LoginModel.LoginResult = _userRepository.LoginModel.LoginResult;
+            });
+            ExitApplicationCommand = new RelayCommand(ApplicationShutdown);
+            SaveUserInfoToResourceCommand = new RelayCommand(SaveUserInfoToResource);
+        }
+
         public RelayCommand SaveUserInfoToResourceCommand { get; set; }
 
         public UserLoginModel LoginModel { get; set; }
@@ -173,7 +219,7 @@ namespace 三相智慧能源网关调试软件.ViewModels
         /// </summary>
         public void ApplicationShutdown()
         {
-            //            Messenger.Default.Send("", "ApplicationShutdown");
+
         }
 
         /// <summary>
@@ -209,39 +255,5 @@ namespace 三相智慧能源网关调试软件.ViewModels
             Settings.Default.Save();
         }
 
-        private readonly string _connectionStr = Settings.Default.AccessConnectionStr +
-                                                 "Jet OLEDB:Database Password = 5841320;User Id=Admin;";
-
-        public void Login()
-        {
-            LoginModel.Report = "";
-            int result;
-            using (OleDbConnection dbConnection = new OleDbConnection(_connectionStr))
-            {
-                dbConnection.Open();
-
-                string sqlSel = "select count(*) from UserInfo where userName = '" + LoginModel.UserName +
-                                "' and password = '" + LoginModel.Password + "'";
-                using (OleDbCommand cmd = new OleDbCommand(sqlSel, dbConnection))
-                {
-                    result = Convert.ToInt32(cmd.ExecuteScalar());
-                }
-            }
-
-            if (result > 0)
-            {
-                LoginModel.SucceedLoginTime = DateTime.Now.ToString("yy-MM-dd ddd HH:mm:ss");
-                LoginModel.LoginResult = true;
-
-                LoginModel.Report = "登录成功";
-                //SaveUserInfoToResource();
-            }
-            else
-            {
-                LoginModel.LoginResult = false;
-
-                LoginModel.Report = "用户名或密码错误";
-            }
-        }
     }
 }

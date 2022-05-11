@@ -8,16 +8,15 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myControl="clr-namespace:三相智慧能源网关调试软件.MyControl"
-    Title="LogWindow"
+    Title="LogWindow 可拖动的日志窗口"
     Width="800"
     Height="450"
     mc:Ignorable="d">
     <Grid>
         <Grid x:Name="CardLog">
             <materialDesign:Card>
-
                 <dockablz:Layout>
-                    <dragablz:TabablzControl Margin="0,-1,0,1" BorderThickness="0">
+                    <dragablz:TabablzControl Margin="0,-1,0,1" BorderThickness="1">
                         <dragablz:TabablzControl.InterTabController>
                             <dragablz:InterTabController />
                         </dragablz:TabablzControl.InterTabController>
@@ -56,26 +55,7 @@
 
 
 
-                <!--<TabControl x:Name="TabControl">
-                    <TabItem>
-                        <TabItem.Header>
-                            <materialDesign:PackIcon Kind="SerialPort" />
-                        </TabItem.Header>
-                        <myControl:SerialPortLogger />
-                    </TabItem>
-                    <TabItem>
-                        <TabItem.Header>
-                            <materialDesign:PackIcon Kind="Ethernet" />
-                        </TabItem.Header>
-                        <myControl:NetLogger />
-                    </TabItem>
-                    <TabItem>
-                        <TabItem.Header>
-                            <materialDesign:PackIcon Kind="Xml" />
-                        </TabItem.Header>
-                        <myControl:XMLLogControl />
-                    </TabItem>
-                </TabControl>-->
+
 
 
             </materialDesign:Card>

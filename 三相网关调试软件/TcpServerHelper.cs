@@ -15,6 +15,7 @@ using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using MyDlmsStandard.Annotations;
 using 三相智慧能源网关调试软件.Helpers;
 
 namespace 三相智慧能源网关调试软件
@@ -586,8 +587,9 @@ namespace 三相智慧能源网关调试软件
         }
 
         Stopwatch stopwatch1;
-        public async Task<byte[]> SendDataToClientAndWaitReceiveDataAsync(Socket destinationSocket, byte[] bytes)
+        public async Task<byte[]> SendDataToClientAndWaitReceiveDataAsync([NotNull] Socket destinationSocket, byte[] bytes)
         {
+            if (destinationSocket == null) throw new ArgumentNullException(nameof(destinationSocket));
             return await Task.Run(async () =>
             {
                 _returnBytes = null;

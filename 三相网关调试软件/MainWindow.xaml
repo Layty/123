@@ -277,7 +277,7 @@
                                     Height="Auto"
                                     Kind="MicrosoftVisualStudio" />
                             </TextBlock>
-                            <wpfdev:SpotLight FontSize="15" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+                            <!--<wpfdev:SpotLight FontSize="15" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />-->
                         </StackPanel>
 
                         <TextBlock
@@ -424,7 +424,7 @@
                         <ColumnDefinition
                             x:Name="ColumnLog"
                             Width="Auto"
-                            MaxWidth="250" />
+                            MaxWidth="350" />
                     </Grid.ColumnDefinitions>
 
 
@@ -598,12 +598,7 @@
                                 Margin="0,-1,0,1"
                                 BorderThickness="0">
 
-                                <TabItem HorizontalAlignment="Center">
-                                    <TabItem.Header>
-                                        <materialDesign:PackIcon Kind="Logout" />
-                                    </TabItem.Header>
-                                    <myControl:SocketAndMeterAddressMapping />
-                                </TabItem>
+
                                 <TabItem HorizontalAlignment="Center">
                                     <TabItem.Header>
                                         <materialDesign:PackIcon Kind="SerialPort" />
@@ -621,6 +616,12 @@
                                         <materialDesign:PackIcon Kind="Xml" />
                                     </TabItem.Header>
                                     <myControl:XMLLogControl />
+                                </TabItem>
+                                <TabItem HorizontalAlignment="Center">
+                                    <TabItem.Header>
+                                        <materialDesign:PackIcon Kind="Logout" />
+                                    </TabItem.Header>
+                                    <myControl:SocketAndMeterAddressMapping />
                                 </TabItem>
                             </TabControl>
 

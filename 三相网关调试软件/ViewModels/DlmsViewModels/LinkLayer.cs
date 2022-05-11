@@ -2,6 +2,7 @@
 using System.IO.Ports;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using MyDlmsStandard;
 using MySerialPortMaster;
 using 三相智慧能源网关调试软件.Common;
@@ -33,13 +34,13 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
         #endregion
 
         public PhysicalChanelType CommunicationType { get; set; }
-        
 
-        public LinkLayer(SerialPortMaster serialPort, TcpServerViewModel tcpServerViewModel )
+
+        public LinkLayer(SerialPortMaster serialPort, TcpServerViewModel tcpServerViewModel)
         {
             TcpServerHelper = tcpServerViewModel.TcpServerHelper;
             CurrentSocket = tcpServerViewModel.CurrentSocketClient;
-          
+
             PortMaster = serialPort;
             InitSerialPortParams(PortMaster);
         }
@@ -114,7 +115,15 @@ namespace 三相智慧能源网关调试软件.ViewModels.DlmsViewModels
                 }
                 else if (CommunicationType == PhysicalChanelType.FrontEndProcess)
                 {
-                    returnBytes = await TcpServerHelper.SendDataToClientAndWaitReceiveDataAsync(CurrentSocket, sendBytes);
+                    if (CurrentSocket != null)
+                    {
+                        returnBytes = await TcpServerHelper.SendDataToClientAndWaitReceiveDataAsync(CurrentSocket, sendBytes);
+                    }
+                    else
+                    {
+                        StrongReferenceMessenger.Default.Send($"当前CurrentSocket为空", "Snackbar");
+                    }
+
                 }
             }
             catch (Exception e)
